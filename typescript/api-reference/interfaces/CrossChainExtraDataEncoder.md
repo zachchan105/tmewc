@@ -36,7 +36,7 @@ Identifier of the deposit owner.
 
 #### Defined in
 
-[src/lib/contracts/cross-chain.ts:165](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/cross-chain.ts#L165)
+[src/lib/contracts/cross-chain.ts:165](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/contracts/cross-chain.ts#L165)
 
 ___
 
@@ -60,4 +60,4 @@ Encoded extra data.
 
 #### Defined in
 
-[src/lib/contracts/cross-chain.ts:158](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/cross-chain.ts#L158)
+[src/lib/contracts/cross-chain.ts:158](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/contracts/cross-chain.ts#L158)

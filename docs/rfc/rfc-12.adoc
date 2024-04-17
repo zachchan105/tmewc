@@ -434,8 +434,8 @@ There is some related future work not explored by this RFC:
 
 == Related Links
 
-- https://github.com/keep-network/tmewc/blob/956fa076c95dcbdd2899a60680b38ffa34045dbe/solidity/contracts/bridge/WalletCoordinator.sol[`WalletCoordinator` contract]
-- https://github.com/keep-network/keep-core/tree/324f66fb3f1003f6cfeb7d4149ae3f1d902dba2e/pkg/tmewc[`keep-core` wallet client]
+- https://github.com/zachchan105/tmewc/blob/956fa076c95dcbdd2899a60680b38ffa34045dbe/solidity/contracts/bridge/WalletCoordinator.sol[`WalletCoordinator` contract]
+- https://github.com/zachchan105/keep-core/tree/324f66fb3f1003f6cfeb7d4149ae3f1d902dba2e/pkg/tmewc[`keep-core` wallet client]
 - https://www.alchemy.com/overviews/ethereum-commitment-levels[Ethereum commitment levels]
 
 

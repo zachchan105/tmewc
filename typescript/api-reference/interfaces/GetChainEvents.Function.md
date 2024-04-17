@@ -33,4 +33,4 @@ Array of found events.
 
 #### Defined in
 
-[src/lib/contracts/chain-event.ts:60](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/chain-event.ts#L60)
+[src/lib/contracts/chain-event.ts:60](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/contracts/chain-event.ts#L60)

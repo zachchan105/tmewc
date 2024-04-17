@@ -20,7 +20,7 @@ The height of the block the transaction was confirmed in.
 
 #### Defined in
 
-[src/lib/meowcoin/spv.ts:52](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/meowcoin/spv.ts#L52)
+[src/lib/meowcoin/spv.ts:52](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/meowcoin/spv.ts#L52)
 
 ___
 
@@ -34,7 +34,7 @@ the deepest pairing first. Each hash is an unprefixed hex string.
 
 #### Defined in
 
-[src/lib/meowcoin/spv.ts:59](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/meowcoin/spv.ts#L59)
+[src/lib/meowcoin/spv.ts:59](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/meowcoin/spv.ts#L59)
 
 ___
 
@@ -46,4 +46,4 @@ The 0-based index of the transaction's position in the block.
 
 #### Defined in
 
-[src/lib/meowcoin/spv.ts:64](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/meowcoin/spv.ts#L64)
+[src/lib/meowcoin/spv.ts:64](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/meowcoin/spv.ts#L64)

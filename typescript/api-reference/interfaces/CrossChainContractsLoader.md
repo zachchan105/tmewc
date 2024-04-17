@@ -29,7 +29,7 @@ Loads the chain mapping based on underlying L1 chain.
 
 #### Defined in
 
-[src/lib/contracts/cross-chain.ts:38](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/cross-chain.ts#L38)
+[src/lib/contracts/cross-chain.ts:38](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/contracts/cross-chain.ts#L38)
 
 ___
 
@@ -55,4 +55,4 @@ Loads L1-specific TMEWC cross-chain contracts for the given L2 chain.
 
 #### Defined in
 
-[src/lib/contracts/cross-chain.ts:43](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/cross-chain.ts#L43)
+[src/lib/contracts/cross-chain.ts:43](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/contracts/cross-chain.ts#L43)

@@ -61,7 +61,7 @@ EthersContractHandle\&lt;TMEWCTypechain\&gt;.constructor
 
 #### Defined in
 
-[src/lib/ethereum/tmewc-token.ts:26](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/tmewc-token.ts#L26)
+[src/lib/ethereum/tmewc-token.ts:26](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/tmewc-token.ts#L26)
 
 ## Properties
 
@@ -79,7 +79,7 @@ EthersContractHandle.\_deployedAtBlockNumber
 
 #### Defined in
 
-[src/lib/ethereum/adapter.ts:80](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/adapter.ts#L80)
+[src/lib/ethereum/adapter.ts:80](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/adapter.ts#L80)
 
 ___
 
@@ -95,7 +95,7 @@ EthersContractHandle.\_instance
 
 #### Defined in
 
-[src/lib/ethereum/adapter.ts:74](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/adapter.ts#L74)
+[src/lib/ethereum/adapter.ts:74](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/adapter.ts#L74)
 
 ___
 
@@ -111,7 +111,7 @@ EthersContractHandle.\_totalRetryAttempts
 
 #### Defined in
 
-[src/lib/ethereum/adapter.ts:84](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/adapter.ts#L84)
+[src/lib/ethereum/adapter.ts:84](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/adapter.ts#L84)
 
 ## Methods
 
@@ -142,7 +142,7 @@ EthersContractHandle.\_totalRetryAttempts
 
 #### Defined in
 
-[src/lib/ethereum/tmewc-token.ts:135](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/tmewc-token.ts#L135)
+[src/lib/ethereum/tmewc-token.ts:135](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/tmewc-token.ts#L135)
 
 ___
 
@@ -165,7 +165,7 @@ ___
 
 #### Defined in
 
-[src/lib/ethereum/tmewc-token.ts:104](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/tmewc-token.ts#L104)
+[src/lib/ethereum/tmewc-token.ts:104](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/tmewc-token.ts#L104)
 
 ___
 
@@ -187,7 +187,7 @@ EthersContractHandle.getAddress
 
 #### Defined in
 
-[src/lib/ethereum/adapter.ts:112](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/adapter.ts#L112)
+[src/lib/ethereum/adapter.ts:112](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/adapter.ts#L112)
 
 ___
 
@@ -207,7 +207,7 @@ ___
 
 #### Defined in
 
-[src/lib/ethereum/tmewc-token.ts:53](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/tmewc-token.ts#L53)
+[src/lib/ethereum/tmewc-token.ts:53](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/tmewc-token.ts#L53)
 
 ___
 
@@ -241,7 +241,7 @@ EthersContractHandle.getEvents
 
 #### Defined in
 
-[src/lib/ethereum/adapter.ts:127](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/adapter.ts#L127)
+[src/lib/ethereum/adapter.ts:127](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/adapter.ts#L127)
 
 ___
 
@@ -270,7 +270,7 @@ ___
 
 #### Defined in
 
-[src/lib/ethereum/tmewc-token.ts:71](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/tmewc-token.ts#L71)
+[src/lib/ethereum/tmewc-token.ts:71](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/tmewc-token.ts#L71)
 
 ___
 
@@ -296,4 +296,4 @@ ___
 
 #### Defined in
 
-[src/lib/ethereum/tmewc-token.ts:61](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/tmewc-token.ts#L61)
+[src/lib/ethereum/tmewc-token.ts:61](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/tmewc-token.ts#L61)

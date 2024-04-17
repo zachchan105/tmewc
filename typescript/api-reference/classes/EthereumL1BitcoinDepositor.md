@@ -62,7 +62,7 @@ EthersContractHandle\&lt;L1BitcoinDepositorTypechain\&gt;.constructor
 
 #### Defined in
 
-[src/lib/ethereum/l1-meowcoin-depositor.ts:55](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/l1-meowcoin-depositor.ts#L55)
+[src/lib/ethereum/l1-meowcoin-depositor.ts:55](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/l1-meowcoin-depositor.ts#L55)
 
 ## Properties
 
@@ -72,7 +72,7 @@ EthersContractHandle\&lt;L1BitcoinDepositorTypechain\&gt;.constructor
 
 #### Defined in
 
-[src/lib/ethereum/l1-meowcoin-depositor.ts:53](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/l1-meowcoin-depositor.ts#L53)
+[src/lib/ethereum/l1-meowcoin-depositor.ts:53](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/l1-meowcoin-depositor.ts#L53)
 
 ___
 
@@ -90,7 +90,7 @@ EthersContractHandle.\_deployedAtBlockNumber
 
 #### Defined in
 
-[src/lib/ethereum/adapter.ts:80](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/adapter.ts#L80)
+[src/lib/ethereum/adapter.ts:80](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/adapter.ts#L80)
 
 ___
 
@@ -106,7 +106,7 @@ EthersContractHandle.\_instance
 
 #### Defined in
 
-[src/lib/ethereum/adapter.ts:74](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/adapter.ts#L74)
+[src/lib/ethereum/adapter.ts:74](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/adapter.ts#L74)
 
 ___
 
@@ -122,7 +122,7 @@ EthersContractHandle.\_totalRetryAttempts
 
 #### Defined in
 
-[src/lib/ethereum/adapter.ts:84](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/adapter.ts#L84)
+[src/lib/ethereum/adapter.ts:84](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/adapter.ts#L84)
 
 ## Methods
 
@@ -142,7 +142,7 @@ EthersContractHandle.\_totalRetryAttempts
 
 #### Defined in
 
-[src/lib/ethereum/l1-meowcoin-depositor.ts:90](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/l1-meowcoin-depositor.ts#L90)
+[src/lib/ethereum/l1-meowcoin-depositor.ts:90](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/l1-meowcoin-depositor.ts#L90)
 
 ___
 
@@ -164,7 +164,7 @@ EthersContractHandle.getAddress
 
 #### Defined in
 
-[src/lib/ethereum/adapter.ts:112](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/adapter.ts#L112)
+[src/lib/ethereum/adapter.ts:112](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/adapter.ts#L112)
 
 ___
 
@@ -184,7 +184,7 @@ ___
 
 #### Defined in
 
-[src/lib/ethereum/l1-meowcoin-depositor.ts:82](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/l1-meowcoin-depositor.ts#L82)
+[src/lib/ethereum/l1-meowcoin-depositor.ts:82](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/l1-meowcoin-depositor.ts#L82)
 
 ___
 
@@ -218,7 +218,7 @@ EthersContractHandle.getEvents
 
 #### Defined in
 
-[src/lib/ethereum/adapter.ts:127](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/adapter.ts#L127)
+[src/lib/ethereum/adapter.ts:127](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/adapter.ts#L127)
 
 ___
 
@@ -247,4 +247,4 @@ ___
 
 #### Defined in
 
-[src/lib/ethereum/l1-meowcoin-depositor.ts:98](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/l1-meowcoin-depositor.ts#L98)
+[src/lib/ethereum/l1-meowcoin-depositor.ts:98](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/l1-meowcoin-depositor.ts#L98)

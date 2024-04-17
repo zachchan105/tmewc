@@ -1,8 +1,8 @@
 import { HardhatUserConfig } from "hardhat/config"
 import "./tasks"
 
-import "@keep-network/hardhat-helpers"
-import "@keep-network/hardhat-local-networks-config"
+import "@zachchan105/hardhat-helpers"
+import "@zachchan105/hardhat-local-networks-config"
 import "@nomiclabs/hardhat-waffle"
 import "@nomiclabs/hardhat-etherscan"
 import "hardhat-gas-reporter"
@@ -64,7 +64,7 @@ const config: HardhatUserConfig = {
       },
     ],
     overrides: {
-      "@keep-network/ecdsa/contracts/WalletRegistry.sol":
+      "@zachchan105/ecdsa/contracts/WalletRegistry.sol":
         ecdsaSolidityCompilerConfig,
       "contracts/bridge/BridgeGovernance.sol": bridgeGovernanceCompilerConfig,
     },
@@ -140,7 +140,7 @@ const config: HardhatUserConfig = {
       process.env.USE_EXTERNAL_DEPLOY === "true"
         ? [
             {
-              artifacts: "node_modules/@keep-network/tmewc/artifacts",
+              artifacts: "node_modules/@zachchan105/tmewc/artifacts",
             },
             {
               artifacts:
@@ -150,12 +150,12 @@ const config: HardhatUserConfig = {
             },
             {
               artifacts:
-                "node_modules/@keep-network/random-beacon/export/artifacts",
-              deploy: "node_modules/@keep-network/random-beacon/export/deploy",
+                "node_modules/@zachchan105/random-beacon/export/artifacts",
+              deploy: "node_modules/@zachchan105/random-beacon/export/deploy",
             },
             {
-              artifacts: "node_modules/@keep-network/ecdsa/export/artifacts",
-              deploy: "node_modules/@keep-network/ecdsa/export/deploy",
+              artifacts: "node_modules/@zachchan105/ecdsa/export/artifacts",
+              deploy: "node_modules/@zachchan105/ecdsa/export/deploy",
             },
           ]
         : undefined,
@@ -164,13 +164,13 @@ const config: HardhatUserConfig = {
       // linked with `yarn link` command.
       development: [
         "node_modules/@threshold-network/solidity-contracts/deployments/development",
-        "node_modules/@keep-network/random-beacon/deployments/development",
-        "node_modules/@keep-network/ecdsa/deployments/development",
+        "node_modules/@zachchan105/random-beacon/deployments/development",
+        "node_modules/@zachchan105/ecdsa/deployments/development",
       ],
       sepolia: [
-        "node_modules/@keep-network/tmewc/artifacts",
-        "node_modules/@keep-network/random-beacon/artifacts",
-        "node_modules/@keep-network/ecdsa/artifacts",
+        "node_modules/@zachchan105/tmewc/artifacts",
+        "node_modules/@zachchan105/random-beacon/artifacts",
+        "node_modules/@zachchan105/ecdsa/artifacts",
       ],
       mainnet: ["./external/mainnet"],
     },
@@ -191,7 +191,7 @@ const config: HardhatUserConfig = {
       default: 3,
       sepolia: 0,
       // Not used for mainnet deployment scripts of `@keepn-network/tmewc`.
-      // Used by `@keep-network/random-beacon` and `@keep-network/ecdsa`
+      // Used by `@zachchan105/random-beacon` and `@zachchan105/ecdsa`
       // when deploying `SortitionPool`s.
     },
     esdm: {
@@ -238,7 +238,7 @@ const config: HardhatUserConfig = {
       // plugin that doesn't work well with hardhat-deploy artifacts defined in
       // external artifacts section, hence we have to compile the contracts from
       // sources.
-      "@keep-network/ecdsa/contracts/WalletRegistry.sol",
+      "@zachchan105/ecdsa/contracts/WalletRegistry.sol",
     ],
     keep: true,
   },

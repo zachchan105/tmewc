@@ -2,7 +2,7 @@
 
 = tMEWC System tests
 
-https://github.com/keep-network/tmewc/actions/workflows/system-tests.yml[image:https://img.shields.io/github/actions/workflow/status/keep-network/tmewc/system-tests.yml?branch=main&event=schedule&label=System%20tests[System tests status]]
+https://github.com/zachchan105/tmewc/actions/workflows/system-tests.yml[image:https://img.shields.io/github/actions/workflow/status/zachchan105/tmewc/system-tests.yml?branch=main&event=schedule&label=System%20tests[System tests status]]
 
 This module contains the system test scenarios stressing the tMEWC system.
 

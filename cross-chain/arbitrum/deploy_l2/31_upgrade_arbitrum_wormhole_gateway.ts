@@ -14,7 +14,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     "ArbitrumWormholeGateway",
     {
       contractName:
-        "@keep-network/tmewc/contracts/l2/L2WormholeGateway.sol:L2WormholeGateway",
+        "@zachchan105/tmewc/contracts/l2/L2WormholeGateway.sol:L2WormholeGateway",
       initializerArgs: [
         ArbitrumTokenBridge.address,
         ArbitrumWormholeTMEWC.address,

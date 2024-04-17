@@ -20,7 +20,7 @@ The vector of transaction inputs.
 
 #### Defined in
 
-[src/lib/meowcoin/tx.ts:37](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/meowcoin/tx.ts#L37)
+[src/lib/meowcoin/tx.ts:37](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/meowcoin/tx.ts#L37)
 
 ___
 
@@ -32,7 +32,7 @@ The vector of transaction outputs.
 
 #### Defined in
 
-[src/lib/meowcoin/tx.ts:42](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/meowcoin/tx.ts#L42)
+[src/lib/meowcoin/tx.ts:42](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/meowcoin/tx.ts#L42)
 
 ___
 
@@ -44,4 +44,4 @@ The transaction hash (or transaction ID) as an un-prefixed hex string.
 
 #### Defined in
 
-[src/lib/meowcoin/tx.ts:32](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/meowcoin/tx.ts#L32)
+[src/lib/meowcoin/tx.ts:32](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/meowcoin/tx.ts#L32)

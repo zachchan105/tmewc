@@ -1,6 +1,6 @@
 import type { HardhatUserConfig } from "hardhat/config"
 
-import "@keep-network/hardhat-helpers"
+import "@zachchan105/hardhat-helpers"
 import "@nomiclabs/hardhat-ethers"
 import "@nomiclabs/hardhat-waffle"
 import "hardhat-deploy"
@@ -15,7 +15,7 @@ const config: HardhatUserConfig = {
     },
   },
 
-  // Indices for named accounts should match the ones defined in `@keep-network/tmewc`.
+  // Indices for named accounts should match the ones defined in `@zachchan105/tmewc`.
   namedAccounts: {
     deployer: {
       default: 1,

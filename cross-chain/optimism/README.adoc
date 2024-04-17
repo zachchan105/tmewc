@@ -3,7 +3,7 @@
 = Threshold cross-chain - Optimism
 
 This package brings Meowcoin to Ethereum L2 Optimism. For more details please
-see link:https://github.com/keep-network/tmewc/blob/main/docs/rfc/rfc-8.adoc[RFC 8: Cross-chain Tokenized Threshold MEWC]
+see link:https://github.com/zachchan105/tmewc/blob/main/docs/rfc/rfc-8.adoc[RFC 8: Cross-chain Tokenized Threshold MEWC]
 
 == How it works?
 

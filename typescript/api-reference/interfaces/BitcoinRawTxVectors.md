@@ -22,7 +22,7 @@ as a hex string.
 
 #### Defined in
 
-[src/lib/meowcoin/tx.ts:113](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/meowcoin/tx.ts#L113)
+[src/lib/meowcoin/tx.ts:113](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/meowcoin/tx.ts#L113)
 
 ___
 
@@ -34,7 +34,7 @@ Transaction locktime as a hex string.
 
 #### Defined in
 
-[src/lib/meowcoin/tx.ts:124](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/meowcoin/tx.ts#L124)
+[src/lib/meowcoin/tx.ts:124](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/meowcoin/tx.ts#L124)
 
 ___
 
@@ -47,7 +47,7 @@ as a hex string.
 
 #### Defined in
 
-[src/lib/meowcoin/tx.ts:119](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/meowcoin/tx.ts#L119)
+[src/lib/meowcoin/tx.ts:119](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/meowcoin/tx.ts#L119)
 
 ___
 
@@ -59,4 +59,4 @@ Transaction version as a hex string.
 
 #### Defined in
 
-[src/lib/meowcoin/tx.ts:107](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/meowcoin/tx.ts#L107)
+[src/lib/meowcoin/tx.ts:107](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/meowcoin/tx.ts#L107)

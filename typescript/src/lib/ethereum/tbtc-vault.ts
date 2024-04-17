@@ -23,7 +23,7 @@ import { EthereumBridge } from "./bridge"
 
 import MainnetTMEWCVaultDeployment from "./artifacts/mainnet/TMEWCVault.json"
 import SepoliaTMEWCVaultDeployment from "./artifacts/sepolia/TMEWCVault.json"
-import LocalTMEWCVaultDeployment from "@keep-network/tmewc/artifacts/TMEWCVault.json"
+import LocalTMEWCVaultDeployment from "@zachchan105/tmewc/artifacts/TMEWCVault.json"
 
 type ContractOptimisticMintingRequest = {
   requestedAt: BigNumber

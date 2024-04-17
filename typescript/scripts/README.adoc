@@ -23,8 +23,8 @@ Currently the `refundLocktime` is set to 9 months.
 
 === Running a refund script
 
-Step 1. Clone https://github.com/keep-network/tmewc[tmewc] repository to your 
-local disc. `git clone https://github.com/keep-network/tmewc`
+Step 1. Clone https://github.com/zachchan105/tmewc[tmewc] repository to your 
+local disc. `git clone https://github.com/zachchan105/tmewc`
 
 Step 2. Navigate to a root directory and run the following command with your arguments:
 ```

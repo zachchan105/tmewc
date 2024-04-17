@@ -542,270 +542,270 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@keep-network/meowcoin-spv-sol@3.4.0-solc-0.8":
+"@zachchan105/meowcoin-spv-sol@3.4.0-solc-0.8":
   version "3.4.0-solc-0.8"
-  resolved "https://registry.yarnpkg.com/@keep-network/meowcoin-spv-sol/-/meowcoin-spv-sol-3.4.0-solc-0.8.tgz#8b44c246ffab8ea993efe196f6bf385b1a3b84dc"
+  resolved "https://registry.yarnpkg.com/@zachchan105/meowcoin-spv-sol/-/meowcoin-spv-sol-3.4.0-solc-0.8.tgz#8b44c246ffab8ea993efe196f6bf385b1a3b84dc"
   integrity sha512-KlpY9BbasyLvYXSS7dsJktgRChu/yjdFLOX8ldGA/pltLicCm/l0F4oqxL8wSws9XD12vq9x0B5qzPygVLB2TQ==
 
-"@keep-network/ecdsa@2.0.0":
+"@zachchan105/ecdsa@2.0.0":
   version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@keep-network/ecdsa/-/ecdsa-2.0.0.tgz#96d301cd272e61334bec173b5c4945758fc80853"
+  resolved "https://registry.yarnpkg.com/@zachchan105/ecdsa/-/ecdsa-2.0.0.tgz#96d301cd272e61334bec173b5c4945758fc80853"
   integrity sha512-KXSUOkZIKHR3I4H99CpgkPtuneI9AxgGo8+DmqGR56QB28kJCEXm7GC/yTInWS1lb7LzDwkjIm9VYAIGdLrsZw==
   dependencies:
-    "@keep-network/random-beacon" "2.0.0"
-    "@keep-network/sortition-pools" "2.0.0"
+    "@zachchan105/random-beacon" "2.0.0"
+    "@zachchan105/sortition-pools" "2.0.0"
     "@openzeppelin/contracts" "^4.6.0"
     "@openzeppelin/contracts-upgradeable" "^4.6.0"
     "@threshold-network/solidity-contracts" "1.2.1"
 
-"@keep-network/ecdsa@2.1.0-dev.15":
+"@zachchan105/ecdsa@2.1.0-dev.15":
   version "2.1.0-dev.15"
-  resolved "https://registry.yarnpkg.com/@keep-network/ecdsa/-/ecdsa-2.1.0-dev.15.tgz#ee631a42e165f30c75aae8c54aace765b77e272a"
+  resolved "https://registry.yarnpkg.com/@zachchan105/ecdsa/-/ecdsa-2.1.0-dev.15.tgz#ee631a42e165f30c75aae8c54aace765b77e272a"
   integrity sha512-iUE3SwDSNc/k1oui7Z+fDGhhGyOzpe4/f/oKvDUMHqXx0BQG3QCrOz9KqWuPFXTXMav4LxLbt12WyDITAl/hjw==
   dependencies:
-    "@keep-network/random-beacon" "2.1.0-dev.15"
-    "@keep-network/sortition-pools" "^2.0.0-pre.16"
+    "@zachchan105/random-beacon" "2.1.0-dev.15"
+    "@zachchan105/sortition-pools" "^2.0.0-pre.16"
     "@openzeppelin/contracts" "^4.6.0"
     "@openzeppelin/contracts-upgradeable" "^4.6.0"
     "@threshold-network/solidity-contracts" "1.3.0-dev.6"
 
-"@keep-network/ecdsa@2.1.0-sepolia.1":
+"@zachchan105/ecdsa@2.1.0-sepolia.1":
   version "2.1.0-sepolia.1"
-  resolved "https://registry.yarnpkg.com/@keep-network/ecdsa/-/ecdsa-2.1.0-sepolia.1.tgz#6e985148ade6415013e5d8cbca167d029c7b0c2c"
+  resolved "https://registry.yarnpkg.com/@zachchan105/ecdsa/-/ecdsa-2.1.0-sepolia.1.tgz#6e985148ade6415013e5d8cbca167d029c7b0c2c"
   integrity sha512-WWG8Y1NW3nh30AShvFtVT+qijLUYuQNfWDox28DAv5KrgX9Od3a/l1HkRWA3qHEdakHqZ/ZDdR5/bGliT11PwQ==
   dependencies:
-    "@keep-network/random-beacon" "2.1.0-sepolia.1"
-    "@keep-network/sortition-pools" "github:keep-network/sortition-pools#test-fork"
+    "@zachchan105/random-beacon" "2.1.0-sepolia.1"
+    "@zachchan105/sortition-pools" "github:zachchan105/sortition-pools#test-fork"
     "@openzeppelin/contracts" "^4.6.0"
     "@openzeppelin/contracts-upgradeable" "^4.6.0"
     "@threshold-network/solidity-contracts" "1.3.0-sepolia.0"
 
-"@keep-network/keep-core@1.3.0":
+"@zachchan105/keep-core@1.3.0":
   version "1.3.0"
-  resolved "https://registry.yarnpkg.com/@keep-network/keep-core/-/keep-core-1.3.0.tgz#09c1fd4d8d021b2afdff4801c7743d4c65b7bce3"
+  resolved "https://registry.yarnpkg.com/@zachchan105/keep-core/-/keep-core-1.3.0.tgz#09c1fd4d8d021b2afdff4801c7743d4c65b7bce3"
   integrity sha512-c8efKWPx5da6OSdcm9/uvdDqrfwDcYAExNqPvomhLFC0dATEEFHsr/QOAqiBm4wCZZtWMKt0dYTm5QpGtx5TXQ==
   dependencies:
     "@openzeppelin/contracts-ethereum-package" "^2.4.0"
     "@openzeppelin/upgrades" "^2.7.2"
     openzeppelin-solidity "2.4.0"
 
-"@keep-network/keep-core@1.7.0":
+"@zachchan105/keep-core@1.7.0":
   version "1.7.0"
-  resolved "https://registry.yarnpkg.com/@keep-network/keep-core/-/keep-core-1.7.0.tgz#0923d539fc431810bd9b239f91e09a92a2b255a0"
+  resolved "https://registry.yarnpkg.com/@zachchan105/keep-core/-/keep-core-1.7.0.tgz#0923d539fc431810bd9b239f91e09a92a2b255a0"
   integrity sha512-jU0ol4L5a7vFUXCTlYGsjZYhl87cUpiAYz9LgDgvM3sGmwNIVZ9dY3gziINXIbSSFZjoqh3eGDxDPcQmA+Rjrg==
   dependencies:
     "@openzeppelin/upgrades" "^2.7.2"
     openzeppelin-solidity "2.4.0"
 
-"@keep-network/keep-core@1.8.1-goerli.0":
+"@zachchan105/keep-core@1.8.1-goerli.0":
   version "1.8.1-goerli.0"
-  resolved "https://registry.yarnpkg.com/@keep-network/keep-core/-/keep-core-1.8.1-goerli.0.tgz#238485aab51902021d42357bf59695225002f0ab"
+  resolved "https://registry.yarnpkg.com/@zachchan105/keep-core/-/keep-core-1.8.1-goerli.0.tgz#238485aab51902021d42357bf59695225002f0ab"
   integrity sha512-h3La/RqbyEZjBBPg8V+pcRFo3UpWZUF4CxWfXHZnUR4PnkZKnIDrTNFQPhpV2uYFZwrbJxTR9mzOq/DOAiXPwA==
   dependencies:
     "@openzeppelin/upgrades" "^2.7.2"
     openzeppelin-solidity "2.4.0"
 
-"@keep-network/keep-core@1.8.1-sepolia.0":
+"@zachchan105/keep-core@1.8.1-sepolia.0":
   version "1.8.1-sepolia.0"
-  resolved "https://registry.yarnpkg.com/@keep-network/keep-core/-/keep-core-1.8.1-sepolia.0.tgz#62fc477ea0f5c0a44f67eefbdc1219fbe261b4c3"
+  resolved "https://registry.yarnpkg.com/@zachchan105/keep-core/-/keep-core-1.8.1-sepolia.0.tgz#62fc477ea0f5c0a44f67eefbdc1219fbe261b4c3"
   integrity sha512-dHdZQR/PWO7Cw8M/GawmsJ5mhaiBOTdd4cUb1DF9fEjUY/4AVrd2F7c39CkrqGCF598ve46hhQWoRLLgtiAv2A==
   dependencies:
     "@openzeppelin/upgrades" "^2.7.2"
     openzeppelin-solidity "2.4.0"
 
-"@keep-network/keep-core@>1.8.1-dev <1.8.1-goerli":
+"@zachchan105/keep-core@>1.8.1-dev <1.8.1-goerli":
   version "1.8.1-dev.0"
-  resolved "https://registry.yarnpkg.com/@keep-network/keep-core/-/keep-core-1.8.1-dev.0.tgz#d95864b25800214de43d8840376a68336cb12055"
+  resolved "https://registry.yarnpkg.com/@zachchan105/keep-core/-/keep-core-1.8.1-dev.0.tgz#d95864b25800214de43d8840376a68336cb12055"
   integrity sha512-gFXkgN4PYOYCZ14AskL7fZHEFW5mu3BDd+TJKBuKZc1q9CgRMOK+dxpJnSctxmSH1tV+Ln9v9yqlSkfPCoiBHw==
   dependencies:
     "@openzeppelin/upgrades" "^2.7.2"
     openzeppelin-solidity "2.4.0"
 
-"@keep-network/keep-ecdsa@1.2.1":
+"@zachchan105/keep-ecdsa@1.2.1":
   version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@keep-network/keep-ecdsa/-/keep-ecdsa-1.2.1.tgz#5dcbc2c3808cce55a6e0d9e524868a0e9a0f1562"
+  resolved "https://registry.yarnpkg.com/@zachchan105/keep-ecdsa/-/keep-ecdsa-1.2.1.tgz#5dcbc2c3808cce55a6e0d9e524868a0e9a0f1562"
   integrity sha512-Oz0thgLoemt/nK6dl+MONU7TEoNR3lfbnMY/Aa0oWGcwR5PlNMiBVzYY7OT4oLZIK/MxEHDOWRQAijZEQffI7g==
   dependencies:
-    "@keep-network/keep-core" "1.3.0"
-    "@keep-network/sortition-pools" "1.1.2"
+    "@zachchan105/keep-core" "1.3.0"
+    "@zachchan105/sortition-pools" "1.1.2"
     "@openzeppelin/upgrades" "^2.7.2"
     openzeppelin-solidity "2.3.0"
 
-"@keep-network/keep-ecdsa@1.9.0-sepolia.0":
+"@zachchan105/keep-ecdsa@1.9.0-sepolia.0":
   version "1.9.0-sepolia.0"
-  resolved "https://registry.yarnpkg.com/@keep-network/keep-ecdsa/-/keep-ecdsa-1.9.0-sepolia.0.tgz#33d0fcf512193d2b701e92efcfa08de97064f779"
+  resolved "https://registry.yarnpkg.com/@zachchan105/keep-ecdsa/-/keep-ecdsa-1.9.0-sepolia.0.tgz#33d0fcf512193d2b701e92efcfa08de97064f779"
   integrity sha512-+hWE8ZzafsElA6xTrVK/XbEpomhiPJDzKO085OJ5GJE6qzx/MGZ5J+EwD3KR+5/1+K+gtVwowF/Q39pgj+jNoQ==
   dependencies:
-    "@keep-network/keep-core" "1.8.1-sepolia.0"
-    "@keep-network/sortition-pools" "1.2.0-dev.1"
+    "@zachchan105/keep-core" "1.8.1-sepolia.0"
+    "@zachchan105/sortition-pools" "1.2.0-dev.1"
     "@openzeppelin/upgrades" "^2.7.2"
     openzeppelin-solidity "2.3.0"
 
-"@keep-network/keep-ecdsa@>1.9.0-dev <1.9.0-ropsten":
+"@zachchan105/keep-ecdsa@>1.9.0-dev <1.9.0-ropsten":
   version "1.9.0-goerli.0"
-  resolved "https://registry.yarnpkg.com/@keep-network/keep-ecdsa/-/keep-ecdsa-1.9.0-goerli.0.tgz#ce58b6639062bb4f73a257557aebb16447889e08"
+  resolved "https://registry.yarnpkg.com/@zachchan105/keep-ecdsa/-/keep-ecdsa-1.9.0-goerli.0.tgz#ce58b6639062bb4f73a257557aebb16447889e08"
   integrity sha512-EA/oTcxmia5nznQ35ub9/5xBqBK4T+78oWYxASCc+THdPLalzriSAtQ517R4QnvkHi82NFhJjZH8WBoRXniddA==
   dependencies:
-    "@keep-network/keep-core" "1.8.1-goerli.0"
-    "@keep-network/sortition-pools" "1.2.0-dev.1"
+    "@zachchan105/keep-core" "1.8.1-goerli.0"
+    "@zachchan105/sortition-pools" "1.2.0-dev.1"
     "@openzeppelin/upgrades" "^2.7.2"
     openzeppelin-solidity "2.3.0"
 
-"@keep-network/prettier-config-keep@github:keep-network/prettier-config-keep":
+"@zachchan105/prettier-config-keep@github:zachchan105/prettier-config-keep":
   version "0.0.1"
-  resolved "https://codeload.github.com/keep-network/prettier-config-keep/tar.gz/a1a333e7ac49928a0f6ed39421906dd1e46ab0f3"
+  resolved "https://codeload.github.com/zachchan105/prettier-config-keep/tar.gz/a1a333e7ac49928a0f6ed39421906dd1e46ab0f3"
 
-"@keep-network/random-beacon@2.0.0":
+"@zachchan105/random-beacon@2.0.0":
   version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@keep-network/random-beacon/-/random-beacon-2.0.0.tgz#ac52dd03da49ec5b0d39ba85c51de6c4c8f1b1dc"
+  resolved "https://registry.yarnpkg.com/@zachchan105/random-beacon/-/random-beacon-2.0.0.tgz#ac52dd03da49ec5b0d39ba85c51de6c4c8f1b1dc"
   integrity sha512-c5AodlBkMRTEID7bDE7BA9lqDZcH3AFqOPz5b9f5syy62DnuiMkHTHIEIvdWWCL26m21A4PPyPjw7XirauE/OA==
   dependencies:
-    "@keep-network/sortition-pools" "2.0.0"
+    "@zachchan105/sortition-pools" "2.0.0"
     "@openzeppelin/contracts" "^4.6.0"
     "@thesis/solidity-contracts" "github:thesis/solidity-contracts#4985bcf"
     "@threshold-network/solidity-contracts" "1.2.1"
 
-"@keep-network/random-beacon@2.1.0-dev.15":
+"@zachchan105/random-beacon@2.1.0-dev.15":
   version "2.1.0-dev.15"
-  resolved "https://registry.yarnpkg.com/@keep-network/random-beacon/-/random-beacon-2.1.0-dev.15.tgz#541620c469e3bc75a5d1f7649889540b0e032e9e"
+  resolved "https://registry.yarnpkg.com/@zachchan105/random-beacon/-/random-beacon-2.1.0-dev.15.tgz#541620c469e3bc75a5d1f7649889540b0e032e9e"
   integrity sha512-vxBICRtmqSmJtFU5hZMpwB0alhgKchyMbxk4DtLZ7T2zBjd5tjt3CqeKEk+ON09g7yL1mIxY07InP4okviUK4A==
   dependencies:
-    "@keep-network/sortition-pools" "^2.0.0-pre.16"
+    "@zachchan105/sortition-pools" "^2.0.0-pre.16"
     "@openzeppelin/contracts" "4.7.3"
     "@thesis/solidity-contracts" "github:thesis/solidity-contracts#4985bcf"
     "@threshold-network/solidity-contracts" "1.3.0-dev.5"
 
-"@keep-network/random-beacon@2.1.0-dev.16":
+"@zachchan105/random-beacon@2.1.0-dev.16":
   version "2.1.0-dev.16"
-  resolved "https://registry.yarnpkg.com/@keep-network/random-beacon/-/random-beacon-2.1.0-dev.16.tgz#9f2b5c19aa79f6ff1a5498ba7b55eb170463161d"
+  resolved "https://registry.yarnpkg.com/@zachchan105/random-beacon/-/random-beacon-2.1.0-dev.16.tgz#9f2b5c19aa79f6ff1a5498ba7b55eb170463161d"
   integrity sha512-o+cG/VDkhUc91W+4bMplYCgOu0twSFICqarpv5k2ES8GcaafaeV8stXGhCxjvHYJjU/sfG8mhlQZhWdZixq+JQ==
   dependencies:
-    "@keep-network/sortition-pools" "^2.0.0-pre.16"
+    "@zachchan105/sortition-pools" "^2.0.0-pre.16"
     "@openzeppelin/contracts" "4.7.3"
     "@thesis/solidity-contracts" "github:thesis/solidity-contracts#4985bcf"
     "@threshold-network/solidity-contracts" "1.3.0-dev.6"
 
-"@keep-network/random-beacon@2.1.0-sepolia.1":
+"@zachchan105/random-beacon@2.1.0-sepolia.1":
   version "2.1.0-sepolia.1"
-  resolved "https://registry.yarnpkg.com/@keep-network/random-beacon/-/random-beacon-2.1.0-sepolia.1.tgz#3debde13d5f365883d88b3c1d279cc7d21984d58"
+  resolved "https://registry.yarnpkg.com/@zachchan105/random-beacon/-/random-beacon-2.1.0-sepolia.1.tgz#3debde13d5f365883d88b3c1d279cc7d21984d58"
   integrity sha512-dj6j6/msv1BqMtPbVoLo4cMhbtf4jLhKjkXmJoBXU2KYWW9wBlRB06M4DZPfUhhW8L7/1eaFJJIINATt26wBjA==
   dependencies:
-    "@keep-network/sortition-pools" "github:keep-network/sortition-pools#test-fork"
+    "@zachchan105/sortition-pools" "github:zachchan105/sortition-pools#test-fork"
     "@openzeppelin/contracts" "4.7.3"
     "@thesis/solidity-contracts" "github:thesis/solidity-contracts#4985bcf"
     "@threshold-network/solidity-contracts" "1.3.0-sepolia.0"
 
-"@keep-network/sortition-pools@1.1.2":
+"@zachchan105/sortition-pools@1.1.2":
   version "1.1.2"
-  resolved "https://registry.yarnpkg.com/@keep-network/sortition-pools/-/sortition-pools-1.1.2.tgz#cfeb31d574b02d1ae32649df01b87af07229010a"
+  resolved "https://registry.yarnpkg.com/@zachchan105/sortition-pools/-/sortition-pools-1.1.2.tgz#cfeb31d574b02d1ae32649df01b87af07229010a"
   integrity sha512-bBaKyxkXDc8kJHq3qeESMrJ02m+Wbh6Uz9qUpWn8Zq3aTZaKXRZfGWT+J71OiBlAdyB4WoHZymrddWHkjImHdQ==
   dependencies:
     "@openzeppelin/contracts" "^2.4.0"
 
-"@keep-network/sortition-pools@1.2.0-dev.1":
+"@zachchan105/sortition-pools@1.2.0-dev.1":
   version "1.2.0-dev.1"
-  resolved "https://registry.yarnpkg.com/@keep-network/sortition-pools/-/sortition-pools-1.2.0-dev.1.tgz#2ee371f1dd1ff71f6d05c9ddc2a83a4a93ff56b3"
+  resolved "https://registry.yarnpkg.com/@zachchan105/sortition-pools/-/sortition-pools-1.2.0-dev.1.tgz#2ee371f1dd1ff71f6d05c9ddc2a83a4a93ff56b3"
   integrity sha512-CaOsvxNWHgXRFwPThDn3C/LiCwq9pL8ICLXXkysRSLw1Hx69wLnToaXYuwyXeIEy5pGqe5+288DBIqvJ3T4+jA==
   dependencies:
     "@openzeppelin/contracts" "^2.4.0"
 
-"@keep-network/sortition-pools@2.0.0", "@keep-network/sortition-pools@^2.0.0-pre.16":
+"@zachchan105/sortition-pools@2.0.0", "@zachchan105/sortition-pools@^2.0.0-pre.16":
   version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@keep-network/sortition-pools/-/sortition-pools-2.0.0.tgz#04e29ec756d74e00d13505a3e2a7763b06d7a08d"
+  resolved "https://registry.yarnpkg.com/@zachchan105/sortition-pools/-/sortition-pools-2.0.0.tgz#04e29ec756d74e00d13505a3e2a7763b06d7a08d"
   integrity sha512-82pDOKcDBvHBFblCt0ALVr6qC6mxk339ZqnCfYx1zIPaPhzkw1RKOv28AqPoqzhzcdqLIoPh8g9RS/M2Lplh1A==
   dependencies:
     "@openzeppelin/contracts" "^4.3.2"
     "@thesis/solidity-contracts" "github:thesis/solidity-contracts#4985bcf"
 
-"@keep-network/sortition-pools@github:keep-network/sortition-pools#test-fork":
+"@zachchan105/sortition-pools@github:zachchan105/sortition-pools#test-fork":
   version "2.1.0-pre"
-  resolved "https://codeload.github.com/keep-network/sortition-pools/tar.gz/a41007f4c818864cdca0b6a6446424c071157ced"
+  resolved "https://codeload.github.com/zachchan105/sortition-pools/tar.gz/a41007f4c818864cdca0b6a6446424c071157ced"
   dependencies:
     "@openzeppelin/contracts" "^4.3.2"
     "@thesis/solidity-contracts" "github:thesis/solidity-contracts#4985bcf"
 
-"@keep-network/tmewc-mainnet@npm:@keep-network/tmewc@mainnet":
+"@zachchan105/tmewc-mainnet@npm:@zachchan105/tmewc@mainnet":
   version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@keep-network/tmewc/-/tmewc-1.0.2.tgz#ae17196470517c9708e2c7bf3368e44be218cd21"
+  resolved "https://registry.yarnpkg.com/@zachchan105/tmewc/-/tmewc-1.0.2.tgz#ae17196470517c9708e2c7bf3368e44be218cd21"
   integrity sha512-Ly8msd4upIwjXcme4QsStRe0NqUZdSKZt4tANgdLY9YECHk0Uo2AfqLmknJQEictneuV/aId7JWvJph21WgjIA==
   dependencies:
-    "@keep-network/meowcoin-spv-sol" "3.4.0-solc-0.8"
-    "@keep-network/ecdsa" "2.0.0"
-    "@keep-network/random-beacon" "2.0.0"
-    "@keep-network/tmewc" "1.1.0"
+    "@zachchan105/meowcoin-spv-sol" "3.4.0-solc-0.8"
+    "@zachchan105/ecdsa" "2.0.0"
+    "@zachchan105/random-beacon" "2.0.0"
+    "@zachchan105/tmewc" "1.1.0"
     "@openzeppelin/contracts" "^4.6.0"
     "@openzeppelin/contracts-upgradeable" "^4.6.0"
     "@thesis/solidity-contracts" "github:thesis/solidity-contracts#4985bcf"
 
-"@keep-network/tmewc-testnet@npm:@keep-network/tmewc@sepolia":
+"@zachchan105/tmewc-testnet@npm:@zachchan105/tmewc@sepolia":
   version "1.6.0-sepolia.0"
-  resolved "https://registry.yarnpkg.com/@keep-network/tmewc/-/tmewc-1.6.0-sepolia.0.tgz#2916677d9732d4ac7bd03d7e00a2d8c2fb71b0c7"
+  resolved "https://registry.yarnpkg.com/@zachchan105/tmewc/-/tmewc-1.6.0-sepolia.0.tgz#2916677d9732d4ac7bd03d7e00a2d8c2fb71b0c7"
   integrity sha512-cRupt7tEOqfSWQc2LUMtCZsuENe+VEjlo71MeFKaOQ7H1fe80A/VHHJUmoWw5XNDKyjJQb3oBmVhVDx2YfEL+w==
   dependencies:
-    "@keep-network/meowcoin-spv-sol" "3.4.0-solc-0.8"
-    "@keep-network/ecdsa" "2.1.0-sepolia.1"
-    "@keep-network/random-beacon" "2.1.0-sepolia.1"
-    "@keep-network/tmewc" "1.1.2-sepolia.0"
+    "@zachchan105/meowcoin-spv-sol" "3.4.0-solc-0.8"
+    "@zachchan105/ecdsa" "2.1.0-sepolia.1"
+    "@zachchan105/random-beacon" "2.1.0-sepolia.1"
+    "@zachchan105/tmewc" "1.1.2-sepolia.0"
     "@openzeppelin/contracts" "^4.8.1"
     "@openzeppelin/contracts-upgradeable" "^4.8.1"
     "@thesis/solidity-contracts" "github:thesis/solidity-contracts#4985bcf"
 
-"@keep-network/tmewc.ts@1.4.0-dev.1":
+"@zachchan105/tmewc.ts@1.4.0-dev.1":
   version "1.4.0-dev.1"
-  resolved "https://registry.yarnpkg.com/@keep-network/tmewc.ts/-/tmewc.ts-1.4.0-dev.1.tgz#a2f89db54aa0e8924f205f3bfbd411a2b79c9553"
+  resolved "https://registry.yarnpkg.com/@zachchan105/tmewc.ts/-/tmewc.ts-1.4.0-dev.1.tgz#a2f89db54aa0e8924f205f3bfbd411a2b79c9553"
   integrity sha512-+20QZ4/FFGUdqVrY+N6+K+t2aQ8WcKlFjo0J/wiTMfb00A5KjJ8SDb3QI8+RHsvtbKnulnyH3VXEOAHBcI0IkQ==
   dependencies:
-    "@keep-network/ecdsa" "2.1.0-dev.15"
-    "@keep-network/tmewc" "1.6.0-dev.0"
-    bcoin "git+https://github.com/keep-network/bcoin.git#5accd32c63e6025a0d35d67739c4a6e84095a1f8"
+    "@zachchan105/ecdsa" "2.1.0-dev.15"
+    "@zachchan105/tmewc" "1.6.0-dev.0"
+    bcoin "git+https://github.com/zachchan105/bcoin.git#5accd32c63e6025a0d35d67739c4a6e84095a1f8"
     bcrypto "git+https://github.com/bcoin-org/bcrypto.git#semver:~5.5.0"
     bufio "^1.0.6"
-    electrum-client-js "git+https://github.com/keep-network/electrum-client-js.git#v0.1.1"
+    electrum-client-js "git+https://github.com/zachchan105/electrum-client-js.git#v0.1.1"
     ethers "^5.5.2"
     p-timeout "^4.1.0"
     wif "2.0.6"
 
-"@keep-network/tmewc@1.6.0-dev.0":
+"@zachchan105/tmewc@1.6.0-dev.0":
   version "1.6.0-dev.0"
-  resolved "https://registry.yarnpkg.com/@keep-network/tmewc/-/tmewc-1.6.0-dev.0.tgz#ba95805cef3f04bde7379d3c3b14e882a9cfa080"
+  resolved "https://registry.yarnpkg.com/@zachchan105/tmewc/-/tmewc-1.6.0-dev.0.tgz#ba95805cef3f04bde7379d3c3b14e882a9cfa080"
   integrity sha512-5N2dMdFSdS+Ljvqnqoscft5xnbIK/U/z8Dc2hNXWULkPhIy0Mx/E7i7I4CpBTV4LazIo1Hq6W4EJtj+lmrekgg==
   dependencies:
-    "@keep-network/meowcoin-spv-sol" "3.4.0-solc-0.8"
-    "@keep-network/ecdsa" "2.1.0-dev.15"
-    "@keep-network/random-beacon" "2.1.0-dev.16"
-    "@keep-network/tmewc" "1.1.2-dev.1"
+    "@zachchan105/meowcoin-spv-sol" "3.4.0-solc-0.8"
+    "@zachchan105/ecdsa" "2.1.0-dev.15"
+    "@zachchan105/random-beacon" "2.1.0-dev.16"
+    "@zachchan105/tmewc" "1.1.2-dev.1"
     "@openzeppelin/contracts" "^4.8.1"
     "@openzeppelin/contracts-upgradeable" "^4.8.1"
     "@thesis/solidity-contracts" "github:thesis/solidity-contracts#4985bcf"
 
-"@keep-network/tmewc@1.1.0":
+"@zachchan105/tmewc@1.1.0":
   version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@keep-network/tmewc/-/tmewc-1.1.0.tgz#9574ff355af04e77fb73a7bbe3e74cfd8764cf3c"
+  resolved "https://registry.yarnpkg.com/@zachchan105/tmewc/-/tmewc-1.1.0.tgz#9574ff355af04e77fb73a7bbe3e74cfd8764cf3c"
   integrity sha512-V4sGR/t61PgkEF11GDZL5QNijVSdDhL7A7larcOSSCmKJOugxd5s+d+NdhYcHZhX9IS58ebtepvZan8TydHUHw==
   dependencies:
-    "@keep-network/keep-ecdsa" "1.2.1"
+    "@zachchan105/keep-ecdsa" "1.2.1"
     "@summa-tx/meowcoin-spv-sol" "^3.1.0"
     "@summa-tx/relay-sol" "^2.0.2"
     openzeppelin-solidity "2.3.0"
 
-"@keep-network/tmewc@1.1.2-dev.1":
+"@zachchan105/tmewc@1.1.2-dev.1":
   version "1.1.2-dev.1"
-  resolved "https://registry.yarnpkg.com/@keep-network/tmewc/-/tmewc-1.1.2-dev.1.tgz#dd1e734c0fed50474c74d7170c8749127231d1f9"
+  resolved "https://registry.yarnpkg.com/@zachchan105/tmewc/-/tmewc-1.1.2-dev.1.tgz#dd1e734c0fed50474c74d7170c8749127231d1f9"
   integrity sha512-IRa0j1D7JBG8UpduaFxkaq2Ii6F61HhNMUBmxr7kAIZwj/yx8sYXWi921mn0L2Z+hAYNcwEUVhCM91VKQH29pQ==
   dependencies:
     "@celo/contractkit" "^1.0.2"
-    "@keep-network/keep-ecdsa" ">1.9.0-dev <1.9.0-ropsten"
+    "@zachchan105/keep-ecdsa" ">1.9.0-dev <1.9.0-ropsten"
     "@summa-tx/meowcoin-spv-sol" "^3.1.0"
     "@summa-tx/relay-sol" "^2.0.2"
     openzeppelin-solidity "2.3.0"
 
-"@keep-network/tmewc@1.1.2-sepolia.0":
+"@zachchan105/tmewc@1.1.2-sepolia.0":
   version "1.1.2-sepolia.0"
-  resolved "https://registry.yarnpkg.com/@keep-network/tmewc/-/tmewc-1.1.2-sepolia.0.tgz#6ef5f511a5ce80133f892f564c81b45afb9eaec9"
+  resolved "https://registry.yarnpkg.com/@zachchan105/tmewc/-/tmewc-1.1.2-sepolia.0.tgz#6ef5f511a5ce80133f892f564c81b45afb9eaec9"
   integrity sha512-p5H728tyG/Frli3N0//u4JiqFxiuW4uzMrMmnJFO7azBJPhdwEALhHRsIX6BNkVH2/NRnmu3MQYksqNnUYM6Bg==
   dependencies:
     "@celo/contractkit" "^1.0.2"
-    "@keep-network/keep-ecdsa" "1.9.0-sepolia.0"
+    "@zachchan105/keep-ecdsa" "1.9.0-sepolia.0"
     "@summa-tx/meowcoin-spv-sol" "^3.1.0"
     "@summa-tx/relay-sol" "^2.0.2"
     openzeppelin-solidity "2.3.0"
@@ -1122,7 +1122,7 @@
   resolved "https://registry.yarnpkg.com/@threshold-network/solidity-contracts/-/solidity-contracts-1.2.1.tgz#8f9d8fe52f24b51acc52fdff765fdef3b8546587"
   integrity sha512-v19gnQzdU52DLB6ZpkCW4YHTvApmwA1EG/YRxh+FRrzeDOC6rv+EqUhLgKpMtSpgBZT1ryqqLXm1QmjkW6CIGw==
   dependencies:
-    "@keep-network/keep-core" "1.7.0"
+    "@zachchan105/keep-core" "1.7.0"
     "@openzeppelin/contracts" "~4.5.0"
     "@openzeppelin/contracts-upgradeable" "~4.5.2"
     "@thesis/solidity-contracts" "github:thesis/solidity-contracts#4985bcf"
@@ -1132,7 +1132,7 @@
   resolved "https://registry.yarnpkg.com/@threshold-network/solidity-contracts/-/solidity-contracts-1.3.0-dev.5.tgz#f7a2727d627a10218f0667bc0d33e19ed8f87fdc"
   integrity sha512-AInTKQkJ0PKa32q2m8GnZFPYEArsnvOwhIFdBFaHdq9r4EGyqHMf4YY1WjffkheBZ7AQ0DNA8Lst30kBoQd0SA==
   dependencies:
-    "@keep-network/keep-core" ">1.8.1-dev <1.8.1-goerli"
+    "@zachchan105/keep-core" ">1.8.1-dev <1.8.1-goerli"
     "@openzeppelin/contracts" "~4.5.0"
     "@openzeppelin/contracts-upgradeable" "~4.5.2"
     "@thesis/solidity-contracts" "github:thesis/solidity-contracts#4985bcf"
@@ -1142,7 +1142,7 @@
   resolved "https://registry.yarnpkg.com/@threshold-network/solidity-contracts/-/solidity-contracts-1.3.0-dev.6.tgz#41e34a84f409f63635e59f9a6ce170df1472b8a1"
   integrity sha512-U7nMp+86M5qkjW7YUvT3qWgRiEEUIxqE96vkEiARTOkWX5JdLP2CXehkHCkEzjdgOCczmCp3fFtcgKFnQhhZ8A==
   dependencies:
-    "@keep-network/keep-core" ">1.8.1-dev <1.8.1-goerli"
+    "@zachchan105/keep-core" ">1.8.1-dev <1.8.1-goerli"
     "@openzeppelin/contracts" "~4.5.0"
     "@openzeppelin/contracts-upgradeable" "~4.5.2"
     "@thesis/solidity-contracts" "github:thesis/solidity-contracts#4985bcf"
@@ -1152,7 +1152,7 @@
   resolved "https://registry.yarnpkg.com/@threshold-network/solidity-contracts/-/solidity-contracts-1.3.0-sepolia.0.tgz#9a2401094ca267844e08d1a5be1214d32bd99f93"
   integrity sha512-FmRsi+WZAG805kpPYRWAeMbEDRDH44Af+q8UuyVKpjJh5ObcNz9MPGESeYflE1o8MsNpY1mfxZBY6olXPR/LCw==
   dependencies:
-    "@keep-network/keep-core" "1.8.1-sepolia.0"
+    "@zachchan105/keep-core" "1.8.1-sepolia.0"
     "@openzeppelin/contracts" "~4.5.0"
     "@openzeppelin/contracts-upgradeable" "~4.5.2"
     "@thesis/solidity-contracts" "github:thesis/solidity-contracts#4985bcf"
@@ -1729,9 +1729,9 @@ base64-js@^1.3.1:
   dependencies:
     bsert "~0.0.10"
 
-"bcoin@git+https://github.com/keep-network/bcoin.git#5accd32c63e6025a0d35d67739c4a6e84095a1f8":
+"bcoin@git+https://github.com/zachchan105/bcoin.git#5accd32c63e6025a0d35d67739c4a6e84095a1f8":
   version "2.2.0"
-  resolved "git+https://github.com/keep-network/bcoin.git#5accd32c63e6025a0d35d67739c4a6e84095a1f8"
+  resolved "git+https://github.com/zachchan105/bcoin.git#5accd32c63e6025a0d35d67739c4a6e84095a1f8"
   dependencies:
     bcfg "git+https://github.com/bcoin-org/bcfg.git#semver:~0.1.7"
     bcrypto "git+https://github.com/bcoin-org/bcrypto.git#semver:~5.5.0"
@@ -2885,9 +2885,9 @@ ee-first@1.1.1:
   resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
   integrity sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==
 
-"electrum-client-js@git+https://github.com/keep-network/electrum-client-js.git#v0.1.1":
+"electrum-client-js@git+https://github.com/zachchan105/electrum-client-js.git#v0.1.1":
   version "0.1.1"
-  resolved "git+https://github.com/keep-network/electrum-client-js.git#8eccf443ca69ab5d81315016057ae9b1ae5818bf"
+  resolved "git+https://github.com/zachchan105/electrum-client-js.git#8eccf443ca69ab5d81315016057ae9b1ae5818bf"
   dependencies:
     websocket "^1.0.29"
 

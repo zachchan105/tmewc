@@ -1,7 +1,7 @@
 import { HardhatUserConfig } from "hardhat/config"
 
-import "@keep-network/hardhat-helpers"
-import "@keep-network/hardhat-local-networks-config"
+import "@zachchan105/hardhat-helpers"
+import "@zachchan105/hardhat-local-networks-config"
 import "@nomiclabs/hardhat-waffle"
 import "hardhat-gas-reporter"
 import "hardhat-contract-sizer"

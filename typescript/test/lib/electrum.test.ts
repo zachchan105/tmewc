@@ -57,7 +57,7 @@ const testnetCredentials: ElectrumCredentials[] = [
     port: 60001,
     protocol: "tcp",
   },
-  // FIXME: https://github.com/keep-network/tmewc/issues/502
+  // FIXME: https://github.com/zachchan105/tmewc/issues/502
   // // electrs-esplora ssl
   // {
   //   host: "electrum.blockstream.info",
@@ -70,7 +70,7 @@ const testnetCredentials: ElectrumCredentials[] = [
     port: 51001,
     protocol: "tcp",
   },
-  // FIXME: https://github.com/keep-network/tmewc/issues/502
+  // FIXME: https://github.com/zachchan105/tmewc/issues/502
   // fulcrum ssl
   // {
   //   host: "testnet.aranguren.org",

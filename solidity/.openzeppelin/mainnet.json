@@ -34,7 +34,7 @@
             "slot": "0",
             "type": "t_address",
             "contract": "Governable",
-            "src": "@keep-network/random-beacon/contracts/Governable.sol:56"
+            "src": "@zachchan105/random-beacon/contracts/Governable.sol:56"
           },
           {
             "label": "__gap",
@@ -42,7 +42,7 @@
             "slot": "1",
             "type": "t_array(t_uint256)49_storage",
             "contract": "Governable",
-            "src": "@keep-network/random-beacon/contracts/Governable.sol:59"
+            "src": "@zachchan105/random-beacon/contracts/Governable.sol:59"
           },
           {
             "label": "_initialized",
@@ -734,7 +734,7 @@
             "slot": "0",
             "type": "t_address",
             "contract": "Governable",
-            "src": "@keep-network/random-beacon/contracts/Governable.sol:56"
+            "src": "@zachchan105/random-beacon/contracts/Governable.sol:56"
           },
           {
             "label": "__gap",
@@ -742,7 +742,7 @@
             "slot": "1",
             "type": "t_array(t_uint256)49_storage",
             "contract": "Governable",
-            "src": "@keep-network/random-beacon/contracts/Governable.sol:59"
+            "src": "@zachchan105/random-beacon/contracts/Governable.sol:59"
           },
           {
             "label": "_initialized",
@@ -1475,7 +1475,7 @@
             "slot": "101",
             "type": "t_contract(ReimbursementPool)5481",
             "contract": "Reimbursable",
-            "src": "@keep-network/random-beacon/contracts/Reimbursable.sol:51"
+            "src": "@zachchan105/random-beacon/contracts/Reimbursable.sol:51"
           },
           {
             "label": "__gap",
@@ -1483,7 +1483,7 @@
             "slot": "102",
             "type": "t_array(t_uint256)49_storage",
             "contract": "Reimbursable",
-            "src": "@keep-network/random-beacon/contracts/Reimbursable.sol:51"
+            "src": "@zachchan105/random-beacon/contracts/Reimbursable.sol:51"
           },
           {
             "label": "isCoordinator",
@@ -1705,7 +1705,7 @@
             "slot": "101",
             "type": "t_contract(ReimbursementPool)8816",
             "contract": "Reimbursable",
-            "src": "@keep-network/random-beacon/contracts/Reimbursable.sol:51"
+            "src": "@zachchan105/random-beacon/contracts/Reimbursable.sol:51"
           },
           {
             "label": "__gap",
@@ -1713,7 +1713,7 @@
             "slot": "102",
             "type": "t_array(t_uint256)49_storage",
             "contract": "Reimbursable",
-            "src": "@keep-network/random-beacon/contracts/Reimbursable.sol:51"
+            "src": "@zachchan105/random-beacon/contracts/Reimbursable.sol:51"
           },
           {
             "label": "isCoordinator",
@@ -1934,7 +1934,7 @@
             "slot": "0",
             "type": "t_address",
             "contract": "Governable",
-            "src": "@keep-network/random-beacon/contracts/Governable.sol:56"
+            "src": "@zachchan105/random-beacon/contracts/Governable.sol:56"
           },
           {
             "label": "__gap",
@@ -1942,7 +1942,7 @@
             "slot": "1",
             "type": "t_array(t_uint256)49_storage",
             "contract": "Governable",
-            "src": "@keep-network/random-beacon/contracts/Governable.sol:59"
+            "src": "@zachchan105/random-beacon/contracts/Governable.sol:59"
           },
           {
             "label": "_initialized",
@@ -2634,7 +2634,7 @@
             "slot": "0",
             "type": "t_address",
             "contract": "Governable",
-            "src": "@keep-network/random-beacon/contracts/Governable.sol:56"
+            "src": "@zachchan105/random-beacon/contracts/Governable.sol:56"
           },
           {
             "label": "__gap",
@@ -2642,7 +2642,7 @@
             "slot": "1",
             "type": "t_array(t_uint256)49_storage",
             "contract": "Governable",
-            "src": "@keep-network/random-beacon/contracts/Governable.sol:59"
+            "src": "@zachchan105/random-beacon/contracts/Governable.sol:59"
           },
           {
             "label": "_initialized",

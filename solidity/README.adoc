@@ -2,7 +2,7 @@
 
 = tMEWC contracts
 
-https://github.com/keep-network/tmewc/actions/workflows/contracts.yml[image:https://img.shields.io/github/actions/workflow/status/keep-network/tmewc/contracts.yml?branch=main&event=push&label=TMEWC%20contracts%20build[TMEWC contracts build status]]
+https://github.com/zachchan105/tmewc/actions/workflows/contracts.yml[image:https://img.shields.io/github/actions/workflow/status/zachchan105/tmewc/contracts.yml?branch=main&event=push&label=TMEWC%20contracts%20build[TMEWC contracts build status]]
 
 This package contains tMEWC contracts.
 

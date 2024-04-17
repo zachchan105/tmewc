@@ -6,7 +6,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deployer } = await getNamedAccounts()
 
   await helpers.upgrades.deployProxy("PolygonTMEWC", {
-    contractName: "@keep-network/tmewc/contracts/l2/L2TMEWC.sol:L2TMEWC",
+    contractName: "@zachchan105/tmewc/contracts/l2/L2TMEWC.sol:L2TMEWC",
     initializerArgs: ["Polygon tMEWC", "tMEWC"],
     factoryOpts: { signer: await ethers.getSigner(deployer) },
     proxyOpts: {

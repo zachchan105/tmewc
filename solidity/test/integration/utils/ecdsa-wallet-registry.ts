@@ -1,5 +1,5 @@
-// TODO: Utils in this file are pulled from @keep-network/ecdsa test utils.
-// We should consider exposing them in @keep-network/ecdsa for an external usage.
+// TODO: Utils in this file are pulled from @zachchan105/ecdsa test utils.
+// We should consider exposing them in @zachchan105/ecdsa for an external usage.
 
 /* eslint-disable no-await-in-loop */
 

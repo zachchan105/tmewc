@@ -35,7 +35,7 @@
 
 #### Defined in
 
-[src/services/maintenance/spv.ts:21](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/maintenance/spv.ts#L21)
+[src/services/maintenance/spv.ts:21](https://github.com/zachchan105/tmewc/blob/main/typescript/src/services/maintenance/spv.ts#L21)
 
 ## Properties
 
@@ -47,7 +47,7 @@ Meowcoin client handle.
 
 #### Defined in
 
-[src/services/maintenance/spv.ts:19](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/maintenance/spv.ts#L19)
+[src/services/maintenance/spv.ts:19](https://github.com/zachchan105/tmewc/blob/main/typescript/src/services/maintenance/spv.ts#L19)
 
 ___
 
@@ -59,7 +59,7 @@ Handle to tMEWC contracts.
 
 #### Defined in
 
-[src/services/maintenance/spv.ts:15](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/maintenance/spv.ts#L15)
+[src/services/maintenance/spv.ts:15](https://github.com/zachchan105/tmewc/blob/main/typescript/src/services/maintenance/spv.ts#L15)
 
 ## Methods
 
@@ -86,7 +86,7 @@ Empty promise.
 
 #### Defined in
 
-[src/services/maintenance/spv.ts:34](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/maintenance/spv.ts#L34)
+[src/services/maintenance/spv.ts:34](https://github.com/zachchan105/tmewc/blob/main/typescript/src/services/maintenance/spv.ts#L34)
 
 ___
 
@@ -113,4 +113,4 @@ Empty promise.
 
 #### Defined in
 
-[src/services/maintenance/spv.ts:67](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/maintenance/spv.ts#L67)
+[src/services/maintenance/spv.ts:67](https://github.com/zachchan105/tmewc/blob/main/typescript/src/services/maintenance/spv.ts#L67)

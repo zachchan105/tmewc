@@ -1,7 +1,7 @@
 # tMEWC SDK
 
-[![build](https://img.shields.io/github/actions/workflow/status/keep-network/tmewc/typescript.yml?branch=main&event=push&label=build)](https://github.com/keep-network/tmewc/actions/workflows/typescript.yml)
-[![npm](https://img.shields.io/npm/v/%40keep-network%2Ftmewc.ts)](https://www.npmjs.com/package/@keep-network/tmewc.ts)
+[![build](https://img.shields.io/github/actions/workflow/status/zachchan105/tmewc/typescript.yml?branch=main&event=push&label=build)](https://github.com/zachchan105/tmewc/actions/workflows/typescript.yml)
+[![npm](https://img.shields.io/npm/v/%40zachchan105%2Ftmewc.ts)](https://www.npmjs.com/package/@zachchan105/tmewc.ts)
 [![documentation](https://badgen.net/static/GitBook/Documentation/yellow)](https://docs.threshold.network/app-development/tmewc/tmewc-sdk)
 
 tMEWC SDK is a TypeScript library that provides effortless access to the
@@ -33,13 +33,13 @@ project.
 To install the tMEWC SDK in your project using `yarn`, run:
 
 ```bash
-yarn add @keep-network/tmewc.ts
+yarn add @zachchan105/tmewc.ts
 ```
 
 If you prefer to use `npm`, do:
 
 ```bash
-npm i @keep-network/tmewc.ts
+npm i @zachchan105/tmewc.ts
 ```
 
 Please note that you will also need to install the
@@ -65,7 +65,7 @@ Here is a short example demonstrating SDK usage:
 
 ```typescript
 // Import SDK entrypoint component.
-import { TMEWC } from "@keep-network/tmewc.ts"
+import { TMEWC } from "@zachchan105/tmewc.ts"
 
 // Create an instance of ethers signer.
 const signer = (...)
@@ -88,7 +88,7 @@ sdk.bitcoinClient.(...)
 
 Contributions are always welcome! Feel free to open any issue or send a pull request.
 Please refer the repository-level
-[CONTRIBUTING.adoc](https://github.com/keep-network/tmewc/blob/main/CONTRIBUTING.adoc)
+[CONTRIBUTING.adoc](https://github.com/zachchan105/tmewc/blob/main/CONTRIBUTING.adoc)
 document for general contribution guidelines. Below, you can find how to set up
 the SDK module for development.
 

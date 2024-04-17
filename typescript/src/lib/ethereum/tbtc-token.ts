@@ -13,7 +13,7 @@ import { EthereumAddress } from "./address"
 
 import MainnetTMEWCTokenDeployment from "./artifacts/mainnet/TMEWC.json"
 import SepoliaTMEWCTokenDeployment from "./artifacts/sepolia/TMEWC.json"
-import LocalTMEWCTokenDeployment from "@keep-network/tmewc/artifacts/TMEWC.json"
+import LocalTMEWCTokenDeployment from "@zachchan105/tmewc/artifacts/TMEWC.json"
 
 /**
  * Implementation of the Ethereum TMEWC token handle.

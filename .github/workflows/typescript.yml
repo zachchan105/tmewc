@@ -57,7 +57,7 @@ jobs:
           cache: "yarn"
           cache-dependency-path: typescript/yarn.lock
 
-      # We need this step because the `@keep-network/tmewc` which we update in
+      # We need this step because the `@zachchan105/tmewc` which we update in
       # next step has an indirect dependency to `@summa-tx/relay-sol@2.0.2`
       # package, which downloads one of its sub-dependencies via unathenticated
       # `git://` protocol. That protocol is no longer supported. Thanks to this
@@ -92,7 +92,7 @@ jobs:
           cache: "yarn"
           cache-dependency-path: typescript/yarn.lock
 
-      # We need this step because the `@keep-network/tmewc` which we update in
+      # We need this step because the `@zachchan105/tmewc` which we update in
       # next step has an indirect dependency to `@summa-tx/relay-sol@2.0.2`
       # package, which downloads one of its sub-dependencies via unathenticated
       # `git://` protocol. That protocol is no longer supported. Thanks to this

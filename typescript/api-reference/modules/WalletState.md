@@ -24,4 +24,4 @@
 
 #### Defined in
 
-[src/lib/contracts/bridge.ts:394](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/bridge.ts#L394)
+[src/lib/contracts/bridge.ts:394](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/contracts/bridge.ts#L394)

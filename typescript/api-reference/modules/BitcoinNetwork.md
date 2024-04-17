@@ -30,4 +30,4 @@ Meowcoin Network.
 
 #### Defined in
 
-[src/lib/meowcoin/network.ts:33](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/meowcoin/network.ts#L33)
+[src/lib/meowcoin/network.ts:33](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/meowcoin/network.ts#L33)

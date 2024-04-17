@@ -36,7 +36,7 @@ The balance of the given identifier in 1e18 precision.
 
 #### Defined in
 
-[src/lib/contracts/cross-chain.ts:61](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/cross-chain.ts#L61)
+[src/lib/contracts/cross-chain.ts:61](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/contracts/cross-chain.ts#L61)
 
 ___
 
@@ -52,4 +52,4 @@ Gets the chain-specific identifier of this contract.
 
 #### Defined in
 
-[src/lib/contracts/cross-chain.ts:54](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/cross-chain.ts#L54)
+[src/lib/contracts/cross-chain.ts:54](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/contracts/cross-chain.ts#L54)

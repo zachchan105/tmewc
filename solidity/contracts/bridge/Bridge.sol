@@ -15,9 +15,9 @@
 
 pragma solidity 0.8.17;
 
-import "@keep-network/random-beacon/contracts/Governable.sol";
-import "@keep-network/random-beacon/contracts/ReimbursementPool.sol";
-import {IWalletOwner as EcdsaWalletOwner} from "@keep-network/ecdsa/contracts/api/IWalletOwner.sol";
+import "@zachchan105/random-beacon/contracts/Governable.sol";
+import "@zachchan105/random-beacon/contracts/ReimbursementPool.sol";
+import {IWalletOwner as EcdsaWalletOwner} from "@zachchan105/ecdsa/contracts/api/IWalletOwner.sol";
 
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/math/SafeCastUpgradeable.sol";

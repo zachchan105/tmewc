@@ -1,4 +1,4 @@
-import { ElectrumClient } from "@keep-network/tmewc.ts"
+import { ElectrumClient } from "@zachchan105/tmewc.ts"
 
 import { Manager as SystemEventManager } from "./system-event"
 import { DepositMonitor } from "./deposit-monitor"
@@ -15,7 +15,7 @@ import { WalletMonitor } from "./wallet-monitor"
 import { SupplyMonitor } from "./supply-monitor"
 import { RedemptionMonitor } from "./redemption-monitor"
 
-import type { Client as BitcoinClient } from "@keep-network/tmewc.ts/dist/src/meowcoin"
+import type { Client as BitcoinClient } from "@zachchan105/tmewc.ts/dist/src/meowcoin"
 import type {
   Monitor as SystemEventMonitor,
   Receiver as SystemEventReceiver,

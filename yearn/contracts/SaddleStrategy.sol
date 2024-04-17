@@ -3,7 +3,7 @@
 pragma solidity 0.6.12;
 pragma experimental ABIEncoderV2;
 
-import "@keep-network/yearn-vaults/contracts/BaseStrategy.sol";
+import "@zachchan105/yearn-vaults/contracts/BaseStrategy.sol";
 import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/math/Math.sol";
@@ -37,7 +37,7 @@ interface ISaddlePoolSwap {
 /// @notice Interface for the LPRewards contracts.
 /// @dev This is an interface with just a few functions. For more info and
 ///      function description please see:
-///      https://github.com/keep-network/keep-ecdsa/blob/main/solidity/contracts/LPRewards.sol
+///      https://github.com/zachchan105/keep-ecdsa/blob/main/solidity/contracts/LPRewards.sol
 //TODO: Make sure the LPRewards contract for tMEWC has the same interface
 interface ILPRewards {
     function stake(uint256 amount) external;

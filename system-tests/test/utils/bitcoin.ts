@@ -2,9 +2,9 @@
 // @ts-ignore
 import wifLib from "wif"
 import { ec as EllipticCurve } from "elliptic"
-import { assembleBitcoinSpvProof, Hex } from "@keep-network/tmewc.ts"
+import { assembleBitcoinSpvProof, Hex } from "@zachchan105/tmewc.ts"
 
-import type { BitcoinTxHash, BitcoinClient } from "@keep-network/tmewc.ts"
+import type { BitcoinTxHash, BitcoinClient } from "@zachchan105/tmewc.ts"
 import type { Contract } from "ethers"
 
 /**

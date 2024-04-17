@@ -22,7 +22,7 @@ describe("BitcoinTx", () => {
     context("when used with a valid but long proof", () => {
       let tx: ContractTransaction
 
-      // Source: https://github.com/keep-network/meowcoin-spv/blob/releases/mainnet/solidity/v3.4.0-solc-0.8/testVectors.json#L910-L916
+      // Source: https://github.com/zachchan105/meowcoin-spv/blob/releases/mainnet/solidity/v3.4.0-solc-0.8/testVectors.json#L910-L916
       const testData = {
         txInfo: {
           version: "0x01000000",

@@ -622,7 +622,7 @@ function revealDeposit(
 Taproot uses plaintext Schnorr pubkeys,
 not pubkey hashes.
 
-In link:https://github.com/keep-network/tmewc/blob/main/solidity/contracts/bridge/DepositSweep.sol#L349[DepositSweep.processDepositSweepTxOutput()]
+In link:https://github.com/zachchan105/tmewc/blob/main/solidity/contracts/bridge/DepositSweep.sol#L349[DepositSweep.processDepositSweepTxOutput()]
 tweak as follows:
 
 ....
@@ -657,7 +657,7 @@ but the public key being used here is not an aggregate of keys,
 but rather a threshold protocol public key,
 so the consideration of attacks against key aggregation don't apply.
 
-Tweak link:https://github.com/keep-network/tmewc/blob/main/solidity/contracts/bridge/Redemption.sol#L824[Redemption.processRedemptionTxOutputs()]:
+Tweak link:https://github.com/zachchan105/tmewc/blob/main/solidity/contracts/bridge/Redemption.sol#L824[Redemption.processRedemptionTxOutputs()]:
 
 ....
 if (

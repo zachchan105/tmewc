@@ -5,11 +5,11 @@ import type {
   DkgResultSubmittedEvent as DkgResultSubmittedChainEvent,
   DkgResultApprovedEvent as DkgResultApprovedChainEvent,
   DkgResultChallengedEvent as DkgResultChallengedChainEvent,
-} from "@keep-network/tmewc.ts/dist/src/wallet"
+} from "@zachchan105/tmewc.ts/dist/src/wallet"
 import type {
   Bridge,
   WalletRegistry,
-} from "@keep-network/tmewc.ts/dist/src/chain"
+} from "@zachchan105/tmewc.ts/dist/src/chain"
 import type { SystemEvent, Monitor as SystemEventMonitor } from "./system-event"
 
 const WalletRegistered = (

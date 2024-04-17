@@ -2,7 +2,7 @@ import {
   EthereumBridge,
   EthereumTMEWCToken,
   EthereumTMEWCVault,
-} from "@keep-network/tmewc.ts"
+} from "@zachchan105/tmewc.ts"
 import { providers } from "ethers"
 
 import { context, Environment } from "./context"
@@ -11,18 +11,18 @@ import type {
   Bridge,
   TMEWCVault,
   TMEWCToken,
-} from "@keep-network/tmewc.ts/dist/src/chain"
+} from "@zachchan105/tmewc.ts/dist/src/chain"
 
 const resolve = () => {
   let packageName: string
 
   switch (context.environment) {
     case Environment.Mainnet: {
-      packageName = "@keep-network/tmewc-mainnet"
+      packageName = "@zachchan105/tmewc-mainnet"
       break
     }
     case Environment.Testnet: {
-      packageName = "@keep-network/tmewc-testnet"
+      packageName = "@zachchan105/tmewc-testnet"
       break
     }
     default: {

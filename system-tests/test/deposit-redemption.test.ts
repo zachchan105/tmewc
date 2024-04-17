@@ -11,7 +11,7 @@ import {
   BitcoinHashUtils,
   EthereumAddress,
   TMEWC,
-} from "@keep-network/tmewc.ts"
+} from "@zachchan105/tmewc.ts"
 import { BigNumber, constants, Contract } from "ethers"
 import chai, { expect } from "chai"
 import chaiAsPromised from "chai-as-promised"
@@ -26,7 +26,7 @@ import type {
   RedemptionRequest,
   BitcoinUtxo,
   DepositReceipt,
-} from "@keep-network/tmewc.ts"
+} from "@zachchan105/tmewc.ts"
 import type { SystemTestsContext } from "./utils/context"
 
 chai.use(chaiAsPromised)

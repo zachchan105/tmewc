@@ -2,7 +2,7 @@
 
 = tMEWC monitoring
 
-https://github.com/keep-network/tmewc/actions/workflows/monitoring.yml[image:https://img.shields.io/github/actions/workflow/status/keep-network/tmewc/monitoring.yml?branch=main&event=push&label=Monitoring%20build[Monitoring build status]]
+https://github.com/zachchan105/tmewc/actions/workflows/monitoring.yml[image:https://img.shields.io/github/actions/workflow/status/zachchan105/tmewc/monitoring.yml?branch=main&event=push&label=Monitoring%20build[Monitoring build status]]
 
 This package provides a monitoring tool for the tMEWC system events.
 This component is part of a broader link:docs/monitoring-and-telemetry.adoc[monitoring and telemetry system].
@@ -188,4 +188,4 @@ docker run --volume /$(pwd)/data:/mnt/data \
 ==== Kubernetes
 
 The monitoring tool can be deployed on Kubernetes as a https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/[`CronJob`].
-Example configuration can be found https://github.com/keep-network/keep-core/blob/14d5f7331087a49b8d5d1ec7f8b534f8152a9175/infrastructure/kube/templates/tmewc-monitoring/tmewc-monitoring-cronjob.yaml[here].
+Example configuration can be found https://github.com/zachchan105/keep-core/blob/14d5f7331087a49b8d5d1ec7f8b534f8152a9175/infrastructure/kube/templates/tmewc-monitoring/tmewc-monitoring-cronjob.yaml[here].

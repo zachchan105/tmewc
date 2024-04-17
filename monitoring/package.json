@@ -1,5 +1,5 @@
 {
-  "name": "@keep-network/tmewc-monitoring",
+  "name": "@zachchan105/tmewc-monitoring",
   "version": "1.0.0-dev",
   "license": "GPL-3.0-only",
   "main": "dist/index.js",
@@ -13,16 +13,16 @@
     "postinstall": "npm rebuild bcrypto"
   },
   "dependencies": {
-    "@keep-network/tmewc-mainnet": "npm:@keep-network/tmewc@mainnet",
-    "@keep-network/tmewc-testnet": "npm:@keep-network/tmewc@sepolia",
-    "@keep-network/tmewc.ts": "1.4.0-dev.1",
+    "@zachchan105/tmewc-mainnet": "npm:@zachchan105/tmewc@mainnet",
+    "@zachchan105/tmewc-testnet": "npm:@zachchan105/tmewc@sepolia",
+    "@zachchan105/tmewc.ts": "1.4.0-dev.1",
     "@sentry/node": "^7.33.0",
     "axios": "^1.3.2",
     "ethers": "^5.5.2",
     "node-json-db": "^2.1.4"
   },
   "devDependencies": {
-    "@keep-network/prettier-config-keep": "github:keep-network/prettier-config-keep",
+    "@zachchan105/prettier-config-keep": "github:zachchan105/prettier-config-keep",
     "@thesis-co/eslint-config": "github:thesis/eslint-config",
     "eslint": "8.22.0",
     "prettier": "^2.3.2",

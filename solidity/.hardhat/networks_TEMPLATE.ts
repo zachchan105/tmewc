@@ -3,7 +3,7 @@
 // project config file if hardhat.config.ts file contains `localNetworksConfig` property
 // pointing to this file.
 
-import { LocalNetworksConfig } from "@keep-network/hardhat-local-networks-config"
+import { LocalNetworksConfig } from "@zachchan105/hardhat-local-networks-config"
 
 const config: LocalNetworksConfig = {
   networks: {

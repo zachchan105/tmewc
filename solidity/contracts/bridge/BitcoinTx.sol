@@ -15,9 +15,9 @@
 
 pragma solidity 0.8.17;
 
-import {MEWCUtils} from "@keep-network/meowcoin-spv-sol/contracts/MEWCUtils.sol";
-import {BytesLib} from "@keep-network/meowcoin-spv-sol/contracts/BytesLib.sol";
-import {ValidateSPV} from "@keep-network/meowcoin-spv-sol/contracts/ValidateSPV.sol";
+import {MEWCUtils} from "@zachchan105/meowcoin-spv-sol/contracts/MEWCUtils.sol";
+import {BytesLib} from "@zachchan105/meowcoin-spv-sol/contracts/BytesLib.sol";
+import {ValidateSPV} from "@zachchan105/meowcoin-spv-sol/contracts/ValidateSPV.sol";
 
 import "./BridgeState.sol";
 

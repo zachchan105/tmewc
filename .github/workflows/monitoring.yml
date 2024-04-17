@@ -77,7 +77,7 @@ jobs:
 
       - name: Load environment variables
         if: ${{ github.event.inputs.environment != 'local' }}
-        uses: keep-network/ci/actions/load-env-variables@v2
+        uses: zachchan105/ci/actions/load-env-variables@v2
         with:
           environment: ${{ github.event.inputs.environment }}
 

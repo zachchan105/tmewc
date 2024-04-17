@@ -17,9 +17,9 @@ pragma solidity 0.8.17;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-import {BytesLib} from "@keep-network/meowcoin-spv-sol/contracts/BytesLib.sol";
-import {MEWCUtils} from "@keep-network/meowcoin-spv-sol/contracts/MEWCUtils.sol";
-import {ValidateSPV} from "@keep-network/meowcoin-spv-sol/contracts/ValidateSPV.sol";
+import {BytesLib} from "@zachchan105/meowcoin-spv-sol/contracts/BytesLib.sol";
+import {MEWCUtils} from "@zachchan105/meowcoin-spv-sol/contracts/MEWCUtils.sol";
+import {ValidateSPV} from "@zachchan105/meowcoin-spv-sol/contracts/ValidateSPV.sol";
 
 import "../bridge/IRelay.sol";
 

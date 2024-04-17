@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.17;
 
-import "@keep-network/tmewc/contracts/l2/L2WormholeGateway.sol";
+import "@zachchan105/tmewc/contracts/l2/L2WormholeGateway.sol";
 
 /// @notice Wormhole gateway for L2 Arbitrum - upgraded version.
 /// @dev This contract is intended solely for testing purposes. As it currently

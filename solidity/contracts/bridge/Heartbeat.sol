@@ -15,7 +15,7 @@
 
 pragma solidity 0.8.17;
 
-import {BytesLib} from "@keep-network/meowcoin-spv-sol/contracts/BytesLib.sol";
+import {BytesLib} from "@zachchan105/meowcoin-spv-sol/contracts/BytesLib.sol";
 
 /// @title Bridge wallet heartbeat
 /// @notice The library establishes expected format for heartbeat messages

@@ -49,7 +49,7 @@ for reference.
 
 #### Defined in
 
-[src/services/deposits/cross-chain.ts:31](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/deposits/cross-chain.ts#L31)
+[src/services/deposits/cross-chain.ts:31](https://github.com/zachchan105/tmewc/blob/main/typescript/src/services/deposits/cross-chain.ts#L31)
 
 ## Properties
 
@@ -59,7 +59,7 @@ for reference.
 
 #### Defined in
 
-[src/services/deposits/cross-chain.ts:28](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/deposits/cross-chain.ts#L28)
+[src/services/deposits/cross-chain.ts:28](https://github.com/zachchan105/tmewc/blob/main/typescript/src/services/deposits/cross-chain.ts#L28)
 
 ___
 
@@ -69,7 +69,7 @@ ___
 
 #### Defined in
 
-[src/services/deposits/cross-chain.ts:29](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/deposits/cross-chain.ts#L29)
+[src/services/deposits/cross-chain.ts:29](https://github.com/zachchan105/tmewc/blob/main/typescript/src/services/deposits/cross-chain.ts#L29)
 
 ## Methods
 
@@ -83,7 +83,7 @@ ___
 
 #### Defined in
 
-[src/services/deposits/cross-chain.ts:72](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/deposits/cross-chain.ts#L72)
+[src/services/deposits/cross-chain.ts:72](https://github.com/zachchan105/tmewc/blob/main/typescript/src/services/deposits/cross-chain.ts#L72)
 
 ___
 
@@ -107,7 +107,7 @@ Throws if the L2 deposit owner cannot be resolved. This
 
 #### Defined in
 
-[src/services/deposits/cross-chain.ts:61](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/deposits/cross-chain.ts#L61)
+[src/services/deposits/cross-chain.ts:61](https://github.com/zachchan105/tmewc/blob/main/typescript/src/services/deposits/cross-chain.ts#L61)
 
 ___
 
@@ -135,7 +135,7 @@ The chain-specific identifier of the contract that will be
 
 #### Defined in
 
-[src/services/deposits/cross-chain.ts:49](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/deposits/cross-chain.ts#L49)
+[src/services/deposits/cross-chain.ts:49](https://github.com/zachchan105/tmewc/blob/main/typescript/src/services/deposits/cross-chain.ts#L49)
 
 ___
 
@@ -169,4 +169,4 @@ Reveals the given deposit depending on the reveal mode.
 
 #### Defined in
 
-[src/services/deposits/cross-chain.ts:87](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/deposits/cross-chain.ts#L87)
+[src/services/deposits/cross-chain.ts:87](https://github.com/zachchan105/tmewc/blob/main/typescript/src/services/deposits/cross-chain.ts#L87)

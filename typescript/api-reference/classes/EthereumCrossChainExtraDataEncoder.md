@@ -55,7 +55,7 @@ for reference.
 
 #### Defined in
 
-[src/lib/ethereum/l1-meowcoin-depositor.ts:154](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/l1-meowcoin-depositor.ts#L154)
+[src/lib/ethereum/l1-meowcoin-depositor.ts:154](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/l1-meowcoin-depositor.ts#L154)
 
 ___
 
@@ -81,4 +81,4 @@ ___
 
 #### Defined in
 
-[src/lib/ethereum/l1-meowcoin-depositor.ts:140](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/l1-meowcoin-depositor.ts#L140)
+[src/lib/ethereum/l1-meowcoin-depositor.ts:140](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/l1-meowcoin-depositor.ts#L140)

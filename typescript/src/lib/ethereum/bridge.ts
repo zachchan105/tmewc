@@ -42,7 +42,7 @@ import { EthereumWalletRegistry } from "./wallet-registry"
 
 import MainnetBridgeDeployment from "./artifacts/mainnet/Bridge.json"
 import SepoliaBridgeDeployment from "./artifacts/sepolia/Bridge.json"
-import LocalBridgeDeployment from "@keep-network/tmewc/artifacts/Bridge.json"
+import LocalBridgeDeployment from "@zachchan105/tmewc/artifacts/Bridge.json"
 
 type DepositRequestTypechain = DepositTypechain.DepositRequestStructOutput
 

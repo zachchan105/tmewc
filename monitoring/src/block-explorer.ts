@@ -1,6 +1,6 @@
 import { context, Environment } from "./context"
 
-import type { BitcoinTransactionHash, Hex } from "@keep-network/tmewc.ts"
+import type { BitcoinTransactionHash, Hex } from "@zachchan105/tmewc.ts"
 
 const ethTxUrlPrefixMapping = {
   [Environment.Mainnet]: "https://etherscan.io/tx",

@@ -5,14 +5,14 @@ import {
   EthereumBridge,
   EthereumTMEWCToken,
   EthereumTMEWCVault,
-} from "@keep-network/tmewc.ts"
+} from "@zachchan105/tmewc.ts"
 
 import { keyPairFromWif } from "./meowcoin"
 
 import type { ContractExport, Export } from "hardhat-deploy/dist/types"
 import type { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers"
 import type { KeyPair as BitcoinKeyPair } from "./meowcoin"
-import type { TMEWCContracts } from "@keep-network/tmewc.ts"
+import type { TMEWCContracts } from "@zachchan105/tmewc.ts"
 
 // TODO: For now, the context and its setup is global and identical for each
 //       scenario. Once more scenarios is added, this should be probably

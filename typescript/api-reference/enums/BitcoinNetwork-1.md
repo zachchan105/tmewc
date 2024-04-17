@@ -20,7 +20,7 @@ Meowcoin Mainnet.
 
 #### Defined in
 
-[src/lib/meowcoin/network.ts:20](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/meowcoin/network.ts#L20)
+[src/lib/meowcoin/network.ts:20](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/meowcoin/network.ts#L20)
 
 ___
 
@@ -32,7 +32,7 @@ Meowcoin Testnet.
 
 #### Defined in
 
-[src/lib/meowcoin/network.ts:16](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/meowcoin/network.ts#L16)
+[src/lib/meowcoin/network.ts:16](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/meowcoin/network.ts#L16)
 
 ___
 
@@ -44,4 +44,4 @@ Unknown network.
 
 #### Defined in
 
-[src/lib/meowcoin/network.ts:12](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/meowcoin/network.ts#L12)
+[src/lib/meowcoin/network.ts:12](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/meowcoin/network.ts#L12)

@@ -23,9 +23,9 @@ flowchart TD
 
 There are several sources of monitoring and telemetry data:
 
-* https://github.com/threshold-network/token-dashboard[Threshold dashboard] + https://github.com/keep-network/v2-end-to-end[second track deposit verifier]
-* https://github.com/keep-network/optimistic-minting[TMEWC minters and guardians]
-* https://github.com/keep-network/tmewc/tree/main/monitoring[TMEWC monitoring]
+* https://github.com/threshold-network/token-dashboard[Threshold dashboard] + https://github.com/zachchan105/v2-end-to-end[second track deposit verifier]
+* https://github.com/zachchan105/optimistic-minting[TMEWC minters and guardians]
+* https://github.com/zachchan105/tmewc/tree/main/monitoring[TMEWC monitoring]
 
 Monitoring and telemetry data are gathered by Sentry hub. Collected data are used to produce and send alerts to:
 

@@ -1,5 +1,5 @@
 import { BigNumber } from "ethers"
-import { Hex } from "@keep-network/tmewc.ts"
+import { Hex } from "@zachchan105/tmewc.ts"
 
 import { context } from "./context"
 import { SystemEventType } from "./system-event"
@@ -8,8 +8,8 @@ import { createEthTxUrl } from "./block-explorer"
 import { contracts } from "./contracts"
 
 import type { Monitor as SystemEventMonitor, SystemEvent } from "./system-event"
-import type { RedemptionRequestedEvent as RedemptionRequestedChainEvent } from "@keep-network/tmewc.ts/dist/src/redemption"
-import type { Bridge } from "@keep-network/tmewc.ts/dist/src/chain"
+import type { RedemptionRequestedEvent as RedemptionRequestedChainEvent } from "@zachchan105/tmewc.ts/dist/src/redemption"
+import type { Bridge } from "@zachchan105/tmewc.ts/dist/src/chain"
 
 // The time after which a pending redemption request is considered stale.
 // Typically, a redemption request processing time should not exceed 5 hours.

@@ -27,7 +27,7 @@ describe("L2WormholeGateway", () => {
     let deployment = await helpers.upgrades.deployProxy(
       // Hacky workaround allowing to deploy proxy contract any number of times
       // without clearing `deployments/hardhat` directory.
-      // See: https://github.com/keep-network/hardhat-helpers/issues/38
+      // See: https://github.com/zachchan105/hardhat-helpers/issues/38
       `L2TMEWC_${randomBytes(8).toString("hex")}`,
       {
         contractName: "L2TMEWC",
@@ -66,7 +66,7 @@ describe("L2WormholeGateway", () => {
     deployment = await helpers.upgrades.deployProxy(
       // Hacky workaround allowing to deploy proxy contract any number of times
       // without clearing `deployments/hardhat` directory.
-      // See: https://github.com/keep-network/hardhat-helpers/issues/38
+      // See: https://github.com/zachchan105/hardhat-helpers/issues/38
       `L2WormholeGateway_${randomBytes(8).toString("hex")}`,
       {
         contractName: "L2WormholeGateway",

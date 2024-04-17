@@ -34,7 +34,7 @@ Gets the chain-specific identifier of this contract.
 
 #### Defined in
 
-[src/lib/contracts/depositor-proxy.ts:19](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/depositor-proxy.ts#L19)
+[src/lib/contracts/depositor-proxy.ts:19](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/contracts/depositor-proxy.ts#L19)
 
 ___
 
@@ -61,4 +61,4 @@ Transaction hash of the reveal deposit transaction.
 
 #### Defined in
 
-[src/lib/contracts/depositor-proxy.ts:31](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/depositor-proxy.ts#L31)
+[src/lib/contracts/depositor-proxy.ts:31](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/contracts/depositor-proxy.ts#L31)

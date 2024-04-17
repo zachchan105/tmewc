@@ -1,7 +1,7 @@
 import type { HardhatUserConfig } from "hardhat/config"
 
 import "@nomiclabs/hardhat-etherscan"
-import "@keep-network/hardhat-helpers"
+import "@zachchan105/hardhat-helpers"
 import "@nomiclabs/hardhat-waffle"
 import "hardhat-gas-reporter"
 import "hardhat-contract-sizer"

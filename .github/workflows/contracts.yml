@@ -73,7 +73,7 @@ jobs:
           cache: "yarn"
           cache-dependency-path: solidity/yarn.lock
 
-      # We need this step because the `@keep-network/tmewc` which we update in
+      # We need this step because the `@zachchan105/tmewc` which we update in
       # next step has a dependency to `@summa-tx/relay-sol@2.0.2` package, which
       # downloads one of its sub-dependencies via unathenticated `git://`
       # protocol. That protocol is no longer supported. Thanks to this step
@@ -149,7 +149,7 @@ jobs:
           cache-dependency-path: solidity/yarn.lock
           registry-url: "https://registry.npmjs.org"
 
-      # We need this step because the `@keep-network/tmewc` which we update in
+      # We need this step because the `@zachchan105/tmewc` which we update in
       # next steps has a dependency to `@summa-tx/relay-sol@2.0.2` package, which
       # downloads one of its sub-dependencies via unathenticated `git://`
       # protocol. That protocol is no longer supported. Thanks to this step
@@ -163,20 +163,20 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Get upstream packages versions
-        uses: keep-network/ci/actions/upstream-builds-query@v2
+        uses: zachchan105/ci/actions/upstream-builds-query@v2
         id: upstream-builds-query
         with:
           upstream-builds: ${{ github.event.inputs.upstream_builds }}
           query: |
-            random-beacon-contracts-version = github.com/keep-network/keep-core/random-beacon#version
-            ecdsa-contracts-version = github.com/keep-network/keep-core/ecdsa#version
+            random-beacon-contracts-version = github.com/zachchan105/keep-core/random-beacon#version
+            ecdsa-contracts-version = github.com/zachchan105/keep-core/ecdsa#version
 
       - name: Resolve latest contracts
         run: |
           yarn upgrade \
-            @keep-network/random-beacon@${{ steps.upstream-builds-query.outputs.random-beacon-contracts-version }} \
-            @keep-network/ecdsa@${{ steps.upstream-builds-query.outputs.ecdsa-contracts-version }} \
-            @keep-network/tmewc@${{ github.event.inputs.environment }}
+            @zachchan105/random-beacon@${{ steps.upstream-builds-query.outputs.random-beacon-contracts-version }} \
+            @zachchan105/ecdsa@${{ steps.upstream-builds-query.outputs.ecdsa-contracts-version }} \
+            @zachchan105/tmewc@${{ github.event.inputs.environment }}
 
       - name: Configure tenderly
         env:
@@ -191,7 +191,7 @@ jobs:
 
       - name: Bump up package version
         id: npm-version-bump
-        uses: keep-network/npm-version-bump@v2
+        uses: zachchan105/npm-version-bump@v2
         with:
           work-dir: solidity
           environment: ${{ github.event.inputs.environment }}
@@ -204,11 +204,11 @@ jobs:
         run: npm publish --access=public --tag ${{ github.event.inputs.environment }} --network=${{ github.event.inputs.environment }}
 
       - name: Notify CI about completion of the workflow
-        uses: keep-network/ci/actions/notify-workflow-completed@v2
+        uses: zachchan105/ci/actions/notify-workflow-completed@v2
         env:
           GITHUB_TOKEN: ${{ secrets.CI_GITHUB_TOKEN }}
         with:
-          module: "github.com/keep-network/tmewc"
+          module: "github.com/zachchan105/tmewc"
           url: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
           environment: ${{ github.event.inputs.environment }}
           upstream_builds: ${{ github.event.inputs.upstream_builds }}
@@ -261,9 +261,9 @@ jobs:
       # `etherscan-verify` plugins tries to verify them, which is not desired.
       - name: Prepare for verification on Etherscan
         run: |
-          rm -rf ./node_modules/@keep-network/random-beacon/artifacts
-          rm -rf ./node_modules/@keep-network/ecdsa/artifacts
-          rm -rf ./node_modules/@keep-network/tmewc/artifacts
+          rm -rf ./node_modules/@zachchan105/random-beacon/artifacts
+          rm -rf ./node_modules/@zachchan105/ecdsa/artifacts
+          rm -rf ./node_modules/@zachchan105/tmewc/artifacts
 
       - name: Verify contracts on Etherscan
         env:
@@ -295,7 +295,7 @@ jobs:
           cache-dependency-path: solidity/yarn.lock
           registry-url: "https://registry.npmjs.org"
 
-      # We need this step because the `@keep-network/tmewc` which we update in
+      # We need this step because the `@zachchan105/tmewc` which we update in
       # next steps has a dependency to `@summa-tx/relay-sol@2.0.2` package, which
       # downloads one of its sub-dependencies via unathenticated `git://`
       # protocol. That protocol is no longer supported. Thanks to this step
@@ -309,20 +309,20 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Get upstream packages versions
-        uses: keep-network/ci/actions/upstream-builds-query@v2
+        uses: zachchan105/ci/actions/upstream-builds-query@v2
         id: upstream-builds-query
         with:
           upstream-builds: ${{ github.event.inputs.upstream_builds }}
           query: |
-            random-beacon-contracts-version = github.com/keep-network/keep-core/random-beacon#version
-            ecdsa-contracts-version = github.com/keep-network/keep-core/ecdsa#version
+            random-beacon-contracts-version = github.com/zachchan105/keep-core/random-beacon#version
+            ecdsa-contracts-version = github.com/zachchan105/keep-core/ecdsa#version
 
       - name: Resolve latest contracts
         run: |
           yarn upgrade \
-            @keep-network/random-beacon@${{ steps.upstream-builds-query.outputs.random-beacon-contracts-version }} \
-            @keep-network/ecdsa@${{ steps.upstream-builds-query.outputs.ecdsa-contracts-version }} \
-            @keep-network/tmewc@${{ github.event.inputs.environment }}
+            @zachchan105/random-beacon@${{ steps.upstream-builds-query.outputs.random-beacon-contracts-version }} \
+            @zachchan105/ecdsa@${{ steps.upstream-builds-query.outputs.ecdsa-contracts-version }} \
+            @zachchan105/tmewc@${{ github.event.inputs.environment }}
 
       - name: Deploy contracts
         env:
@@ -332,7 +332,7 @@ jobs:
 
       - name: Bump up package version
         id: npm-version-bump
-        uses: keep-network/npm-version-bump@v2
+        uses: zachchan105/npm-version-bump@v2
         with:
           work-dir: solidity
           environment: dapp-dev-${{ github.event.inputs.environment }}
@@ -364,13 +364,13 @@ jobs:
 
       # Below step is a workaround. Eslint executed in `solidity` directory
       # finds `.prettierrc.js` config in the root directory and fails if
-      # referenced `@keep-network/prettier-config-keep` module is missing.
+      # referenced `@zachchan105/prettier-config-keep` module is missing.
       - name: Install dependencies in the root directory
         run: |
           cd ..
           yarn install --frozen-lockfile
 
-      # We need this step because the `@keep-network/tmewc` which we update in
+      # We need this step because the `@zachchan105/tmewc` which we update in
       # next steps has a dependency to `@summa-tx/relay-sol@2.0.2` package, which
       # downloads one of its sub-dependencies via unathenticated `git://`
       # protocol. That protocol is no longer supported. Thanks to this step
@@ -422,7 +422,7 @@ jobs:
           SLITHER_VERSION: 0.9.0
         run: pip3 install slither-analyzer==$SLITHER_VERSION
 
-      # We need this step because the `@keep-network/tmewc` which we update in
+      # We need this step because the `@zachchan105/tmewc` which we update in
       # next steps has a dependency to `@summa-tx/relay-sol@2.0.2` package, which
       # downloads one of its sub-dependencies via unathenticated `git://`
       # protocol. That protocol is no longer supported. Thanks to this step

@@ -1,5 +1,5 @@
 {
-  "name": "@keep-network/tmewc.ts",
+  "name": "@zachchan105/tmewc.ts",
   "version": "2.5.0-dev",
   "license": "MIT",
   "main": "dist/src/index.js",
@@ -22,18 +22,18 @@
     "typechain/"
   ],
   "config": {
-    "contracts": "./node_modules/@keep-network/ecdsa/artifacts/WalletRegistry.json ./node_modules/@keep-network/tmewc/artifacts/{Bridge,TMEWCVault,TMEWC}.json ./node_modules/@keep-network/tmewc/build/contracts/l2/L1BitcoinDepositor.sol/L1BitcoinDepositor.json ./node_modules/@keep-network/tmewc/build/contracts/l2/L2BitcoinDepositor.sol/L2BitcoinDepositor.json ./node_modules/@keep-network/tmewc/build/contracts/l2/L2TMEWC.sol/L2TMEWC.json"
+    "contracts": "./node_modules/@zachchan105/ecdsa/artifacts/WalletRegistry.json ./node_modules/@zachchan105/tmewc/artifacts/{Bridge,TMEWCVault,TMEWC}.json ./node_modules/@zachchan105/tmewc/build/contracts/l2/L1BitcoinDepositor.sol/L1BitcoinDepositor.json ./node_modules/@zachchan105/tmewc/build/contracts/l2/L2BitcoinDepositor.sol/L2BitcoinDepositor.json ./node_modules/@zachchan105/tmewc/build/contracts/l2/L2TMEWC.sol/L2TMEWC.json"
   },
   "dependencies": {
     "@bitcoinerlab/secp256k1": "^1.0.5",
-    "@keep-network/ecdsa": "development",
-    "@keep-network/tmewc": "development",
+    "@zachchan105/ecdsa": "development",
+    "@zachchan105/tmewc": "development",
     "@ledgerhq/wallet-api-client": "^1.2.1",
     "bignumber.js": "^9.1.2",
     "bitcoinjs-lib": "^6.1.5",
     "bufio": "^1.0.6",
     "ecpair": "^2.1.0",
-    "electrum-client-js": "git+https://github.com/keep-network/electrum-client-js.git#v0.1.1",
+    "electrum-client-js": "git+https://github.com/zachchan105/electrum-client-js.git#v0.1.1",
     "ethers": "^5.5.2",
     "p-timeout": "^4.1.0",
     "url-parse": "^1.5.10",
@@ -41,7 +41,7 @@
   },
   "devDependencies": {
     "@ethersproject/providers": "^5.7.2",
-    "@keep-network/prettier-config-keep": "github:keep-network/prettier-config-keep",
+    "@zachchan105/prettier-config-keep": "github:zachchan105/prettier-config-keep",
     "@typechain/ethers-v5": "^10.2.0",
     "@types/chai": "^4.2.21",
     "@types/chai-as-promised": "^7.1.4",
@@ -54,7 +54,7 @@
     "chai-as-promised": "^7.1.1",
     "commander": "^9.4.0",
     "eslint": "^7.30.0",
-    "eslint-config-keep": "github:keep-network/eslint-config-keep",
+    "eslint-config-keep": "github:zachchan105/eslint-config-keep",
     "ethereum-waffle": "4.0.0-alpha.25",
     "mocha": "^9.0.2",
     "prettier": "^2.3.2",
@@ -69,7 +69,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/keep-network/tmewc.git",
+    "url": "https://github.com/zachchan105/tmewc.git",
     "directory": "typescript"
   }
 }

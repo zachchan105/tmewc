@@ -552,21 +552,21 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.0.tgz#87de7af9c231826fdd68ac7258f77c429e0e5fcf"
   integrity sha512-wdppn25U8z/2yiaT6YGquE6X8sSv7hNMWSXYSSU1jGv/yd6XqjXgTDJ8KP4NgjTXfJ3GbRjeeb8RTV7a/VpM+w==
 
-"@keep-network/hardhat-helpers@github:keep-network/hardhat-helpers#v0.1.0":
+"@zachchan105/hardhat-helpers@github:zachchan105/hardhat-helpers#v0.1.0":
   version "0.1.0"
-  resolved "https://codeload.github.com/keep-network/hardhat-helpers/tar.gz/f076fdb32ea6f1d4668347d68994f764fd55ace2"
+  resolved "https://codeload.github.com/zachchan105/hardhat-helpers/tar.gz/f076fdb32ea6f1d4668347d68994f764fd55ace2"
 
-"@keep-network/hardhat-local-networks-config@^0.1.0-pre.0":
+"@zachchan105/hardhat-local-networks-config@^0.1.0-pre.0":
   version "0.1.0-pre.0"
-  resolved "https://registry.yarnpkg.com/@keep-network/hardhat-local-networks-config/-/hardhat-local-networks-config-0.1.0-pre.0.tgz#55ab2f524f3bc5ad094d878c74644a0f77054396"
+  resolved "https://registry.yarnpkg.com/@zachchan105/hardhat-local-networks-config/-/hardhat-local-networks-config-0.1.0-pre.0.tgz#55ab2f524f3bc5ad094d878c74644a0f77054396"
   integrity sha512-wrVuXPA64nItBKXhhucf9u6rrXbXQ8mRYb455EuBkbeN20OA4umznLNniXNkkhDrePVr0d5WgRV7Mn3wO8KKcQ==
   dependencies:
     deepmerge "^4.2.2"
     untildify "^4.0.0"
 
-"@keep-network/yearn-vaults@github:keep-network/yearn-vaults.git#yearn-vaults-v0.4.3-1":
+"@zachchan105/yearn-vaults@github:zachchan105/yearn-vaults.git#yearn-vaults-v0.4.3-1":
   version "0.4.3-1"
-  resolved "https://codeload.github.com/keep-network/yearn-vaults/tar.gz/b23fc54cf1f8c6c590ae2dc2e314f5e93e666e45"
+  resolved "https://codeload.github.com/zachchan105/yearn-vaults/tar.gz/b23fc54cf1f8c6c590ae2dc2e314f5e93e666e45"
 
 "@nomiclabs/hardhat-ethers@^2.0.2":
   version "2.0.2"
@@ -3103,9 +3103,9 @@ eslint-config-google@^0.13.0:
   resolved "https://registry.yarnpkg.com/eslint-config-google/-/eslint-config-google-0.13.0.tgz#e277d16d2cb25c1ffd3fd13fb0035ad7421382fe"
   integrity sha512-ELgMdOIpn0CFdsQS+FuxO+Ttu4p+aLaXHv9wA9yVnzqlUGV7oN/eRRnJekk7TCur6Cu2FXX0fqfIXRBaM14lpQ==
 
-"eslint-config-keep@github:keep-network/eslint-config-keep#0.3.0":
+"eslint-config-keep@github:zachchan105/eslint-config-keep#0.3.0":
   version "0.3.0"
-  resolved "https://codeload.github.com/keep-network/eslint-config-keep/tar.gz/fed0f9a92d4bb4abbf738266d7521b56a08987ee"
+  resolved "https://codeload.github.com/zachchan105/eslint-config-keep/tar.gz/fed0f9a92d4bb4abbf738266d7521b56a08987ee"
   dependencies:
     eslint-config-google "^0.13.0"
     eslint-config-prettier "^6.10.0"
@@ -7733,9 +7733,9 @@ solc@^0.6.3:
     semver "^5.5.0"
     tmp "0.0.33"
 
-"solhint-config-keep@github:keep-network/solhint-config-keep":
+"solhint-config-keep@github:zachchan105/solhint-config-keep":
   version "0.1.0"
-  resolved "https://codeload.github.com/keep-network/solhint-config-keep/tar.gz/5e1751e58c0f1c507305ffc8c7f6c58047657ada"
+  resolved "https://codeload.github.com/zachchan105/solhint-config-keep/tar.gz/5e1751e58c0f1c507305ffc8c7f6c58047657ada"
 
 solhint@^3.3.6:
   version "3.3.6"

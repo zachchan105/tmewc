@@ -234,12 +234,12 @@ contracts in case a single change in one of L2 contracts is needed.
 This organization of the code will also allow us to not add subchain-specific
 dependencies to the L1 project and to deploy NPM packages separately:
 
-* `@keep-network/tmewc-arbitrum`,
-* `@keep-network/tmewc-polygon`,
-* `@keep-network/tmewc-optimism`.
+* `@zachchan105/tmewc-arbitrum`,
+* `@zachchan105/tmewc-polygon`,
+* `@zachchan105/tmewc-optimism`.
 
 Every chain requires its own network and compiler configuration.
-The `@keep-network/tmewc` package is quite heavy and there is no
+The `@zachchan105/tmewc` package is quite heavy and there is no
 straightforward way to distinguish on which chain the given contract was
 deployed if we do not separate NPM packages.
 

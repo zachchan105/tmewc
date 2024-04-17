@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.17;
 
-import "@keep-network/tmewc/contracts/l2/L2TMEWC.sol";
+import "@zachchan105/tmewc/contracts/l2/L2TMEWC.sol";
 
 /// @notice Canonical tMEWC Token on Optimism - upgraded version.
 /// @dev This contract is intended solely for testing purposes. As it currently

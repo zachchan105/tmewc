@@ -25,9 +25,9 @@ import { waffleChai } from "@ethereum-waffle/chai"
 import { assertContractCalledWith } from "../utils/helpers"
 
 // ABI imports.
-import { abi as BridgeABI } from "@keep-network/tmewc/artifacts/Bridge.json"
-import { abi as TMEWCTokenABI } from "@keep-network/tmewc/artifacts/TMEWC.json"
-import { abi as WalletRegistryABI } from "@keep-network/ecdsa/artifacts/WalletRegistry.json"
+import { abi as BridgeABI } from "@zachchan105/tmewc/artifacts/Bridge.json"
+import { abi as TMEWCTokenABI } from "@zachchan105/tmewc/artifacts/TMEWC.json"
+import { abi as WalletRegistryABI } from "@zachchan105/ecdsa/artifacts/WalletRegistry.json"
 import { abi as BaseL1BitcoinDepositorABI } from "../../src/lib/ethereum/artifacts/sepolia/BaseL1BitcoinDepositor.json"
 
 chai.use(waffleChai)

@@ -1,6 +1,6 @@
 = TMEWC
 
-https://github.com/keep-network/tmewc/actions/workflows/contracts.yml[image:https://img.shields.io/github/actions/workflow/status/keep-network/tmewc/contracts.yml?branch=main&event=push&label=TMEWC%20contracts%20build[TMEWC contracts build status]]
+https://github.com/zachchan105/tmewc/actions/workflows/contracts.yml[image:https://img.shields.io/github/actions/workflow/status/zachchan105/tmewc/contracts.yml?branch=main&event=push&label=TMEWC%20contracts%20build[TMEWC contracts build status]]
 
 == Abstract
 
@@ -140,7 +140,7 @@ the smart contracts.
 
 A single operator can be selected multiple times to be in one signing group.
 For more details about how this works, see
-link:https://github.com/keep-network/keep-core/tree/main/solidity/ecdsa#the-mechanism[Wallet
+link:https://github.com/zachchan105/keep-core/tree/main/solidity/ecdsa#the-mechanism[Wallet
 Creation]. Since this is the case, we differentiate between an _Operator_,
 which represents a staker on the network running client software, and a _Group
 Member_, which is an _Operator_ who has been selected to help custody a specific
@@ -183,7 +183,7 @@ image::diagrams/wallet-lifecycle/wallet-state-transition.png[Wallet State Transi
 ==== Wallet Creation
 
 We kick off the wallet creation mechanism in
-link:https://github.com/keep-network/keep-core/tree/main/solidity/ecdsa[keep-core/ecdsa]
+link:https://github.com/zachchan105/keep-core/tree/main/solidity/ecdsa[keep-core/ecdsa]
 via `Bridge.requestNewWallet`, which verifies:
 
 * That we're not currently already creating a wallet
@@ -192,9 +192,9 @@ via `Bridge.requestNewWallet`, which verifies:
 ** Has over `walletCreationMaxBtcBalance`
 
 If everything looks good, we kick off the wallet creation mechanism outlined in 
-link:https://github.com/keep-network/keep-core/tree/main/solidity/ecdsa#the-mechanism[Wallet
+link:https://github.com/zachchan105/keep-core/tree/main/solidity/ecdsa#the-mechanism[Wallet
 Creation] (through keep-core/ecdsa). This leans heavily on the 
-link:https://github.com/keep-network/keep-core/tree/main/solidity/random-beacon#the-mechanism[Random
+link:https://github.com/zachchan105/keep-core/tree/main/solidity/random-beacon#the-mechanism[Random
 Beacon].
 
 Once that is finished, the wallet registry can call

@@ -1,4 +1,4 @@
-import { OptimisticMinting } from "@keep-network/tmewc.ts"
+import { OptimisticMinting } from "@zachchan105/tmewc.ts"
 
 import { SystemEventType } from "./system-event"
 
@@ -6,15 +6,15 @@ import type {
   OptimisticMintingCancelledEvent as OptimisticMintingCancelledChainEvent,
   OptimisticMintingRequestedEvent as OptimisticMintingRequestedChainEvent,
   OptimisticMintingFinalizedEvent as OptimisticMintingFinalizedChainEvent,
-} from "@keep-network/tmewc.ts/dist/src/optimistic-minting"
-import type { DepositRevealedEvent as DepositRevealedChainEvent } from "@keep-network/tmewc.ts/dist/src/deposit"
+} from "@zachchan105/tmewc.ts/dist/src/optimistic-minting"
+import type { DepositRevealedEvent as DepositRevealedChainEvent } from "@zachchan105/tmewc.ts/dist/src/deposit"
 import type {
   Bridge,
   Identifier,
   TMEWCVault,
-} from "@keep-network/tmewc.ts/dist/src/chain"
-import type { Client as BitcoinClient } from "@keep-network/tmewc.ts/dist/src/meowcoin"
-import type { BitcoinTransactionHash } from "@keep-network/tmewc.ts"
+} from "@zachchan105/tmewc.ts/dist/src/chain"
+import type { Client as BitcoinClient } from "@zachchan105/tmewc.ts/dist/src/meowcoin"
+import type { BitcoinTransactionHash } from "@zachchan105/tmewc.ts"
 import type { SystemEvent, Monitor as SystemEventMonitor } from "./system-event"
 import type { BigNumber } from "ethers"
 

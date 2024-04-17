@@ -78,7 +78,7 @@ EthersContractHandle\&lt;BridgeTypechain\&gt;.constructor
 
 #### Defined in
 
-[src/lib/ethereum/bridge.ts:60](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/bridge.ts#L60)
+[src/lib/ethereum/bridge.ts:60](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/bridge.ts#L60)
 
 ## Properties
 
@@ -96,7 +96,7 @@ EthersContractHandle.\_deployedAtBlockNumber
 
 #### Defined in
 
-[src/lib/ethereum/adapter.ts:80](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/adapter.ts#L80)
+[src/lib/ethereum/adapter.ts:80](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/adapter.ts#L80)
 
 ___
 
@@ -112,7 +112,7 @@ EthersContractHandle.\_instance
 
 #### Defined in
 
-[src/lib/ethereum/adapter.ts:74](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/adapter.ts#L74)
+[src/lib/ethereum/adapter.ts:74](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/adapter.ts#L74)
 
 ___
 
@@ -128,7 +128,7 @@ EthersContractHandle.\_totalRetryAttempts
 
 #### Defined in
 
-[src/lib/ethereum/adapter.ts:84](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/adapter.ts#L84)
+[src/lib/ethereum/adapter.ts:84](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/adapter.ts#L84)
 
 ## Methods
 
@@ -148,7 +148,7 @@ EthersContractHandle.\_totalRetryAttempts
 
 #### Defined in
 
-[src/lib/ethereum/bridge.ts:494](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/bridge.ts#L494)
+[src/lib/ethereum/bridge.ts:494](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/bridge.ts#L494)
 
 ___
 
@@ -177,7 +177,7 @@ Builds the UTXO hash based on the UTXO components. UTXO hash is computed as
 
 #### Defined in
 
-[src/lib/ethereum/bridge.ts:618](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/bridge.ts#L618)
+[src/lib/ethereum/bridge.ts:618](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/bridge.ts#L618)
 
 ___
 
@@ -204,7 +204,7 @@ ___
 
 #### Defined in
 
-[src/lib/ethereum/bridge.ts:429](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/bridge.ts#L429)
+[src/lib/ethereum/bridge.ts:429](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/bridge.ts#L429)
 
 ___
 
@@ -226,7 +226,7 @@ EthersContractHandle.getAddress
 
 #### Defined in
 
-[src/lib/ethereum/adapter.ts:112](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/adapter.ts#L112)
+[src/lib/ethereum/adapter.ts:112](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/adapter.ts#L112)
 
 ___
 
@@ -246,7 +246,7 @@ ___
 
 #### Defined in
 
-[src/lib/ethereum/bridge.ts:87](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/bridge.ts#L87)
+[src/lib/ethereum/bridge.ts:87](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/bridge.ts#L87)
 
 ___
 
@@ -273,7 +273,7 @@ Bridge.getDepositRevealedEvents
 
 #### Defined in
 
-[src/lib/ethereum/bridge.ts:95](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/bridge.ts#L95)
+[src/lib/ethereum/bridge.ts:95](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/bridge.ts#L95)
 
 ___
 
@@ -307,7 +307,7 @@ EthersContractHandle.getEvents
 
 #### Defined in
 
-[src/lib/ethereum/adapter.ts:127](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/adapter.ts#L127)
+[src/lib/ethereum/adapter.ts:127](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/adapter.ts#L127)
 
 ___
 
@@ -334,7 +334,7 @@ Bridge.getNewWalletRegisteredEvents
 
 #### Defined in
 
-[src/lib/ethereum/bridge.ts:530](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/bridge.ts#L530)
+[src/lib/ethereum/bridge.ts:530](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/bridge.ts#L530)
 
 ___
 
@@ -361,7 +361,7 @@ Bridge.getRedemptionRequestedEvents
 
 #### Defined in
 
-[src/lib/ethereum/bridge.ts:635](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/bridge.ts#L635)
+[src/lib/ethereum/bridge.ts:635](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/bridge.ts#L635)
 
 ___
 
@@ -381,7 +381,7 @@ ___
 
 #### Defined in
 
-[src/lib/ethereum/bridge.ts:515](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/bridge.ts#L515)
+[src/lib/ethereum/bridge.ts:515](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/bridge.ts#L515)
 
 ___
 
@@ -405,7 +405,7 @@ Parsed deposit request.
 
 #### Defined in
 
-[src/lib/ethereum/bridge.ts:474](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/bridge.ts#L474)
+[src/lib/ethereum/bridge.ts:474](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/bridge.ts#L474)
 
 ___
 
@@ -430,7 +430,7 @@ Parsed redemption request.
 
 #### Defined in
 
-[src/lib/ethereum/bridge.ts:213](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/bridge.ts#L213)
+[src/lib/ethereum/bridge.ts:213](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/bridge.ts#L213)
 
 ___
 
@@ -454,7 +454,7 @@ Parsed wallet data.
 
 #### Defined in
 
-[src/lib/ethereum/bridge.ts:589](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/bridge.ts#L589)
+[src/lib/ethereum/bridge.ts:589](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/bridge.ts#L589)
 
 ___
 
@@ -481,7 +481,7 @@ ___
 
 #### Defined in
 
-[src/lib/ethereum/bridge.ts:132](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/bridge.ts#L132)
+[src/lib/ethereum/bridge.ts:132](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/bridge.ts#L132)
 
 ___
 
@@ -510,7 +510,7 @@ ___
 
 #### Defined in
 
-[src/lib/ethereum/bridge.ts:334](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/bridge.ts#L334)
+[src/lib/ethereum/bridge.ts:334](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/bridge.ts#L334)
 
 ___
 
@@ -539,7 +539,7 @@ ___
 
 #### Defined in
 
-[src/lib/ethereum/bridge.ts:231](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/bridge.ts#L231)
+[src/lib/ethereum/bridge.ts:231](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/bridge.ts#L231)
 
 ___
 
@@ -568,7 +568,7 @@ ___
 
 #### Defined in
 
-[src/lib/ethereum/bridge.ts:268](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/bridge.ts#L268)
+[src/lib/ethereum/bridge.ts:268](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/bridge.ts#L268)
 
 ___
 
@@ -597,7 +597,7 @@ ___
 
 #### Defined in
 
-[src/lib/ethereum/bridge.ts:378](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/bridge.ts#L378)
+[src/lib/ethereum/bridge.ts:378](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/bridge.ts#L378)
 
 ___
 
@@ -624,7 +624,7 @@ ___
 
 #### Defined in
 
-[src/lib/ethereum/bridge.ts:155](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/bridge.ts#L155)
+[src/lib/ethereum/bridge.ts:155](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/bridge.ts#L155)
 
 ___
 
@@ -644,7 +644,7 @@ ___
 
 #### Defined in
 
-[src/lib/ethereum/bridge.ts:320](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/bridge.ts#L320)
+[src/lib/ethereum/bridge.ts:320](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/bridge.ts#L320)
 
 ___
 
@@ -664,7 +664,7 @@ ___
 
 #### Defined in
 
-[src/lib/ethereum/bridge.ts:555](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/bridge.ts#L555)
+[src/lib/ethereum/bridge.ts:555](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/bridge.ts#L555)
 
 ___
 
@@ -690,7 +690,7 @@ ___
 
 #### Defined in
 
-[src/lib/ethereum/bridge.ts:572](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/bridge.ts#L572)
+[src/lib/ethereum/bridge.ts:572](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/bridge.ts#L572)
 
 ___
 
@@ -715,7 +715,7 @@ Deposit key.
 
 #### Defined in
 
-[src/lib/ethereum/bridge.ts:455](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/bridge.ts#L455)
+[src/lib/ethereum/bridge.ts:455](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/bridge.ts#L455)
 
 ___
 
@@ -740,4 +740,4 @@ The redemption key.
 
 #### Defined in
 
-[src/lib/ethereum/bridge.ts:183](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/bridge.ts#L183)
+[src/lib/ethereum/bridge.ts:183](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/ethereum/bridge.ts#L183)

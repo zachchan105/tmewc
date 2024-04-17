@@ -7,7 +7,7 @@ const { BigNumber } = ethers
 
 chai.use(waffle.solidity)
 
-// TODO: Move to @keep-network/hardhat-helpers
+// TODO: Move to @zachchan105/hardhat-helpers
 // eslint-disable-next-line import/prefer-default-export
 export async function assertGasUsed(
   tx: ContractTransaction,

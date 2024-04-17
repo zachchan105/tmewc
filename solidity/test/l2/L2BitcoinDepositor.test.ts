@@ -40,7 +40,7 @@ describe("L2BitcoinDepositor", () => {
     const deployment = await helpers.upgrades.deployProxy(
       // Hacky workaround allowing to deploy proxy contract any number of times
       // without clearing `deployments/hardhat` directory.
-      // See: https://github.com/keep-network/hardhat-helpers/issues/38
+      // See: https://github.com/zachchan105/hardhat-helpers/issues/38
       `L2BitcoinDepositor_${randomBytes(8).toString("hex")}`,
       {
         contractName: "L2BitcoinDepositor",

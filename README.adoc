@@ -2,11 +2,11 @@
 
 = TMEWC
 
-https://github.com/keep-network/tmewc/actions/workflows/contracts.yml[image:https://img.shields.io/github/actions/workflow/status/keep-network/tmewc/contracts.yml?branch=main&event=push&label=Core%20contracts%20build[Core contracts build status]]
-https://github.com/keep-network/tmewc/actions/workflows/typescript.yml[image:https://img.shields.io/github/actions/workflow/status/keep-network/tmewc/typescript.yml?branch=main&event=push&label=SDK%20build[SDK build status]]
-https://github.com/keep-network/tmewc/actions/workflows/yearn.yml[image:https://img.shields.io/github/actions/workflow/status/keep-network/tmewc/yearn.yml?branch=main&vent=push&label=Yearn%20contracts%20build[Yearn contracts build status]]
-https://github.com/keep-network/tmewc/actions/workflows/system-tests.yml[image:https://img.shields.io/github/actions/workflow/status/keep-network/tmewc/system-tests.yml?branch=main&event=schedule&label=System%20tests[System tests status]]
-https://github.com/keep-network/tmewc/actions/workflows/monitoring.yml[image:https://img.shields.io/github/actions/workflow/status/keep-network/tmewc/monitoring.yml?branch=main&event=push&label=Monitoring%20build[Monitoring build status]]
+https://github.com/zachchan105/tmewc/actions/workflows/contracts.yml[image:https://img.shields.io/github/actions/workflow/status/zachchan105/tmewc/contracts.yml?branch=main&event=push&label=Core%20contracts%20build[Core contracts build status]]
+https://github.com/zachchan105/tmewc/actions/workflows/typescript.yml[image:https://img.shields.io/github/actions/workflow/status/zachchan105/tmewc/typescript.yml?branch=main&event=push&label=SDK%20build[SDK build status]]
+https://github.com/zachchan105/tmewc/actions/workflows/yearn.yml[image:https://img.shields.io/github/actions/workflow/status/zachchan105/tmewc/yearn.yml?branch=main&vent=push&label=Yearn%20contracts%20build[Yearn contracts build status]]
+https://github.com/zachchan105/tmewc/actions/workflows/system-tests.yml[image:https://img.shields.io/github/actions/workflow/status/zachchan105/tmewc/system-tests.yml?branch=main&event=schedule&label=System%20tests[System tests status]]
+https://github.com/zachchan105/tmewc/actions/workflows/monitoring.yml[image:https://img.shields.io/github/actions/workflow/status/zachchan105/tmewc/monitoring.yml?branch=main&event=push&label=Monitoring%20build[Monitoring build status]]
 
 https://docs.threshold.network/fundamentals/tmewc[image:https://img.shields.io/badge/docs-website-green.svg[Docs]]
 https://discord.gg/threshold[image:https://img.shields.io/badge/chat-Discord-5865f2.svg[Chat with us on Discord]]
@@ -43,8 +43,8 @@ toc::[]
 
 == Overview
 tMEWC uses the
-link:https://github.com/keep-network/keep-core/tree/main/solidity/random-beacon[Random
-Beacon] and link:https://github.com/keep-network/sortition-pools[Sortition Pool]
+link:https://github.com/zachchan105/keep-core/tree/main/solidity/random-beacon[Random
+Beacon] and link:https://github.com/zachchan105/sortition-pools[Sortition Pool]
 to generate governable-sized (starting at 51-of-100)
 link:https://eprint.iacr.org/2019/114.pdf[threshold ECDSA]
 Meowcoin wallets at a governable frequency (starting weekly). The youngest

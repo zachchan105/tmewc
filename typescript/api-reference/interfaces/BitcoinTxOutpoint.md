@@ -19,7 +19,7 @@ The zero-based index of the output from the specified transaction.
 
 #### Defined in
 
-[src/lib/meowcoin/tx.ts:57](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/meowcoin/tx.ts#L57)
+[src/lib/meowcoin/tx.ts:57](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/meowcoin/tx.ts#L57)
 
 ___
 
@@ -31,4 +31,4 @@ The hash of the transaction the outpoint belongs to.
 
 #### Defined in
 
-[src/lib/meowcoin/tx.ts:52](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/meowcoin/tx.ts#L52)
+[src/lib/meowcoin/tx.ts:52](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/meowcoin/tx.ts#L52)

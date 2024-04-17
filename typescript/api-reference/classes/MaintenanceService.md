@@ -33,7 +33,7 @@ operators of the tMEWC system.
 
 #### Defined in
 
-[src/services/maintenance/maintenance-service.ts:20](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/maintenance/maintenance-service.ts#L20)
+[src/services/maintenance/maintenance-service.ts:20](https://github.com/zachchan105/tmewc/blob/main/typescript/src/services/maintenance/maintenance-service.ts#L20)
 
 ## Properties
 
@@ -45,7 +45,7 @@ Features for optimistic minting maintainers.
 
 #### Defined in
 
-[src/services/maintenance/maintenance-service.ts:14](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/maintenance/maintenance-service.ts#L14)
+[src/services/maintenance/maintenance-service.ts:14](https://github.com/zachchan105/tmewc/blob/main/typescript/src/services/maintenance/maintenance-service.ts#L14)
 
 ___
 
@@ -57,4 +57,4 @@ Features for SPV proof maintainers.
 
 #### Defined in
 
-[src/services/maintenance/maintenance-service.ts:18](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/maintenance/maintenance-service.ts#L18)
+[src/services/maintenance/maintenance-service.ts:18](https://github.com/zachchan105/tmewc/blob/main/typescript/src/services/maintenance/maintenance-service.ts#L18)

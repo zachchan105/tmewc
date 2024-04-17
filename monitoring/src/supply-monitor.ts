@@ -1,7 +1,7 @@
 import { SystemEventType } from "./system-event"
 
 import type { BigNumber } from "ethers"
-import type { TMEWCToken } from "@keep-network/tmewc.ts/dist/src/chain"
+import type { TMEWCToken } from "@zachchan105/tmewc.ts/dist/src/chain"
 import type { Monitor as SystemEventMonitor, SystemEvent } from "./system-event"
 
 // The block span the supply change is checked for. It is 12 hours expressed

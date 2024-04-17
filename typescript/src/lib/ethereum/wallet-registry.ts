@@ -20,7 +20,7 @@ import { EthereumAddress } from "./address"
 
 import MainnetWalletRegistryDeployment from "./artifacts/mainnet/WalletRegistry.json"
 import SepoliaWalletRegistryDeployment from "./artifacts/sepolia/WalletRegistry.json"
-import LocalWalletRegistryDeployment from "@keep-network/ecdsa/artifacts/WalletRegistry.json"
+import LocalWalletRegistryDeployment from "@zachchan105/ecdsa/artifacts/WalletRegistry.json"
 
 /**
  * Implementation of the Ethereum WalletRegistry handle.

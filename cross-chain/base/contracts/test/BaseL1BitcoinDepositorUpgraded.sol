@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.17;
 
-import "@keep-network/tmewc/contracts/l2/L1BitcoinDepositor.sol";
+import "@zachchan105/tmewc/contracts/l2/L1BitcoinDepositor.sol";
 
 /// @notice L1BitcoinDepositor for Base - upgraded version.
 /// @dev This contract is intended solely for testing purposes.

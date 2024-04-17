@@ -20,7 +20,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     "BaseL1BitcoinDepositor",
     {
       contractName:
-        "@keep-network/tmewc/contracts/l2/L1BitcoinDepositor.sol:L1BitcoinDepositor",
+        "@zachchan105/tmewc/contracts/l2/L1BitcoinDepositor.sol:L1BitcoinDepositor",
       initializerArgs: [
         tmewcBridge.address,
         tmewcVault.address,

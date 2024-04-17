@@ -15,7 +15,7 @@
 
 pragma solidity 0.8.17;
 
-import {MEWCUtils} from "@keep-network/meowcoin-spv-sol/contracts/MEWCUtils.sol";
+import {MEWCUtils} from "@zachchan105/meowcoin-spv-sol/contracts/MEWCUtils.sol";
 
 import "../relay/LightRelay.sol";
 

@@ -20,7 +20,7 @@ The 0-based index of the output.
 
 #### Defined in
 
-[src/lib/meowcoin/tx.ts:77](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/meowcoin/tx.ts#L77)
+[src/lib/meowcoin/tx.ts:77](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/meowcoin/tx.ts#L77)
 
 ___
 
@@ -32,7 +32,7 @@ The receiving scriptPubKey.
 
 #### Defined in
 
-[src/lib/meowcoin/tx.ts:87](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/meowcoin/tx.ts#L87)
+[src/lib/meowcoin/tx.ts:87](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/meowcoin/tx.ts#L87)
 
 ___
 
@@ -44,4 +44,4 @@ The value of the output in satoshis.
 
 #### Defined in
 
-[src/lib/meowcoin/tx.ts:82](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/meowcoin/tx.ts#L82)
+[src/lib/meowcoin/tx.ts:82](https://github.com/zachchan105/tmewc/blob/main/typescript/src/lib/meowcoin/tx.ts#L82)

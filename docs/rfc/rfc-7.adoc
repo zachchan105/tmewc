@@ -19,8 +19,8 @@ precise point in time based on which the information should be retrieved.
 === Current Functionality
 
 In tMEWC v1, the message to be signed is calculated on-chain
-link:https://github.com/keep-network/tmewc/blob/d18ef9aec7656f0ec7d317ece3e3d5c7aca92cda/solidity/contracts/deposit/DepositRedemption.sol#L133-L160[during the redemption request]
-and link:https://github.com/keep-network/tmewc/blob/d18ef9aec7656f0ec7d317ece3e3d5c7aca92cda/solidity/contracts/deposit/DepositRedemption.sol#L291-L316[when increasing the redemption fee].
+link:https://github.com/zachchan105/tmewc/blob/d18ef9aec7656f0ec7d317ece3e3d5c7aca92cda/solidity/contracts/deposit/DepositRedemption.sol#L133-L160[during the redemption request]
+and link:https://github.com/zachchan105/tmewc/blob/d18ef9aec7656f0ec7d317ece3e3d5c7aca92cda/solidity/contracts/deposit/DepositRedemption.sol#L291-L316[when increasing the redemption fee].
 Every single deposit is under a separate P2WPKH address and is confirmed with
 SPV proof. This, plus the fact the redemption can be done only one time for the
 given deposit makes it possible to generate the message to be signed on-chain

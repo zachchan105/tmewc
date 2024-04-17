@@ -47,7 +47,7 @@ Entrypoint component of the tMEWC SDK.
 
 #### Defined in
 
-[src/services/tmewc.ts:59](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/tmewc.ts#L59)
+[src/services/tmewc.ts:59](https://github.com/zachchan105/tmewc/blob/main/typescript/src/services/tmewc.ts#L59)
 
 ## Properties
 
@@ -61,7 +61,7 @@ the `initializeCrossChain` method.
 
 #### Defined in
 
-[src/services/tmewc.ts:57](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/tmewc.ts#L57)
+[src/services/tmewc.ts:57](https://github.com/zachchan105/tmewc/blob/main/typescript/src/services/tmewc.ts#L57)
 
 ___
 
@@ -73,7 +73,7 @@ Reference to the cross-chain contracts loader.
 
 #### Defined in
 
-[src/services/tmewc.ts:51](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/tmewc.ts#L51)
+[src/services/tmewc.ts:51](https://github.com/zachchan105/tmewc/blob/main/typescript/src/services/tmewc.ts#L51)
 
 ___
 
@@ -85,7 +85,7 @@ Meowcoin client handle for low-level access.
 
 #### Defined in
 
-[src/services/tmewc.ts:47](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/tmewc.ts#L47)
+[src/services/tmewc.ts:47](https://github.com/zachchan105/tmewc/blob/main/typescript/src/services/tmewc.ts#L47)
 
 ___
 
@@ -97,7 +97,7 @@ Service supporting the tMEWC deposit flow.
 
 #### Defined in
 
-[src/services/tmewc.ts:30](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/tmewc.ts#L30)
+[src/services/tmewc.ts:30](https://github.com/zachchan105/tmewc/blob/main/typescript/src/services/tmewc.ts#L30)
 
 ___
 
@@ -110,7 +110,7 @@ and operators.
 
 #### Defined in
 
-[src/services/tmewc.ts:35](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/tmewc.ts#L35)
+[src/services/tmewc.ts:35](https://github.com/zachchan105/tmewc/blob/main/typescript/src/services/tmewc.ts#L35)
 
 ___
 
@@ -122,7 +122,7 @@ Service supporting the tMEWC redemption flow.
 
 #### Defined in
 
-[src/services/tmewc.ts:39](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/tmewc.ts#L39)
+[src/services/tmewc.ts:39](https://github.com/zachchan105/tmewc/blob/main/typescript/src/services/tmewc.ts#L39)
 
 ___
 
@@ -134,7 +134,7 @@ Handle to tMEWC contracts for low-level access.
 
 #### Defined in
 
-[src/services/tmewc.ts:43](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/tmewc.ts#L43)
+[src/services/tmewc.ts:43](https://github.com/zachchan105/tmewc/blob/main/typescript/src/services/tmewc.ts#L43)
 
 ## Methods
 
@@ -166,7 +166,7 @@ Cross-chain contracts for the given L2 chain or
 
 #### Defined in
 
-[src/services/tmewc.ts:252](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/tmewc.ts#L252)
+[src/services/tmewc.ts:252](https://github.com/zachchan105/tmewc/blob/main/typescript/src/services/tmewc.ts#L252)
 
 ___
 
@@ -210,7 +210,7 @@ In case this function needs to support non-EVM L2 chains that can't
 
 #### Defined in
 
-[src/services/tmewc.ts:198](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/tmewc.ts#L198)
+[src/services/tmewc.ts:198](https://github.com/zachchan105/tmewc/blob/main/typescript/src/services/tmewc.ts#L198)
 
 ___
 
@@ -242,7 +242,7 @@ This function is especially useful for local development as it gives
 
 #### Defined in
 
-[src/services/tmewc.ts:170](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/tmewc.ts#L170)
+[src/services/tmewc.ts:170](https://github.com/zachchan105/tmewc/blob/main/typescript/src/services/tmewc.ts#L170)
 
 ___
 
@@ -276,7 +276,7 @@ Throws an error if the underlying signer's Ethereum network is
 
 #### Defined in
 
-[src/services/tmewc.ts:123](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/tmewc.ts#L123)
+[src/services/tmewc.ts:123](https://github.com/zachchan105/tmewc/blob/main/typescript/src/services/tmewc.ts#L123)
 
 ___
 
@@ -307,7 +307,7 @@ Throws an error if the signer's Ethereum network is other than
 
 #### Defined in
 
-[src/services/tmewc.ts:86](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/tmewc.ts#L86)
+[src/services/tmewc.ts:86](https://github.com/zachchan105/tmewc/blob/main/typescript/src/services/tmewc.ts#L86)
 
 ___
 
@@ -338,4 +338,4 @@ Throws an error if the signer's Ethereum network is other than
 
 #### Defined in
 
-[src/services/tmewc.ts:103](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/tmewc.ts#L103)
+[src/services/tmewc.ts:103](https://github.com/zachchan105/tmewc/blob/main/typescript/src/services/tmewc.ts#L103)
