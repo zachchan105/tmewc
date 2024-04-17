@@ -7,32 +7,32 @@ use wormhole_anchor_sdk::{
 };
 
 #[derive(Accounts)]
-#[instruction(args: SendTbtcWrappedArgs)]
-pub struct SendTbtcWrapped<'info> {
+#[instruction(args: SendTmewcWrappedArgs)]
+pub struct SendTmewcWrapped<'info> {
     #[account(
         mut,
         seeds = [Custodian::SEED_PREFIX],
         bump = custodian.bump,
-        has_one = wrapped_tbtc_token,
-        has_one = wrapped_tbtc_mint,
-        has_one = tbtc_mint,
+        has_one = wrapped_tmewc_token,
+        has_one = wrapped_tmewc_mint,
+        has_one = tmewc_mint,
     )]
     custodian: Account<'info, Custodian>,
 
     /// Custody account.
     #[account(mut)]
-    wrapped_tbtc_token: Box<Account<'info, token::TokenAccount>>,
+    wrapped_tmewc_token: Box<Account<'info, token::TokenAccount>>,
 
     /// CHECK: This account is needed for the Token Bridge program.
     #[account(mut)]
-    wrapped_tbtc_mint: UncheckedAccount<'info>,
+    wrapped_tmewc_mint: UncheckedAccount<'info>,
 
     #[account(mut)]
-    tbtc_mint: Box<Account<'info, token::Mint>>,
+    tmewc_mint: Box<Account<'info, token::Mint>>,
 
     #[account(
         mut,
-        token::mint = tbtc_mint,
+        token::mint = tmewc_mint,
         token::authority = sender
     )]
     sender_token: Box<Account<'info, token::TokenAccount>>,
@@ -87,10 +87,10 @@ pub struct SendTbtcWrapped<'info> {
     system_program: Program<'info, System>,
 }
 
-impl<'info> SendTbtcWrapped<'info> {
-    fn constraints(ctx: &Context<Self>, args: &SendTbtcWrappedArgs) -> Result<()> {
+impl<'info> SendTmewcWrapped<'info> {
+    fn constraints(ctx: &Context<Self>, args: &SendTmewcWrappedArgs) -> Result<()> {
         super::validate_send(
-            &ctx.accounts.wrapped_tbtc_token,
+            &ctx.accounts.wrapped_tmewc_token,
             &args.recipient,
             args.amount,
         )
@@ -98,7 +98,7 @@ impl<'info> SendTbtcWrapped<'info> {
 }
 
 #[derive(Debug, Clone, AnchorSerialize, AnchorDeserialize)]
-pub struct SendTbtcWrappedArgs {
+pub struct SendTmewcWrappedArgs {
     amount: u64,
     recipient_chain: u16,
     recipient: [u8; 32],
@@ -106,9 +106,9 @@ pub struct SendTbtcWrappedArgs {
     nonce: u32,
 }
 
-#[access_control(SendTbtcWrapped::constraints(&ctx, &args))]
-pub fn send_tbtc_wrapped(ctx: Context<SendTbtcWrapped>, args: SendTbtcWrappedArgs) -> Result<()> {
-    let SendTbtcWrappedArgs {
+#[access_control(SendTmewcWrapped::constraints(&ctx, &args))]
+pub fn send_tmewc_wrapped(ctx: Context<SendTmewcWrapped>, args: SendTmewcWrappedArgs) -> Result<()> {
+    let SendTmewcWrappedArgs {
         amount,
         recipient_chain,
         recipient,
@@ -117,18 +117,18 @@ pub fn send_tbtc_wrapped(ctx: Context<SendTbtcWrapped>, args: SendTbtcWrappedArg
     } = args;
 
     let sender = &ctx.accounts.sender;
-    let wrapped_tbtc_token = &ctx.accounts.wrapped_tbtc_token;
+    let wrapped_tmewc_token = &ctx.accounts.wrapped_tmewc_token;
     let token_bridge_transfer_authority = &ctx.accounts.token_bridge_transfer_authority;
     let token_program = &ctx.accounts.token_program;
 
-    // Prepare for wrapped tBTC transfer.
+    // Prepare for wrapped tMEWC transfer.
     super::burn_and_prepare_transfer(
         super::PrepareTransfer {
             custodian: &mut ctx.accounts.custodian,
-            tbtc_mint: &ctx.accounts.tbtc_mint,
+            tmewc_mint: &ctx.accounts.tmewc_mint,
             sender_token: &ctx.accounts.sender_token,
             sender,
-            wrapped_tbtc_token,
+            wrapped_tmewc_token,
             token_bridge_transfer_authority,
             token_program,
         },
@@ -142,16 +142,16 @@ pub fn send_tbtc_wrapped(ctx: Context<SendTbtcWrapped>, args: SendTbtcWrappedArg
 
     let custodian = &ctx.accounts.custodian;
 
-    // Finally transfer wrapped tBTC to the recipient.
+    // Finally transfer wrapped tMEWC to the recipient.
     token_bridge::transfer_wrapped(
         CpiContext::new_with_signer(
             ctx.accounts.token_bridge_program.to_account_info(),
             token_bridge::TransferWrapped {
                 payer: sender.to_account_info(),
                 config: ctx.accounts.token_bridge_config.to_account_info(),
-                from: wrapped_tbtc_token.to_account_info(),
+                from: wrapped_tmewc_token.to_account_info(),
                 from_owner: custodian.to_account_info(),
-                wrapped_mint: ctx.accounts.wrapped_tbtc_mint.to_account_info(),
+                wrapped_mint: ctx.accounts.wrapped_tmewc_mint.to_account_info(),
                 wrapped_metadata: ctx.accounts.token_bridge_wrapped_asset.to_account_info(),
                 authority_signer: token_bridge_transfer_authority.to_account_info(),
                 wormhole_bridge: ctx.accounts.core_bridge_data.to_account_info(),

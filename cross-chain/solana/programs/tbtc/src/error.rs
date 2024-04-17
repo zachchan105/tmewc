@@ -1,7 +1,7 @@
 use anchor_lang::prelude::error_code;
 
 #[error_code]
-pub enum TbtcError {
+pub enum TmewcError {
     #[msg("Not valid authority to perform this action")]
     IsNotAuthority = 0x20,
 

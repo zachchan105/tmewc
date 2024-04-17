@@ -5,9 +5,9 @@ import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers"
 import { Contract } from "ethers"
 import hre, { deployments, ethers, helpers } from "hardhat"
 import {
-  TBTC,
+  TMEWC,
   Bridge,
-  TBTCVault,
+  TMEWCVault,
   IRelay,
   IRandomBeacon,
   WalletRegistry,
@@ -32,11 +32,11 @@ export const fixture = deployments.createFixture(
     deployer: SignerWithAddress
     governance: SignerWithAddress
     spvMaintainer: SignerWithAddress
-    tbtc: TBTC
+    tmewc: TMEWC
     bridge: Bridge
     bridgeGovernance: BridgeGovernance
     bank: Bank
-    tbtcVault: TBTCVault
+    tmewcVault: TMEWCVault
     walletRegistry: WalletRegistry
     staking: Contract
     randomBeacon: FakeContract<IRandomBeacon>
@@ -46,13 +46,13 @@ export const fixture = deployments.createFixture(
     const { deployer, governance, chaosnetOwner, spvMaintainer } =
       await helpers.signers.getNamedSigners()
 
-    const tbtc = await helpers.contracts.getContract<TBTC>("TBTC")
+    const tmewc = await helpers.contracts.getContract<TMEWC>("TMEWC")
     const bridge = await helpers.contracts.getContract<Bridge>("Bridge")
     const bridgeGovernance =
       await helpers.contracts.getContract<BridgeGovernance>("BridgeGovernance")
     const bank = await helpers.contracts.getContract<Bank>("Bank")
-    const tbtcVault: TBTCVault = await helpers.contracts.getContract(
-      "TBTCVault"
+    const tmewcVault: TMEWCVault = await helpers.contracts.getContract(
+      "TMEWCVault"
     )
     const walletRegistry = await helpers.contracts.getContract<WalletRegistry>(
       "WalletRegistry"
@@ -60,7 +60,7 @@ export const fixture = deployments.createFixture(
     const t = await helpers.contracts.getContract("T")
     const staking = await helpers.contracts.getContract("TokenStaking")
 
-    await tbtc.connect(deployer).transferOwnership(tbtcVault.address)
+    await tmewc.connect(deployer).transferOwnership(tmewcVault.address)
 
     // TODO: INTEGRATE WITH THE REAL BEACON
     const randomBeacon = await fakeRandomBeacon(walletRegistry)
@@ -124,11 +124,11 @@ export const fixture = deployments.createFixture(
       deployer,
       governance,
       spvMaintainer,
-      tbtc,
+      tmewc,
       bridge,
       bridgeGovernance,
       bank,
-      tbtcVault,
+      tmewcVault,
       walletRegistry,
       staking,
       randomBeacon,

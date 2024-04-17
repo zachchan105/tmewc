@@ -1,4 +1,4 @@
-use crate::{error::TbtcError, state::Config};
+use crate::{error::TmewcError, state::Config};
 use anchor_lang::prelude::*;
 
 #[derive(Accounts)]
@@ -20,12 +20,12 @@ impl<'info> TakeAuthority<'info> {
                 require_keys_eq!(
                     pending_authority,
                     ctx.accounts.pending_authority.key(),
-                    TbtcError::IsNotPendingAuthority
+                    TmewcError::IsNotPendingAuthority
                 );
 
                 Ok(())
             }
-            None => err!(TbtcError::NoPendingAuthorityChange),
+            None => err!(TmewcError::NoPendingAuthorityChange),
         }
     }
 }

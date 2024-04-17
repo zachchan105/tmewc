@@ -4,13 +4,13 @@ skip-lint = false
 
 [workspace]
 members = [
-    "programs/tbtc",
+    "programs/tmewc",
     "programs/wormhole-gateway",
 ]
 
 
 [programs.localnet]
-tbtc = "HksEtDgsXJV1BqcuhzbLRTmXp5gHgHJktieJCtQd3pG"
+tmewc = "HksEtDgsXJV1BqcuhzbLRTmXp5gHgHJktieJCtQd3pG"
 wormhole_gateway = "8H9F5JGbEMyERycwaGuzLS5MQnV7dn2wm2h6egJ3Leiu"
 
 [registry]
@@ -41,15 +41,15 @@ address = "worm2ZoG2kUd4vFXhvjh93UUH596ayRfgQ2MgjNMTth"
 [[test.validator.clone]]
 address = "wormDTUJ6AWPNvk59vGQbDvGJmqbDTdgWgAqcLBCgUb"
 
-### Token Bridge -- Wrapped tBTC Mint
+### Token Bridge -- Wrapped tMEWC Mint
 [[test.validator.account]]
 address = "25rXTx9zDZcHyTav5sRqM6YBvTGu9pPH9yv83uAEqbgG"
-filename = "tests/accounts/wrapped_tbtc_mint.json"
+filename = "tests/accounts/wrapped_tmewc_mint.json"
 
-### Token Bridge -- Wrapped tBTC Asset
+### Token Bridge -- Wrapped tMEWC Asset
 [[test.validator.account]]
 address = "5LEUZpBxUQmoxoNGqmYmFEGAPDuhWbAY5CGt519UixLo"
-filename = "tests/accounts/wrapped_tbtc_asset.json"
+filename = "tests/accounts/wrapped_tmewc_asset.json"
 
 ### Token Bridge -- Ethereum Foreign Endpoint
 [[test.validator.account]]

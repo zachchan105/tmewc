@@ -4,7 +4,7 @@ import {
 } from "@ethereum-waffle/mock-contract"
 import {
   BaseL2BitcoinDepositor,
-  BaseL2TBTCToken,
+  BaseL2TMEWCToken,
   BitcoinRawTxVectors,
   ChainIdentifier,
   Chains,
@@ -19,7 +19,7 @@ import { BigNumber } from "ethers"
 
 // ABI imports.
 import { abi as BaseL2BitcoinDepositorABI } from "../../src/lib/base/artifacts/baseSepolia/BaseL2BitcoinDepositor.json"
-import { abi as BaseL2TBTCTokenABI } from "../../src/lib/base/artifacts/baseSepolia/BaseTBTC.json"
+import { abi as BaseL2TMEWCTokenABI } from "../../src/lib/base/artifacts/baseSepolia/BaseTMEWC.json"
 
 describe("Base", () => {
   describe("BaseL2BitcoinDepositor", () => {
@@ -129,19 +129,19 @@ describe("Base", () => {
     })
   })
 
-  describe("BaseL2TBTCToken", () => {
+  describe("BaseL2TMEWCToken", () => {
     let tokenContract: MockContract
-    let tokenHandle: BaseL2TBTCToken
+    let tokenHandle: BaseL2TMEWCToken
 
     beforeEach(async () => {
       const [signer] = new MockProvider().getWallets()
 
       tokenContract = await deployMockContract(
         signer,
-        `${JSON.stringify(BaseL2TBTCTokenABI)}`
+        `${JSON.stringify(BaseL2TMEWCTokenABI)}`
       )
 
-      tokenHandle = new BaseL2TBTCToken(
+      tokenHandle = new BaseL2TMEWCToken(
         {
           address: tokenContract.address,
           signerOrProvider: signer,

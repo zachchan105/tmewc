@@ -8,7 +8,7 @@
 
 ### Properties
 
-- [tbtcContracts](OptimisticMinting.md#tbtccontracts)
+- [tmewcContracts](OptimisticMinting.md#tmewccontracts)
 
 ### Methods
 
@@ -21,13 +21,13 @@
 
 ### constructor
 
-• **new OptimisticMinting**(`tbtcContracts`): [`OptimisticMinting`](OptimisticMinting.md)
+• **new OptimisticMinting**(`tmewcContracts`): [`OptimisticMinting`](OptimisticMinting.md)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `tbtcContracts` | [`TBTCContracts`](../README.md#tbtccontracts) |
+| `tmewcContracts` | [`TMEWCContracts`](../README.md#tmewccontracts) |
 
 #### Returns
 
@@ -35,17 +35,17 @@
 
 #### Defined in
 
-[src/services/maintenance/optimistic-minting.ts:9](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/maintenance/optimistic-minting.ts#L9)
+[src/services/maintenance/optimistic-minting.ts:9](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/maintenance/optimistic-minting.ts#L9)
 
 ## Properties
 
-### tbtcContracts
+### tmewcContracts
 
-• `Private` `Readonly` **tbtcContracts**: [`TBTCContracts`](../README.md#tbtccontracts)
+• `Private` `Readonly` **tmewcContracts**: [`TMEWCContracts`](../README.md#tmewccontracts)
 
 #### Defined in
 
-[src/services/maintenance/optimistic-minting.ts:7](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/maintenance/optimistic-minting.ts#L7)
+[src/services/maintenance/optimistic-minting.ts:7](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/maintenance/optimistic-minting.ts#L7)
 
 ## Methods
 
@@ -70,7 +70,7 @@ Transaction hash of the optimistic mint cancel transaction.
 
 #### Defined in
 
-[src/services/maintenance/optimistic-minting.ts:37](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/maintenance/optimistic-minting.ts#L37)
+[src/services/maintenance/optimistic-minting.ts:37](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/maintenance/optimistic-minting.ts#L37)
 
 ___
 
@@ -95,7 +95,7 @@ Transaction hash of the optimistic mint finalize transaction.
 
 #### Defined in
 
-[src/services/maintenance/optimistic-minting.ts:54](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/maintenance/optimistic-minting.ts#L54)
+[src/services/maintenance/optimistic-minting.ts:54](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/maintenance/optimistic-minting.ts#L54)
 
 ___
 
@@ -120,7 +120,7 @@ Optimistic minting request.
 
 #### Defined in
 
-[src/services/maintenance/optimistic-minting.ts:71](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/maintenance/optimistic-minting.ts#L71)
+[src/services/maintenance/optimistic-minting.ts:71](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/maintenance/optimistic-minting.ts#L71)
 
 ___
 
@@ -145,4 +145,4 @@ Transaction hash of the optimistic mint request transaction.
 
 #### Defined in
 
-[src/services/maintenance/optimistic-minting.ts:20](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/maintenance/optimistic-minting.ts#L20)
+[src/services/maintenance/optimistic-minting.ts:20](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/maintenance/optimistic-minting.ts#L20)

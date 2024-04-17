@@ -1,9 +1,9 @@
 {
   "version": "0.1.0",
-  "name": "tbtc",
+  "name": "tmewc",
   "constants": [
     {
-      "name": "SEED_PREFIX_TBTC_MINT",
+      "name": "SEED_PREFIX_TMEWC_MINT",
       "type": "bytes",
       "value": "[116, 98, 116, 99, 45, 109, 105, 110, 116]"
     }
@@ -38,7 +38,7 @@
           "isSigner": true
         },
         {
-          "name": "tbtcMetadata",
+          "name": "tmewcMetadata",
           "isMut": true,
           "isSigner": false
         },

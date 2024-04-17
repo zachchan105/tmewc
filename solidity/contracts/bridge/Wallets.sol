@@ -15,7 +15,7 @@
 
 pragma solidity 0.8.17;
 
-import {BTCUtils} from "@keep-network/bitcoin-spv-sol/contracts/BTCUtils.sol";
+import {MEWCUtils} from "@keep-network/meowcoin-spv-sol/contracts/MEWCUtils.sol";
 import {EcdsaDkg} from "@keep-network/ecdsa/contracts/libraries/EcdsaDkg.sol";
 import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
 
@@ -27,7 +27,7 @@ import "./BridgeState.sol";
 /// @notice Library responsible for handling integration between Bridge
 ///         contract and ECDSA wallets.
 library Wallets {
-    using BTCUtils for bytes;
+    using MEWCUtils for bytes;
 
     /// @notice Represents wallet state:
     enum WalletState {
@@ -66,7 +66,7 @@ library Wallets {
         // Latest wallet's main UTXO hash computed as
         // keccak256(txHash | txOutputIndex | txOutputValue). The `tx` prefix
         // refers to the transaction which created that main UTXO. The `txHash`
-        // is `bytes32` (ordered as in Bitcoin internally), `txOutputIndex`
+        // is `bytes32` (ordered as in Meowcoin internally), `txOutputIndex`
         // an `uint32`, and `txOutputValue` an `uint64` value.
         bytes32 mainUtxoHash;
         // The total redeemable value of pending redemption requests targeting
@@ -138,10 +138,10 @@ library Wallets {
     ///      - Wallet creation must not be in progress,
     ///      - If the active wallet is set, one of the following
     ///        conditions must be true:
-    ///        - The active wallet BTC balance is above the minimum threshold
+    ///        - The active wallet MEWC balance is above the minimum threshold
     ///          and the active wallet is old enough, i.e. the creation period
     ///           was elapsed since its creation time,
-    ///        - The active wallet BTC balance is above the maximum threshold.
+    ///        - The active wallet MEWC balance is above the maximum threshold.
     function requestNewWallet(
         BridgeState.Storage storage self,
         BitcoinTx.UTXO calldata activeWalletMainUtxo
@@ -205,7 +205,7 @@ library Wallets {
             "Caller is not the ECDSA Wallet Registry"
         );
 
-        // Compress wallet's public key and calculate Bitcoin's hash160 of it.
+        // Compress wallet's public key and calculate Meowcoin's hash160 of it.
         bytes20 walletPubKeyHash = bytes20(
             EcdsaLib.compressPublicKey(publicKeyX, publicKeyY).hash160View()
         );
@@ -292,7 +292,7 @@ library Wallets {
             "Caller is not the ECDSA Wallet Registry"
         );
 
-        // Compress wallet's public key and calculate Bitcoin's hash160 of it.
+        // Compress wallet's public key and calculate Meowcoin's hash160 of it.
         bytes20 walletPubKeyHash = bytes20(
             EcdsaLib.compressPublicKey(publicKeyX, publicKeyY).hash160View()
         );
@@ -312,7 +312,7 @@ library Wallets {
     ///        known on the Ethereum chain.
     /// @dev Requirements:
     ///      - Wallet must not be set as the current active wallet,
-    ///      - Wallet must exceed the wallet maximum age OR the wallet BTC
+    ///      - Wallet must exceed the wallet maximum age OR the wallet MEWC
     ///        balance must be lesser than the minimum threshold. If the latter
     ///        case is true, the `walletMainUtxo` components must point to the
     ///        recent main UTXO of the given wallet, as currently known on the
@@ -388,7 +388,7 @@ library Wallets {
     ///        within the moving funds transactions.
     /// @dev Requirements:
     ///      - The caller must make sure the moving funds transaction actually
-    ///        happened on Bitcoin chain and fits the protocol requirements,
+    ///        happened on Meowcoin chain and fits the protocol requirements,
     ///      - The source wallet must be in the MovingFunds state,
     ///      - The target wallets commitment must be submitted by the source
     ///        wallet,
@@ -586,7 +586,7 @@ library Wallets {
         Wallet storage wallet = self.registeredWallets[walletPubKeyHash];
 
         if (wallet.mainUtxoHash == bytes32(0)) {
-            // If the wallet has no main UTXO, that means its BTC balance
+            // If the wallet has no main UTXO, that means its MEWC balance
             // is zero and the wallet closing should begin immediately.
             beginWalletClosing(self, walletPubKeyHash);
         } else {
@@ -680,11 +680,11 @@ library Wallets {
         self.ecdsaWalletRegistry.closeWallet(wallet.ecdsaWalletID);
     }
 
-    /// @notice Gets BTC balance for given the wallet.
+    /// @notice Gets MEWC balance for given the wallet.
     /// @param walletPubKeyHash 20-byte public key hash of the wallet.
     /// @param walletMainUtxo Data of the wallet's main UTXO, as currently
     ///        known on the Ethereum chain.
-    /// @return walletBtcBalance Current BTC balance for the given wallet.
+    /// @return walletBtcBalance Current MEWC balance for the given wallet.
     /// @dev Requirements:
     ///      - `walletMainUtxo` components must point to the recent main UTXO
     ///        of the given wallet, as currently known on the Ethereum chain.
@@ -701,7 +701,7 @@ library Wallets {
 
         // If the wallet has a main UTXO hash set, cross-check it with the
         // provided plain-text parameter and get the transaction output value
-        // as BTC balance. Otherwise, the BTC balance is just zero.
+        // as MEWC balance. Otherwise, the MEWC balance is just zero.
         if (walletMainUtxoHash != bytes32(0)) {
             require(
                 keccak256(

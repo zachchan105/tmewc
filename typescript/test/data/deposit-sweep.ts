@@ -37,9 +37,9 @@ export interface DepositSweepTestData {
 }
 
 /**
- * Test data based on a Bitcoin deposit sweep transaction in which two inputs
+ * Test data based on a Meowcoin deposit sweep transaction in which two inputs
  * (a P2SH deposit and a P2WSH deposit) were swept into a P2WPKH main UTXO:
- * https://live.blockcypher.com/btc-testnet/tx/f8eaf242a55ea15e602f9f990e33f67f99dfbe25d1802bbde63cc1caabf99668/
+ * https://live.blockcypher.com/mewc-testnet/tx/f8eaf242a55ea15e602f9f990e33f67f99dfbe25d1802bbde63cc1caabf99668/
  */
 export const depositSweepWithNoMainUtxoAndWitnessOutput: DepositSweepTestData =
   {
@@ -144,9 +144,9 @@ export const depositSweepWithNoMainUtxoAndWitnessOutput: DepositSweepTestData =
   }
 
 /**
- * Test data based on a Bitcoin deposit sweep transaction in which one input
+ * Test data based on a Meowcoin deposit sweep transaction in which one input
  * (a P2SH deposit) was swept into a P2PKH main UTXO:
- * https://live.blockcypher.com/btc-testnet/tx/1c42b0568d88bb4d21ae138769fd06199dd3ec689911972792e678be8516d58d/
+ * https://live.blockcypher.com/mewc-testnet/tx/1c42b0568d88bb4d21ae138769fd06199dd3ec689911972792e678be8516d58d/
  */
 export const depositSweepWithNoMainUtxoAndNonWitnessOutput: DepositSweepTestData =
   {
@@ -195,10 +195,10 @@ export const depositSweepWithNoMainUtxoAndNonWitnessOutput: DepositSweepTestData
   }
 
 /**
- * Test data based on a Bitcoin deposit sweep transaction in which three inputs
+ * Test data based on a Meowcoin deposit sweep transaction in which three inputs
  * (a P2SH deposit, a P2WSH deposit and a P2WPKH main UTXO) were swept into
  * a P2WPKH main UTXO:
- * https://live.blockcypher.com/btc-testnet/tx/435d4aff6d4bc34134877bd3213c17970142fdd04d4113d534120033b9eecb2e/
+ * https://live.blockcypher.com/mewc-testnet/tx/435d4aff6d4bc34134877bd3213c17970142fdd04d4113d534120033b9eecb2e/
  */
 export const depositSweepWithWitnessMainUtxoAndWitnessOutput: DepositSweepTestData =
   {
@@ -334,9 +334,9 @@ export const depositSweepWithWitnessMainUtxoAndWitnessOutput: DepositSweepTestDa
   }
 
 /**
- * Test data based on a Bitcoin deposit sweep transaction in which two inputs
+ * Test data based on a Meowcoin deposit sweep transaction in which two inputs
  * (a P2WSH deposit and a P2PKH main UTXO) were swept into a P2WPKH main UTXO:
- * https://live.blockcypher.com/btc-testnet/tx/7831d0dfde7e160f3b9bb66c433710f0d3110d73ea78b9db65e81c091a6718a0/
+ * https://live.blockcypher.com/mewc-testnet/tx/7831d0dfde7e160f3b9bb66c433710f0d3110d73ea78b9db65e81c091a6718a0/
  */
 export const depositSweepWithNonWitnessMainUtxoAndWitnessOutput: DepositSweepTestData =
   {
@@ -441,8 +441,8 @@ export interface DepositSweepProofTestData {
 }
 
 /**
- * Test data that is based on a Bitcoin testnet transaction with multiple inputs
- * https://live.blockcypher.com/btc-testnet/tx/5083822ed0b8d0bc661362b778e666cb572ff6d5152193992dd69d3207995753/
+ * Test data that is based on a Meowcoin testnet transaction with multiple inputs
+ * https://live.blockcypher.com/mewc-testnet/tx/5083822ed0b8d0bc661362b778e666cb572ff6d5152193992dd69d3207995753/
  */
 export const depositSweepProof: DepositSweepProofTestData = {
   bitcoinChainData: {

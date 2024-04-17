@@ -2,7 +2,7 @@ import { Hex } from "../utils"
 import { networks } from "bitcoinjs-lib"
 
 /**
- * Bitcoin networks.
+ * Meowcoin networks.
  */
 export enum BitcoinNetwork {
   /* eslint-disable no-unused-vars */
@@ -11,11 +11,11 @@ export enum BitcoinNetwork {
    */
   Unknown = "unknown",
   /**
-   * Bitcoin Testnet.
+   * Meowcoin Testnet.
    */
   Testnet = "testnet",
   /**
-   * Bitcoin Mainnet.
+   * Meowcoin Mainnet.
    */
   Mainnet = "mainnet",
   /* eslint-enable no-unused-vars */
@@ -24,11 +24,11 @@ export enum BitcoinNetwork {
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace BitcoinNetwork {
   /**
-   * Gets Bitcoin Network type by comparing a provided hash to known
-   * {@link https://en.bitcoin.it/wiki/Genesis_block genesis block hashes}.
+   * Gets Meowcoin Network type by comparing a provided hash to known
+   * {@link https://en.meowcoin.it/wiki/Genesis_block genesis block hashes}.
    * Returns {@link BitcoinNetwork.Unknown}
    * @param hash Hash of a block.
-   * @returns Bitcoin Network.
+   * @returns Meowcoin Network.
    */
   export function fromGenesisHash(hash: Hex): BitcoinNetwork {
     switch (hash.toString()) {
@@ -48,7 +48,7 @@ export namespace BitcoinNetwork {
 /**
  * Converts the provided {@link BitcoinNetwork} enumeration to a format expected
  * by the `bitcoinjs-lib` library.
- * @param bitcoinNetwork - Specified Bitcoin network.
+ * @param bitcoinNetwork - Specified Meowcoin network.
  * @returns Network representation compatible with the `bitcoinjs-lib` library.
  * @throws An error if the network is not supported by `bitcoinjs-lib`.
  */
@@ -57,7 +57,7 @@ export function toBitcoinJsLibNetwork(
 ): networks.Network {
   switch (bitcoinNetwork) {
     case BitcoinNetwork.Mainnet: {
-      return networks.bitcoin
+      return networks.meowcoin
     }
     case BitcoinNetwork.Testnet: {
       return networks.testnet

@@ -15,7 +15,7 @@
 
 pragma solidity 0.8.17;
 
-import {BTCUtils} from "@keep-network/bitcoin-spv-sol/contracts/BTCUtils.sol";
+import {MEWCUtils} from "@keep-network/meowcoin-spv-sol/contracts/MEWCUtils.sol";
 
 import "./BitcoinTx.sol";
 import "./BridgeState.sol";
@@ -37,17 +37,17 @@ library DepositSweep {
     using BridgeState for BridgeState.Storage;
     using BitcoinTx for BridgeState.Storage;
 
-    using BTCUtils for bytes;
+    using MEWCUtils for bytes;
 
     /// @notice Represents temporary information needed during the processing
-    ///         of the deposit sweep Bitcoin transaction inputs. This structure
+    ///         of the deposit sweep Meowcoin transaction inputs. This structure
     ///         is an internal one and should not be exported outside of the
     ///         deposit sweep transaction processing code.
     /// @dev Allows to mitigate "stack too deep" errors on EVM.
     struct DepositSweepTxInputsProcessingInfo {
-        // Input vector of the deposit sweep Bitcoin transaction. It is
+        // Input vector of the deposit sweep Meowcoin transaction. It is
         // assumed the vector's structure is valid so it must be validated
-        // using e.g. `BTCUtils.validateVin` function before being used
+        // using e.g. `MEWCUtils.validateVin` function before being used
         // during the processing. The validation is usually done as part
         // of the `BitcoinTx.validateProof` call that checks the SPV proof.
         bytes sweepTxInputVector;
@@ -64,7 +64,7 @@ library DepositSweep {
         // stored, it is used as a function's memory argument.
     }
 
-    /// @notice Represents an outcome of the sweep Bitcoin transaction
+    /// @notice Represents an outcome of the sweep Meowcoin transaction
     ///         inputs processing.
     struct DepositSweepTxInputsInfo {
         // Sum of all inputs values i.e. all deposits and main UTXO value,
@@ -94,19 +94,19 @@ library DepositSweep {
 
     event DepositsSwept(bytes20 walletPubKeyHash, bytes32 sweepTxHash);
 
-    /// @notice Used by the wallet to prove the BTC deposit sweep transaction
+    /// @notice Used by the wallet to prove the MEWC deposit sweep transaction
     ///         and to update Bank balances accordingly. Sweep is only accepted
     ///         if it satisfies SPV proof.
     ///
     ///         The function is performing Bank balance updates by first
-    ///         computing the Bitcoin fee for the sweep transaction. The fee is
+    ///         computing the Meowcoin fee for the sweep transaction. The fee is
     ///         divided evenly between all swept deposits. Each depositor
     ///         receives a balance in the bank equal to the amount inferred
     ///         during the reveal transaction, minus their fee share.
     ///
     ///         It is possible to prove the given sweep only one time.
-    /// @param sweepTx Bitcoin sweep transaction data.
-    /// @param sweepProof Bitcoin sweep proof data.
+    /// @param sweepTx Meowcoin sweep transaction data.
+    /// @param sweepProof Meowcoin sweep proof data.
     /// @param mainUtxo Data of the wallet's main UTXO, as currently known on
     ///        the Ethereum chain. If no main UTXO exists for the given wallet,
     ///        this parameter is ignored.
@@ -122,9 +122,9 @@ library DepositSweep {
     /// @dev Requirements:
     ///      - `sweepTx` components must match the expected structure. See
     ///        `BitcoinTx.Info` docs for reference. Their values must exactly
-    ///        correspond to appropriate Bitcoin transaction fields to produce
+    ///        correspond to appropriate Meowcoin transaction fields to produce
     ///        a provable transaction hash,
-    ///      - The `sweepTx` should represent a Bitcoin transaction with 1..n
+    ///      - The `sweepTx` should represent a Meowcoin transaction with 1..n
     ///        inputs. If the wallet has no main UTXO, all n inputs should
     ///        correspond to P2(W)SH revealed deposits UTXOs. If the wallet has
     ///        an existing main UTXO, one of the n inputs must point to that
@@ -153,7 +153,7 @@ library DepositSweep {
         // `resolveDepositSweepingWallet` function.
 
         // The actual transaction proof is performed here. After that point, we
-        // can assume the transaction happened on Bitcoin chain and has
+        // can assume the transaction happened on Meowcoin chain and has
         // a sufficient number of confirmations as determined by
         // `txProofDifficultyFactor` constant.
         bytes32 sweepTxHash = self.validateProof(sweepTx, sweepProof);
@@ -263,7 +263,7 @@ library DepositSweep {
     ///         hash. Validates the wallet state and current main UTXO, as
     ///         currently known on the Ethereum chain.
     /// @param walletPubKeyHash public key hash of the wallet proving the sweep
-    ///        Bitcoin transaction.
+    ///        Meowcoin transaction.
     /// @param mainUtxo Data of the wallet's main UTXO, as currently known on
     ///        the Ethereum chain. If no main UTXO exists for the given wallet,
     ///        this parameter is ignored.
@@ -317,13 +317,13 @@ library DepositSweep {
         }
     }
 
-    /// @notice Processes the Bitcoin sweep transaction output vector by
+    /// @notice Processes the Meowcoin sweep transaction output vector by
     ///         extracting the single output and using it to gain additional
     ///         information required for further processing (e.g. value and
     ///         wallet public key hash).
-    /// @param sweepTxOutputVector Bitcoin sweep transaction output vector.
+    /// @param sweepTxOutputVector Meowcoin sweep transaction output vector.
     ///        This function assumes vector's structure is valid so it must be
-    ///        validated using e.g. `BTCUtils.validateVout` function before
+    ///        validated using e.g. `MEWCUtils.validateVout` function before
     ///        it is passed here.
     /// @return walletPubKeyHash 20-byte wallet public key hash.
     /// @return value 8-byte sweep transaction output value.
@@ -335,7 +335,7 @@ library DepositSweep {
         // parse the compactSize uint (VarInt) the output vector is prepended by.
         // That compactSize uint encodes the number of vector elements using the
         // format presented in:
-        // https://developer.bitcoin.org/reference/transactions.html#compactsize-unsigned-integers
+        // https://developer.meowcoin.org/reference/transactions.html#compactsize-unsigned-integers
         // We don't need asserting the compactSize uint is parseable since it
         // was already checked during `validateVout` validation.
         // See `BitcoinTx.outputVector` docs for more details.
@@ -352,7 +352,7 @@ library DepositSweep {
         return (walletPubKeyHash, value);
     }
 
-    /// @notice Processes the Bitcoin sweep transaction input vector. It
+    /// @notice Processes the Meowcoin sweep transaction input vector. It
     ///         extracts each input and tries to obtain associated deposit or
     ///         main UTXO data, depending on the input type. Reverts
     ///         if one of the inputs cannot be recognized as a pointer to a
@@ -381,15 +381,15 @@ library DepositSweep {
         // must be added because `BtcUtils.parseVarInt` does not include
         // compactSize uint tag in the returned length.
         //
-        // For >= 0 && <= 252, `BTCUtils.determineVarIntDataLengthAt`
+        // For >= 0 && <= 252, `MEWCUtils.determineVarIntDataLengthAt`
         // returns `0`, so we jump over one byte of compactSize uint.
         //
         // For >= 253 && <= 0xffff there is `0xfd` tag,
-        // `BTCUtils.determineVarIntDataLengthAt` returns `2` (no
+        // `MEWCUtils.determineVarIntDataLengthAt` returns `2` (no
         // tag byte included) so we need to jump over 1+2 bytes of
         // compactSize uint.
         //
-        // Please refer `BTCUtils` library and compactSize uint
+        // Please refer `MEWCUtils` library and compactSize uint
         // docs in `BitcoinTx` library for more details.
         uint256 inputStartingIndex = 1 + inputsCompactSizeUintLength;
 
@@ -506,16 +506,16 @@ library DepositSweep {
         return resultInfo;
     }
 
-    /// @notice Parses a Bitcoin transaction input starting at the given index.
-    /// @param inputVector Bitcoin transaction input vector.
+    /// @notice Parses a Meowcoin transaction input starting at the given index.
+    /// @param inputVector Meowcoin transaction input vector.
     /// @param inputStartingIndex Index the given input starts at.
-    /// @return outpointTxHash 32-byte hash of the Bitcoin transaction which is
+    /// @return outpointTxHash 32-byte hash of the Meowcoin transaction which is
     ///         pointed in the given input's outpoint.
-    /// @return outpointIndex 4-byte index of the Bitcoin transaction output
+    /// @return outpointIndex 4-byte index of the Meowcoin transaction output
     ///         which is pointed in the given input's outpoint.
     /// @return inputLength Byte length of the given input.
     /// @dev This function assumes vector's structure is valid so it must be
-    ///      validated using e.g. `BTCUtils.validateVin` function before it
+    ///      validated using e.g. `MEWCUtils.validateVin` function before it
     ///      is passed here.
     function parseDepositSweepTxInputAt(
         bytes memory inputVector,
@@ -531,7 +531,7 @@ library DepositSweep {
     {
         outpointTxHash = inputVector.extractInputTxIdLeAt(inputStartingIndex);
 
-        outpointIndex = BTCUtils.reverseUint32(
+        outpointIndex = MEWCUtils.reverseUint32(
             uint32(inputVector.extractTxIndexLeAt(inputStartingIndex))
         );
 

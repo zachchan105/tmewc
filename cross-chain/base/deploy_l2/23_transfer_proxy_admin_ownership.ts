@@ -23,5 +23,5 @@ const func: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
 export default func
 
 func.tags = ["TransferProxyAdminOwnership"]
-func.dependencies = ["BaseTBTC", "BaseWormholeGateway"]
+func.dependencies = ["BaseTMEWC", "BaseWormholeGateway"]
 func.runAtTheEnd = true

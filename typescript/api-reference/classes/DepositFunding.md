@@ -1,7 +1,7 @@
 # Class: DepositFunding
 
-Component allowing to craft and submit the Bitcoin funding transaction using
-the given tBTC v2 deposit script.
+Component allowing to craft and submit the Meowcoin funding transaction using
+the given tMEWC deposit script.
 
  THIS IS EXPERIMENTAL CODE THAT CAN BE CHANGED OR REMOVED
               IN FUTURE RELEASES. IT SHOULD BE USED ONLY FOR INTERNAL
@@ -41,7 +41,7 @@ the given tBTC v2 deposit script.
 
 #### Defined in
 
-[src/services/deposits/funding.ts:30](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/deposits/funding.ts#L30)
+[src/services/deposits/funding.ts:30](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/deposits/funding.ts#L30)
 
 ## Properties
 
@@ -51,7 +51,7 @@ the given tBTC v2 deposit script.
 
 #### Defined in
 
-[src/services/deposits/funding.ts:28](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/deposits/funding.ts#L28)
+[src/services/deposits/funding.ts:28](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/deposits/funding.ts#L28)
 
 ## Methods
 
@@ -59,18 +59,18 @@ the given tBTC v2 deposit script.
 
 ▸ **assembleTransaction**(`bitcoinNetwork`, `amount`, `inputUtxos`, `fee`, `depositorPrivateKey`): `Promise`\<\{ `depositUtxo`: [`BitcoinUtxo`](../README.md#bitcoinutxo) ; `rawTransaction`: [`BitcoinRawTx`](../interfaces/BitcoinRawTx.md) ; `transactionHash`: [`BitcoinTxHash`](BitcoinTxHash.md)  }\>
 
-Assembles and signs the Bitcoin P2(W)SH funding transaction using
+Assembles and signs the Meowcoin P2(W)SH funding transaction using
 the underlying deposit script.
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `bitcoinNetwork` | [`BitcoinNetwork`](../enums/BitcoinNetwork-1.md) | The target Bitcoin network. |
+| `bitcoinNetwork` | [`BitcoinNetwork`](../enums/BitcoinNetwork-1.md) | The target Meowcoin network. |
 | `amount` | `BigNumber` | Deposit amount in satoshis. |
 | `inputUtxos` | [`BitcoinTxOutpoint`](../interfaces/BitcoinTxOutpoint.md) & \{ `value`: `BigNumber`  } & [`BitcoinRawTx`](../interfaces/BitcoinRawTx.md)[] | UTXOs to be used for funding the deposit transaction. So far only P2WPKH UTXO inputs are supported. |
 | `fee` | `BigNumber` | Transaction fee to be subtracted from the sum of the UTXOs' values. |
-| `depositorPrivateKey` | `string` | Bitcoin private key of the depositor. Must be able to unlock input UTXOs. |
+| `depositorPrivateKey` | `string` | Meowcoin private key of the depositor. Must be able to unlock input UTXOs. |
 
 #### Returns
 
@@ -101,7 +101,7 @@ When the sum of the selected UTXOs is insufficient to cover
 
 #### Defined in
 
-[src/services/deposits/funding.ts:62](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/deposits/funding.ts#L62)
+[src/services/deposits/funding.ts:62](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/deposits/funding.ts#L62)
 
 ___
 
@@ -109,7 +109,7 @@ ___
 
 ▸ **submitTransaction**(`amount`, `inputUtxos`, `fee`, `depositorPrivateKey`, `bitcoinClient`): `Promise`\<\{ `depositUtxo`: [`BitcoinUtxo`](../README.md#bitcoinutxo) ; `transactionHash`: [`BitcoinTxHash`](BitcoinTxHash.md)  }\>
 
-Assembles, signs and submits the Bitcoin P2(W)SH funding transaction
+Assembles, signs and submits the Meowcoin P2(W)SH funding transaction
 using the underlying deposit script.
 
 #### Parameters
@@ -119,8 +119,8 @@ using the underlying deposit script.
 | `amount` | `BigNumber` | Deposit amount in satoshis. |
 | `inputUtxos` | [`BitcoinUtxo`](../README.md#bitcoinutxo)[] | UTXOs to be used for funding the deposit transaction. So far only P2WPKH UTXO inputs are supported. |
 | `fee` | `BigNumber` | The value that should be subtracted from the sum of the UTXOs values and used as the transaction fee. |
-| `depositorPrivateKey` | `string` | Bitcoin private key of the depositor. |
-| `bitcoinClient` | [`BitcoinClient`](../interfaces/BitcoinClient.md) | Bitcoin client used to interact with the network. |
+| `depositorPrivateKey` | `string` | Meowcoin private key of the depositor. |
+| `bitcoinClient` | [`BitcoinClient`](../interfaces/BitcoinClient.md) | Meowcoin client used to interact with the network. |
 
 #### Returns
 
@@ -151,7 +151,7 @@ When the sum of the selected UTXOs is insufficient to cover
 
 #### Defined in
 
-[src/services/deposits/funding.ts:181](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/deposits/funding.ts#L181)
+[src/services/deposits/funding.ts:181](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/deposits/funding.ts#L181)
 
 ___
 
@@ -171,4 +171,4 @@ ___
 
 #### Defined in
 
-[src/services/deposits/funding.ts:34](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/deposits/funding.ts#L34)
+[src/services/deposits/funding.ts:34](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/deposits/funding.ts#L34)

@@ -1,7 +1,7 @@
 {
-  "name": "@keep-network/tbtc-v2-polygon",
+  "name": "@keep-network/tmewc-polygon",
   "version": "1.1.0-dev",
-  "description": "tBTC v2 on Polygon",
+  "description": "tMEWC on Polygon",
   "license": "GPL-3.0-only",
   "files": [
     "artifacts/",
@@ -36,7 +36,7 @@
     "test": "hardhat test"
   },
   "dependencies": {
-    "@keep-network/tbtc-v2": "development",
+    "@keep-network/tmewc": "development",
     "@openzeppelin/contracts": "^4.8.1",
     "@openzeppelin/contracts-upgradeable": "^4.8.1"
   },

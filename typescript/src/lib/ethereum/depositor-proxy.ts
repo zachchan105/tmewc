@@ -1,5 +1,5 @@
 import { ChainIdentifier, DepositorProxy, DepositReceipt } from "../contracts"
-import { BitcoinRawTxVectors } from "../bitcoin"
+import { BitcoinRawTxVectors } from "../meowcoin"
 import { Hex } from "../utils"
 import { EthereumAddress } from "./address"
 import { packRevealDepositParameters } from "./bridge"

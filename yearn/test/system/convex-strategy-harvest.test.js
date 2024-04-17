@@ -6,7 +6,7 @@ const {
   increaseTime,
   to1e18,
 } = require("../helpers/contract-test-helpers.js")
-const { yearn, convex, tbtc, forkBlockNumber } = require("./constants.js")
+const { yearn, convex, tmewc, forkBlockNumber } = require("./constants.js")
 const { allocateSynthetixRewards, deployYearnVault } = require("./functions.js")
 const { curveStrategyFixture } = require("./fixtures.js")
 
@@ -16,7 +16,7 @@ const describeFn =
 describeFn("System -- convex strategy", () => {
   let vaultGovernance
   let vaultDepositor
-  let tbtcCurvePoolLPToken
+  let tmewcCurvePoolLPToken
   let booster
   let vault
   let strategy
@@ -27,21 +27,21 @@ describeFn("System -- convex strategy", () => {
     // Setup roles.
     vaultGovernance = await ethers.getSigner(0)
     vaultDepositor = await impersonateAccount(
-      tbtc.curvePoolLPTokenHolderAddress,
+      tmewc.curvePoolLPTokenHolderAddress,
       vaultGovernance
     )
 
     // Allocate Synthetix rewards to obtain extra rewards (KEEP tokens)
     // from the Convex reward pool.
     await allocateSynthetixRewards(
-      tbtc,
+      tmewc,
       curveStrategyFixture.synthetixRewardsAllocation
     )
 
-    // Get tBTC v2 Curve pool LP token handle.
-    tbtcCurvePoolLPToken = await ethers.getContractAt(
+    // Get tMEWC Curve pool LP token handle.
+    tmewcCurvePoolLPToken = await ethers.getContractAt(
       "IERC20",
-      tbtc.curvePoolLPTokenAddress
+      tmewc.curvePoolLPTokenAddress
     )
 
     // Get Convex booster handle.
@@ -50,12 +50,12 @@ describeFn("System -- convex strategy", () => {
       convex.boosterAddress
     )
 
-    // Deploy a new experimental vault accepting tBTC v2 Curve pool LP tokens.
+    // Deploy a new experimental vault accepting tMEWC Curve pool LP tokens.
     vault = await deployYearnVault(
       yearn,
       curveStrategyFixture.vaultName,
       curveStrategyFixture.vaultSymbol,
-      tbtcCurvePoolLPToken,
+      tmewcCurvePoolLPToken,
       vaultGovernance,
       curveStrategyFixture.vaultDepositLimit
     )
@@ -64,8 +64,8 @@ describeFn("System -- convex strategy", () => {
     const ConvexStrategy = await ethers.getContractFactory("ConvexStrategy")
     strategy = await ConvexStrategy.deploy(
       vault.address,
-      tbtc.curvePoolDepositorAddress,
-      tbtc.convexRewardPoolId
+      tmewc.curvePoolDepositorAddress,
+      tmewc.convexRewardPoolId
     )
     await strategy.deployed()
 
@@ -81,7 +81,7 @@ describeFn("System -- convex strategy", () => {
 
   describe("when depositor deposits to the vault", () => {
     before(async () => {
-      await tbtcCurvePoolLPToken
+      await tmewcCurvePoolLPToken
         .connect(vaultDepositor)
         .approve(vault.address, curveStrategyFixture.vaultDepositAmount)
       await vault
@@ -108,7 +108,7 @@ describeFn("System -- convex strategy", () => {
         // Move accumulated rewards from Curve gauge to Convex reward pool.
         // This is done after harvest in order to avoid very small extra
         // reward amounts in the first day.
-        await booster.earmarkRewards(tbtc.convexRewardPoolId)
+        await booster.earmarkRewards(tmewc.convexRewardPoolId)
       }
     })
 
@@ -119,7 +119,7 @@ describeFn("System -- convex strategy", () => {
       // All LP tokens deposited in the Convex reward pool generate extra
       // KEEP rewards because the underlying Curve gauge stakes its deposits
       // into the Synthetix Curve rewards contract. 90% of CRV, 100% of CVX,
-      // and 100% of KEEP tokens are used to buy wBTC. Acquired wBTC
+      // and 100% of KEEP tokens are used to buy wMEWC. Acquired wMEWC
       // are deposited back to the Curve pool in order to earn new LP tokens.
       // All numbers are presented in the 18 digits format.
       //
@@ -127,49 +127,49 @@ describeFn("System -- convex strategy", () => {
       // CRV earned: 573813072734246542
       // CVX earned: 257068256584942450
       // KEEP earned: 0
-      // wBTC bought: 5367
+      // wMEWC bought: 5367
       // LP tokens profit: 53170551603260
       //
       // Day 2:
       // CRV earned: 573819714012388395
       // CVX earned: 257071231877550000
       // KEEP earned: 445015623167430843
-      // wBTC bought: 5773
+      // wMEWC bought: 5773
       // LP tokens profit: 57192769573609
       //
       // Day 3:
       // CRV earned: 573921256349125686
       // CVX earned: 257116722844408307
       // KEEP earned: 826571505558228821
-      // wBTC bought: 6121
+      // wMEWC bought: 6121
       // LP tokens profit: 60640384970271
       //
       // Day 4:
       // CRV earned: 574030480044548280
       // CVX earned: 257165655059957629
       // KEEP earned: 1153770282997704636
-      // wBTC bought: 6422
+      // wMEWC bought: 6422
       // LP tokens profit: 63622374143187
       //
       // Day 5:
       // CRV earned: 574146287740676497
       // CVX earned: 257217536907823070
       // KEEP earned: 1434379897134231536
-      // wBTC bought: 6679
+      // wMEWC bought: 6679
       // LP tokens profit: 66168457915443
       //
       // Day 6:
       // CRV earned: 574267790198385184
       // CVX earned: 257271970008876562
       // KEEP earned: 1675056507580662807
-      // wBTC bought: 6900
+      // wMEWC bought: 6900
       // LP tokens profit: 68357891814333
       //
       // Day 7:
       // CRV earned: 297521307494722242
       // CVX earned: 133289545757635564
       // KEEP earned: 1881503817764847901
-      // wBTC bought: 4501
+      // wMEWC bought: 4501
       // LP tokens profit: 44591140717357
       //
       // Sum of LP tokens profits: 413743570737460 (15 digits)
@@ -186,11 +186,11 @@ describeFn("System -- convex strategy", () => {
     let amountWithdrawn
 
     before(async () => {
-      const initialBalance = await tbtcCurvePoolLPToken.balanceOf(
+      const initialBalance = await tmewcCurvePoolLPToken.balanceOf(
         vaultDepositor.address
       )
       await vault.connect(vaultDepositor).withdraw() // withdraw all shares
-      const currentBalance = await tbtcCurvePoolLPToken.balanceOf(
+      const currentBalance = await tmewcCurvePoolLPToken.balanceOf(
         vaultDepositor.address
       )
       amountWithdrawn = currentBalance.sub(initialBalance)
@@ -223,12 +223,12 @@ describeFn("System -- convex strategy", () => {
     })
 
     describe("eth to LP token (want) conversion", () => {
-      // At block 12786839 (Jul-08-2021) the exchange rate between wBTC/ETH was
-      // ~1/15.65. Swapping 1000ETH on Uniswap gave ~63.9wBTC. It means that by
-      // depositing 63.9wBTC to Curve.fi LP Pool a depositor would get
+      // At block 12786839 (Jul-08-2021) the exchange rate between wMEWC/ETH was
+      // ~1/15.65. Swapping 1000ETH on Uniswap gave ~63.9wMEWC. It means that by
+      // depositing 63.9wMEWC to Curve.fi LP Pool a depositor would get
       // ~63.3018 LP tokens.
       //
-      // TODO: When the new curve pool with tBTC v2 is deployed, the fork block
+      // TODO: When the new curve pool with tMEWC is deployed, the fork block
       // number would need to be adjusted accordingly. In consequence, the rates of
       // tokens will be different and they will need to be adjusted as well.
       it("should calculate LP tokens in exchange for ETH ", async () => {

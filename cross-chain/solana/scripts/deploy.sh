@@ -30,7 +30,7 @@ fi
 # make build
 
 ## Now check the program IDs by running
-## `solana-keygen pubkey target/deploy/tbtc-keypair.json`
+## `solana-keygen pubkey target/deploy/tmewc-keypair.json`
 ## `solana-keygen pubkey target/deploy/wormhole_gateway-keypair.json`
 ## Copy and paste these addresses in both programs 'lib.rs' and in Anchor.toml
 ## In Anchor toml make sure that cluster and program point to the right network:
@@ -44,7 +44,7 @@ fi
 # echo "Deploying program(s) for cluster: $CLUSTER ..."
 # anchor deploy --provider.cluster $CLUSTER --provider.wallet $AUTHORITY
 
-## And now it's time to initialize tbtc and wormhole_gatewa programs
+## And now it's time to initialize tmewc and wormhole_gatewa programs
 # make init_programs
 
 ## Publishing IDL so that Solana ecosystem can detect and display data nicely (nice to have)

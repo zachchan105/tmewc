@@ -6,8 +6,8 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { execute } = deployments
   const { deployer } = await getNamedAccounts()
 
-  // The headers come from 40 Bitcoin mainnet blocks in range 768076 to 768115
-  // and are needed to prove the first Bitcoin epoch (381) after the genesis
+  // The headers come from 40 Meowcoin mainnet blocks in range 768076 to 768115
+  // and are needed to prove the first Meowcoin epoch (381) after the genesis
   // epoch (380). This first retarget in `LightRelay` is needed to set the
   // previous and current epoch difficulties.
   const headers =

@@ -17,7 +17,7 @@ import {
   BitcoinUtxo,
   BitcoinHashUtils,
   BitcoinTxHash,
-} from "../../src/lib/bitcoin"
+} from "../../src/lib/meowcoin"
 import { BigNumberish, BigNumber, utils, constants } from "ethers"
 import { depositSweepWithNoMainUtxoAndWitnessOutput } from "../data/deposit-sweep"
 import { EthereumAddress } from "../../src/lib/ethereum"

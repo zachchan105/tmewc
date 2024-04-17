@@ -4,7 +4,7 @@ import {
   BitcoinUtxo,
   BitcoinRawTxVectors,
   BitcoinTxHash,
-} from "../bitcoin"
+} from "../meowcoin"
 import { Hex } from "../utils"
 import { ChainEvent, GetChainEvents } from "./chain-event"
 import { ChainIdentifier } from "./chain-identifier"
@@ -72,7 +72,7 @@ export interface Bridge {
 
   /**
    * Requests a redemption from the on-chain contract.
-   * @param walletPublicKey - The Bitcoin public key of the wallet. Must be in the
+   * @param walletPublicKey - The Meowcoin public key of the wallet. Must be in the
    *        compressed form (33 bytes long with 02 or 03 prefix).
    * @param mainUtxo - The main UTXO of the wallet. Must match the main UTXO
    *        held by the on-chain contract.
@@ -93,7 +93,7 @@ export interface Bridge {
    * @param redemptionTx - Redemption transaction data
    * @param redemptionProof - Redemption proof data
    * @param mainUtxo - Data of the wallet's main UTXO
-   * @param walletPublicKey - Bitcoin public key of the wallet. Must be in the
+   * @param walletPublicKey - Meowcoin public key of the wallet. Must be in the
    *        compressed form (33 bytes long with 02 or 03 prefix).
    * @returns Transaction hash of the submit redemption proof transaction.
    */
@@ -114,7 +114,7 @@ export interface Bridge {
 
   /**
    * Gets a pending redemption from the on-chain contract.
-   * @param walletPublicKey Bitcoin public key of the wallet the request is
+   * @param walletPublicKey Meowcoin public key of the wallet the request is
    *        targeted to. Must be in the compressed form (33 bytes long with 02
    *        or 03 prefix).
    * @param redeemerOutputScript The redeemer output script the redeemed funds
@@ -128,7 +128,7 @@ export interface Bridge {
 
   /**
    * Gets a timed-out redemption from the on-chain contract.
-   * @param walletPublicKey Bitcoin public key of the wallet the request is
+   * @param walletPublicKey Meowcoin public key of the wallet the request is
    *        targeted to. Must be in the compressed form (33 bytes long with 02
    *        or 03 prefix).
    * @param redeemerOutputScript The redeemer output script the redeemed funds
@@ -162,7 +162,7 @@ export interface Bridge {
   /**
    * Gets details about a registered wallet.
    * @param walletPublicKeyHash The 20-byte wallet public key hash (computed
-   * using Bitcoin HASH160 over the compressed ECDSA public key).
+   * using Meowcoin HASH160 over the compressed ECDSA public key).
    * @returns Promise with the wallet details.
    */
   wallets(walletPublicKeyHash: Hex): Promise<Wallet>
@@ -183,7 +183,7 @@ export interface Bridge {
 
 /**
  * Represents a deposit receipt. The receipt holds all information required
- * to build a unique deposit address on Bitcoin chain.
+ * to build a unique deposit address on Meowcoin chain.
  */
 export interface DepositReceipt {
   /**
@@ -306,14 +306,14 @@ export interface RedemptionRequest {
   redeemer: ChainIdentifier
 
   /**
-   * The output script the redeemed Bitcoin funds are locked to. It is not
+   * The output script the redeemed Meowcoin funds are locked to. It is not
    * prepended with length.
    */
   redeemerOutputScript: Hex
 
   /**
    * The amount of Bitcoins in satoshis that is requested to be redeemed.
-   * The actual value of the output in the Bitcoin transaction will be decreased
+   * The actual value of the output in the Meowcoin transaction will be decreased
    * by the sum of the fee share and the treasury fee for this particular output.
    */
   requestedAmount: BigNumber

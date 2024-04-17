@@ -1,18 +1,18 @@
-# Interface: L2TBTCToken
+# Interface: L2TMEWCToken
 
 Interface for communication with the on-chain contract of the given
-canonical L2 tBTC token.
+canonical L2 tMEWC token.
 
 ## Implemented by
 
-- [`BaseL2TBTCToken`](../classes/BaseL2TBTCToken.md)
+- [`BaseL2TMEWCToken`](../classes/BaseL2TMEWCToken.md)
 
 ## Table of contents
 
 ### Methods
 
-- [balanceOf](L2TBTCToken.md#balanceof)
-- [getChainIdentifier](L2TBTCToken.md#getchainidentifier)
+- [balanceOf](L2TMEWCToken.md#balanceof)
+- [getChainIdentifier](L2TMEWCToken.md#getchainidentifier)
 
 ## Methods
 
@@ -36,7 +36,7 @@ The balance of the given identifier in 1e18 precision.
 
 #### Defined in
 
-[src/lib/contracts/cross-chain.ts:61](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/cross-chain.ts#L61)
+[src/lib/contracts/cross-chain.ts:61](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/cross-chain.ts#L61)
 
 ___
 
@@ -52,4 +52,4 @@ Gets the chain-specific identifier of this contract.
 
 #### Defined in
 
-[src/lib/contracts/cross-chain.ts:54](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/cross-chain.ts#L54)
+[src/lib/contracts/cross-chain.ts:54](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/cross-chain.ts#L54)

@@ -12,7 +12,7 @@ import {
   BitcoinTxOutput,
   BitcoinUtxo,
   BitcoinHashUtils,
-} from "../bitcoin"
+} from "../meowcoin"
 import Electrum from "electrum-client-js"
 import { BigNumber } from "ethers"
 import { URL as nodeURL } from "url"
@@ -61,7 +61,7 @@ type Electrum = any
 type ElectrumAction<T> = (electrum: Electrum) => Promise<T>
 
 /**
- * Electrum-based implementation of the Bitcoin client.
+ * Electrum-based implementation of the Meowcoin client.
  */
 export class ElectrumClient implements BitcoinClient {
   private credentials: ElectrumCredentials[]
@@ -120,8 +120,8 @@ export class ElectrumClient implements BitcoinClient {
 
   /**
    * Creates an Electrum client instance using a default config for the given
-   * Bitcoin network.
-   * @param network Bitcoin network the instance should be created for.
+   * Meowcoin network.
+   * @param network Meowcoin network the instance should be created for.
    * @returns Electrum client instance.
    */
   static fromDefaultConfig(network: BitcoinNetwork): ElectrumClient {
@@ -184,7 +184,7 @@ export class ElectrumClient implements BitcoinClient {
         return pTimeout(
           (async () => {
             try {
-              await electrum.connect("tbtc-v2", "1.4.2")
+              await electrum.connect("tmewc", "1.4.2")
               await electrum.server_ping()
               return
             } catch (error) {
@@ -660,9 +660,9 @@ export class ElectrumClient implements BitcoinClient {
 }
 
 /**
- * Converts a Bitcoin script to an Electrum script hash. See
+ * Converts a Meowcoin script to an Electrum script hash. See
  * [Electrum protocol]{@link https://electrumx.readthedocs.io/en/stable/protocol-basics.html#script-hashes}
- * @param script - Bitcoin script as hex string
+ * @param script - Meowcoin script as hex string
  * @returns Electrum script hash as a hex string.
  */
 export function computeElectrumScriptHash(script: Hex): string {

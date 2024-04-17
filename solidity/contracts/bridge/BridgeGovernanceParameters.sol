@@ -1187,8 +1187,8 @@ library BridgeGovernanceParameters {
         self.walletCreationPeriodChangeInitiated = 0;
     }
 
-    /// @notice Begins the wallet creation min btc balance amount update process.
-    /// @param _newWalletCreationMinBtcBalance New wallet creation min btc balance
+    /// @notice Begins the wallet creation min mewc balance amount update process.
+    /// @param _newWalletCreationMinBtcBalance New wallet creation min mewc balance
     ///         amount.
     function beginWalletCreationMinBtcBalanceUpdate(
         WalletData storage self,
@@ -1204,7 +1204,7 @@ library BridgeGovernanceParameters {
         /* solhint-enable not-rely-on-time */
     }
 
-    /// @notice Finalizes the wallet creation min btc balance amount update process.
+    /// @notice Finalizes the wallet creation min mewc balance amount update process.
     /// @dev Can be called after the governance delay elapses.
     function finalizeWalletCreationMinBtcBalanceUpdate(
         WalletData storage self,
@@ -1224,8 +1224,8 @@ library BridgeGovernanceParameters {
         self.walletCreationMinBtcBalanceChangeInitiated = 0;
     }
 
-    /// @notice Begins the wallet creation max btc balance amount update process.
-    /// @param _newWalletCreationMaxBtcBalance New wallet creation max btc balance
+    /// @notice Begins the wallet creation max mewc balance amount update process.
+    /// @param _newWalletCreationMaxBtcBalance New wallet creation max mewc balance
     ///         amount.
     function beginWalletCreationMaxBtcBalanceUpdate(
         WalletData storage self,
@@ -1241,7 +1241,7 @@ library BridgeGovernanceParameters {
         /* solhint-enable not-rely-on-time */
     }
 
-    /// @notice Finalizes the wallet creation max btc balance amount update process.
+    /// @notice Finalizes the wallet creation max mewc balance amount update process.
     /// @dev Can be called after the governance delay elapses.
     function finalizeWalletCreationMaxBtcBalanceUpdate(
         WalletData storage self,
@@ -1261,8 +1261,8 @@ library BridgeGovernanceParameters {
         self.walletCreationMaxBtcBalanceChangeInitiated = 0;
     }
 
-    /// @notice Begins the wallet closure min btc balance amount update process.
-    /// @param _newWalletClosureMinBtcBalance New wallet closure min btc balance amount.
+    /// @notice Begins the wallet closure min mewc balance amount update process.
+    /// @param _newWalletClosureMinBtcBalance New wallet closure min mewc balance amount.
     function beginWalletClosureMinBtcBalanceUpdate(
         WalletData storage self,
         uint64 _newWalletClosureMinBtcBalance
@@ -1277,7 +1277,7 @@ library BridgeGovernanceParameters {
         /* solhint-enable not-rely-on-time */
     }
 
-    /// @notice Finalizes the wallet closure min btc balance amount update process.
+    /// @notice Finalizes the wallet closure min mewc balance amount update process.
     /// @dev Can be called after the governance delay elapses.
     function finalizeWalletClosureMinBtcBalanceUpdate(
         WalletData storage self,
@@ -1328,8 +1328,8 @@ library BridgeGovernanceParameters {
         self.walletMaxAgeChangeInitiated = 0;
     }
 
-    /// @notice Begins the wallet max btc transfer amount update process.
-    /// @param _newWalletMaxBtcTransfer New wallet max btc transfer amount.
+    /// @notice Begins the wallet max mewc transfer amount update process.
+    /// @param _newWalletMaxBtcTransfer New wallet max mewc transfer amount.
     function beginWalletMaxBtcTransferUpdate(
         WalletData storage self,
         uint64 _newWalletMaxBtcTransfer
@@ -1344,7 +1344,7 @@ library BridgeGovernanceParameters {
         /* solhint-enable not-rely-on-time */
     }
 
-    /// @notice Finalizes the wallet max btc transfer amount update process.
+    /// @notice Finalizes the wallet max mewc transfer amount update process.
     /// @dev Can be called after the governance delay elapses.
     function finalizeWalletMaxBtcTransferUpdate(
         WalletData storage self,

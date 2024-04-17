@@ -10,23 +10,23 @@ import {
   WalletTx,
   BitcoinHashUtils,
   EthereumAddress,
-  TBTC,
-} from "@keep-network/tbtc-v2.ts"
+  TMEWC,
+} from "@keep-network/tmewc.ts"
 import { BigNumber, constants, Contract } from "ethers"
 import chai, { expect } from "chai"
 import chaiAsPromised from "chai-as-promised"
 
 import {
   setupSystemTestsContext,
-  createTbtcContractsHandle,
+  createTmewcContractsHandle,
 } from "./utils/context"
-import { fakeRelayDifficulty, waitTransactionConfirmed } from "./utils/bitcoin"
+import { fakeRelayDifficulty, waitTransactionConfirmed } from "./utils/meowcoin"
 
 import type {
   RedemptionRequest,
   BitcoinUtxo,
   DepositReceipt,
-} from "@keep-network/tbtc-v2.ts"
+} from "@keep-network/tmewc.ts"
 import type { SystemTestsContext } from "./utils/context"
 
 chai.use(chaiAsPromised)
@@ -35,9 +35,9 @@ chai.use(chaiAsPromised)
  * This system test scenario performs a single deposit and redemption.
  *
  * The scenario consists of the following steps:
- * 1. The depositor broadcasts the deposit transaction on BTC chain and reveals
+ * 1. The depositor broadcasts the deposit transaction on MEWC chain and reveals
  *    it to the bridge.
- * 2. The wallet broadcasts the sweep transaction of the given deposit on BTC
+ * 2. The wallet broadcasts the sweep transaction of the given deposit on MEWC
  *    chain and submits the sweep proof to the bridge.
  * 3. The depositor (redeemer) requests the redemption of its entire bank
  *    balance.
@@ -45,8 +45,8 @@ chai.use(chaiAsPromised)
  *    request and submits the redemption proof to the bridge.
  *
  * Following prerequisites must be fulfilled to make a successful pass:
- * - The depositor's BTC balance must allow to perform the deposit
- * - tBTC v2 contracts must be deployed on used Ethereum network
+ * - The depositor's MEWC balance must allow to perform the deposit
+ * - tMEWC contracts must be deployed on used Ethereum network
  * - A fresh live wallet (with no main UTXO yet) must be registered in
  *   the bridge
  */
@@ -57,8 +57,8 @@ describe("System Test - Deposit and redemption", () => {
   let bank: Contract
   let relay: Contract
 
-  let depositorSdk: TBTC
-  let maintainerSdk: TBTC
+  let depositorSdk: TMEWC
+  let maintainerSdk: TMEWC
   let walletTx: WalletTx
 
   const depositAmount = BigNumber.from(2000000)
@@ -104,27 +104,27 @@ describe("System Test - Deposit and redemption", () => {
 
     bridgeAddress = deployedContracts.Bridge.address
 
-    const depositorTbtcContracts = await createTbtcContractsHandle(
+    const depositorTmewcContracts = await createTmewcContractsHandle(
       deployedContracts,
       depositor
     )
 
-    depositorSdk = await TBTC.initializeCustom(
-      depositorTbtcContracts,
+    depositorSdk = await TMEWC.initializeCustom(
+      depositorTmewcContracts,
       electrumClient
     )
 
-    const maintainerTbtcContracts = await createTbtcContractsHandle(
+    const maintainerTmewcContracts = await createTmewcContractsHandle(
       deployedContracts,
       maintainer
     )
 
-    maintainerSdk = await TBTC.initializeCustom(
-      maintainerTbtcContracts,
+    maintainerSdk = await TMEWC.initializeCustom(
+      maintainerTmewcContracts,
       electrumClient
     )
 
-    walletTx = new WalletTx(maintainerTbtcContracts, electrumClient)
+    walletTx = new WalletTx(maintainerTmewcContracts, electrumClient)
 
     depositorBitcoinAddress = BitcoinAddressConverter.publicKeyToAddress(
       systemTestsContext.depositorBitcoinKeyPair.publicKey.compressed,
@@ -169,7 +169,7 @@ describe("System Test - Deposit and redemption", () => {
       ))
 
       console.log(`
-        Deposit made on BTC chain:
+        Deposit made on MEWC chain:
         - Transaction hash: ${depositUtxo.transactionHash}
         - Output index: ${depositUtxo.outputIndex}
       `)
@@ -186,7 +186,7 @@ describe("System Test - Deposit and redemption", () => {
       )
 
       // Reveal without providing the vault address.
-      await depositorSdk.tbtcContracts.bridge.revealDeposit(
+      await depositorSdk.tmewcContracts.bridge.revealDeposit(
         depositRawTxVectors,
         depositUtxo.outputIndex,
         depositReceipt
@@ -197,7 +197,7 @@ describe("System Test - Deposit and redemption", () => {
       `)
     })
 
-    it("should broadcast the deposit transaction on the Bitcoin network", async () => {
+    it("should broadcast the deposit transaction on the Meowcoin network", async () => {
       expect(
         (
           await maintainerSdk.bitcoinClient.getRawTransaction(
@@ -208,7 +208,7 @@ describe("System Test - Deposit and redemption", () => {
     })
 
     it("should reveal the deposit to the bridge", async () => {
-      const { revealedAt } = await maintainerSdk.tbtcContracts.bridge.deposits(
+      const { revealedAt } = await maintainerSdk.tmewcContracts.bridge.deposits(
         depositUtxo.transactionHash,
         depositUtxo.outputIndex
       )
@@ -226,7 +226,7 @@ describe("System Test - Deposit and redemption", () => {
           ))
 
         console.log(`
-        Deposit swept on Bitcoin chain:
+        Deposit swept on Meowcoin chain:
         - Transaction hash: ${sweepUtxo.transactionHash}
       `)
 
@@ -263,7 +263,7 @@ describe("System Test - Deposit and redemption", () => {
       `)
       })
 
-      it("should broadcast the sweep transaction on the Bitcoin network", async () => {
+      it("should broadcast the sweep transaction on the Meowcoin network", async () => {
         expect(
           (
             await maintainerSdk.bitcoinClient.getRawTransaction(
@@ -274,7 +274,7 @@ describe("System Test - Deposit and redemption", () => {
       })
 
       it("should sweep the deposit on the bridge", async () => {
-        const { sweptAt } = await maintainerSdk.tbtcContracts.bridge.deposits(
+        const { sweptAt } = await maintainerSdk.tmewcContracts.bridge.deposits(
           depositUtxo.transactionHash,
           depositUtxo.outputIndex
         )
@@ -283,7 +283,7 @@ describe("System Test - Deposit and redemption", () => {
 
       it("should increase depositor's balance in the bank", async () => {
         const { treasuryFee } =
-          await maintainerSdk.tbtcContracts.bridge.deposits(
+          await maintainerSdk.tmewcContracts.bridge.deposits(
             depositUtxo.transactionHash,
             depositUtxo.outputIndex
           )
@@ -322,7 +322,7 @@ describe("System Test - Deposit and redemption", () => {
             )}`
           )
 
-          await depositorSdk.tbtcContracts.bridge.requestRedemption(
+          await depositorSdk.tmewcContracts.bridge.requestRedemption(
             systemTestsContext.walletBitcoinKeyPair.publicKey.compressed,
             sweepUtxo,
             redeemerOutputScript,
@@ -375,7 +375,7 @@ describe("System Test - Deposit and redemption", () => {
                   ))
 
                 console.log(
-                  "Redemption made on Bitcoin chain:\n" +
+                  "Redemption made on Meowcoin chain:\n" +
                     `- Transaction hash: ${redemptionTxHash}`
                 )
 
@@ -400,7 +400,7 @@ describe("System Test - Deposit and redemption", () => {
               }
             )
 
-            it("should broadcast the redemption transaction on the Bitcoin network", async () => {
+            it("should broadcast the redemption transaction on the Meowcoin network", async () => {
               expect(
                 (
                   await maintainerSdk.bitcoinClient.getRawTransaction(

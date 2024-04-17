@@ -12,19 +12,19 @@ NOTE: This RFC supersedes link:rfc-7.adoc[RFC 7]
 
 Currently used wallet coordination mechanism based on the `WalletCoordinator`
 smart contract and authorized maintainers turned out to be a single
-point of failure of the tBTC v2 system. This RFC aims to provide
+point of failure of the tMEWC system. This RFC aims to provide
 an alternative approach.
 
 === Current functionality
 
 To execute a wallet action like deposit sweep or redemption, the majority of
-signers backing the given tBTC v2 wallet must attest to it using the threshold
+signers backing the given tMEWC wallet must attest to it using the threshold
 signing process. On a high level, a wallet action execution looks as follows:
 
 1. Signers determine the right input for the signing process (e.g. which deposits
-   should be swept, what Bitcoin network fee should be used, and so on).
+   should be swept, what Meowcoin network fee should be used, and so on).
 2. Signers execute the threshold signing process.
-3. Signers broadcast outcomes of the signing process (e.g. signed Bitcoin transaction).
+3. Signers broadcast outcomes of the signing process (e.g. signed Meowcoin transaction).
 
 The first step is non-trivial as the majority of signers must come into the
 same view of the world. An obvious solution for that problem is forcing
@@ -42,7 +42,7 @@ make the consensus algorithm simpler.
 To address the above challenges and make wallet coordination simple,
 a contract-based coordination mechanism has been used instead. Their central
 point is the `WalletCoordinator` smart contract. This contract is powered
-by authorized maintainers and acts as a lighthouse for signers backing tBTC v2
+by authorized maintainers and acts as a lighthouse for signers backing tMEWC
 wallets. In that model, the wallet coordination mechanism works as follows:
 
 1. Authorized maintainer proposes an action for a specific wallet by submitting
@@ -50,7 +50,7 @@ wallets. In that model, the wallet coordination mechanism works as follows:
    all the information necessary to build the right input for the threshold
    signing process. Therefore, signers do not need to gather this information on
    their own or reach a consensus about it. For example, a deposit sweep proposal is
-   something like: "Wallet A, sweep deposits D1, D2, and D3 using a Bitcoin fee of 10000 sat".
+   something like: "Wallet A, sweep deposits D1, D2, and D3 using a Meowcoin fee of 10000 sat".
 2. Signers of the target wallet receive the proposal. Although maintainers are
    authorized, **they are not trusted**. The received proposal is validated
    by signers to ensure that the proposed action can be executed against the
@@ -60,7 +60,7 @@ wallets. In that model, the wallet coordination mechanism works as follows:
    signers depends on the proposal type but often consists of two general steps:
    - On-chain validation. Often done using specialized view functions
      exposed by the `WalletCoordinator` contract
-   - Additional validation, such as validation against the state of the Bitcoin chain
+   - Additional validation, such as validation against the state of the Meowcoin chain
 3. If the given proposal is invalid, wallet signers ignore it. This is in the
    wallet's best interest, as executing an invalid proposal would not be
    accepted by the system. It would put the wallet into an invalid state and
@@ -434,8 +434,8 @@ There is some related future work not explored by this RFC:
 
 == Related Links
 
-- https://github.com/keep-network/tbtc-v2/blob/956fa076c95dcbdd2899a60680b38ffa34045dbe/solidity/contracts/bridge/WalletCoordinator.sol[`WalletCoordinator` contract]
-- https://github.com/keep-network/keep-core/tree/324f66fb3f1003f6cfeb7d4149ae3f1d902dba2e/pkg/tbtc[`keep-core` wallet client]
+- https://github.com/keep-network/tmewc/blob/956fa076c95dcbdd2899a60680b38ffa34045dbe/solidity/contracts/bridge/WalletCoordinator.sol[`WalletCoordinator` contract]
+- https://github.com/keep-network/keep-core/tree/324f66fb3f1003f6cfeb7d4149ae3f1d902dba2e/pkg/tmewc[`keep-core` wallet client]
 - https://www.alchemy.com/overviews/ethereum-commitment-levels[Ethereum commitment levels]
 
 

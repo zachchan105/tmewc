@@ -1,5 +1,5 @@
 import {
-  TBTCVault,
+  TMEWCVault,
   OptimisticMintingCancelledEvent,
   OptimisticMintingFinalizedEvent,
   OptimisticMintingRequestedEvent,
@@ -7,11 +7,11 @@ import {
   GetChainEvents,
   OptimisticMintingRequest,
 } from "../../src/lib/contracts"
-import { BitcoinTxHash } from "../../src/lib/bitcoin"
+import { BitcoinTxHash } from "../../src/lib/meowcoin"
 import { Hex } from "../../src/lib/utils"
 import { EthereumAddress } from "../../src"
 
-export class MockTBTCVault implements TBTCVault {
+export class MockTMEWCVault implements TMEWCVault {
   getOptimisticMintingCancelledEvents(
     options?: GetChainEvents.Options,
     ...filterArgs: Array<unknown>

@@ -56,9 +56,9 @@ export interface RedemptionTestData {
 }
 
 /**
- * Test data that is based on a Bitcoin redemption transaction with a single
+ * Test data that is based on a Meowcoin redemption transaction with a single
  * P2PKH redeemer address:
- * https://live.blockcypher.com/btc-testnet/tx/c437f1117db977682334b53a71fbe63a42aab42f6e0976c35b69977f86308c20/
+ * https://live.blockcypher.com/mewc-testnet/tx/c437f1117db977682334b53a71fbe63a42aab42f6e0976c35b69977f86308c20/
  */
 export const singleP2PKHRedemptionWithWitnessChange: RedemptionTestData = {
   mainUtxo: {
@@ -114,9 +114,9 @@ export const singleP2PKHRedemptionWithWitnessChange: RedemptionTestData = {
 }
 
 /**
- * Test data that is based on a Bitcoin redemption transaction with a single
+ * Test data that is based on a Meowcoin redemption transaction with a single
  * P2WPKH redeemer address:
- * https://live.blockcypher.com/btc-testnet/tx/925e61dc31396e7f2cbcc8bc9b4009b4f24ba679257762df078b7e9b875ea110/
+ * https://live.blockcypher.com/mewc-testnet/tx/925e61dc31396e7f2cbcc8bc9b4009b4f24ba679257762df078b7e9b875ea110/
  */
 export const singleP2WPKHRedemptionWithWitnessChange: RedemptionTestData = {
   mainUtxo: {
@@ -172,9 +172,9 @@ export const singleP2WPKHRedemptionWithWitnessChange: RedemptionTestData = {
 }
 
 /**
- * Test data that is based on a Bitcoin redemption transaction with a single
+ * Test data that is based on a Meowcoin redemption transaction with a single
  * P2SH redeemer address:
- * https://live.blockcypher.com/btc-testnet/tx/ef25c9c8f4df673def035c0c1880278c90030b3c94a56668109001a591c2c521/
+ * https://live.blockcypher.com/mewc-testnet/tx/ef25c9c8f4df673def035c0c1880278c90030b3c94a56668109001a591c2c521/
  */
 export const singleP2SHRedemptionWithWitnessChange: RedemptionTestData = {
   mainUtxo: {
@@ -230,9 +230,9 @@ export const singleP2SHRedemptionWithWitnessChange: RedemptionTestData = {
 }
 
 /**
- * Test data that is based on a Bitcoin redemption transaction with a single
+ * Test data that is based on a Meowcoin redemption transaction with a single
  * P2SH redeemer address:
- * https://live.blockcypher.com/btc-testnet/tx/3d28bb5bf73379da51bc683f4d0ed31d7b024466c619d80ebd9378077d900be3/
+ * https://live.blockcypher.com/mewc-testnet/tx/3d28bb5bf73379da51bc683f4d0ed31d7b024466c619d80ebd9378077d900be3/
  */
 export const singleP2WSHRedemptionWithWitnessChange: RedemptionTestData = {
   mainUtxo: {
@@ -288,9 +288,9 @@ export const singleP2WSHRedemptionWithWitnessChange: RedemptionTestData = {
 }
 
 /**
- * Test data that is based on a Bitcoin redemption transaction with multiple
+ * Test data that is based on a Meowcoin redemption transaction with multiple
  * redeemer addresses (P2PKH, P2WPKH, P2SH and P2WSH):
- * https://live.blockcypher.com/btc-testnet/tx/f70ff89fd2b6226183e4b8143cc5f0f457f05dd1dca0c6151ab66f4523d972b7/
+ * https://live.blockcypher.com/mewc-testnet/tx/f70ff89fd2b6226183e4b8143cc5f0f457f05dd1dca0c6151ab66f4523d972b7/
  */
 export const multipleRedemptionsWithWitnessChange: RedemptionTestData = {
   mainUtxo: {
@@ -400,9 +400,9 @@ export const multipleRedemptionsWithWitnessChange: RedemptionTestData = {
 }
 
 /**
- * Test data that is based on a Bitcoin redemption transaction with two redeemer
+ * Test data that is based on a Meowcoin redemption transaction with two redeemer
  * addresses and has no change:
- * https://live.blockcypher.com/btc-testnet/tx/afcdf8f91273b73abc40018873978c22bbb7c3d8d669ef2faffa0c4b0898c8eb/
+ * https://live.blockcypher.com/mewc-testnet/tx/afcdf8f91273b73abc40018873978c22bbb7c3d8d669ef2faffa0c4b0898c8eb/
  */
 export const multipleRedemptionsWithoutChange: RedemptionTestData = {
   mainUtxo: {
@@ -475,9 +475,9 @@ export const multipleRedemptionsWithoutChange: RedemptionTestData = {
 }
 
 /**
- * Test data that is based on a Bitcoin redemption transaction with one
+ * Test data that is based on a Meowcoin redemption transaction with one
  * redeemer address and P2PKH change:
- * https://live.blockcypher.com/btc-testnet/tx/0fec22d0fecd6607a0429210d04e9465681507d514f3edf0f07def96eda0f89d/
+ * https://live.blockcypher.com/mewc-testnet/tx/0fec22d0fecd6607a0429210d04e9465681507d514f3edf0f07def96eda0f89d/
  */
 export const singleP2SHRedemptionWithNonWitnessChange: RedemptionTestData = {
   mainUtxo: {
@@ -558,8 +558,8 @@ export interface RedemptionProofTestData {
 }
 
 /**
- * Test data that is based on a Bitcoin testnet transaction with multiple redemption outputs
- * https://live.blockcypher.com/btc-testnet/tx/f70ff89fd2b6226183e4b8143cc5f0f457f05dd1dca0c6151ab66f4523d972b7/
+ * Test data that is based on a Meowcoin testnet transaction with multiple redemption outputs
+ * https://live.blockcypher.com/mewc-testnet/tx/f70ff89fd2b6226183e4b8143cc5f0f457f05dd1dca0c6151ab66f4523d972b7/
  */
 export const redemptionProof: RedemptionProofTestData = {
   bitcoinChainData: {
@@ -774,7 +774,7 @@ interface FindWalletForRedemptionWalletData {
     state: WalletState
     mainUtxoHash: Hex
     walletPublicKey: Hex
-    btcAddress: string
+    mewcAddress: string
     mainUtxo: BitcoinUtxo
     transactions: BitcoinTx[]
     pendingRedemptionsValue: BigNumber
@@ -804,7 +804,7 @@ export const findWalletForRedemptionData: {
       walletPublicKey: Hex.from(
         "0x028ed84936be6a9f594a2dcc636d4bebf132713da3ce4dac5c61afbf8bbb47d6f7"
       ),
-      btcAddress: "tb1qqwm566yn44rdlhgph8sw8vecta8uutg79afuja",
+      mewcAddress: "tb1qqwm566yn44rdlhgph8sw8vecta8uutg79afuja",
       mainUtxo: {
         transactionHash: Hex.from(
           "0x5b6d040eb06b3de1a819890d55d251112e55c31db4a3f5eb7cfacf519fad7adb"
@@ -857,7 +857,7 @@ export const findWalletForRedemptionData: {
       walletPublicKey: Hex.from(
         "0x030fbbae74e6d85342819e719575949a1349e975b69fb382e9fef671a3a74efc52"
       ),
-      btcAddress: "tb1qkct7r24k4wutnsun84rvp3qsyt8yfpvqz89d2y",
+      mewcAddress: "tb1qkct7r24k4wutnsun84rvp3qsyt8yfpvqz89d2y",
       mainUtxo: {
         transactionHash: Hex.from(
           "0x0000000000000000000000000000000000000000000000000000000000000000"
@@ -894,7 +894,7 @@ export const findWalletForRedemptionData: {
       walletPublicKey: Hex.from(
         "0x02633b102417009ae55103798f4d366dfccb081dcf20025088b9bf10a8e15d8ded"
       ),
-      btcAddress: "tb1qf6jvyd680ncf9dtr5znha9ql5jmw84lupwwuf6",
+      mewcAddress: "tb1qf6jvyd680ncf9dtr5znha9ql5jmw84lupwwuf6",
       mainUtxo: {
         transactionHash: Hex.from(
           "0x0000000000000000000000000000000000000000000000000000000000000000"
@@ -930,13 +930,13 @@ export const findWalletForRedemptionData: {
       walletPublicKey: Hex.from(
         "0x02ab193a63b3523bfab77d3645d11da10722393687458c4213b350b7e08f50b7ee"
       ),
-      btcAddress: "tb1qx2xejtjltdcau5dpks8ucszkhxdg3fj88404lh",
+      mewcAddress: "tb1qx2xejtjltdcau5dpks8ucszkhxdg3fj88404lh",
       mainUtxo: {
         transactionHash: Hex.from(
           "0x81c4884a8c2fccbeb57745a5e59f895a9c1bb8fc42eecc82269100a1a46bbb85"
         ),
         outputIndex: 0,
-        value: BigNumber.from("3370000"), // 0.0337 BTC
+        value: BigNumber.from("3370000"), // 0.0337 MEWC
       },
       transactions: [
         {
@@ -947,7 +947,7 @@ export const findWalletForRedemptionData: {
           outputs: [
             {
               outputIndex: 0,
-              value: BigNumber.from("3370000"), // 0.0337 BTC
+              value: BigNumber.from("3370000"), // 0.0337 MEWC
               scriptPubKey: BitcoinAddressConverter.addressToOutputScript(
                 "tb1qx2xejtjltdcau5dpks8ucszkhxdg3fj88404lh",
                 BitcoinNetwork.Testnet
@@ -956,7 +956,7 @@ export const findWalletForRedemptionData: {
           ],
         },
       ],
-      pendingRedemptionsValue: BigNumber.from(2370000), // 0.0237 BTC
+      pendingRedemptionsValue: BigNumber.from(2370000), // 0.0237 MEWC
     },
     event: {
       blockNumber: 8981644,

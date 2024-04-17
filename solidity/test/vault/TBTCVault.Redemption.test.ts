@@ -13,8 +13,8 @@ import type {
   BankStub,
   Bridge,
   BridgeStub,
-  TBTC,
-  TBTCVault,
+  TMEWC,
+  TMEWCVault,
 } from "../../typechain"
 
 const { to1e18 } = helpers.number
@@ -22,7 +22,7 @@ const { createSnapshot, restoreSnapshot } = helpers.snapshot
 const { lastBlockTime } = helpers.time
 const { defaultAbiCoder } = ethers.utils
 
-describe("TBTCVault - Redemption", () => {
+describe("TMEWCVault - Redemption", () => {
   const walletPubKeyHash = "0x8db50eb52063ea9d98b3eac91489a90f738986f6"
   const mainUtxo = {
     txHash:
@@ -33,8 +33,8 @@ describe("TBTCVault - Redemption", () => {
 
   let bridge: Bridge & BridgeStub
   let bank: Bank & BankStub
-  let tbtc: TBTC
-  let tbtcVault: TBTCVault
+  let tmewc: TMEWC
+  let tmewcVault: TMEWCVault
 
   let deployer: SignerWithAddress
   let account1: SignerWithAddress
@@ -42,13 +42,13 @@ describe("TBTCVault - Redemption", () => {
 
   before(async () => {
     // eslint-disable-next-line @typescript-eslint/no-extra-semi
-    ;({ deployer, bridge, bank, tbtcVault, tbtc } = await waffle.loadFixture(
+    ;({ deployer, bridge, bank, tmewcVault, tmewc } = await waffle.loadFixture(
       bridgeFixture
     ))
 
-    // TBTC token ownership transfer is not performed in deployment scripts.
-    // Check TransferTBTCOwnership deployment step for more information.
-    await tbtc.connect(deployer).transferOwnership(tbtcVault.address)
+    // TMEWC token ownership transfer is not performed in deployment scripts.
+    // Check TransferTMEWCOwnership deployment step for more information.
+    await tmewc.connect(deployer).transferOwnership(tmewcVault.address)
 
     const accounts = await getUnnamedAccounts()
     account1 = await ethers.getSigner(accounts[0])
@@ -59,10 +59,10 @@ describe("TBTCVault - Redemption", () => {
     await bank.setBalance(account2.address, initialBankBalance)
     await bank
       .connect(account1)
-      .approveBalance(tbtcVault.address, initialBankBalance)
+      .approveBalance(tmewcVault.address, initialBankBalance)
     await bank
       .connect(account2)
-      .approveBalance(tbtcVault.address, initialBankBalance)
+      .approveBalance(tmewcVault.address, initialBankBalance)
 
     await bridge.setWallet(walletPubKeyHash, {
       ecdsaWalletID: ethers.constants.HashZero,
@@ -96,15 +96,15 @@ describe("TBTCVault - Redemption", () => {
         ]
       )
 
-      return tbtcVault.connect(redeemer).unmintAndRedeem(amount, data)
+      return tmewcVault.connect(redeemer).unmintAndRedeem(amount, data)
     }
 
-    context("when the redeemer has no TBTC", () => {
+    context("when the redeemer has no TMEWC", () => {
       const amount = to1e18(1)
       before(async () => {
         await createSnapshot()
 
-        await tbtc.connect(account1).approve(tbtcVault.address, amount)
+        await tmewc.connect(account1).approve(tmewcVault.address, amount)
       })
 
       after(async () => {
@@ -113,20 +113,20 @@ describe("TBTCVault - Redemption", () => {
 
       it("should revert", async () => {
         await expect(
-          tbtcVault.connect(account1).unmintAndRedeem(to1e18(1), [])
+          tmewcVault.connect(account1).unmintAndRedeem(to1e18(1), [])
         ).to.be.revertedWith("Burn amount exceeds balance")
       })
     })
 
-    context("when the redeemer has not enough TBTC", () => {
+    context("when the redeemer has not enough TMEWC", () => {
       const mintedAmount = to1e18(1)
       const redeemedAmount = mintedAmount.add(constants.satoshiMultiplier)
 
       before(async () => {
         await createSnapshot()
 
-        await tbtcVault.connect(account1).mint(mintedAmount)
-        await tbtc.connect(account1).approve(tbtcVault.address, redeemedAmount)
+        await tmewcVault.connect(account1).mint(mintedAmount)
+        await tmewc.connect(account1).approve(tmewcVault.address, redeemedAmount)
       })
 
       after(async () => {
@@ -135,7 +135,7 @@ describe("TBTCVault - Redemption", () => {
 
       it("should revert", async () => {
         await expect(
-          tbtcVault.connect(account1).unmintAndRedeem(redeemedAmount, [])
+          tmewcVault.connect(account1).unmintAndRedeem(redeemedAmount, [])
         ).to.be.revertedWith("Burn amount exceeds balance")
       })
     })
@@ -166,8 +166,8 @@ describe("TBTCVault - Redemption", () => {
       before(async () => {
         await createSnapshot()
 
-        await tbtcVault.connect(account1).mint(mintedAmount)
-        await tbtc.connect(account1).approve(tbtcVault.address, mintedAmount)
+        await tmewcVault.connect(account1).mint(mintedAmount)
+        await tmewc.connect(account1).approve(tmewcVault.address, mintedAmount)
 
         transactions.push(
           await requestRedemption(
@@ -204,7 +204,7 @@ describe("TBTCVault - Redemption", () => {
       })
 
       it("should transfer balances to Bridge", async () => {
-        expect(await bank.balanceOf(tbtcVault.address)).to.equal(
+        expect(await bank.balanceOf(tmewcVault.address)).to.equal(
           notRedeemedAmount.div(constants.satoshiMultiplier)
         )
         expect(await bank.balanceOf(bridge.address)).to.equal(
@@ -246,25 +246,25 @@ describe("TBTCVault - Redemption", () => {
         )
       })
 
-      it("should burn TBTC", async () => {
-        expect(await tbtc.balanceOf(account1.address)).to.equal(
+      it("should burn TMEWC", async () => {
+        expect(await tmewc.balanceOf(account1.address)).to.equal(
           notRedeemedAmount
         )
-        expect(await tbtc.totalSupply()).to.be.equal(notRedeemedAmount)
+        expect(await tmewc.totalSupply()).to.be.equal(notRedeemedAmount)
       })
 
       it("should emit Unminted events", async () => {
         await expect(transactions[0])
-          .to.emit(tbtcVault, "Unminted")
+          .to.emit(tmewcVault, "Unminted")
           .withArgs(account1.address, redeemedAmount1)
         await expect(transactions[1])
-          .to.emit(tbtcVault, "Unminted")
+          .to.emit(tmewcVault, "Unminted")
           .withArgs(account1.address, redeemedAmount2)
         await expect(transactions[2])
-          .to.emit(tbtcVault, "Unminted")
+          .to.emit(tmewcVault, "Unminted")
           .withArgs(account1.address, redeemedAmount3)
         await expect(transactions[3])
-          .to.emit(tbtcVault, "Unminted")
+          .to.emit(tmewcVault, "Unminted")
           .withArgs(account1.address, redeemedAmount4)
       })
     })
@@ -274,7 +274,7 @@ describe("TBTCVault - Redemption", () => {
         "0x160014f4eedc8f40d4b8e30771f792b065ebec0abaddef"
 
       const mintedAmount = to1e18(20)
-      // Amount is 3 Bitcoin in 1e18 precision plus 0.1 satoshi in 1e18 precision
+      // Amount is 3 Meowcoin in 1e18 precision plus 0.1 satoshi in 1e18 precision
       const redeemedAmount = ethers.BigNumber.from("3000000001000000000")
       const notRedeemedAmount = to1e18(17) // 20 - 3; remainder should be ignored
 
@@ -283,8 +283,8 @@ describe("TBTCVault - Redemption", () => {
       before(async () => {
         await createSnapshot()
 
-        await tbtcVault.connect(account1).mint(mintedAmount)
-        await tbtc.connect(account1).approve(tbtcVault.address, mintedAmount)
+        await tmewcVault.connect(account1).mint(mintedAmount)
+        await tmewc.connect(account1).approve(tmewcVault.address, mintedAmount)
 
         transaction = await requestRedemption(
           account1,
@@ -297,10 +297,10 @@ describe("TBTCVault - Redemption", () => {
         await restoreSnapshot()
       })
 
-      // redeeming 3 BTC, the remainder is ignored
+      // redeeming 3 MEWC, the remainder is ignored
 
       it("should transfer balances to Bridge", async () => {
-        expect(await bank.balanceOf(tbtcVault.address)).to.equal(
+        expect(await bank.balanceOf(tmewcVault.address)).to.equal(
           notRedeemedAmount.div(constants.satoshiMultiplier)
         )
         expect(await bank.balanceOf(bridge.address)).to.equal(toSatoshis(3))
@@ -314,16 +314,16 @@ describe("TBTCVault - Redemption", () => {
         expect(redemptionRequest1.requestedAmount).to.be.equal(toSatoshis(3))
       })
 
-      it("should burn TBTC", async () => {
-        expect(await tbtc.balanceOf(account1.address)).to.equal(
+      it("should burn TMEWC", async () => {
+        expect(await tmewc.balanceOf(account1.address)).to.equal(
           notRedeemedAmount
         )
-        expect(await tbtc.totalSupply()).to.be.equal(notRedeemedAmount)
+        expect(await tmewc.totalSupply()).to.be.equal(notRedeemedAmount)
       })
 
       it("should emit Unminted events", async () => {
         await expect(transaction)
-          .to.emit(tbtcVault, "Unminted")
+          .to.emit(tmewcVault, "Unminted")
           .withArgs(account1.address, to1e18(3))
       })
     })
@@ -351,11 +351,11 @@ describe("TBTCVault - Redemption", () => {
         console.log(await bank.balanceOf(account1.address))
         console.log(await bank.balanceOf(account2.address))
 
-        await tbtcVault.connect(account1).mint(mintedAmount1)
-        await tbtc.connect(account1).approve(tbtcVault.address, mintedAmount1)
+        await tmewcVault.connect(account1).mint(mintedAmount1)
+        await tmewc.connect(account1).approve(tmewcVault.address, mintedAmount1)
 
-        await tbtcVault.connect(account2).mint(mintedAmount2)
-        await tbtc.connect(account2).approve(tbtcVault.address, mintedAmount2)
+        await tmewcVault.connect(account2).mint(mintedAmount2)
+        await tmewc.connect(account2).approve(tmewcVault.address, mintedAmount2)
 
         transactions.push(
           await requestRedemption(
@@ -378,7 +378,7 @@ describe("TBTCVault - Redemption", () => {
       })
 
       it("should transfer balances to Bridge", async () => {
-        expect(await bank.balanceOf(tbtcVault.address)).to.equal(
+        expect(await bank.balanceOf(tmewcVault.address)).to.equal(
           totalNotRedeemedAmount.div(constants.satoshiMultiplier)
         )
         expect(await bank.balanceOf(bridge.address)).to.equal(
@@ -404,22 +404,22 @@ describe("TBTCVault - Redemption", () => {
         )
       })
 
-      it("should burn TBTC", async () => {
-        expect(await tbtc.balanceOf(account1.address)).to.equal(
+      it("should burn TMEWC", async () => {
+        expect(await tmewc.balanceOf(account1.address)).to.equal(
           mintedAmount1.sub(redeemedAmount1)
         )
-        expect(await tbtc.balanceOf(account2.address)).to.equal(
+        expect(await tmewc.balanceOf(account2.address)).to.equal(
           mintedAmount2.sub(redeemedAmount2)
         )
-        expect(await tbtc.totalSupply()).to.be.equal(totalNotRedeemedAmount)
+        expect(await tmewc.totalSupply()).to.be.equal(totalNotRedeemedAmount)
       })
 
       it("should emit Unminted events", async () => {
         await expect(transactions[0])
-          .to.emit(tbtcVault, "Unminted")
+          .to.emit(tmewcVault, "Unminted")
           .withArgs(account1.address, redeemedAmount1)
         await expect(transactions[1])
-          .to.emit(tbtcVault, "Unminted")
+          .to.emit(tmewcVault, "Unminted")
           .withArgs(account2.address, redeemedAmount2)
       })
     })
@@ -443,9 +443,9 @@ describe("TBTCVault - Redemption", () => {
         ]
       )
 
-      return tbtc
+      return tmewc
         .connect(redeemer)
-        .approveAndCall(tbtcVault.address, amount, data)
+        .approveAndCall(tmewcVault.address, amount, data)
     }
 
     context("when called via approveAndCall", () => {
@@ -476,7 +476,7 @@ describe("TBTCVault - Redemption", () => {
           before(async () => {
             await createSnapshot()
 
-            await tbtcVault.connect(account1).mint(mintedAmount)
+            await tmewcVault.connect(account1).mint(mintedAmount)
 
             transactions.push(
               await requestRedemption(
@@ -513,7 +513,7 @@ describe("TBTCVault - Redemption", () => {
           })
 
           it("should transfer balances to Bridge", async () => {
-            expect(await bank.balanceOf(tbtcVault.address)).to.equal(
+            expect(await bank.balanceOf(tmewcVault.address)).to.equal(
               notRedeemedAmount.div(constants.satoshiMultiplier)
             )
             expect(await bank.balanceOf(bridge.address)).to.equal(
@@ -555,25 +555,25 @@ describe("TBTCVault - Redemption", () => {
             )
           })
 
-          it("should burn TBTC", async () => {
-            expect(await tbtc.balanceOf(account1.address)).to.equal(
+          it("should burn TMEWC", async () => {
+            expect(await tmewc.balanceOf(account1.address)).to.equal(
               notRedeemedAmount
             )
-            expect(await tbtc.totalSupply()).to.be.equal(notRedeemedAmount)
+            expect(await tmewc.totalSupply()).to.be.equal(notRedeemedAmount)
           })
 
           it("should emit Unminted events", async () => {
             await expect(transactions[0])
-              .to.emit(tbtcVault, "Unminted")
+              .to.emit(tmewcVault, "Unminted")
               .withArgs(account1.address, redeemedAmount1)
             await expect(transactions[1])
-              .to.emit(tbtcVault, "Unminted")
+              .to.emit(tmewcVault, "Unminted")
               .withArgs(account1.address, redeemedAmount2)
             await expect(transactions[2])
-              .to.emit(tbtcVault, "Unminted")
+              .to.emit(tmewcVault, "Unminted")
               .withArgs(account1.address, redeemedAmount3)
             await expect(transactions[3])
-              .to.emit(tbtcVault, "Unminted")
+              .to.emit(tmewcVault, "Unminted")
               .withArgs(account1.address, redeemedAmount4)
           })
         })
@@ -599,8 +599,8 @@ describe("TBTCVault - Redemption", () => {
           before(async () => {
             await createSnapshot()
 
-            await tbtcVault.connect(account1).mint(mintedAmount1)
-            await tbtcVault.connect(account2).mint(mintedAmount2)
+            await tmewcVault.connect(account1).mint(mintedAmount1)
+            await tmewcVault.connect(account2).mint(mintedAmount2)
 
             transactions.push(
               await requestRedemption(
@@ -623,7 +623,7 @@ describe("TBTCVault - Redemption", () => {
           })
 
           it("should transfer balances to Bridge", async () => {
-            expect(await bank.balanceOf(tbtcVault.address)).to.equal(
+            expect(await bank.balanceOf(tmewcVault.address)).to.equal(
               totalNotRedeemedAmount.div(constants.satoshiMultiplier)
             )
             expect(await bank.balanceOf(bridge.address)).to.equal(
@@ -649,22 +649,22 @@ describe("TBTCVault - Redemption", () => {
             )
           })
 
-          it("should burn TBTC", async () => {
-            expect(await tbtc.balanceOf(account1.address)).to.equal(
+          it("should burn TMEWC", async () => {
+            expect(await tmewc.balanceOf(account1.address)).to.equal(
               mintedAmount1.sub(redeemedAmount1)
             )
-            expect(await tbtc.balanceOf(account2.address)).to.equal(
+            expect(await tmewc.balanceOf(account2.address)).to.equal(
               mintedAmount2.sub(redeemedAmount2)
             )
-            expect(await tbtc.totalSupply()).to.be.equal(totalNotRedeemedAmount)
+            expect(await tmewc.totalSupply()).to.be.equal(totalNotRedeemedAmount)
           })
 
           it("should emit Unminted events", async () => {
             await expect(transactions[0])
-              .to.emit(tbtcVault, "Unminted")
+              .to.emit(tmewcVault, "Unminted")
               .withArgs(account1.address, redeemedAmount1)
             await expect(transactions[1])
-              .to.emit(tbtcVault, "Unminted")
+              .to.emit(tmewcVault, "Unminted")
               .withArgs(account2.address, redeemedAmount2)
           })
         })

@@ -1,6 +1,6 @@
 # Enumeration: BitcoinNetwork
 
-Bitcoin networks.
+Meowcoin networks.
 
 ## Table of contents
 
@@ -16,11 +16,11 @@ Bitcoin networks.
 
 • **Mainnet** = ``"mainnet"``
 
-Bitcoin Mainnet.
+Meowcoin Mainnet.
 
 #### Defined in
 
-[src/lib/bitcoin/network.ts:20](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/bitcoin/network.ts#L20)
+[src/lib/meowcoin/network.ts:20](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/meowcoin/network.ts#L20)
 
 ___
 
@@ -28,11 +28,11 @@ ___
 
 • **Testnet** = ``"testnet"``
 
-Bitcoin Testnet.
+Meowcoin Testnet.
 
 #### Defined in
 
-[src/lib/bitcoin/network.ts:16](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/bitcoin/network.ts#L16)
+[src/lib/meowcoin/network.ts:16](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/meowcoin/network.ts#L16)
 
 ___
 
@@ -44,4 +44,4 @@ Unknown network.
 
 #### Defined in
 
-[src/lib/bitcoin/network.ts:12](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/bitcoin/network.ts#L12)
+[src/lib/meowcoin/network.ts:12](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/meowcoin/network.ts#L12)

@@ -19,19 +19,19 @@ import "../bridge/Bridge.sol";
 import "../bridge/Deposit.sol";
 import "../GovernanceUtils.sol";
 
-/// @title TBTC Optimistic Minting
-/// @notice The Optimistic Minting mechanism allows to mint TBTC before
-///         `TBTCVault` receives the Bank balance. There are two permissioned
+/// @title TMEWC Optimistic Minting
+/// @notice The Optimistic Minting mechanism allows to mint TMEWC before
+///         `TMEWCVault` receives the Bank balance. There are two permissioned
 ///         sets in the system: Minters and Guardians, both set up in 1-of-n
-///         mode. Minters observe the revealed deposits and request minting TBTC.
+///         mode. Minters observe the revealed deposits and request minting TMEWC.
 ///         Any single Minter can perform this action. There is an
 ///         `optimisticMintingDelay` between the time of the request from
-///         a Minter to the time TBTC is minted. During the time of the delay,
+///         a Minter to the time TMEWC is minted. During the time of the delay,
 ///         any Guardian can cancel the minting.
-/// @dev This functionality is a part of `TBTCVault`. It is implemented in
+/// @dev This functionality is a part of `TMEWCVault`. It is implemented in
 ///      a separate abstract contract to achieve better separation of concerns
 ///      and easier-to-follow code.
-abstract contract TBTCOptimisticMinting is Ownable {
+abstract contract TMEWCOptimisticMinting is Ownable {
     // Represents optimistic minting request for the given deposit revealed
     // to the Bridge.
     struct OptimisticMintingRequest {
@@ -46,7 +46,7 @@ abstract contract TBTCOptimisticMinting is Ownable {
     ///         finalizing the upgrade of governable parameters.
     uint256 public constant GOVERNANCE_DELAY = 24 hours;
 
-    /// @notice Multiplier to convert satoshi to TBTC token units.
+    /// @notice Multiplier to convert satoshi to TMEWC token units.
     uint256 public constant SATOSHI_MULTIPLIER = 10**10;
 
     Bridge public immutable bridge;
@@ -72,7 +72,7 @@ abstract contract TBTCOptimisticMinting is Ownable {
 
     /// @notice The time that needs to pass between the moment the optimistic
     ///         minting is requested and the moment optimistic minting is
-    ///         finalized with minting TBTC.
+    ///         finalized with minting TMEWC.
     uint32 public optimisticMintingDelay = 3 hours;
 
     /// @notice Indicates if the given address is a Minter. Only Minters can
@@ -97,7 +97,7 @@ abstract contract TBTCOptimisticMinting is Ownable {
     /// @notice Optimistic minting debt value per depositor's address. The debt
     ///         represents the total value of all depositor's deposits revealed
     ///         to the Bridge that has not been yet swept and led to the
-    ///         optimistic minting of TBTC. When `TBTCVault` sweeps a deposit,
+    ///         optimistic minting of TMEWC. When `TMEWCVault` sweeps a deposit,
     ///         the debt is fully or partially paid off, no matter if that
     ///         particular swept deposit was used for the optimistic minting or
     ///         not. The values are in 1e18 Ethereum precision.
@@ -196,8 +196,8 @@ abstract contract TBTCOptimisticMinting is Ownable {
         bridge = _bridge;
     }
 
-    /// @dev Mints the given amount of TBTC to the given depositor's address.
-    ///      Implemented by TBTCVault.
+    /// @dev Mints the given amount of TMEWC to the given depositor's address.
+    ///      Implemented by TMEWCVault.
     function _mint(address minter, uint256 amount) internal virtual;
 
     /// @notice Allows to fetch a list of all Minters.
@@ -205,19 +205,19 @@ abstract contract TBTCOptimisticMinting is Ownable {
         return minters;
     }
 
-    /// @notice Allows a Minter to request for an optimistic minting of TBTC.
+    /// @notice Allows a Minter to request for an optimistic minting of TMEWC.
     ///         The following conditions must be met:
     ///         - There is no optimistic minting request for the deposit,
     ///           finalized or not.
-    ///         - The deposit with the given Bitcoin funding transaction hash
+    ///         - The deposit with the given Meowcoin funding transaction hash
     ///           and output index has been revealed to the Bridge.
     ///         - The deposit has not been swept yet.
-    ///         - The deposit is targeted into the TBTCVault.
+    ///         - The deposit is targeted into the TMEWCVault.
     ///         - The optimistic minting is not paused.
     ///         After calling this function, the Minter has to wait for
     ///         `optimisticMintingDelay` before finalizing the mint with a call
     ///         to finalizeOptimisticMint.
-    /// @dev The deposit done on the Bitcoin side must be revealed early enough
+    /// @dev The deposit done on the Meowcoin side must be revealed early enough
     ///      to the Bridge on Ethereum to pass the Bridge's validation. The
     ///      validation passes successfully only if the deposit reveal is done
     ///      respectively earlier than the moment when the deposit refund
@@ -231,7 +231,7 @@ abstract contract TBTCOptimisticMinting is Ownable {
     ///      validation as `validateDepositRefundLocktime` and expect the entire
     ///      `DepositRevealInfo` to be passed to assemble the expected script
     ///      hash on-chain. Guardians must validate if the deposit happened on
-    ///      Bitcoin, that the script hash has the expected format, and that the
+    ///      Meowcoin, that the script hash has the expected format, and that the
     ///      wallet is an active one so they can also validate the time left for
     ///      the refund.
     function requestOptimisticMint(
@@ -282,7 +282,7 @@ abstract contract TBTCOptimisticMinting is Ownable {
     ///         - The optimistic minting request for the given deposit has not
     ///           been canceled by a Guardian.
     ///         - The optimistic minting is not paused.
-    ///         This function mints TBTC and increases `optimisticMintingDebt`
+    ///         This function mints TMEWC and increases `optimisticMintingDebt`
     ///         for the given depositor. The optimistic minting request is
     ///         marked as finalized.
     function finalizeOptimisticMint(
@@ -316,12 +316,12 @@ abstract contract TBTCOptimisticMinting is Ownable {
         require(deposit.sweptAt == 0, "The deposit is already swept");
 
         // Bridge, when sweeping, cuts a deposit treasury fee and splits
-        // Bitcoin miner fee for the sweep transaction evenly between the
+        // Meowcoin miner fee for the sweep transaction evenly between the
         // depositors in the sweep.
         //
         // When tokens are optimistically minted, we do not know what the
-        // Bitcoin miner fee for the sweep transaction will look like.
-        // The Bitcoin miner fee is ignored. When sweeping, the miner fee is
+        // Meowcoin miner fee for the sweep transaction will look like.
+        // The Meowcoin miner fee is ignored. When sweeping, the miner fee is
         // subtracted so the optimisticMintingDebt may stay non-zero after the
         // deposit is swept.
         //
@@ -340,7 +340,7 @@ abstract contract TBTCOptimisticMinting is Ownable {
             : 0;
 
         // Both the optimistic minting fee and the share that goes to the
-        // depositor are optimistically minted. All TBTC that is optimistically
+        // depositor are optimistically minted. All TMEWC that is optimistically
         // minted should be added to the optimistic minting debt. When the
         // deposit is swept, it is paying off both the depositor's share and the
         // treasury's share (optimistic minting fee).
@@ -373,7 +373,7 @@ abstract contract TBTCOptimisticMinting is Ownable {
     ///         optimistic minting again for the same deposit later.
     /// @dev Guardians must validate the following conditions for every deposit
     ///      for which the optimistic minting was requested:
-    ///      - The deposit happened on Bitcoin side and it has enough
+    ///      - The deposit happened on Meowcoin side and it has enough
     ///        confirmations.
     ///      - The optimistic minting has been requested early enough so that
     ///        the wallet has enough time to sweep the deposit.
@@ -531,17 +531,17 @@ abstract contract TBTCOptimisticMinting is Ownable {
             );
     }
 
-    /// @notice Used by `TBTCVault.receiveBalanceIncrease` to repay the optimistic
-    ///         minting debt before TBTC is minted. When optimistic minting is
+    /// @notice Used by `TMEWCVault.receiveBalanceIncrease` to repay the optimistic
+    ///         minting debt before TMEWC is minted. When optimistic minting is
     ///         finalized, debt equal to the value of the deposit being
-    ///         a subject of the optimistic minting is incurred. When `TBTCVault`
+    ///         a subject of the optimistic minting is incurred. When `TMEWCVault`
     ///         sweeps a deposit, the debt is fully or partially paid off, no
     ///         matter if that particular deposit was used for the optimistic
     ///         minting or not.
-    /// @dev See `TBTCVault.receiveBalanceIncrease`
+    /// @dev See `TMEWCVault.receiveBalanceIncrease`
     /// @param depositor The depositor whose balance increase is received.
     /// @param amount The balance increase amount for the depositor received.
-    /// @return The TBTC amount that should be minted after paying off the
+    /// @return The TMEWC amount that should be minted after paying off the
     ///         optimistic minting debt.
     function repayOptimisticMintingDebt(address depositor, uint256 amount)
         internal

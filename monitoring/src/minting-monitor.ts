@@ -1,4 +1,4 @@
-import { OptimisticMinting } from "@keep-network/tbtc-v2.ts"
+import { OptimisticMinting } from "@keep-network/tmewc.ts"
 
 import { SystemEventType } from "./system-event"
 
@@ -6,15 +6,15 @@ import type {
   OptimisticMintingCancelledEvent as OptimisticMintingCancelledChainEvent,
   OptimisticMintingRequestedEvent as OptimisticMintingRequestedChainEvent,
   OptimisticMintingFinalizedEvent as OptimisticMintingFinalizedChainEvent,
-} from "@keep-network/tbtc-v2.ts/dist/src/optimistic-minting"
-import type { DepositRevealedEvent as DepositRevealedChainEvent } from "@keep-network/tbtc-v2.ts/dist/src/deposit"
+} from "@keep-network/tmewc.ts/dist/src/optimistic-minting"
+import type { DepositRevealedEvent as DepositRevealedChainEvent } from "@keep-network/tmewc.ts/dist/src/deposit"
 import type {
   Bridge,
   Identifier,
-  TBTCVault,
-} from "@keep-network/tbtc-v2.ts/dist/src/chain"
-import type { Client as BitcoinClient } from "@keep-network/tbtc-v2.ts/dist/src/bitcoin"
-import type { BitcoinTransactionHash } from "@keep-network/tbtc-v2.ts"
+  TMEWCVault,
+} from "@keep-network/tmewc.ts/dist/src/chain"
+import type { Client as BitcoinClient } from "@keep-network/tmewc.ts/dist/src/meowcoin"
+import type { BitcoinTransactionHash } from "@keep-network/tmewc.ts"
 import type { SystemEvent, Monitor as SystemEventMonitor } from "./system-event"
 import type { BigNumber } from "ethers"
 
@@ -24,8 +24,8 @@ const satoshiMultiplier = 1e10
 // request for the given deposit, counted from the deposit reveal block.
 // The value is 2 hours which is 600 blocks assuming 12 seconds for ETH block.
 // This value aims to include:
-// - worst case 6 BTC confirmations of the deposit, i.e. ~60 min assuming
-//   10 min for BTC block
+// - worst case 6 MEWC confirmations of the deposit, i.e. ~60 min assuming
+//   10 min for MEWC block
 // - 20 minutes of the designated minter precedence period
 // - 40 minutes of additional margin
 const mintingRequestTimeoutBlocks = 600
@@ -55,8 +55,8 @@ const OptimisticMintingCancelled = (
 
 const OptimisticMintingRequestedTooEarly = (
   chainEvent: OptimisticMintingRequestedChainEvent,
-  btcFundingTxActualConfirmations: number,
-  btcFundingTxRequiredConfirmations: number
+  mewcFundingTxActualConfirmations: number,
+  mewcFundingTxRequiredConfirmations: number
 ): SystemEvent => ({
   title: "Optimistic minting requested too early",
   type: SystemEventType.Critical,
@@ -65,11 +65,11 @@ const OptimisticMintingRequestedTooEarly = (
     depositKey: chainEvent.depositKey.toPrefixedString(),
     depositor: `0x${chainEvent.depositor.identifierHex}`,
     amountSat: chainEvent.amount.div(satoshiMultiplier).toString(),
-    btcFundingTxHash: chainEvent.fundingTxHash.toString(),
-    btcFundingOutputIndex: chainEvent.fundingOutputIndex.toString(),
-    btcFundingTxActualConfirmations: btcFundingTxActualConfirmations.toString(),
-    btcFundingTxRequiredConfirmations:
-      btcFundingTxRequiredConfirmations.toString(),
+    mewcFundingTxHash: chainEvent.fundingTxHash.toString(),
+    mewcFundingOutputIndex: chainEvent.fundingOutputIndex.toString(),
+    mewcFundingTxActualConfirmations: mewcFundingTxActualConfirmations.toString(),
+    mewcFundingTxRequiredConfirmations:
+      mewcFundingTxRequiredConfirmations.toString(),
     ethRequestTxHash: chainEvent.transactionHash.toPrefixedString(),
   },
   block: chainEvent.blockNumber,
@@ -78,26 +78,26 @@ const OptimisticMintingRequestedTooEarly = (
 // This event is raised in case one can't determine the confirmations count
 // for the given deposit funding transaction pointed by the OM request.
 // We cannot determine the exact cause. Example cases are:
-// - A problem with the BTC client that doesn't handle requests properly
+// - A problem with the MEWC client that doesn't handle requests properly
 // - Deliberate behavior of the used client implementation that
-//   throws in case of a non-existing BTC transaction. Such a case may indicate
+//   throws in case of a non-existing MEWC transaction. Such a case may indicate
 //   an evil minter that requested OM for non-existing funding transaction.
 // That said, the monitoring should warn about it and force the on-call
 // person to investigate the problem.
 const OptimisticMintingRequestedForUndeterminedBtcTx = (
   chainEvent: OptimisticMintingRequestedChainEvent,
-  btcClientResponse: string
+  mewcClientResponse: string
 ): SystemEvent => ({
-  title: "Optimistic minting requested for undetermined Bitcoin transaction",
+  title: "Optimistic minting requested for undetermined Meowcoin transaction",
   type: SystemEventType.Critical,
   data: {
     minter: `0x${chainEvent.minter.identifierHex}`,
     depositKey: chainEvent.depositKey.toPrefixedString(),
     depositor: `0x${chainEvent.depositor.identifierHex}`,
     amountSat: chainEvent.amount.div(satoshiMultiplier).toString(),
-    btcFundingTxHash: chainEvent.fundingTxHash.toString(),
-    btcFundingOutputIndex: chainEvent.fundingOutputIndex.toString(),
-    btcClientResponse,
+    mewcFundingTxHash: chainEvent.fundingTxHash.toString(),
+    mewcFundingOutputIndex: chainEvent.fundingOutputIndex.toString(),
+    mewcClientResponse,
     ethRequestTxHash: chainEvent.transactionHash.toPrefixedString(),
   },
   block: chainEvent.blockNumber,
@@ -115,8 +115,8 @@ const OptimisticMintingNotRequestedByDesignatedMinter = (
     depositKey: chainEvent.depositKey.toPrefixedString(),
     depositor: `0x${chainEvent.depositor.identifierHex}`,
     amountSat: chainEvent.amount.div(satoshiMultiplier).toString(),
-    btcFundingTxHash: chainEvent.fundingTxHash.toString(),
-    btcFundingOutputIndex: chainEvent.fundingOutputIndex.toString(),
+    mewcFundingTxHash: chainEvent.fundingTxHash.toString(),
+    mewcFundingOutputIndex: chainEvent.fundingOutputIndex.toString(),
     ethRequestTxHash: chainEvent.transactionHash.toPrefixedString(),
   },
   block: chainEvent.blockNumber,
@@ -150,8 +150,8 @@ const OptimisticMintingNotRequestedByAnyMinter = (
   title: "Optimistic minting not requested by any minter",
   type: SystemEventType.Warning,
   data: {
-    btcFundingTxHash: chainEvent.fundingTxHash.toString(),
-    btcFundingOutputIndex: chainEvent.fundingOutputIndex.toString(),
+    mewcFundingTxHash: chainEvent.fundingTxHash.toString(),
+    mewcFundingOutputIndex: chainEvent.fundingOutputIndex.toString(),
     amountSat: chainEvent.amount.toString(),
     ethRevealTxHash: chainEvent.transactionHash.toPrefixedString(),
   },
@@ -164,8 +164,8 @@ const OptimisticMintingNotFinalizedByAnyMinter = (
   title: "Optimistic minting not finalized by any minter",
   type: SystemEventType.Warning,
   data: {
-    btcFundingTxHash: chainEvent.fundingTxHash.toString(),
-    btcFundingOutputIndex: chainEvent.fundingOutputIndex.toString(),
+    mewcFundingTxHash: chainEvent.fundingTxHash.toString(),
+    mewcFundingOutputIndex: chainEvent.fundingOutputIndex.toString(),
     amountSat: chainEvent.amount.toString(),
     ethRequestTxHash: chainEvent.transactionHash.toPrefixedString(),
   },
@@ -185,14 +185,14 @@ type ChainDataCache = {
 export class MintingMonitor implements SystemEventMonitor {
   private bridge: Bridge
 
-  private tbtcVault: TBTCVault
+  private tmewcVault: TMEWCVault
 
-  private btcClient: BitcoinClient
+  private mewcClient: BitcoinClient
 
-  constructor(bridge: Bridge, tbtcVault: TBTCVault, btcClient: BitcoinClient) {
+  constructor(bridge: Bridge, tmewcVault: TMEWCVault, mewcClient: BitcoinClient) {
     this.bridge = bridge
-    this.tbtcVault = tbtcVault
-    this.btcClient = btcClient
+    this.tmewcVault = tmewcVault
+    this.mewcClient = mewcClient
   }
 
   async check(fromBlock: number, toBlock: number): Promise<SystemEvent[]> {
@@ -226,13 +226,13 @@ export class MintingMonitor implements SystemEventMonitor {
 
     return {
       mintingCancelledEvents:
-        await this.tbtcVault.getOptimisticMintingCancelledEvents(options),
+        await this.tmewcVault.getOptimisticMintingCancelledEvents(options),
       mintingRequestedEvents:
-        await this.tbtcVault.getOptimisticMintingRequestedEvents(options),
+        await this.tmewcVault.getOptimisticMintingRequestedEvents(options),
       mintingFinalizedEvents:
-        await this.tbtcVault.getOptimisticMintingFinalizedEvents(options),
-      minters: await this.tbtcVault.getMinters(),
-      optimisticMintingDelay: await this.tbtcVault.optimisticMintingDelay(),
+        await this.tmewcVault.getOptimisticMintingFinalizedEvents(options),
+      minters: await this.tmewcVault.getMinters(),
+      optimisticMintingDelay: await this.tmewcVault.optimisticMintingDelay(),
     }
   }
 
@@ -243,7 +243,7 @@ export class MintingMonitor implements SystemEventMonitor {
   private async checkMintingRequestsValidity(cache: ChainDataCache) {
     const confirmations = await Promise.allSettled(
       cache.mintingRequestedEvents.map((ce) =>
-        this.btcClient.getTransactionConfirmations(ce.fundingTxHash)
+        this.mewcClient.getTransactionConfirmations(ce.fundingTxHash)
       )
     )
 
@@ -288,12 +288,12 @@ export class MintingMonitor implements SystemEventMonitor {
 
   private requiredConfirmations(amountSat: BigNumber): number {
     if (amountSat.lt(10000000)) {
-      // 0.1 BTC
+      // 0.1 MEWC
       return 1
     }
 
     if (amountSat.lt(100000000)) {
-      // 1 BTC
+      // 1 MEWC
       return 3
     }
 
@@ -366,7 +366,7 @@ export class MintingMonitor implements SystemEventMonitor {
         // same depositKey. The event filter arguments correspond to the
         // OptimisticMintingRequested chain events fields.
         const mintingRequestedEvents =
-          await this.tbtcVault.getOptimisticMintingRequestedEvents(
+          await this.tmewcVault.getOptimisticMintingRequestedEvents(
             undefined, // options
             null, // minter filter arg
             mintingFinalizedEvent.depositKey.toPrefixedString(), // depositKey filter arg
@@ -478,7 +478,7 @@ export class MintingMonitor implements SystemEventMonitor {
         OptimisticMinting.getOptimisticMintingRequest(
           ce.fundingTxHash,
           ce.fundingOutputIndex,
-          this.tbtcVault
+          this.tmewcVault
         )
       )
     )
@@ -509,7 +509,7 @@ export class MintingMonitor implements SystemEventMonitor {
     // This way, we are looking for past minting requests whose time for
     // finalization was already elapsed.
     const chainEvents =
-      await this.tbtcVault.getOptimisticMintingRequestedEvents({
+      await this.tmewcVault.getOptimisticMintingRequestedEvents({
         fromBlock: rewindBlock(fromBlock, finalizationTimeoutBlocks),
         toBlock: rewindBlock(toBlock, finalizationTimeoutBlocks),
       })
@@ -519,7 +519,7 @@ export class MintingMonitor implements SystemEventMonitor {
         OptimisticMinting.getOptimisticMintingRequest(
           ce.fundingTxHash,
           ce.fundingOutputIndex,
-          this.tbtcVault
+          this.tmewcVault
         )
       )
     )

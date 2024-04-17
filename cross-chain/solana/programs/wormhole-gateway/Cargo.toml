@@ -25,4 +25,4 @@ anchor-spl = "0.28.0"
 
 solana-program = "=1.14"
 
-tbtc = { path = "../tbtc", features = ["cpi"] }
+tmewc = { path = "../tmewc", features = ["cpi"] }

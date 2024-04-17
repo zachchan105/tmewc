@@ -1,30 +1,30 @@
-# Interface: TBTCVault
+# Interface: TMEWCVault
 
-Interface for communication with the TBTCVault on-chain contract.
+Interface for communication with the TMEWCVault on-chain contract.
 
 ## Implemented by
 
-- [`EthereumTBTCVault`](../classes/EthereumTBTCVault.md)
+- [`EthereumTMEWCVault`](../classes/EthereumTMEWCVault.md)
 
 ## Table of contents
 
 ### Properties
 
-- [getOptimisticMintingCancelledEvents](TBTCVault.md#getoptimisticmintingcancelledevents)
-- [getOptimisticMintingFinalizedEvents](TBTCVault.md#getoptimisticmintingfinalizedevents)
-- [getOptimisticMintingRequestedEvents](TBTCVault.md#getoptimisticmintingrequestedevents)
+- [getOptimisticMintingCancelledEvents](TMEWCVault.md#getoptimisticmintingcancelledevents)
+- [getOptimisticMintingFinalizedEvents](TMEWCVault.md#getoptimisticmintingfinalizedevents)
+- [getOptimisticMintingRequestedEvents](TMEWCVault.md#getoptimisticmintingrequestedevents)
 
 ### Methods
 
-- [cancelOptimisticMint](TBTCVault.md#canceloptimisticmint)
-- [finalizeOptimisticMint](TBTCVault.md#finalizeoptimisticmint)
-- [getChainIdentifier](TBTCVault.md#getchainidentifier)
-- [getMinters](TBTCVault.md#getminters)
-- [isGuardian](TBTCVault.md#isguardian)
-- [isMinter](TBTCVault.md#isminter)
-- [optimisticMintingDelay](TBTCVault.md#optimisticmintingdelay)
-- [optimisticMintingRequests](TBTCVault.md#optimisticmintingrequests)
-- [requestOptimisticMint](TBTCVault.md#requestoptimisticmint)
+- [cancelOptimisticMint](TMEWCVault.md#canceloptimisticmint)
+- [finalizeOptimisticMint](TMEWCVault.md#finalizeoptimisticmint)
+- [getChainIdentifier](TMEWCVault.md#getchainidentifier)
+- [getMinters](TMEWCVault.md#getminters)
+- [isGuardian](TMEWCVault.md#isguardian)
+- [isMinter](TMEWCVault.md#isminter)
+- [optimisticMintingDelay](TMEWCVault.md#optimisticmintingdelay)
+- [optimisticMintingRequests](TMEWCVault.md#optimisticmintingrequests)
+- [requestOptimisticMint](TMEWCVault.md#requestoptimisticmint)
 
 ## Properties
 
@@ -40,7 +40,7 @@ GetEventsFunction
 
 #### Defined in
 
-[src/lib/contracts/tbtc-vault.ts:107](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/tbtc-vault.ts#L107)
+[src/lib/contracts/tmewc-vault.ts:107](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/tmewc-vault.ts#L107)
 
 ___
 
@@ -56,7 +56,7 @@ GetEventsFunction
 
 #### Defined in
 
-[src/lib/contracts/tbtc-vault.ts:113](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/tbtc-vault.ts#L113)
+[src/lib/contracts/tmewc-vault.ts:113](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/tmewc-vault.ts#L113)
 
 ___
 
@@ -72,7 +72,7 @@ GetEventsFunction
 
 #### Defined in
 
-[src/lib/contracts/tbtc-vault.ts:101](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/tbtc-vault.ts#L101)
+[src/lib/contracts/tmewc-vault.ts:101](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/tmewc-vault.ts#L101)
 
 ## Methods
 
@@ -97,7 +97,7 @@ Transaction hash of the optimistic mint cancel transaction.
 
 #### Defined in
 
-[src/lib/contracts/tbtc-vault.ts:67](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/tbtc-vault.ts#L67)
+[src/lib/contracts/tmewc-vault.ts:67](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/tmewc-vault.ts#L67)
 
 ___
 
@@ -122,7 +122,7 @@ Transaction hash of the optimistic mint finalize transaction.
 
 #### Defined in
 
-[src/lib/contracts/tbtc-vault.ts:80](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/tbtc-vault.ts#L80)
+[src/lib/contracts/tmewc-vault.ts:80](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/tmewc-vault.ts#L80)
 
 ___
 
@@ -138,7 +138,7 @@ Gets the chain-specific identifier of this contract.
 
 #### Defined in
 
-[src/lib/contracts/tbtc-vault.ts:14](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/tbtc-vault.ts#L14)
+[src/lib/contracts/tmewc-vault.ts:14](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/tmewc-vault.ts#L14)
 
 ___
 
@@ -156,7 +156,7 @@ Array containing identifiers of all currently registered minters.
 
 #### Defined in
 
-[src/lib/contracts/tbtc-vault.ts:30](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/tbtc-vault.ts#L30)
+[src/lib/contracts/tmewc-vault.ts:30](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/tmewc-vault.ts#L30)
 
 ___
 
@@ -178,7 +178,7 @@ Checks if given identifier is registered as guardian.
 
 #### Defined in
 
-[src/lib/contracts/tbtc-vault.ts:44](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/tbtc-vault.ts#L44)
+[src/lib/contracts/tmewc-vault.ts:44](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/tmewc-vault.ts#L44)
 
 ___
 
@@ -200,7 +200,7 @@ Checks if given identifier is registered as minter.
 
 #### Defined in
 
-[src/lib/contracts/tbtc-vault.ts:37](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/tbtc-vault.ts#L37)
+[src/lib/contracts/tmewc-vault.ts:37](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/tmewc-vault.ts#L37)
 
 ___
 
@@ -211,7 +211,7 @@ ___
 Gets optimistic minting delay.
 
 The time that needs to pass between the moment the optimistic minting is
-requested and the moment optimistic minting is finalized with minting TBTC.
+requested and the moment optimistic minting is finalized with minting TMEWC.
 
 #### Returns
 
@@ -221,7 +221,7 @@ Optimistic Minting Delay in seconds.
 
 #### Defined in
 
-[src/lib/contracts/tbtc-vault.ts:23](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/tbtc-vault.ts#L23)
+[src/lib/contracts/tmewc-vault.ts:23](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/tmewc-vault.ts#L23)
 
 ___
 
@@ -246,7 +246,7 @@ Optimistic minting request.
 
 #### Defined in
 
-[src/lib/contracts/tbtc-vault.ts:92](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/tbtc-vault.ts#L92)
+[src/lib/contracts/tmewc-vault.ts:92](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/tmewc-vault.ts#L92)
 
 ___
 
@@ -271,4 +271,4 @@ Transaction hash of the optimistic mint request transaction.
 
 #### Defined in
 
-[src/lib/contracts/tbtc-vault.ts:54](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/tbtc-vault.ts#L54)
+[src/lib/contracts/tmewc-vault.ts:54](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/tmewc-vault.ts#L54)

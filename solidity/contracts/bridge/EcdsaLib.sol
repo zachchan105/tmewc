@@ -15,7 +15,7 @@
 
 pragma solidity 0.8.17;
 
-import "@keep-network/bitcoin-spv-sol/contracts/BytesLib.sol";
+import "@keep-network/meowcoin-spv-sol/contracts/BytesLib.sol";
 
 library EcdsaLib {
     using BytesLib for bytes;

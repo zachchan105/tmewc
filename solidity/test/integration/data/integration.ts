@@ -24,7 +24,7 @@ export const NO_MAIN_UTXO = {
 
 /**
  * Test data based on a testnet deposit transaction:
- * https://live.blockcypher.com/btc-testnet/tx/c872fb11bbca1241aced71c692e7d0b0cf46aadb390ce66ddfcf5fbd8e5bc26f/
+ * https://live.blockcypher.com/mewc-testnet/tx/c872fb11bbca1241aced71c692e7d0b0cf46aadb390ce66ddfcf5fbd8e5bc26f/
  */
 export const revealDepositData = {
   fundingTx: {
@@ -53,7 +53,7 @@ export const revealDepositData = {
 
 /**
  * Test data based on a deposit sweep transaction:
- * https://live.blockcypher.com/btc-testnet/tx/0aa0af5a6de05a7be990ca47f7a523df872b29a0f3be3d54cd99a6a6d43a1366/
+ * https://live.blockcypher.com/mewc-testnet/tx/0aa0af5a6de05a7be990ca47f7a523df872b29a0f3be3d54cd99a6a6d43a1366/
  */
 export const depositSweepData = {
   sweepTx: {
@@ -108,7 +108,7 @@ export const depositSweepData = {
 
 /**
  * Test data based on a testnet redemption transaction:
- * https://live.blockcypher.com/btc-testnet/tx/14b6c9b70530ff0cabd1d28513bf82a7c2781da0ce3bc50df72e2a1b6745e36e/
+ * https://live.blockcypher.com/mewc-testnet/tx/14b6c9b70530ff0cabd1d28513bf82a7c2781da0ce3bc50df72e2a1b6745e36e/
  */
 export const redemptionData = {
   redemptionTx: {

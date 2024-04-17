@@ -69,7 +69,7 @@ const { publicKey: walletPublicKey, pubKeyHash160: walletPublicKeyHash } =
   fraudWallet
 
 // Most of the tests around specific bridge functionality were ported from the
-// other tbtc-v2 tests suites and adjusted to check the refund functionality of
+// other tmewc tests suites and adjusted to check the refund functionality of
 // the MaintainerProxy contract.
 describe("MaintainerProxy", () => {
   let deployer: SignerWithAddress
@@ -111,7 +111,7 @@ describe("MaintainerProxy", () => {
       address: (await bridge.contractReferences()).ecdsaWalletRegistry,
     })
 
-    // Set the deposit dust threshold to 0.0001 BTC, i.e. 100x smaller than
+    // Set the deposit dust threshold to 0.0001 MEWC, i.e. 100x smaller than
     // the initial value in the Bridge in order to save test Bitcoins.
     // Scaling down deposit TX max fee as well.
     await bridge.setDepositDustThreshold(10000)
@@ -1892,12 +1892,12 @@ describe("MaintainerProxy", () => {
       // This approach is better long-term. In case the format of the heartbeat
       // message changes or in case we want to add more unit tests, we can simply
       // call appropriate function to compute another signature. Also, we do not
-      // use any BTC-specific data for this set of unit tests.
+      // use any MEWC-specific data for this set of unit tests.
       const wallet = ethers.Wallet.createRandom()
       // We use `ethers.utils.SigningKey` for a `Wallet` instead of
       // `Signer.signMessage` to do not add '\x19Ethereum Signed Message:\n'
       // prefix to the signed message. The format of the heartbeat message is
-      // the same no matter on which host chain TBTC is deployed.
+      // the same no matter on which host chain TMEWC is deployed.
       heartbeatWalletSigningKey = new ethers.utils.SigningKey(wallet.privateKey)
       // Public key obtained as `wallet.publicKey` is an uncompressed key,
       // prefixed with `0x04`. To compute raw ECDSA key, we need to drop `0x04`.
@@ -3566,7 +3566,7 @@ describe("MaintainerProxy", () => {
     redeemer: SignerWithAddress,
     amount: BigNumberish
   ): Promise<ContractTransaction> {
-    // Simulate the redeemer has a TBTC balance allowing to make the request.
+    // Simulate the redeemer has a TMEWC balance allowing to make the request.
     await bank.setBalance(redeemer.address, amount)
     // Redeemer must allow the Bridge to spent the requested amount.
     return bank

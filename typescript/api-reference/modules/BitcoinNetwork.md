@@ -12,8 +12,8 @@
 
 ▸ **fromGenesisHash**(`hash`): [`BitcoinNetwork`](../enums/BitcoinNetwork-1.md)
 
-Gets Bitcoin Network type by comparing a provided hash to known
-[genesis block hashes](https://en.bitcoin.it/wiki/Genesis_block).
+Gets Meowcoin Network type by comparing a provided hash to known
+[genesis block hashes](https://en.meowcoin.it/wiki/Genesis_block).
 Returns [BitcoinNetwork.Unknown](../enums/BitcoinNetwork-1.md#unknown)
 
 #### Parameters
@@ -26,8 +26,8 @@ Returns [BitcoinNetwork.Unknown](../enums/BitcoinNetwork-1.md#unknown)
 
 [`BitcoinNetwork`](../enums/BitcoinNetwork-1.md)
 
-Bitcoin Network.
+Meowcoin Network.
 
 #### Defined in
 
-[src/lib/bitcoin/network.ts:33](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/bitcoin/network.ts#L33)
+[src/lib/meowcoin/network.ts:33](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/meowcoin/network.ts#L33)

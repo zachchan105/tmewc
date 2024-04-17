@@ -15,15 +15,15 @@
 
 pragma solidity 0.8.17;
 
-import {BTCUtils} from "@keep-network/bitcoin-spv-sol/contracts/BTCUtils.sol";
-import {BytesLib} from "@keep-network/bitcoin-spv-sol/contracts/BytesLib.sol";
+import {MEWCUtils} from "@keep-network/meowcoin-spv-sol/contracts/MEWCUtils.sol";
+import {BytesLib} from "@keep-network/meowcoin-spv-sol/contracts/BytesLib.sol";
 
 import "./BitcoinTx.sol";
 import "./BridgeState.sol";
 import "./Wallets.sol";
 
 /// @title Bridge deposit
-/// @notice The library handles the logic for revealing Bitcoin deposits to
+/// @notice The library handles the logic for revealing Meowcoin deposits to
 ///         the Bridge.
 /// @dev The depositor puts together a P2SH or P2WSH address to deposit the
 ///      funds. This script is unique to each depositor and looks like this:
@@ -64,7 +64,7 @@ import "./Wallets.sol";
 ///      ENDIF
 ///      ```
 library Deposit {
-    using BTCUtils for bytes;
+    using MEWCUtils for bytes;
     using BytesLib for bytes;
 
     /// @notice Represents data which must be revealed by the depositor during
@@ -76,18 +76,18 @@ library Deposit {
         // as this factor is not interpreted as uint. The blinding factor allows
         // to distinguish deposits from the same depositor.
         bytes8 blindingFactor;
-        // The compressed Bitcoin public key (33 bytes and 02 or 03 prefix)
-        // of the deposit's wallet hashed in the HASH160 Bitcoin opcode style.
+        // The compressed Meowcoin public key (33 bytes and 02 or 03 prefix)
+        // of the deposit's wallet hashed in the HASH160 Meowcoin opcode style.
         bytes20 walletPubKeyHash;
-        // The compressed Bitcoin public key (33 bytes and 02 or 03 prefix)
+        // The compressed Meowcoin public key (33 bytes and 02 or 03 prefix)
         // that can be used to make the deposit refund after the refund
-        // locktime passes. Hashed in the HASH160 Bitcoin opcode style.
+        // locktime passes. Hashed in the HASH160 Meowcoin opcode style.
         bytes20 refundPubKeyHash;
         // The refund locktime (4-byte LE). Interpreted according to locktime
         // parsing rules described in:
-        // https://developer.bitcoin.org/devguide/transactions.html#locktime-and-sequence-number
+        // https://developer.meowcoin.org/devguide/transactions.html#locktime-and-sequence-number
         // and used with OP_CHECKLOCKTIMEVERIFY opcode as described in:
-        // https://github.com/bitcoin/bips/blob/master/bip-0065.mediawiki
+        // https://github.com/meowcoin/bips/blob/master/bip-0065.mediawiki
         bytes4 refundLocktime;
         // Address of the Bank vault to which the deposit is routed to.
         // Optional, can be 0x0. The vault must be trusted by the Bridge.
@@ -96,7 +96,7 @@ library Deposit {
         // stored, it is used as a function's calldata argument.
     }
 
-    /// @notice Represents tBTC deposit request data.
+    /// @notice Represents tMEWC deposit request data.
     struct DepositRequest {
         // Ethereum depositor address.
         address depositor;
@@ -108,10 +108,10 @@ library Deposit {
         // Address of the Bank vault the deposit is routed to.
         // Optional, can be 0x0.
         address vault;
-        // Treasury TBTC fee in satoshi at the moment of deposit reveal.
+        // Treasury TMEWC fee in satoshi at the moment of deposit reveal.
         uint64 treasuryFee;
         // UNIX timestamp the deposit was swept at. Note this is not the
-        // time when the deposit was swept on the Bitcoin chain but actually
+        // time when the deposit was swept on the Meowcoin chain but actually
         // the time when the sweep proof was delivered to the Ethereum chain.
         // XXX: Unsigned 32-bit int unix seconds, will break February 7th 2106.
         uint32 sweptAt;
@@ -135,39 +135,39 @@ library Deposit {
     );
 
     /// @notice Used by the depositor to reveal information about their P2(W)SH
-    ///         Bitcoin deposit to the Bridge on Ethereum chain. The off-chain
+    ///         Meowcoin deposit to the Bridge on Ethereum chain. The off-chain
     ///         wallet listens for revealed deposit events and may decide to
     ///         include the revealed deposit in the next executed sweep.
-    ///         Information about the Bitcoin deposit can be revealed before or
-    ///         after the Bitcoin transaction with P2(W)SH deposit is mined on
-    ///         the Bitcoin chain. Worth noting, the gas cost of this function
+    ///         Information about the Meowcoin deposit can be revealed before or
+    ///         after the Meowcoin transaction with P2(W)SH deposit is mined on
+    ///         the Meowcoin chain. Worth noting, the gas cost of this function
     ///         scales with the number of P2(W)SH transaction inputs and
     ///         outputs. The deposit may be routed to one of the trusted vaults.
     ///         When a deposit is routed to a vault, vault gets notified when
     ///         the deposit gets swept and it may execute the appropriate action.
-    /// @param fundingTx Bitcoin funding transaction data, see `BitcoinTx.Info`.
+    /// @param fundingTx Meowcoin funding transaction data, see `BitcoinTx.Info`.
     /// @param reveal Deposit reveal data, see `RevealInfo struct.
     /// @dev Requirements:
     ///      - This function must be called by the same Ethereum address as the
-    ///        one used in the P2(W)SH BTC deposit transaction as a depositor,
+    ///        one used in the P2(W)SH MEWC deposit transaction as a depositor,
     ///      - `reveal.walletPubKeyHash` must identify a `Live` wallet,
     ///      - `reveal.vault` must be 0x0 or point to a trusted vault,
     ///      - `reveal.fundingOutputIndex` must point to the actual P2(W)SH
-    ///        output of the BTC deposit transaction,
+    ///        output of the MEWC deposit transaction,
     ///      - `reveal.blindingFactor` must be the blinding factor used in the
-    ///        P2(W)SH BTC deposit transaction,
+    ///        P2(W)SH MEWC deposit transaction,
     ///      - `reveal.walletPubKeyHash` must be the wallet pub key hash used in
-    ///        the P2(W)SH BTC deposit transaction,
+    ///        the P2(W)SH MEWC deposit transaction,
     ///      - `reveal.refundPubKeyHash` must be the refund pub key hash used in
-    ///        the P2(W)SH BTC deposit transaction,
+    ///        the P2(W)SH MEWC deposit transaction,
     ///      - `reveal.refundLocktime` must be the refund locktime used in the
-    ///        P2(W)SH BTC deposit transaction,
-    ///      - BTC deposit for the given `fundingTxHash`, `fundingOutputIndex`
+    ///        P2(W)SH MEWC deposit transaction,
+    ///      - MEWC deposit for the given `fundingTxHash`, `fundingOutputIndex`
     ///        can be revealed only one time.
     ///
     ///      If any of these requirements is not met, the wallet _must_ refuse
     ///      to sweep the deposit and the depositor has to wait until the
-    ///      deposit script unlocks to receive their BTC back.
+    ///      deposit script unlocks to receive their MEWC back.
     function revealDeposit(
         BridgeState.Storage storage self,
         BitcoinTx.Info calldata fundingTx,
@@ -184,7 +184,7 @@ library Deposit {
     ///         the flow for regular deposits. If `extraData` is not bytes32(0),
     ///         the function triggers the flow for deposits with 32-byte
     ///         extra data.
-    /// @param fundingTx Bitcoin funding transaction data, see `BitcoinTx.Info`.
+    /// @param fundingTx Meowcoin funding transaction data, see `BitcoinTx.Info`.
     /// @param reveal Deposit reveal data, see `RevealInfo struct.
     /// @param extraData 32-byte deposit extra data. Can be bytes32(0).
     /// @dev Requirements are described in the docstrings of `revealDeposit` and
@@ -223,7 +223,7 @@ library Deposit {
                 hex"75", // OP_DROP
                 hex"76", // OP_DUP
                 hex"a9", // OP_HASH160
-                hex"14", // Byte length of a compressed Bitcoin public key hash.
+                hex"14", // Byte length of a compressed Meowcoin public key hash.
                 reveal.walletPubKeyHash,
                 hex"87", // OP_EQUAL
                 hex"63", // OP_IF
@@ -231,7 +231,7 @@ library Deposit {
                 hex"67", // OP_ELSE
                 hex"76", // OP_DUP
                 hex"a9", // OP_HASH160
-                hex"14", // Byte length of a compressed Bitcoin public key hash.
+                hex"14", // Byte length of a compressed Meowcoin public key hash.
                 reveal.refundPubKeyHash,
                 hex"88", // OP_EQUALVERIFY
                 hex"04", // Byte length of refund locktime value.
@@ -255,7 +255,7 @@ library Deposit {
                 hex"75", // OP_DROP
                 hex"76", // OP_DUP
                 hex"a9", // OP_HASH160
-                hex"14", // Byte length of a compressed Bitcoin public key hash.
+                hex"14", // Byte length of a compressed Meowcoin public key hash.
                 reveal.walletPubKeyHash,
                 hex"87", // OP_EQUAL
                 hex"63", // OP_IF
@@ -263,7 +263,7 @@ library Deposit {
                 hex"67", // OP_ELSE
                 hex"76", // OP_DUP
                 hex"a9", // OP_HASH160
-                hex"14", // Byte length of a compressed Bitcoin public key hash.
+                hex"14", // Byte length of a compressed Meowcoin public key hash.
                 reveal.refundPubKeyHash,
                 hex"88", // OP_EQUALVERIFY
                 hex"04", // Byte length of refund locktime value.
@@ -304,7 +304,7 @@ library Deposit {
             revert("Wrong script hash length");
         }
 
-        // Resulting TX hash is in native Bitcoin little-endian format.
+        // Resulting TX hash is in native Meowcoin little-endian format.
         bytes32 fundingTxHash = abi
             .encodePacked(
                 fundingTx.version,
@@ -368,7 +368,7 @@ library Deposit {
     }
 
     /// @notice Sibling of the `revealDeposit` function. This function allows
-    ///         to reveal a P2(W)SH Bitcoin deposit with 32-byte extra data
+    ///         to reveal a P2(W)SH Meowcoin deposit with 32-byte extra data
     ///         embedded in the deposit script. The extra data allows to
     ///         attach additional context to the deposit. For example,
     ///         it allows a third-party smart contract to reveal the
@@ -376,18 +376,18 @@ library Deposit {
     ///         additional services once the deposit is handled. In this
     ///         case, the address of the original depositor can be encoded
     ///         as extra data.
-    /// @param fundingTx Bitcoin funding transaction data, see `BitcoinTx.Info`.
+    /// @param fundingTx Meowcoin funding transaction data, see `BitcoinTx.Info`.
     /// @param reveal Deposit reveal data, see `RevealInfo struct.
     /// @param extraData 32-byte deposit extra data.
     /// @dev Requirements:
     ///      - All requirements from `revealDeposit` function must be met,
     ///      - `extraData` must not be bytes32(0),
     ///      - `extraData` must be the actual extra data used in the P2(W)SH
-    ///        BTC deposit transaction.
+    ///        MEWC deposit transaction.
     ///
     ///      If any of these requirements is not met, the wallet _must_ refuse
     ///      to sweep the deposit and the depositor has to wait until the
-    ///      deposit script unlocks to receive their BTC back.
+    ///      deposit script unlocks to receive their MEWC back.
     function revealDepositWithExtraData(
         BridgeState.Storage storage self,
         BitcoinTx.Info calldata fundingTx,
@@ -417,10 +417,10 @@ library Deposit {
     ) internal view {
         // Convert the refund locktime byte array to a LE integer. This is
         // the moment in time when the deposit become refundable.
-        uint32 depositRefundableTimestamp = BTCUtils.reverseUint32(
+        uint32 depositRefundableTimestamp = MEWCUtils.reverseUint32(
             uint32(refundLocktime)
         );
-        // According to https://developer.bitcoin.org/devguide/transactions.html#locktime-and-sequence-number
+        // According to https://developer.meowcoin.org/devguide/transactions.html#locktime-and-sequence-number
         // the locktime is parsed as a block number if less than 500M. We always
         // want to parse the locktime as an Unix timestamp so we allow only for
         // values bigger than or equal to 500M.

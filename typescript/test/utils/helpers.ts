@@ -5,7 +5,7 @@ import { assert } from "chai"
 import { MockProvider } from "@ethereum-waffle/provider"
 
 /**
- * Represents a structured JSON format for a Bitcoin transaction. It includes
+ * Represents a structured JSON format for a Meowcoin transaction. It includes
  * detailed information about its inputs and outputs, as well as the transaction
  * itself.
  */
@@ -28,9 +28,9 @@ interface TxJSON {
 }
 
 /**
- * Converts a raw Bitcoin transaction into a structured JSON format.
- * @param rawTransaction - A raw Bitcoin transaction in hexadecimal string format.
- * @param bitcoinNetwork - Bitcoin network.
+ * Converts a raw Meowcoin transaction into a structured JSON format.
+ * @param rawTransaction - A raw Meowcoin transaction in hexadecimal string format.
+ * @param bitcoinNetwork - Meowcoin network.
  * @returns A structured JSON object representing the transaction.
  */
 export function txToJSON(

@@ -6,11 +6,11 @@ import {
   BitcoinRawTx,
   BitcoinTx,
   BitcoinTxHash,
-} from "../../src/lib/bitcoin"
+} from "../../src/lib/meowcoin"
 import { Hex } from "../../src/lib/utils"
 
 /**
- * Mock Bitcoin client used for test purposes.
+ * Mock Meowcoin client used for test purposes.
  */
 export class MockBitcoinClient implements BitcoinClient {
   private _network = BitcoinNetwork.Testnet

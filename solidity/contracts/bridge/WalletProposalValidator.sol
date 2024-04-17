@@ -15,8 +15,8 @@
 
 pragma solidity 0.8.17;
 
-import {BTCUtils} from "@keep-network/bitcoin-spv-sol/contracts/BTCUtils.sol";
-import {BytesLib} from "@keep-network/bitcoin-spv-sol/contracts/BytesLib.sol";
+import {MEWCUtils} from "@keep-network/meowcoin-spv-sol/contracts/MEWCUtils.sol";
+import {BytesLib} from "@keep-network/meowcoin-spv-sol/contracts/BytesLib.sol";
 
 import "./BitcoinTx.sol";
 import "./Bridge.sol";
@@ -30,7 +30,7 @@ import "./Wallets.sol";
 ///         specific wallet action proposals. This contract is non-upgradeable
 ///         and does not have any write functions.
 contract WalletProposalValidator {
-    using BTCUtils for bytes;
+    using MEWCUtils for bytes;
     using BytesLib for bytes;
 
     /// @notice Helper structure representing a deposit sweep proposal.
@@ -39,7 +39,7 @@ contract WalletProposalValidator {
         bytes20 walletPubKeyHash;
         // Deposits that should be part of the sweep.
         DepositKey[] depositsKeys;
-        // Proposed BTC fee for the entire transaction.
+        // Proposed MEWC fee for the entire transaction.
         uint256 sweepTxFee;
         // Array containing the reveal blocks of each deposit. This information
         // strongly facilitates the off-chain processing. Using those blocks,
@@ -55,7 +55,7 @@ contract WalletProposalValidator {
 
     /// @notice Helper structure representing a plain-text deposit key.
     ///         Each deposit can be identified by their 32-byte funding
-    ///         transaction hash (Bitcoin internal byte order) an the funding
+    ///         transaction hash (Meowcoin internal byte order) an the funding
     ///         output index (0-based).
     /// @dev Do not confuse this structure with the deposit key used within the
     ///      Bridge contract to store deposits. Here we have the plain-text
@@ -72,7 +72,7 @@ contract WalletProposalValidator {
     ///         Deposit.DepositRevealInfo.
     /// @dev These data can be pulled from respective `DepositRevealed` events
     ///      emitted by the `Bridge.revealDeposit` function. The `fundingTx`
-    ///      field must be taken directly from the Bitcoin chain, using the
+    ///      field must be taken directly from the Meowcoin chain, using the
     ///      `DepositRevealed.fundingTxHash` as transaction identifier.
     struct DepositExtraInfo {
         BitcoinTx.Info fundingTx;
@@ -91,7 +91,7 @@ contract WalletProposalValidator {
         // length, i.e. passed in the exactly same format as during the
         // `Bridge.requestRedemption` transaction.
         bytes[] redeemersOutputScripts;
-        // Proposed BTC fee for the entire transaction.
+        // Proposed MEWC fee for the entire transaction.
         uint256 redemptionTxFee;
     }
 
@@ -101,7 +101,7 @@ contract WalletProposalValidator {
         bytes20 walletPubKeyHash;
         // List of 20-byte public key hashes of target wallets.
         bytes20[] targetWallets;
-        // Proposed BTC fee for the entire transaction.
+        // Proposed MEWC fee for the entire transaction.
         uint256 movingFundsTxFee;
     }
 
@@ -115,7 +115,7 @@ contract WalletProposalValidator {
         // Index of the moving funds transaction output that is subject of the
         // sweep request.
         uint32 movingFundsTxOutputIndex;
-        // Proposed BTC fee for the entire transaction.
+        // Proposed MEWC fee for the entire transaction.
         uint256 movedFundsSweepTxFee;
     }
 
@@ -138,8 +138,8 @@ contract WalletProposalValidator {
     ///
     /// @dev Forcing deposit minimum age ensures block finality for Ethereum.
     ///      In the happy path case, i.e. where the deposit is revealed immediately
-    ///      after being broadcast on the Bitcoin network, the minimum age
-    ///      check also ensures block finality for Bitcoin.
+    ///      after being broadcast on the Meowcoin network, the minimum age
+    ///      check also ensures block finality for Meowcoin.
     uint32 public constant DEPOSIT_MIN_AGE = 2 hours;
 
     /// @notice Each deposit can be technically swept until it reaches its
@@ -179,10 +179,10 @@ contract WalletProposalValidator {
     ///         that are close to their timeout timestamp may cause a race
     ///         between the wallet and the redeemer. In result, the wallet may
     ///         redeem the requested funds even though the redeemer already
-    ///         received back their tBTC (locked during redemption request) upon
+    ///         received back their tMEWC (locked during redemption request) upon
     ///         reporting the request timeout. In effect, the redeemer may end
-    ///         out with both tBTC and redeemed BTC in their hands which has
-    ///         a negative impact on the tBTC <-> BTC peg. In order to mitigate
+    ///         out with both tMEWC and redeemed MEWC in their hands which has
+    ///         a negative impact on the tMEWC <-> MEWC peg. In order to mitigate
     ///         that problem, this parameter determines a safety margin that
     ///         puts the latest moment a request can be handled far before the
     ///         point after which the request can be reported as timed out.
@@ -236,7 +236,7 @@ contract WalletProposalValidator {
     ///      - Each deposit must be unique.
     ///
     ///      The following off-chain validation must be performed as a bare minimum:
-    ///      - Inputs used for the sweep transaction have enough Bitcoin confirmations,
+    ///      - Inputs used for the sweep transaction have enough Meowcoin confirmations,
     ///      - Deposits revealed to the Bridge have enough Ethereum confirmations.
     function validateDepositSweepProposal(
         DepositSweepProposal calldata proposal,
@@ -307,7 +307,7 @@ contract WalletProposalValidator {
                 depositExtraInfo
             );
 
-            uint32 depositRefundableTimestamp = BTCUtils.reverseUint32(
+            uint32 depositRefundableTimestamp = MEWCUtils.reverseUint32(
                 uint32(depositExtraInfo.refundLocktime)
             );
             require(
@@ -434,7 +434,7 @@ contract WalletProposalValidator {
                 hex"75", // OP_DROP
                 hex"76", // OP_DUP
                 hex"a9", // OP_HASH160
-                hex"14", // Byte length of a compressed Bitcoin public key hash.
+                hex"14", // Byte length of a compressed Meowcoin public key hash.
                 depositExtraInfo.walletPubKeyHash,
                 hex"87", // OP_EQUAL
                 hex"63", // OP_IF
@@ -442,7 +442,7 @@ contract WalletProposalValidator {
                 hex"67", // OP_ELSE
                 hex"76", // OP_DUP
                 hex"a9", // OP_HASH160
-                hex"14", // Byte length of a compressed Bitcoin public key hash.
+                hex"14", // Byte length of a compressed Meowcoin public key hash.
                 depositExtraInfo.refundPubKeyHash,
                 hex"88", // OP_EQUALVERIFY
                 hex"04", // Byte length of refund locktime value.
@@ -466,7 +466,7 @@ contract WalletProposalValidator {
                 hex"75", // OP_DROP
                 hex"76", // OP_DUP
                 hex"a9", // OP_HASH160
-                hex"14", // Byte length of a compressed Bitcoin public key hash.
+                hex"14", // Byte length of a compressed Meowcoin public key hash.
                 depositExtraInfo.walletPubKeyHash,
                 hex"87", // OP_EQUAL
                 hex"63", // OP_IF
@@ -474,7 +474,7 @@ contract WalletProposalValidator {
                 hex"67", // OP_ELSE
                 hex"76", // OP_DUP
                 hex"a9", // OP_HASH160
-                hex"14", // Byte length of a compressed Bitcoin public key hash.
+                hex"14", // Byte length of a compressed Meowcoin public key hash.
                 depositExtraInfo.refundPubKeyHash,
                 hex"88", // OP_EQUALVERIFY
                 hex"04", // Byte length of refund locktime value.
@@ -701,7 +701,7 @@ contract WalletProposalValidator {
     ///      - The target wallets commitment must be submitted,
     ///      - The target wallets commitment hash must match the target wallets
     ///        from the proposal,
-    ///      - The source wallet BTC balance must be equal to or greater than
+    ///      - The source wallet MEWC balance must be equal to or greater than
     ///        `movingFundsDustThreshold`,
     ///      - The proposed moving funds transaction fee must be greater than
     ///        zero,
@@ -756,7 +756,7 @@ contract WalletProposalValidator {
 
         require(
             sourceWalletBtcBalance >= movingFundsDustThreshold,
-            "Source wallet BTC balance is below the moving funds dust threshold"
+            "Source wallet MEWC balance is below the moving funds dust threshold"
         );
 
         // Make sure the proposed fee is valid.
@@ -773,18 +773,18 @@ contract WalletProposalValidator {
         return true;
     }
 
-    /// @notice Calculates the Bitcoin balance of a wallet based on its main
+    /// @notice Calculates the Meowcoin balance of a wallet based on its main
     ///         UTXO.
     /// @param walletMainUtxoHash The hash of the wallet's main UTXO.
     /// @param walletMainUtxo The detailed data of the wallet's main UTXO.
-    /// @return walletBtcBalance The calculated Bitcoin balance of the wallet.
+    /// @return walletBtcBalance The calculated Meowcoin balance of the wallet.
     function getWalletBtcBalance(
         bytes32 walletMainUtxoHash,
         BitcoinTx.UTXO calldata walletMainUtxo
     ) internal view returns (uint64 walletBtcBalance) {
         // If the wallet has a main UTXO hash set, cross-check it with the
         // provided plain-text parameter and get the transaction output value
-        // as BTC balance. Otherwise, the BTC balance is just zero.
+        // as MEWC balance. Otherwise, the MEWC balance is just zero.
         if (walletMainUtxoHash != bytes32(0)) {
             require(
                 keccak256(

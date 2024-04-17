@@ -1,13 +1,13 @@
 use anchor_lang::prelude::*;
 
 #[event]
-pub struct WormholeTbtcReceived {
+pub struct WormholeTmewcReceived {
     pub receiver: Pubkey,
     pub amount: u64,
 }
 
 #[event]
-pub struct WormholeTbtcSent {
+pub struct WormholeTmewcSent {
     pub amount: u64,
     pub recipient_chain: u16,
     pub gateway: [u8; 32],
@@ -17,7 +17,7 @@ pub struct WormholeTbtcSent {
 }
 
 #[event]
-pub struct WormholeTbtcDeposited {
+pub struct WormholeTmewcDeposited {
     pub depositor: Pubkey,
     pub amount: u64,
 }

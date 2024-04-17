@@ -27,10 +27,10 @@ help() {
     "--electrum-protocol <client-protocol>"
   echo -e "\nRequired command line arguments:\n"
   echo -e "\t--deposit-json-path: Deposit JSON file path"
-  echo -e "\t--deposit-amount: Amount of BTC to recover in satoshi. Must match the original deposit amount."
+  echo -e "\t--deposit-amount: Amount of MEWC to recover in satoshi. Must match the original deposit amount."
   echo -e "\t--deposit-transaction-id: Transaction ID/hash of the original deposit"
   echo -e "\t--deposit-transaction-index: Deposit transaction index"
-  echo -e "\t--private-key: Private key of the BTC recovery wallet"
+  echo -e "\t--private-key: Private key of the MEWC recovery wallet"
   echo -e "\t--transaction-fee: Recovery transaction fee that a user is willing to pay"
   echo -e "\t--electrum-host: Electrum client host"
   echo -e "\t--electrum-port: Electrum client port"
@@ -135,7 +135,7 @@ printf "${LOG_START}Installing yarn dependencies...${LOG_END}"
 yarn install
 
 # Run script
-printf "${LOG_START}Recovering BTC...${LOG_END}"
+printf "${LOG_START}Recovering MEWC...${LOG_END}"
 
 yarn refund \
   --deposit-json-path ${DEPOSIT_PATH} \

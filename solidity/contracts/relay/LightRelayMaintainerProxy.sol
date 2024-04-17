@@ -24,7 +24,7 @@ import "./LightRelay.sol";
 /// @title LightRelayMaintainerProxy
 /// @notice The proxy contract that allows the relay maintainers to be refunded
 ///         for the spent gas from the `ReimbursementPool`. When proving the
-///         next Bitcoin difficulty epoch, the maintainer calls the
+///         next Meowcoin difficulty epoch, the maintainer calls the
 ///         `LightRelayMaintainerProxy` which in turn calls the actual `LightRelay`
 ///         contract.
 contract LightRelayMaintainerProxy is Ownable, Reimbursable {

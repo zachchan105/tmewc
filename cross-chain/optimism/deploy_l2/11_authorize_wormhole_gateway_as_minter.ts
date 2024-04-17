@@ -11,7 +11,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   )
 
   await execute(
-    "OptimismTBTC",
+    "OptimismTMEWC",
     { from: deployer, log: true, waitConfirmations: 1 },
     "addMinter",
     optimismWormholeGateway.address
@@ -21,4 +21,4 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 export default func
 
 func.tags = ["AuthorizeWormholeGateway"]
-func.dependencies = ["OptimismTBTC", "OptimismWormholeGateway"]
+func.dependencies = ["OptimismTMEWC", "OptimismWormholeGateway"]

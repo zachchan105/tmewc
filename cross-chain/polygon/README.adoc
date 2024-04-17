@@ -2,8 +2,8 @@
 
 = Threshold cross-chain - Polygon
 
-This package brings Bitcoin to Ethereum Polygon. For more details please
-see link:https://github.com/keep-network/tbtc-v2/blob/main/docs/rfc/rfc-8.adoc[RFC 8: Cross-chain Tokenized Threshold BTC]
+This package brings Meowcoin to Ethereum Polygon. For more details please
+see link:https://github.com/keep-network/tmewc/blob/main/docs/rfc/rfc-8.adoc[RFC 8: Cross-chain Tokenized Threshold MEWC]
 
 == How it works?
 
@@ -12,20 +12,20 @@ see link:https://github.com/keep-network/tbtc-v2/blob/main/docs/rfc/rfc-8.adoc[R
 |          Ethereum          |         |                                Polygon                                   |
 |                            |         |                                                                           |
 |  +----------------------+  |         |  +----------------------+  +-------------------------+  +--------------+  |
-|  | Wormhole TokenBridge |--|---------|--| Wormhole TokenBridge |--| PolygonWormholeGateway |--| PolygonTBTC |  |
+|  | Wormhole TokenBridge |--|---------|--| Wormhole TokenBridge |--| PolygonWormholeGateway |--| PolygonTMEWC |  |
 |  +----------------------+  |         |  +----------------------+  +-------------------------+  +--------------+  |
 |                            |         |                                                                           |
 +----------------------------+         +---------------------------------------------------------------------------+
 ```
 
-- `PolygonTBTC` canonical tBTC token on Polygon with a minting authority
+- `PolygonTMEWC` canonical tMEWC token on Polygon with a minting authority
 delegated to `PolygonWormholeGateway`.
 - `PolygonWormholeGateway` is a smart contract wrapping and unwrapping 
-Wormhole-specific tBTC representation into the canonical `PolygonTBTC` token.
+Wormhole-specific tMEWC representation into the canonical `PolygonTMEWC` token.
 
 === Updating Wormhole Gateway mapping
 
-The deployment scripts are responsible for managing updates of the tBTC gateway
+The deployment scripts are responsible for managing updates of the tMEWC gateway
 addresses across various chains. These addresses are stored in the `external/`
 directory for a specific network, such as `mumbai/ArbitrumWormholeGateway.json.` 
 It is important to note that these addresses should remain constant for the 

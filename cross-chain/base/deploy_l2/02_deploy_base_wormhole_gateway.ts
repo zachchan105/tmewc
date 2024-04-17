@@ -8,12 +8,12 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   // These are the fake random addresses for local development purposes only.
   const fakeTokenBridge = "0x0af5DC16568EFF2d480a43A77E6C409e497FcFb9"
-  const fakeWormholeTBTC = "0xe1F0b28a3518cCeC430d0d86Ea1725e6256b0296"
+  const fakeWormholeTMEWC = "0xe1F0b28a3518cCeC430d0d86Ea1725e6256b0296"
 
   const baseTokenBridge = await deployments.getOrNull("BaseTokenBridge")
-  const baseWormholeTBTC = await deployments.getOrNull("BaseWormholeTBTC")
+  const baseWormholeTMEWC = await deployments.getOrNull("BaseWormholeTMEWC")
 
-  const baseTBTC = await deployments.get("BaseTBTC")
+  const baseTMEWC = await deployments.get("BaseTMEWC")
 
   let baseTokenBridgeAddress = baseTokenBridge?.address
   if (!baseTokenBridgeAddress && hre.network.name === "hardhat") {
@@ -21,21 +21,21 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     log(`fake Base TokenBridge address ${baseTokenBridgeAddress}`)
   }
 
-  let baseWormholeTBTCAddress = baseWormholeTBTC?.address
-  if (!baseWormholeTBTCAddress && hre.network.name === "hardhat") {
-    baseWormholeTBTCAddress = fakeWormholeTBTC
-    log(`fake Base WormholeTBTC address ${baseWormholeTBTCAddress}`)
+  let baseWormholeTMEWCAddress = baseWormholeTMEWC?.address
+  if (!baseWormholeTMEWCAddress && hre.network.name === "hardhat") {
+    baseWormholeTMEWCAddress = fakeWormholeTMEWC
+    log(`fake Base WormholeTMEWC address ${baseWormholeTMEWCAddress}`)
   }
 
   const [, proxyDeployment] = await helpers.upgrades.deployProxy(
     "BaseWormholeGateway",
     {
       contractName:
-        "@keep-network/tbtc-v2/contracts/l2/L2WormholeGateway.sol:L2WormholeGateway",
+        "@keep-network/tmewc/contracts/l2/L2WormholeGateway.sol:L2WormholeGateway",
       initializerArgs: [
         baseTokenBridgeAddress,
-        baseWormholeTBTCAddress,
-        baseTBTC.address,
+        baseWormholeTMEWCAddress,
+        baseTMEWC.address,
       ],
       factoryOpts: { signer: await ethers.getSigner(deployer) },
       proxyOpts: {
@@ -64,4 +64,4 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 export default func
 
 func.tags = ["BaseWormholeGateway"]
-func.dependencies = ["BaseTokenBridge", "BaseWormholeTBTC"]
+func.dependencies = ["BaseTokenBridge", "BaseWormholeTMEWC"]

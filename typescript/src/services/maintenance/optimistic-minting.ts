@@ -1,13 +1,13 @@
-import { BitcoinTxHash } from "../../lib/bitcoin"
+import { BitcoinTxHash } from "../../lib/meowcoin"
 import { OptimisticMintingRequest } from "../../lib/contracts"
 import { Hex } from "../../lib/utils"
-import { TBTCContracts } from "../../lib/contracts"
+import { TMEWCContracts } from "../../lib/contracts"
 
 export class OptimisticMinting {
-  private readonly tbtcContracts: TBTCContracts
+  private readonly tmewcContracts: TMEWCContracts
 
-  constructor(tbtcContracts: TBTCContracts) {
-    this.tbtcContracts = tbtcContracts
+  constructor(tmewcContracts: TMEWCContracts) {
+    this.tmewcContracts = tmewcContracts
   }
 
   /**
@@ -21,7 +21,7 @@ export class OptimisticMinting {
     depositTxHash: BitcoinTxHash,
     depositOutputIndex: number
   ): Promise<Hex> {
-    return this.tbtcContracts.tbtcVault.requestOptimisticMint(
+    return this.tmewcContracts.tmewcVault.requestOptimisticMint(
       depositTxHash,
       depositOutputIndex
     )
@@ -38,7 +38,7 @@ export class OptimisticMinting {
     depositTxHash: BitcoinTxHash,
     depositOutputIndex: number
   ): Promise<Hex> {
-    return this.tbtcContracts.tbtcVault.cancelOptimisticMint(
+    return this.tmewcContracts.tmewcVault.cancelOptimisticMint(
       depositTxHash,
       depositOutputIndex
     )
@@ -55,7 +55,7 @@ export class OptimisticMinting {
     depositTxHash: BitcoinTxHash,
     depositOutputIndex: number
   ): Promise<Hex> {
-    return this.tbtcContracts.tbtcVault.finalizeOptimisticMint(
+    return this.tmewcContracts.tmewcVault.finalizeOptimisticMint(
       depositTxHash,
       depositOutputIndex
     )
@@ -72,7 +72,7 @@ export class OptimisticMinting {
     depositTxHash: BitcoinTxHash,
     depositOutputIndex: number
   ): Promise<OptimisticMintingRequest> {
-    return this.tbtcContracts.tbtcVault.optimisticMintingRequests(
+    return this.tmewcContracts.tmewcVault.optimisticMintingRequests(
       depositTxHash,
       depositOutputIndex
     )

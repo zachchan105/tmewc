@@ -1,5 +1,5 @@
 {
-  "name": "@keep-network/tbtc-v2-monitoring",
+  "name": "@keep-network/tmewc-monitoring",
   "version": "1.0.0-dev",
   "license": "GPL-3.0-only",
   "main": "dist/index.js",
@@ -13,9 +13,9 @@
     "postinstall": "npm rebuild bcrypto"
   },
   "dependencies": {
-    "@keep-network/tbtc-v2-mainnet": "npm:@keep-network/tbtc-v2@mainnet",
-    "@keep-network/tbtc-v2-testnet": "npm:@keep-network/tbtc-v2@sepolia",
-    "@keep-network/tbtc-v2.ts": "1.4.0-dev.1",
+    "@keep-network/tmewc-mainnet": "npm:@keep-network/tmewc@mainnet",
+    "@keep-network/tmewc-testnet": "npm:@keep-network/tmewc@sepolia",
+    "@keep-network/tmewc.ts": "1.4.0-dev.1",
     "@sentry/node": "^7.33.0",
     "axios": "^1.3.2",
     "ethers": "^5.5.2",

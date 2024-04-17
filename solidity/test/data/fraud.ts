@@ -85,7 +85,7 @@ export const wallet = {
 }
 
 // Test data comes from the (only) input of transaction:
-// https://live.blockcypher.com/btc-testnet/tx/25725b6110fdd095282e61f714e72ec14ebdba7d2c29e93a89a9fb11504a5f10/
+// https://live.blockcypher.com/mewc-testnet/tx/25725b6110fdd095282e61f714e72ec14ebdba7d2c29e93a89a9fb11504a5f10/
 export const nonWitnessSignSingleInputTx: FraudTestData = {
   signature: {
     v: 28,
@@ -116,7 +116,7 @@ export const nonWitnessSignSingleInputTx: FraudTestData = {
 }
 
 // Test data comes from the input at index 5 of transaction:
-// https://live.blockcypher.com/btc-testnet/tx/798f9a00cb9a8fddad777cf2923d9370fb2df9b76fcf1cde827618cd7a60d34e/
+// https://live.blockcypher.com/mewc-testnet/tx/798f9a00cb9a8fddad777cf2923d9370fb2df9b76fcf1cde827618cd7a60d34e/
 export const nonWitnessSignMultipleInputsTx: FraudTestData = {
   signature: {
     v: 27,
@@ -152,7 +152,7 @@ export const nonWitnessSignMultipleInputsTx: FraudTestData = {
 }
 
 // Test data comes from the (only) input of transaction:
-// https://live.blockcypher.com/btc-testnet/tx/1cd5779e463eb4e3cb4b2aa93333ccc022d6d46f74e2855a6985775be98b8bba/
+// https://live.blockcypher.com/mewc-testnet/tx/1cd5779e463eb4e3cb4b2aa93333ccc022d6d46f74e2855a6985775be98b8bba/
 export const witnessSignSingleInputTx: FraudTestData = {
   signature: {
     v: 27,
@@ -185,7 +185,7 @@ export const witnessSignSingleInputTx: FraudTestData = {
 }
 
 // Test data comes from the input at index 4 of transaction:
-// https://live.blockcypher.com/btc-testnet/tx/798f9a00cb9a8fddad777cf2923d9370fb2df9b76fcf1cde827618cd7a60d34e/
+// https://live.blockcypher.com/mewc-testnet/tx/798f9a00cb9a8fddad777cf2923d9370fb2df9b76fcf1cde827618cd7a60d34e/
 export const witnessSignMultipleInputTx: FraudTestData = {
   signature: {
     v: 28,
@@ -216,7 +216,7 @@ export const witnessSignMultipleInputTx: FraudTestData = {
 }
 
 // Test data comes from the input at index 1 of transaction:
-// https://live.blockcypher.com/btc-testnet/tx/28690a451632041443e9a5bb365c70bbd3f5c1bc6c4d9b8290873c94709cc1fe/
+// https://live.blockcypher.com/mewc-testnet/tx/28690a451632041443e9a5bb365c70bbd3f5c1bc6c4d9b8290873c94709cc1fe/
 // Wrong sighash was used (SIGHASH_NONE | SIGHASH_ANYONECANPAY).
 export const wrongSighashType: FraudTestData = {
   signature: {

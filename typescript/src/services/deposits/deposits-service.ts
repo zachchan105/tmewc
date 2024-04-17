@@ -4,7 +4,7 @@ import {
   DepositorProxy,
   DepositReceipt,
   L2Chain,
-  TBTCContracts,
+  TMEWCContracts,
 } from "../../lib/contracts"
 import {
   BitcoinAddressConverter,
@@ -12,14 +12,14 @@ import {
   BitcoinHashUtils,
   BitcoinLocktimeUtils,
   BitcoinScriptUtils,
-} from "../../lib/bitcoin"
+} from "../../lib/meowcoin"
 import { Hex } from "../../lib/utils"
 import { Deposit } from "./deposit"
 import * as crypto from "crypto"
 import { CrossChainDepositor } from "./cross-chain"
 
 /**
- * Service exposing features related to tBTC v2 deposits.
+ * Service exposing features related to tMEWC deposits.
  */
 export class DepositsService {
   /**
@@ -28,11 +28,11 @@ export class DepositsService {
    */
   private readonly depositRefundLocktimeDuration = 23328000
   /**
-   * Handle to tBTC contracts.
+   * Handle to tMEWC contracts.
    */
-  private readonly tbtcContracts: TBTCContracts
+  private readonly tmewcContracts: TMEWCContracts
   /**
-   * Bitcoin client handle.
+   * Meowcoin client handle.
    */
   private readonly bitcoinClient: BitcoinClient
   /**
@@ -49,18 +49,18 @@ export class DepositsService {
   readonly #crossChainContracts: (_: L2Chain) => CrossChainContracts | undefined
 
   constructor(
-    tbtcContracts: TBTCContracts,
+    tmewcContracts: TMEWCContracts,
     bitcoinClient: BitcoinClient,
     crossChainContracts: (_: L2Chain) => CrossChainContracts | undefined
   ) {
-    this.tbtcContracts = tbtcContracts
+    this.tmewcContracts = tmewcContracts
     this.bitcoinClient = bitcoinClient
     this.#crossChainContracts = crossChainContracts
   }
 
   /**
-   * Initiates the tBTC v2 deposit process.
-   * @param bitcoinRecoveryAddress P2PKH or P2WPKH Bitcoin address that can
+   * Initiates the tMEWC deposit process.
+   * @param bitcoinRecoveryAddress P2PKH or P2WPKH Meowcoin address that can
    *                               be used for emergency recovery of the
    *                               deposited funds.
    * @param extraData Optional 32-byte extra data to be included in the
@@ -69,7 +69,7 @@ export class DepositsService {
    * @throws Throws an error if one of the following occurs:
    *         - The default depositor is not set
    *         - There are no active wallet in the Bridge contract
-   *         - The Bitcoin recovery address is not a valid P2(W)PKH
+   *         - The Meowcoin recovery address is not a valid P2(W)PKH
    *         - The optional extra data is set but is not 32-byte or equals
    *           to 32 zero bytes.
    */
@@ -89,17 +89,17 @@ export class DepositsService {
       extraData
     )
 
-    return Deposit.fromReceipt(receipt, this.tbtcContracts, this.bitcoinClient)
+    return Deposit.fromReceipt(receipt, this.tmewcContracts, this.bitcoinClient)
   }
 
   /**
-   * Initiates the tBTC v2 deposit process using a depositor proxy.
+   * Initiates the tMEWC deposit process using a depositor proxy.
    * The depositor proxy initiates minting on behalf of the user (i.e. original
-   * depositor) and receives minted TBTC. This allows the proxy to provide
-   * additional services to the user, such as routing the minted TBTC tokens
+   * depositor) and receives minted TMEWC. This allows the proxy to provide
+   * additional services to the user, such as routing the minted TMEWC tokens
    * to another protocols, in an automated way.
    * @see DepositorProxy
-   * @param bitcoinRecoveryAddress P2PKH or P2WPKH Bitcoin address that can
+   * @param bitcoinRecoveryAddress P2PKH or P2WPKH Meowcoin address that can
    *                               be used for emergency recovery of the
    *                               deposited funds.
    * @param depositorProxy Depositor proxy used to initiate the deposit.
@@ -108,7 +108,7 @@ export class DepositsService {
    * @returns Handle to the initiated deposit process.
    * @throws Throws an error if one of the following occurs:
    *         - There are no active wallet in the Bridge contract
-   *         - The Bitcoin recovery address is not a valid P2(W)PKH
+   *         - The Meowcoin recovery address is not a valid P2(W)PKH
    *         - The optional extra data is set but is not 32-byte or equals
    *           to 32 zero bytes.
    */
@@ -125,15 +125,15 @@ export class DepositsService {
 
     return Deposit.fromReceipt(
       receipt,
-      this.tbtcContracts,
+      this.tmewcContracts,
       this.bitcoinClient,
       depositorProxy
     )
   }
 
   /**
-   * Initiates the tBTC v2 cross-chain deposit process. A cross-chain deposit
-   * is a deposit that targets an L2 chain other than the L1 chain the tBTC
+   * Initiates the tMEWC cross-chain deposit process. A cross-chain deposit
+   * is a deposit that targets an L2 chain other than the L1 chain the tMEWC
    * system is deployed on. Such a deposit is initiated using a transaction
    * on the L2 chain. To make it happen, the given L2 cross-chain contracts
    * must be initialized along with a L2 signer first.
@@ -143,20 +143,20 @@ export class DepositsService {
    *               PURPOSES AND EXTERNAL APPLICATIONS SHOULD NOT DEPEND ON IT.
    *               CROSS-CHAIN SUPPORT IS NOT FULLY OPERATIONAL YET.
    *
-   * @param bitcoinRecoveryAddress P2PKH or P2WPKH Bitcoin address that can
+   * @param bitcoinRecoveryAddress P2PKH or P2WPKH Meowcoin address that can
    *                               be used for emergency recovery of the
    *                               deposited funds.
    * @param l2ChainName Name of the L2 chain the deposit is targeting.
    * @returns Handle to the initiated deposit process.
    * @throws Throws an error if one of the following occurs:
    *         - There are no active wallet in the Bridge contract
-   *         - The Bitcoin recovery address is not a valid P2(W)PKH
+   *         - The Meowcoin recovery address is not a valid P2(W)PKH
    *         - The cross-chain contracts for the given L2 chain are not
    *           initialized
    *         - The L2 deposit owner cannot be resolved. This typically
    *           happens if the L2 cross-chain contracts operate with a
    *           read-only signer whose address cannot be resolved.
-   * @see {TBTC#initializeCrossChain} for cross-chain contracts initialization.
+   * @see {TMEWC#initializeCrossChain} for cross-chain contracts initialization.
    * @dev This is actually a call to initiateDepositWithProxy with a built-in
    *      depositor proxy.
    */
@@ -188,7 +188,7 @@ export class DepositsService {
     const blindingFactor = Hex.from(crypto.randomBytes(8))
 
     const walletPublicKey =
-      await this.tbtcContracts.bridge.activeWalletPublicKey()
+      await this.tmewcContracts.bridge.activeWalletPublicKey()
 
     if (!walletPublicKey) {
       throw new Error("Could not get active wallet public key")
@@ -206,7 +206,7 @@ export class DepositsService {
       !BitcoinScriptUtils.isP2PKHScript(recoveryOutputScript) &&
       !BitcoinScriptUtils.isP2WPKHScript(recoveryOutputScript)
     ) {
-      throw new Error("Bitcoin recovery address must be P2PKH or P2WPKH")
+      throw new Error("Meowcoin recovery address must be P2PKH or P2WPKH")
     }
 
     const refundPublicKeyHash = BitcoinAddressConverter.addressToPublicKeyHash(

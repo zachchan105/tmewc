@@ -6,33 +6,33 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deploy, log } = deployments
   const { deployer } = await getNamedAccounts()
 
-  const TBTCCurveVault = await deployments.get("TBTCCurveVault")
-  if (!helpers.address.isValid(TBTCCurveVault.address)) {
-    throw new Error(`Invalid TBTCCurveVault address: ${TBTCCurveVault.address}`)
+  const TMEWCCurveVault = await deployments.get("TMEWCCurveVault")
+  if (!helpers.address.isValid(TMEWCCurveVault.address)) {
+    throw new Error(`Invalid TMEWCCurveVault address: ${TMEWCCurveVault.address}`)
   }
 
-  const TBTCCurvePoolDepositor = await deployments.get("TBTCCurvePoolDepositor")
-  if (!helpers.address.isValid(TBTCCurvePoolDepositor.address)) {
+  const TMEWCCurvePoolDepositor = await deployments.get("TMEWCCurvePoolDepositor")
+  if (!helpers.address.isValid(TMEWCCurvePoolDepositor.address)) {
     throw new Error(
-      `Invalid TBTCCurvePoolDepositor address: ${TBTCCurvePoolDepositor.address}`
+      `Invalid TMEWCCurvePoolDepositor address: ${TMEWCCurvePoolDepositor.address}`
     )
   }
 
-  const TBTCConvexRewardPool = await deployments.get("TBTCConvexRewardPool")
-  if (!TBTCConvexRewardPool.linkedData.id) {
-    throw new Error("ID of TBTCConvexRewardPool must be set")
+  const TMEWCConvexRewardPool = await deployments.get("TMEWCConvexRewardPool")
+  if (!TMEWCConvexRewardPool.linkedData.id) {
+    throw new Error("ID of TMEWCConvexRewardPool must be set")
   }
 
-  log(`tbtcCurveVault: ${TBTCCurveVault.address}`)
-  log(`tbtcCurvePoolDepositor: ${TBTCCurvePoolDepositor.address}`)
-  log(`tbtcConvexRewardPoolId: ${TBTCConvexRewardPool.linkedData.id}`)
+  log(`tmewcCurveVault: ${TMEWCCurveVault.address}`)
+  log(`tmewcCurvePoolDepositor: ${TMEWCCurvePoolDepositor.address}`)
+  log(`tmewcConvexRewardPoolId: ${TMEWCConvexRewardPool.linkedData.id}`)
 
   await deploy("ConvexStrategy", {
     from: deployer,
     args: [
-      TBTCCurveVault.address,
-      TBTCCurvePoolDepositor.address,
-      TBTCConvexRewardPool.linkedData.id,
+      TMEWCCurveVault.address,
+      TMEWCCurvePoolDepositor.address,
+      TMEWCConvexRewardPool.linkedData.id,
     ],
     log: true,
     gasLimit: parseInt(process.env.GAS_LIMIT) || undefined,

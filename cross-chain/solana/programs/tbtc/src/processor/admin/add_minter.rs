@@ -1,5 +1,5 @@
 use crate::{
-    error::TbtcError,
+    error::TmewcError,
     state::{Config, MinterInfo, Minters},
 };
 use anchor_lang::prelude::*;
@@ -10,7 +10,7 @@ pub struct AddMinter<'info> {
         mut,
         seeds = [Config::SEED_PREFIX],
         bump,
-        has_one = authority @ TbtcError::IsNotAuthority
+        has_one = authority @ TmewcError::IsNotAuthority
     )]
     config: Account<'info, Config>,
 

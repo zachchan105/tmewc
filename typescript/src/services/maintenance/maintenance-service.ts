@@ -1,11 +1,11 @@
-import { TBTCContracts } from "../../lib/contracts"
-import { BitcoinClient } from "../../lib/bitcoin"
+import { TMEWCContracts } from "../../lib/contracts"
+import { BitcoinClient } from "../../lib/meowcoin"
 import { OptimisticMinting } from "./optimistic-minting"
 import { Spv } from "./spv"
 
 /**
  * Service exposing features relevant to authorized maintainers and
- * operators of the tBTC v2 system.
+ * operators of the tMEWC system.
  */
 export class MaintenanceService {
   /**
@@ -17,8 +17,8 @@ export class MaintenanceService {
    */
   public readonly spv: Spv
 
-  constructor(tbtcContracts: TBTCContracts, bitcoinClient: BitcoinClient) {
-    this.optimisticMinting = new OptimisticMinting(tbtcContracts)
-    this.spv = new Spv(tbtcContracts, bitcoinClient)
+  constructor(tmewcContracts: TMEWCContracts, bitcoinClient: BitcoinClient) {
+    this.optimisticMinting = new OptimisticMinting(tmewcContracts)
+    this.spv = new Spv(tmewcContracts, bitcoinClient)
   }
 }

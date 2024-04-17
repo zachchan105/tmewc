@@ -6,8 +6,8 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { execute } = deployments
   const { deployer } = await getNamedAccounts()
 
-  // The genesis header comes form the Bitcoin mainnet block at height 766080
-  // which is the first block of Bitcoin difficulty epoch 380.
+  // The genesis header comes form the Meowcoin mainnet block at height 766080
+  // which is the first block of Meowcoin difficulty epoch 380.
   const genesisHeader =
     "0x0000402089138e40cd8b4832beb8013bc80b1425c8bcbe10fc28040000000000000000" +
     "0058a06ab0edc5653a6ab78490675a954f8d8b4d4f131728dcf965cd0022a02cdde59f8e" +

@@ -13,7 +13,7 @@ import {
   L2Chain,
 } from "../contracts"
 import { EthereumAddress, packRevealDepositParameters } from "./index"
-import { BitcoinRawTxVectors } from "../bitcoin"
+import { BitcoinRawTxVectors } from "../meowcoin"
 import { Hex } from "../utils"
 
 // TODO: Uncomment once BaseL1BitcoinDepositor is available on Ethereum mainnet.

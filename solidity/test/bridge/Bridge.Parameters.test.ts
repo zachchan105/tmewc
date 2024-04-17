@@ -1496,7 +1496,7 @@ describe("Bridge - Parameters", () => {
       })
 
       context(
-        "when new creation maximum BTC balance is not greater than the creation minimum BTC balance",
+        "when new creation maximum MEWC balance is not greater than the creation minimum MEWC balance",
         () => {
           it("should revert", async () => {
             await bridgeGovernance
@@ -1512,13 +1512,13 @@ describe("Bridge - Parameters", () => {
                 .connect(governance)
                 .finalizeWalletCreationMaxBtcBalanceUpdate()
             ).to.be.revertedWith(
-              "Wallet creation maximum BTC balance must be greater than the creation minimum BTC balance"
+              "Wallet creation maximum MEWC balance must be greater than the creation minimum MEWC balance"
             )
           })
         }
       )
 
-      context("when new maximum BTC transfer is zero", () => {
+      context("when new maximum MEWC transfer is zero", () => {
         it("should revert", async () => {
           await bridgeGovernance
             .connect(governance)
@@ -1531,7 +1531,7 @@ describe("Bridge - Parameters", () => {
               .connect(governance)
               .finalizeWalletMaxBtcTransferUpdate()
           ).to.be.revertedWith(
-            "Wallet maximum BTC transfer must be greater than zero"
+            "Wallet maximum MEWC transfer must be greater than zero"
           )
         })
       })

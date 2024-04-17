@@ -58,7 +58,7 @@ function isP2WSHScript(script: Hex): boolean {
 }
 
 /**
- * Utility functions allowing to deal with Bitcoin scripts.
+ * Utility functions allowing to deal with Meowcoin scripts.
  */
 export const BitcoinScriptUtils = {
   isP2PKHScript,

@@ -67,7 +67,7 @@ describe("Bridge - Deposit", () => {
       deployBridge,
     } = await waffle.loadFixture(bridgeFixture))
 
-    // Set the deposit dust threshold to 0.0001 BTC, i.e. 100x smaller than
+    // Set the deposit dust threshold to 0.0001 MEWC, i.e. 100x smaller than
     // the initial value in the Bridge in order to save test Bitcoins.
     // Scaling down deposit TX max fee as well.
     await bridge.setDepositDustThreshold(10000)
@@ -1799,7 +1799,7 @@ describe("Bridge - Deposit", () => {
                               walletPubKeyHash
                             )
 
-                            // Amount can be checked by opening the sweep tx in a Bitcoin
+                            // Amount can be checked by opening the sweep tx in a Meowcoin
                             // testnet explorer. In this case, the sum of inputs is
                             // 20000 satoshi (from the single deposit) and there is a
                             // fee of 1500 so the output value is 18500.
@@ -1887,7 +1887,7 @@ describe("Bridge - Deposit", () => {
                               walletPubKeyHash
                             )
 
-                            // Amount can be checked by opening the sweep tx in a Bitcoin
+                            // Amount can be checked by opening the sweep tx in a Meowcoin
                             // testnet explorer. In this case, the sum of inputs is
                             // 80000 satoshi (from the single deposit) and there is a
                             // fee of 2000 so the output value is 78000.
@@ -1992,7 +1992,7 @@ describe("Bridge - Deposit", () => {
                               walletPubKeyHash
                             )
 
-                            // Amount can be checked by opening the sweep tx in a Bitcoin
+                            // Amount can be checked by opening the sweep tx in a Meowcoin
                             // testnet explorer. In this case, the sum of inputs is
                             // 80000 satoshi (from the single deposit) and there is a
                             // fee of 2000 so the output value is 78000.
@@ -2184,7 +2184,7 @@ describe("Bridge - Deposit", () => {
                               walletPubKeyHash
                             )
 
-                            // Amount can be checked by opening the sweep tx in a Bitcoin
+                            // Amount can be checked by opening the sweep tx in a Meowcoin
                             // testnet explorer. In this case, the sum of inputs is
                             // 80000 satoshi (from the single deposit) and there is a
                             // fee of 2000 so the output value is 78000.
@@ -2480,7 +2480,7 @@ describe("Bridge - Deposit", () => {
                               walletPubKeyHash
                             )
 
-                            // Amount can be checked by opening the sweep tx in a Bitcoin
+                            // Amount can be checked by opening the sweep tx in a Meowcoin
                             // testnet explorer. In this case, the sum of inputs is
                             // 4148000 satoshi and there is a fee of 2999 so the output
                             // value is 4145001.
@@ -2651,7 +2651,7 @@ describe("Bridge - Deposit", () => {
                               walletPubKeyHash
                             )
 
-                            // Amount can be checked by opening the sweep tx in a Bitcoin
+                            // Amount can be checked by opening the sweep tx in a Meowcoin
                             // testnet explorer. In this case, the sum of inputs is
                             // 4148000 satoshi and there is a fee of 2999 so the output
                             // value is 4145001.
@@ -2844,7 +2844,7 @@ describe("Bridge - Deposit", () => {
                               walletPubKeyHash
                             )
 
-                            // Amount can be checked by opening the sweep tx in a Bitcoin
+                            // Amount can be checked by opening the sweep tx in a Meowcoin
                             // testnet explorer. In this case, the sum of inputs is
                             // 4148000 satoshi and there is a fee of 2999 so the output
                             // value is 4145001.
@@ -3054,7 +3054,7 @@ describe("Bridge - Deposit", () => {
                               walletPubKeyHash
                             )
 
-                            // Amount can be checked by opening the sweep tx in a Bitcoin
+                            // Amount can be checked by opening the sweep tx in a Meowcoin
                             // testnet explorer. In this case, the sum of inputs is
                             // 1060000 satoshi and there is a fee of 2000 so the output
                             // value is 1058000.
@@ -3368,7 +3368,7 @@ describe("Bridge - Deposit", () => {
               // To test this case, an arbitrary transaction with single
               // P2WSH output is used. In that case, the wallet public key
               // hash will have a wrong length of 32 bytes. Used transaction:
-              // https://live.blockcypher.com/btc-testnet/tx/af56cae479215c5e44a6a4db0eeb10a1abdd98020a6c01b9c26ea7b829aa2809
+              // https://live.blockcypher.com/mewc-testnet/tx/af56cae479215c5e44a6a4db0eeb10a1abdd98020a6c01b9c26ea7b829aa2809
               const sweepTx = {
                 version: "0x01000000",
                 inputVector:
@@ -3441,7 +3441,7 @@ describe("Bridge - Deposit", () => {
           it("should revert", async () => {
             // To test this case, an arbitrary transaction with two
             // outputs is used. Used transaction:
-            // https://live.blockcypher.com/btc-testnet/tx/c580e0e352570d90e303d912a506055ceeb0ee06f97dce6988c69941374f5479
+            // https://live.blockcypher.com/mewc-testnet/tx/c580e0e352570d90e303d912a506055ceeb0ee06f97dce6988c69941374f5479
             const sweepTx = {
               version: "0x01000000",
               inputVector:
@@ -3755,7 +3755,7 @@ describe("Bridge - Deposit", () => {
           })
 
           it("should revert", async () => {
-            // Corrupt the bitcoin headers length in the sweep proof. The proper
+            // Corrupt the meowcoin headers length in the sweep proof. The proper
             // value is length divisible by 80 so any length violating this
             // rule will cause failure. In this case, we just remove the last
             // byte from proper headers chain.
@@ -3796,7 +3796,7 @@ describe("Bridge - Deposit", () => {
           })
 
           it("should revert", async () => {
-            // Bitcoin headers must form a chain to pass the proof validation.
+            // Meowcoin headers must form a chain to pass the proof validation.
             // That means the `previous block hash` encoded in the given block
             // header must match the actual previous header's hash. To test
             // that scenario, we corrupt the `previous block hash` of the

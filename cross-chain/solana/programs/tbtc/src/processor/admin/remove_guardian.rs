@@ -1,5 +1,5 @@
 use crate::{
-    error::TbtcError,
+    error::TmewcError,
     state::{Config, GuardianInfo, Guardians},
 };
 use anchor_lang::prelude::*;
@@ -8,7 +8,7 @@ use anchor_lang::prelude::*;
 pub struct RemoveGuardian<'info> {
     #[account(
         mut,
-        has_one = authority @ TbtcError::IsNotAuthority,
+        has_one = authority @ TmewcError::IsNotAuthority,
     )]
     config: Account<'info, Config>,
 

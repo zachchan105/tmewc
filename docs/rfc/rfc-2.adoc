@@ -1,6 +1,6 @@
 :toc: macro
 
-= RFC 2: tBTCv2 Group Selection and Key Generation
+= RFC 2: tMEWC Group Selection and Key Generation
 
 :icons: font
 :numbered:
@@ -22,7 +22,7 @@ as the protocol in `tss-lib` is not attributable.
 
 === Parameter selection
 
-For tbtc2 wallets,
+For tmewc2 wallets,
 we need to choose the group size _N_
 (how many members we select from the sortition pool)
 and the threshold _T_
@@ -43,11 +43,11 @@ are removed from the wallet's members and are ineligible for rewards.
 If we cannot complete DKG successfully
 with at least _C_ participants
 within the allowed time,
-the failed wallet will not be used by TBTC.
+the failed wallet will not be used by TMEWC.
 
 ==== Group size and threshold
 
-Assuming we create groups every 24h and the lifespan of TBTC is 100 years,
+Assuming we create groups every 24h and the lifespan of TMEWC is 100 years,
 we would perform 36,500 sortitions in total.
 If an adversary has a 1:1,000,000 probability of controlling any given group,
 they'd have a roughly 3.6% probability of controlling one group at some point.
@@ -136,7 +136,7 @@ transactions attempting to create a new wallet are rejected.
 
 ==== Sortition transaction reimbursement
 
-When TBTC is collected in deposit fees,
+When TMEWC is collected in deposit fees,
 a certain fraction (e.g. 10%) of the fee is placed in the sortition fee pool.
 
 The transaction to perform a new sortition can be submitted by anyone.
@@ -150,7 +150,7 @@ the full contents of the sortition fee pool are released to the submitter.
 If less than the nominal interval has elapsed,
 the amount released to the submitter is reduced,
 and the remainder is released as general rewards
-to other participants in the TBTC system.
+to other participants in the TMEWC system.
 
 This reduction is calculated
 based on the amount of time since the last sortition,
@@ -172,7 +172,7 @@ This lets the market decide when enough reward has accumulated
 to cover the gas fees of a new sortition transaction
 without the need for methods such as price oracles.
 It also balances the creation rate of new wallets with the deposit rate;
-when large amounts of BTC are deposited,
+when large amounts of MEWC are deposited,
 new wallets will be created more frequently.
 
 By limiting the reward before 24h has elapsed,

@@ -10,12 +10,12 @@ import {
   BitcoinTxHash,
   BitcoinUtxo,
   toBitcoinJsLibNetwork,
-} from "../../lib/bitcoin"
+} from "../../lib/meowcoin"
 import { BigNumber } from "ethers"
 import {
   DepositReceipt,
   RedemptionRequest,
-  TBTCContracts,
+  TMEWCContracts,
 } from "../../lib/contracts"
 import { DepositScript } from "../deposits"
 import { Hex } from "../../lib/utils"
@@ -31,7 +31,7 @@ import {
 
 /**
  * Wallet transactions builder. This feature set is supposed to be used only
- * for internal purposes like system tests. In real world, tBTC v2 wallets
+ * for internal purposes like system tests. In real world, tMEWC wallets
  * are formed by peer-to-peer network participants that sign transactions
  * using threshold signature schemes.
  *
@@ -46,22 +46,22 @@ export class WalletTx {
   public readonly redemption: Redemption
 
   constructor(
-    tbtcContracts: TBTCContracts,
+    tmewcContracts: TMEWCContracts,
     bitcoinClient: BitcoinClient,
     witness: boolean = true
   ) {
     this.depositSweep = new DepositSweep(bitcoinClient, witness)
-    this.redemption = new Redemption(tbtcContracts, bitcoinClient, witness)
+    this.redemption = new Redemption(tmewcContracts, bitcoinClient, witness)
   }
 }
 
 class DepositSweep {
   /**
-   * Bitcoin client handle.
+   * Meowcoin client handle.
    */
   private readonly bitcoinClient: BitcoinClient
   /**
-   * Flag indicating whether the generated Bitcoin deposit sweep transaction
+   * Flag indicating whether the generated Meowcoin deposit sweep transaction
    * should be a witness one.
    */
   private readonly witness: boolean
@@ -73,14 +73,14 @@ class DepositSweep {
 
   /**
    * Submits a deposit sweep by combining all the provided P2(W)SH UTXOs and
-   * broadcasting a Bitcoin P2(W)PKH deposit sweep transaction.
+   * broadcasting a Meowcoin P2(W)PKH deposit sweep transaction.
    * @dev The caller is responsible for ensuring the provided UTXOs are correctly
    *      formed, can be spent by the wallet and their combined value is greater
    *      than the fee. Note that broadcasting transaction may fail silently (e.g.
    *      when the provided UTXOs are not spendable) and no error will be returned.
    * @param fee - the value that should be subtracted from the sum of the UTXOs
    *        values and used as the transaction fee.
-   * @param walletPrivateKey - Bitcoin private key of the wallet in WIF format.
+   * @param walletPrivateKey - Meowcoin private key of the wallet in WIF format.
    * @param utxos - P2(W)SH UTXOs to be combined into one output.
    * @param deposits - Array of deposits. Each element corresponds to UTXO.
    *        The number of UTXOs and deposit elements must equal.
@@ -145,14 +145,14 @@ class DepositSweep {
   }
 
   /**
-   * Assembles a Bitcoin P2WPKH deposit sweep transaction.
+   * Assembles a Meowcoin P2WPKH deposit sweep transaction.
    * @dev The caller is responsible for ensuring the provided UTXOs are correctly
    *      formed, can be spent by the wallet and their combined value is greater
    *      than the fee.
-   * @param bitcoinNetwork - The target Bitcoin network.
+   * @param bitcoinNetwork - The target Meowcoin network.
    * @param fee - the value that should be subtracted from the sum of the UTXOs
    *        values and used as the transaction fee.
-   * @param walletPrivateKey - Bitcoin private key of the wallet in WIF format.
+   * @param walletPrivateKey - Meowcoin private key of the wallet in WIF format.
    * @param utxos - UTXOs from new deposit transactions. Must be P2(W)SH.
    * @param deposits - Array of deposits. Each element corresponds to UTXO.
    *        The number of UTXOs and deposit elements must equal.
@@ -513,25 +513,25 @@ class DepositSweep {
 
 class Redemption {
   /**
-   * Handle to tBTC contracts.
+   * Handle to tMEWC contracts.
    */
-  private readonly tbtcContracts: TBTCContracts
+  private readonly tmewcContracts: TMEWCContracts
   /**
-   * Bitcoin client handle.
+   * Meowcoin client handle.
    */
   private readonly bitcoinClient: BitcoinClient
   /**
-   * Flag indicating whether the generated Bitcoin redemption transaction
+   * Flag indicating whether the generated Meowcoin redemption transaction
    * should be a witness one.
    */
   private readonly witness: boolean
 
   constructor(
-    tbtcContracts: TBTCContracts,
+    tmewcContracts: TMEWCContracts,
     bitcoinClient: BitcoinClient,
     witness: boolean = true
   ) {
-    this.tbtcContracts = tbtcContracts
+    this.tmewcContracts = tmewcContracts
     this.bitcoinClient = bitcoinClient
     this.witness = witness
   }
@@ -583,7 +583,7 @@ class Redemption {
 
     for (const redeemerOutputScript of redeemerOutputScripts) {
       const redemptionRequest =
-        await this.tbtcContracts.bridge.pendingRedemptions(
+        await this.tmewcContracts.bridge.pendingRedemptions(
           walletPublicKey,
           redeemerOutputScript
         )
@@ -615,7 +615,7 @@ class Redemption {
   }
 
   /**
-   * Assembles a Bitcoin redemption transaction.
+   * Assembles a Meowcoin redemption transaction.
    * The transaction will have a single input (main UTXO of the wallet making
    * the redemption), an output for each redemption request provided, and a change
    * output if the redemption requests do not consume the entire amount of the
@@ -625,7 +625,7 @@ class Redemption {
    *        - there is at least one redemption
    *        - the `requestedAmount` in each redemption request is greater than
    *          the sum of its `txFee` and `treasuryFee`
-   * @param bitcoinNetwork The target Bitcoin network.
+   * @param bitcoinNetwork The target Meowcoin network.
    * @param walletPrivateKey - The private key of the wallet in the WIF format
    * @param mainUtxo - The main UTXO of the wallet. Must match the main UTXO held
    *        by the on-chain Bridge contract

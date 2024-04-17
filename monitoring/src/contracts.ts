@@ -1,33 +1,33 @@
 import {
   EthereumBridge,
-  EthereumTBTCToken,
-  EthereumTBTCVault,
-} from "@keep-network/tbtc-v2.ts"
+  EthereumTMEWCToken,
+  EthereumTMEWCVault,
+} from "@keep-network/tmewc.ts"
 import { providers } from "ethers"
 
 import { context, Environment } from "./context"
 
 import type {
   Bridge,
-  TBTCVault,
-  TBTCToken,
-} from "@keep-network/tbtc-v2.ts/dist/src/chain"
+  TMEWCVault,
+  TMEWCToken,
+} from "@keep-network/tmewc.ts/dist/src/chain"
 
 const resolve = () => {
   let packageName: string
 
   switch (context.environment) {
     case Environment.Mainnet: {
-      packageName = "@keep-network/tbtc-v2-mainnet"
+      packageName = "@keep-network/tmewc-mainnet"
       break
     }
     case Environment.Testnet: {
-      packageName = "@keep-network/tbtc-v2-testnet"
+      packageName = "@keep-network/tmewc-testnet"
       break
     }
     default: {
       throw new Error(
-        `cannot pick tbtc package for ${context.environment} environment`
+        `cannot pick tmewc package for ${context.environment} environment`
       )
     }
   }
@@ -53,22 +53,22 @@ const resolve = () => {
   })
 
   // eslint-disable-next-line @typescript-eslint/no-var-requires,global-require,import/no-dynamic-require
-  const tbtcVaultArtifact = require(`${packageName}/artifacts/TBTCVault.json`)
-  const tbtcVault: TBTCVault = new EthereumTBTCVault({
-    address: tbtcVaultArtifact.address,
+  const tmewcVaultArtifact = require(`${packageName}/artifacts/TMEWCVault.json`)
+  const tmewcVault: TMEWCVault = new EthereumTMEWCVault({
+    address: tmewcVaultArtifact.address,
     signerOrProvider: provider,
-    deployedAtBlockNumber: tbtcVaultArtifact.receipt.blockNumber,
+    deployedAtBlockNumber: tmewcVaultArtifact.receipt.blockNumber,
   })
 
   // eslint-disable-next-line @typescript-eslint/no-var-requires,global-require,import/no-dynamic-require
-  const tbtcTokenArtifact = require(`${packageName}/artifacts/TBTC.json`)
-  const tbtcToken: TBTCToken = new EthereumTBTCToken({
-    address: tbtcTokenArtifact.address,
+  const tmewcTokenArtifact = require(`${packageName}/artifacts/TMEWC.json`)
+  const tmewcToken: TMEWCToken = new EthereumTMEWCToken({
+    address: tmewcTokenArtifact.address,
     signerOrProvider: provider,
-    deployedAtBlockNumber: tbtcTokenArtifact.receipt.blockNumber,
+    deployedAtBlockNumber: tmewcTokenArtifact.receipt.blockNumber,
   })
 
-  return { bridge, tbtcVault, tbtcToken, latestBlock, blockTimestamp }
+  return { bridge, tmewcVault, tmewcToken, latestBlock, blockTimestamp }
 }
 
 export const contracts = resolve()

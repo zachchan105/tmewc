@@ -8,14 +8,14 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   // These are the fake random addresses for local development purposes only.
   const fakeTokenBridge = "0x0af5DC16568EFF2d480a43A77E6C409e497FcFb9"
-  const fakeWormholeTBTC = "0xe1F0b28a3518cCeC430d0d86Ea1725e6256b0296"
+  const fakeWormholeTMEWC = "0xe1F0b28a3518cCeC430d0d86Ea1725e6256b0296"
 
   const ArbitrumTokenBridge = await deployments.getOrNull("ArbitrumTokenBridge")
-  const ArbitrumWormholeTBTC = await deployments.getOrNull(
-    "ArbitrumWormholeTBTC"
+  const ArbitrumWormholeTMEWC = await deployments.getOrNull(
+    "ArbitrumWormholeTMEWC"
   )
 
-  const ArbitrumTBTC = await deployments.get("ArbitrumTBTC")
+  const ArbitrumTMEWC = await deployments.get("ArbitrumTMEWC")
 
   let arbitrumTokenBridgeAddress = ArbitrumTokenBridge?.address
   if (!arbitrumTokenBridgeAddress && hre.network.name === "hardhat") {
@@ -23,21 +23,21 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     log(`fake Arbitrum TokenBridge address ${arbitrumTokenBridgeAddress}`)
   }
 
-  let arbitrumWormholeTBTCAddress = ArbitrumWormholeTBTC?.address
-  if (!arbitrumWormholeTBTCAddress && hre.network.name === "hardhat") {
-    arbitrumWormholeTBTCAddress = fakeWormholeTBTC
-    log(`fake Arbitrum WormholeTBTC address ${arbitrumWormholeTBTCAddress}`)
+  let arbitrumWormholeTMEWCAddress = ArbitrumWormholeTMEWC?.address
+  if (!arbitrumWormholeTMEWCAddress && hre.network.name === "hardhat") {
+    arbitrumWormholeTMEWCAddress = fakeWormholeTMEWC
+    log(`fake Arbitrum WormholeTMEWC address ${arbitrumWormholeTMEWCAddress}`)
   }
 
   const [, proxyDeployment] = await helpers.upgrades.deployProxy(
     "ArbitrumWormholeGateway",
     {
       contractName:
-        "@keep-network/tbtc-v2/contracts/l2/L2WormholeGateway.sol:L2WormholeGateway",
+        "@keep-network/tmewc/contracts/l2/L2WormholeGateway.sol:L2WormholeGateway",
       initializerArgs: [
         arbitrumTokenBridgeAddress,
-        arbitrumWormholeTBTCAddress,
-        ArbitrumTBTC.address,
+        arbitrumWormholeTMEWCAddress,
+        ArbitrumTMEWC.address,
       ],
       factoryOpts: { signer: await ethers.getSigner(deployer) },
       proxyOpts: {
@@ -66,4 +66,4 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 export default func
 
 func.tags = ["ArbitrumWormholeGateway"]
-func.dependencies = ["ArbitrumTokenBridge", "ArbitrumWormholeTBTC"]
+func.dependencies = ["ArbitrumTokenBridge", "ArbitrumWormholeTMEWC"]

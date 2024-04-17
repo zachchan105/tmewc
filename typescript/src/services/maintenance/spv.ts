@@ -4,22 +4,22 @@ import {
   BitcoinTxHash,
   BitcoinUtxo,
   extractBitcoinRawTxVectors,
-} from "../../lib/bitcoin"
+} from "../../lib/meowcoin"
 import { Hex } from "../../lib/utils"
-import { ChainIdentifier, TBTCContracts } from "../../lib/contracts"
+import { ChainIdentifier, TMEWCContracts } from "../../lib/contracts"
 
 export class Spv {
   /**
-   * Handle to tBTC contracts.
+   * Handle to tMEWC contracts.
    */
-  private readonly tbtcContracts: TBTCContracts
+  private readonly tmewcContracts: TMEWCContracts
   /**
-   * Bitcoin client handle.
+   * Meowcoin client handle.
    */
   private readonly bitcoinClient: BitcoinClient
 
-  constructor(tbtcContracts: TBTCContracts, bitcoinClient: BitcoinClient) {
-    this.tbtcContracts = tbtcContracts
+  constructor(tmewcContracts: TMEWCContracts, bitcoinClient: BitcoinClient) {
+    this.tmewcContracts = tmewcContracts
     this.bitcoinClient = bitcoinClient
   }
 
@@ -37,7 +37,7 @@ export class Spv {
     vault?: ChainIdentifier
   ): Promise<void> {
     const confirmations =
-      await this.tbtcContracts.bridge.txProofDifficultyFactor()
+      await this.tmewcContracts.bridge.txProofDifficultyFactor()
     const proof = await assembleBitcoinSpvProof(
       transactionHash,
       confirmations,
@@ -47,7 +47,7 @@ export class Spv {
       transactionHash
     )
     const rawTransactionVectors = extractBitcoinRawTxVectors(rawTransaction)
-    await this.tbtcContracts.bridge.submitDepositSweepProof(
+    await this.tmewcContracts.bridge.submitDepositSweepProof(
       rawTransactionVectors,
       proof,
       mainUtxo,
@@ -60,7 +60,7 @@ export class Spv {
    * Bridge on-chain contract.
    * @param transactionHash - Hash of the transaction being proven.
    * @param mainUtxo - Recent main UTXO of the wallet as currently known on-chain.
-   * @param walletPublicKey - Bitcoin public key of the wallet. Must be in the
+   * @param walletPublicKey - Meowcoin public key of the wallet. Must be in the
    *        compressed form (33 bytes long with 02 or 03 prefix).
    * @returns Empty promise.
    */
@@ -70,7 +70,7 @@ export class Spv {
     walletPublicKey: Hex
   ): Promise<void> {
     const confirmations =
-      await this.tbtcContracts.bridge.txProofDifficultyFactor()
+      await this.tmewcContracts.bridge.txProofDifficultyFactor()
     const proof = await assembleBitcoinSpvProof(
       transactionHash,
       confirmations,
@@ -81,7 +81,7 @@ export class Spv {
     )
     const rawTransactionVectors = extractBitcoinRawTxVectors(rawTransaction)
 
-    await this.tbtcContracts.bridge.submitRedemptionProof(
+    await this.tmewcContracts.bridge.submitRedemptionProof(
       rawTransactionVectors,
       proof,
       mainUtxo,

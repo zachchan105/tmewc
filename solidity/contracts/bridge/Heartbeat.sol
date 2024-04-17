@@ -15,14 +15,14 @@
 
 pragma solidity 0.8.17;
 
-import {BytesLib} from "@keep-network/bitcoin-spv-sol/contracts/BytesLib.sol";
+import {BytesLib} from "@keep-network/meowcoin-spv-sol/contracts/BytesLib.sol";
 
 /// @title Bridge wallet heartbeat
 /// @notice The library establishes expected format for heartbeat messages
 ///         signed by wallet ECDSA signing group. Heartbeat messages are
-///         constructed in such a way that they can not be used as a Bitcoin
+///         constructed in such a way that they can not be used as a Meowcoin
 ///         transaction preimages.
-/// @dev The smallest Bitcoin non-coinbase transaction is a one spending an
+/// @dev The smallest Meowcoin non-coinbase transaction is a one spending an
 ///      OP_TRUE anyonecanspend output and creating 1 OP_TRUE anyonecanspend
 ///      output. Such a transaction has 61 bytes (see `BitcoinTx` documentation):
 ///        4  bytes  for version
@@ -38,7 +38,7 @@ import {BytesLib} from "@keep-network/bitcoin-spv-sol/contracts/BytesLib.sol";
 ///        4  bytes  for lock_time
 ///
 ///
-///      The smallest Bitcoin coinbase transaction is a one creating
+///      The smallest Meowcoin coinbase transaction is a one creating
 ///      1 OP_TRUE anyonecanspend output and having an empty coinbase script.
 ///      Such a transaction has 65 bytes:
 ///        4  bytes  for version
@@ -80,7 +80,7 @@ import {BytesLib} from "@keep-network/bitcoin-spv-sol/contracts/BytesLib.sol";
 ///      example, the last Ethereum block hash).
 ///
 ///      The message being signed by the wallet when executing the heartbeat
-///      protocol should be Bitcoin's hash256 (double SHA-256) of the heartbeat
+///      protocol should be Meowcoin's hash256 (double SHA-256) of the heartbeat
 ///      message:
 ///        heartbeat_sighash = hash256(heartbeat_message)
 library Heartbeat {
@@ -89,7 +89,7 @@ library Heartbeat {
     /// @notice Determines if the signed byte array is a valid, non-fraudulent
     ///         heartbeat message.
     /// @param message Message signed by the wallet. It is a potential heartbeat
-    ///        message, Bitcoin transaction preimage, or an arbitrary signed
+    ///        message, Meowcoin transaction preimage, or an arbitrary signed
     ///        bytes.
     /// @dev Wallet heartbeat message must be exactly 16 bytes long with the first
     ///      8 bytes set to 0xffffffffffffffff.

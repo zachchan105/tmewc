@@ -3,7 +3,7 @@ import fs from "fs"
 import { PublicKey, Keypair } from "@solana/web3.js"
 import dotenv from "dotenv"
 import { Program } from "@coral-xyz/anchor"
-import { Tbtc } from "../target/types/tbtc"
+import { Tmewc } from "../target/types/tmewc"
 import { WormholeGateway } from "../target/types/wormhole_gateway"
 import { PROGRAM_ID as METADATA_PROGRAM_ID } from "@metaplex-foundation/mpl-token-metadata"
 import * as consts from "./helpers/consts"
@@ -13,7 +13,7 @@ async function run(): Promise<void> {
 
   anchor.setProvider(anchor.AnchorProvider.env())
 
-  const tbtcProgram = anchor.workspace.Tbtc as Program<Tbtc>
+  const tmewcProgram = anchor.workspace.Tmewc as Program<Tmewc>
   const wormholeGatewayProgram = anchor.workspace
     .WormholeGateway as Program<WormholeGateway>
 
@@ -21,34 +21,34 @@ async function run(): Promise<void> {
   const authority = loadKey(process.env.AUTHORITY).publicKey
 
   const mint = PublicKey.findProgramAddressSync(
-    [Buffer.from("tbtc-mint")],
-    tbtcProgram.programId
+    [Buffer.from("tmewc-mint")],
+    tmewcProgram.programId
   )[0]
 
   const config = PublicKey.findProgramAddressSync(
     [Buffer.from("config")],
-    tbtcProgram.programId
+    tmewcProgram.programId
   )[0]
 
   const guardians = PublicKey.findProgramAddressSync(
     [Buffer.from("guardians")],
-    tbtcProgram.programId
+    tmewcProgram.programId
   )[0]
 
   const minters = PublicKey.findProgramAddressSync(
     [Buffer.from("minters")],
-    tbtcProgram.programId
+    tmewcProgram.programId
   )[0]
 
-  const tbtcMetadata = PublicKey.findProgramAddressSync(
+  const tmewcMetadata = PublicKey.findProgramAddressSync(
     [Buffer.from("metadata"), METADATA_PROGRAM_ID.toBuffer(), mint.toBuffer()],
     METADATA_PROGRAM_ID
   )[0]
 
   const mplTokenMetadataProgram = METADATA_PROGRAM_ID
 
-  // Initalize tbtc program
-  await tbtcProgram.methods
+  // Initalize tmewc program
+  await tmewcProgram.methods
     .initialize()
     .accounts({
       mint,
@@ -56,7 +56,7 @@ async function run(): Promise<void> {
       guardians,
       minters,
       authority,
-      tbtcMetadata,
+      tmewcMetadata,
       mplTokenMetadataProgram,
     })
     .rpc()
@@ -67,13 +67,13 @@ async function run(): Promise<void> {
   )[0]
 
   const mintingLimit = "18446744073709551615" // Max u64
-  let WRAPPED_TBTC = consts.WRAPPED_TBTC_MINT_TESTNET
+  let WRAPPED_TMEWC = consts.WRAPPED_TMEWC_MINT_TESTNET
   if (process.env.CLUSTER === "mainnet") {
-    WRAPPED_TBTC = consts.WRAPPED_TBTC_MINT_MAINNET
+    WRAPPED_TMEWC = consts.WRAPPED_TMEWC_MINT_MAINNET
   }
-  const WRAPPED_TBTC_MINT = new PublicKey(WRAPPED_TBTC)
+  const WRAPPED_TMEWC_MINT = new PublicKey(WRAPPED_TMEWC)
 
-  const gatewayWrappedTbtcToken = PublicKey.findProgramAddressSync(
+  const gatewayWrappedTmewcToken = PublicKey.findProgramAddressSync(
     [Buffer.from("wrapped-token")],
     wormholeGatewayProgram.programId
   )[0]
@@ -83,7 +83,7 @@ async function run(): Promise<void> {
     wormholeGatewayProgram.programId
   )[0]
 
-  // NOTE: It might happen on mainnet that tbtc won't be initialized if running this
+  // NOTE: It might happen on mainnet that tmewc won't be initialized if running this
   // script in one shot.
   // The simplest solution is just to wait a bit and then proceed with wormhole_gateway
   // initializtion.
@@ -94,9 +94,9 @@ async function run(): Promise<void> {
     .accounts({
       authority,
       custodian: minter,
-      tbtcMint: mint,
-      wrappedTbtcMint: WRAPPED_TBTC_MINT,
-      wrappedTbtcToken: gatewayWrappedTbtcToken,
+      tmewcMint: mint,
+      wrappedTmewcMint: WRAPPED_TMEWC_MINT,
+      wrappedTmewcToken: gatewayWrappedTmewcToken,
       tokenBridgeSender,
     })
     .rpc()
@@ -105,11 +105,11 @@ async function run(): Promise<void> {
 
   const minterInfo = PublicKey.findProgramAddressSync(
     [Buffer.from("minter-info"), minter.toBuffer()],
-    tbtcProgram.programId
+    tmewcProgram.programId
   )[0]
 
   // Adding a minter (wormholeGateway)
-  await tbtcProgram.methods
+  await tmewcProgram.methods
     .addMinter()
     .accounts({
       config,

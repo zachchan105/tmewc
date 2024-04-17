@@ -91,15 +91,15 @@ describe("Bridge - Redemption", () => {
       redemptionTimeoutNotifierRewardMultiplier,
     } = await bridge.redemptionParameters())
 
-    // Set the deposit dust threshold to 0.0001 BTC, i.e. 100x smaller than
+    // Set the deposit dust threshold to 0.0001 MEWC, i.e. 100x smaller than
     // the initial value in the Bridge in order to save test Bitcoins.
     // Scaling down deposit TX max fee as well.
     await bridge.setDepositDustThreshold(10000)
     await bridge.setDepositTxMaxFee(2000)
-    // Set the redemption dust threshold to 0.001 BTC, i.e. 10x smaller than
+    // Set the redemption dust threshold to 0.001 MEWC, i.e. 10x smaller than
     // the initial value in the Bridge in order to save test Bitcoins.
     await bridge.setRedemptionDustThreshold(100000)
-    // Set the moving funds dust threshold to 0.0002 BTC, i.e. 10x smaller
+    // Set the moving funds dust threshold to 0.0002 MEWC, i.e. 10x smaller
     // than the initial value. This is needed because we lowered the redemption
     // dust threshold and the moving funds dust threshold must be always
     // below it.
@@ -150,7 +150,7 @@ describe("Bridge - Redemption", () => {
 
         context("when there is a main UTXO for the given wallet", () => {
           // Prepare a dumb main UTXO with 10M satoshi as value. This will
-          // be the wallet BTC balance.
+          // be the wallet MEWC balance.
           const mainUtxo = {
             txHash:
               "0x3835ecdee2daa83c9a19b5012104ace55ecab197b5e16489c26d372e475f5d2a",
@@ -520,7 +520,7 @@ describe("Bridge - Redemption", () => {
 
                             // Simulate a situation when the wallet has so many
                             // pending redemptions that a new request will
-                            // exceed its Bitcoin balance. This is done by making
+                            // exceed its Meowcoin balance. This is done by making
                             // a redemption request that will request the entire
                             // wallet's balance right before the tested request.
                             await makeRedemptionAllowance(
@@ -983,7 +983,7 @@ describe("Bridge - Redemption", () => {
 
         context("when there is a main UTXO for the given wallet", () => {
           // Prepare a dumb main UTXO with 10M satoshi as value. This will
-          // be the wallet BTC balance.
+          // be the wallet MEWC balance.
           const mainUtxo = {
             txHash:
               "0x3835ecdee2daa83c9a19b5012104ace55ecab197b5e16489c26d372e475f5d2a",
@@ -1218,7 +1218,7 @@ describe("Bridge - Redemption", () => {
                             })
 
                             it("should delete the wallet's main UTXO", async () => {
-                              // The Bitcoin redemption transaction has no change
+                              // The Meowcoin redemption transaction has no change
                               // output so the wallet's main UTXO should be
                               // deleted on the Bridge side.
                               expect(
@@ -1361,7 +1361,7 @@ describe("Bridge - Redemption", () => {
                             })
 
                             it("should delete the wallet's main UTXO", async () => {
-                              // The Bitcoin redemption transaction has no change
+                              // The Meowcoin redemption transaction has no change
                               // output so the wallet's main UTXO should be
                               // deleted on the Bridge side.
                               expect(
@@ -1517,7 +1517,7 @@ describe("Bridge - Redemption", () => {
                             })
 
                             it("should delete the wallet's main UTXO", async () => {
-                              // The Bitcoin redemption transaction has no change
+                              // The Meowcoin redemption transaction has no change
                               // output so the wallet's main UTXO should be
                               // deleted on the Bridge side. It doesn't matter
                               // the only redemption handled by the transaction
@@ -1612,7 +1612,7 @@ describe("Bridge - Redemption", () => {
 
                               // Alter the single redemption request in the test
                               // data and set such an amount that will cause
-                              // the Bitcoin redemption transaction to be deemed
+                              // the Meowcoin redemption transaction to be deemed
                               // as invalid due to a wrong amount. The transaction
                               // output has the value of 1176924 so to make this
                               // test scenario happen, the request amount must be
@@ -1654,7 +1654,7 @@ describe("Bridge - Redemption", () => {
 
                               // Alter the single redemption request in the test
                               // data and set such an amount that will cause
-                              // the Bitcoin redemption transaction to be deemed
+                              // the Meowcoin redemption transaction to be deemed
                               // as invalid due to a wrong amount. The transaction
                               // output has the value of 1176924 so to make this
                               // test scenario happen, the request amount must be
@@ -1933,7 +1933,7 @@ describe("Bridge - Redemption", () => {
                             })
 
                             it("should delete the wallet's main UTXO", async () => {
-                              // The Bitcoin redemption transaction has no change
+                              // The Meowcoin redemption transaction has no change
                               // output so the wallet's main UTXO should be
                               // deleted on the Bridge side.
                               expect(
@@ -2265,7 +2265,7 @@ describe("Bridge - Redemption", () => {
                             })
 
                             it("should delete the wallet's main UTXO", async () => {
-                              // The Bitcoin redemption transaction has no change
+                              // The Meowcoin redemption transaction has no change
                               // output so the wallet's main UTXO should be
                               // deleted on the Bridge side. It doesn't matter
                               // that all redemptions handled by the transaction
@@ -2651,7 +2651,7 @@ describe("Bridge - Redemption", () => {
                             })
 
                             it("should delete the wallet's main UTXO", async () => {
-                              // The Bitcoin redemption transaction has no change
+                              // The Meowcoin redemption transaction has no change
                               // output so the wallet's main UTXO should be
                               // deleted on the Bridge side.
                               expect(
@@ -2985,7 +2985,7 @@ describe("Bridge - Redemption", () => {
 
                               // Alter the last redemption requests in the test
                               // data and set such an amount that will cause
-                              // the Bitcoin redemption transaction to be deemed
+                              // the Meowcoin redemption transaction to be deemed
                               // as invalid due to a wrong amount. The corresponding
                               // transaction output has the value of 191169 so to
                               // make this test scenario happen, the request amount
@@ -3029,7 +3029,7 @@ describe("Bridge - Redemption", () => {
 
                               // Alter the last redemption requests in the test
                               // data and set such an amount that will cause
-                              // the Bitcoin redemption transaction to be deemed
+                              // the Meowcoin redemption transaction to be deemed
                               // as invalid due to a wrong amount. The corresponding
                               // transaction output has the value of 191169 so to
                               // make this test scenario happen, the request amount
@@ -3403,7 +3403,7 @@ describe("Bridge - Redemption", () => {
 
                   // Corrupt the wallet's main UTXO that is injected to
                   // the Bridge state by the test runner in order to make it
-                  // different than the input used by the actual Bitcoin
+                  // different than the input used by the actual Meowcoin
                   // transaction thus make the tested scenario happen. The
                   // proper value of `txOutputIndex` is `5` so any other value
                   // will do the trick.
@@ -3700,7 +3700,7 @@ describe("Bridge - Redemption", () => {
         })
 
         it("should revert", async () => {
-          // Corrupt the bitcoin headers length in the redemption proof. The
+          // Corrupt the meowcoin headers length in the redemption proof. The
           // proper value is length divisible by 80 so any length violating
           // this rule will cause failure. In this case, we just remove the
           // last byte from proper headers chain.
@@ -3730,7 +3730,7 @@ describe("Bridge - Redemption", () => {
         })
 
         it("should revert", async () => {
-          // Bitcoin headers must form a chain to pass the proof validation.
+          // Meowcoin headers must form a chain to pass the proof validation.
           // That means the `previous block hash` encoded in the given block
           // header must match the actual previous header's hash. To test
           // that scenario, we corrupt the `previous block hash` of the

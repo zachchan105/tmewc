@@ -1,10 +1,10 @@
 :toc: macro
 
-= tBTC v2 System tests
+= tMEWC System tests
 
-https://github.com/keep-network/tbtc-v2/actions/workflows/system-tests.yml[image:https://img.shields.io/github/actions/workflow/status/keep-network/tbtc-v2/system-tests.yml?branch=main&event=schedule&label=System%20tests[System tests status]]
+https://github.com/keep-network/tmewc/actions/workflows/system-tests.yml[image:https://img.shields.io/github/actions/workflow/status/keep-network/tmewc/system-tests.yml?branch=main&event=schedule&label=System%20tests[System tests status]]
 
-This module contains the system test scenarios stressing the tBTC v2 system.
+This module contains the system test scenarios stressing the tMEWC system.
 
 toc::[]
 
@@ -24,24 +24,24 @@ To install dependencies, run:
 yarn install
 ```
 
-=== Bitcoin network requirements
+=== Meowcoin network requirements
 
 Test scenarios implemented in the `test` directory require
-a connection to the ElectrumX server synced with a Bitcoin
+a connection to the ElectrumX server synced with a Meowcoin
 network. Each test scenario can also define its own
-requirements related to the Bitcoin network. For example,
-deposit-related scenarios require a BTC account with a
-sufficient BTC balance. Please refer the documentation of
+requirements related to the Meowcoin network. For example,
+deposit-related scenarios require a MEWC account with a
+sufficient MEWC balance. Please refer the documentation of
 specific test scenarios for more details.
 
-Theoretically, system tests should work on any Bitcoin network.
-However, we recommend to stick with the Bitcoin testnet as
+Theoretically, system tests should work on any Meowcoin network.
+However, we recommend to stick with the Meowcoin testnet as
 it is the easiest starting point.
 
 === Ethereum network requirements
 
 All test scenarios require a connection to the Ethereum
-network with tBTC v2 contracts deployed on. Each of the
+network with tMEWC contracts deployed on. Each of the
 test scenarios can also define a specific contract
 state required to make a successful pass. For example,
 deposit-related scenarios typically require a live wallet
@@ -95,11 +95,11 @@ them in batch using `yarn test`. Specific scenarios may require a completely
 different network and contract state prerequisites so running them like
 common tests may not be a good idea.
 
-=== Example configuration with Bitcoin testnet and Hardhat local Ethereum network
+=== Example configuration with Meowcoin testnet and Hardhat local Ethereum network
 
 This example shows how to run the basic
 link:test/deposit-redemption.test.ts[single deposit and redemption roundtrip]
-scenario using Bitcoin testnet and Hardhat local Ethereum network.
+scenario using Meowcoin testnet and Hardhat local Ethereum network.
 
 First, open a shell instance and jump into `solidity` directory. Once
 done, install dependencies if required (`yarn install`) and compile
@@ -122,11 +122,11 @@ USE_EXTERNAL_DEPLOY=true npx hardhat deploy --network system_tests --export expo
 ```
 
 This command will deploy the contracts by running all the
-link:../solidity/deploy[tBTC v2 contracts deployment scripts]. The
+link:../solidity/deploy[tMEWC contracts deployment scripts]. The
 `--export` flag indicates that the deployment info will be exported
 as the `export.json` file.
 
-We now have a running Hardhat local network with the fresh tBTC v2 contracts
+We now have a running Hardhat local network with the fresh tMEWC contracts
 deployed on. The scenario we're trying to run requires a live wallet
 to be registered into the `Bridge` contract. We can easily achieve that
 using the test utils exposed by the `solidity` package. In order to do that,
@@ -148,22 +148,22 @@ ECDSA public key of the wallet (64-byte). It doesn't matter which one is actuall
 The only thing relevant here is its corresponding private key that will
 be required in further steps.
 
-Once done, the state of the tBTC v2 contracts should be as expected.
+Once done, the state of the tMEWC contracts should be as expected.
 The test scenario can be started using:
 ```
-ELECTRUM_URL=wss://electrumx-server.test.tbtc.network:8443 \
+ELECTRUM_URL=wss://electrumx-server.test.tmewc.network:8443 \
  CONTRACTS_DEPLOYMENT_EXPORT_FILE_PATH=../solidity/export.json \
- WALLET_BITCOIN_WIF=<wallet-bitcoin-wif> \
- DEPOSITOR_BITCOIN_WIF=<depositor-bitcoin-wif> \
+ WALLET_BITCOIN_WIF=<wallet-meowcoin-wif> \
+ DEPOSITOR_BITCOIN_WIF=<depositor-meowcoin-wif> \
  yarn test ./test/deposit-redemption.test.ts --network system_tests
 ```
 Most of the parameters were explained in the previous sections. Worth noting
 that this scenario requires two additional ones:
 
-- `wallet-bitcoin-wif` that should contain the wallet's private
+- `wallet-meowcoin-wif` that should contain the wallet's private
   key in the WIF format. This is the private key that should match the public
   key of the wallet generated in the previous step.
-- `depositor-bitcoin-wif` that should contain the depositor's
-  private key in the WIF format. This is an arbitrary BTC account with a
-  sufficient BTC balance
+- `depositor-meowcoin-wif` that should contain the depositor's
+  private key in the WIF format. This is an arbitrary MEWC account with a
+  sufficient MEWC balance
 

@@ -6,7 +6,7 @@ const {
   impersonateAccount,
   increaseTime,
 } = require("../helpers/contract-test-helpers.js")
-const { yearn, tbtc, forkBlockNumber } = require("./constants.js")
+const { yearn, tmewc, forkBlockNumber } = require("./constants.js")
 const { deployYearnVault } = require("./functions.js")
 const { saddleStrategyFixture } = require("./fixtures.js")
 
@@ -20,7 +20,7 @@ describeFn("System -- saddle strategy", () => {
   let rewardDistribution
   let keepToken
   let saddleLPRewards
-  let tbtcSaddlePoolLPToken
+  let tmewcSaddlePoolLPToken
   let vault
   let strategy
 
@@ -31,24 +31,24 @@ describeFn("System -- saddle strategy", () => {
     vaultGovernance = await ethers.getSigner(0)
 
     vaultDepositor = await impersonateAccount(
-      tbtc.saddlePoolLPTokenHolderAddress,
+      tmewc.saddlePoolLPTokenHolderAddress,
       vaultGovernance
     )
 
     saddleLPRewardsGovernance = await impersonateAccount(
-      tbtc.saddleLPRewardsOwner,
+      tmewc.saddleLPRewardsOwner,
       vaultGovernance
     )
 
     rewardDistribution = await impersonateAccount(
-      tbtc.keepTokenHolderAddress,
+      tmewc.keepTokenHolderAddress,
       vaultGovernance
     )
 
-    // Get tBTC v2 Saddle LP Rewards handle
+    // Get tMEWC Saddle LP Rewards handle
     saddleLPRewards = await ethers.getContractAt(
       "ILPRewards",
-      tbtc.saddleLPRewards
+      tmewc.saddleLPRewards
     )
 
     // Set `gated` to false to allow non-externally-owned accounts to perform
@@ -61,7 +61,7 @@ describeFn("System -- saddle strategy", () => {
       .setRewardDistribution(rewardDistribution.address)
 
     // Get KEEP token handle.
-    keepToken = await ethers.getContractAt("IERC20", tbtc.keepTokenAddress)
+    keepToken = await ethers.getContractAt("IERC20", tmewc.keepTokenAddress)
 
     // Deposit 100 KEEP tokens as reward
     const amountReward = to1e18(100)
@@ -72,18 +72,18 @@ describeFn("System -- saddle strategy", () => {
       .connect(rewardDistribution)
       .notifyRewardAmount(amountReward)
 
-    // Get tBTC v2 Saddle pool LP token handle.
-    tbtcSaddlePoolLPToken = await ethers.getContractAt(
+    // Get tMEWC Saddle pool LP token handle.
+    tmewcSaddlePoolLPToken = await ethers.getContractAt(
       "IERC20",
-      tbtc.saddlePoolLPTokenAddress
+      tmewc.saddlePoolLPTokenAddress
     )
 
-    // Deploy a new experimental vault accepting tBTC v2 Saddle pool LP tokens.
+    // Deploy a new experimental vault accepting tMEWC Saddle pool LP tokens.
     vault = await deployYearnVault(
       yearn,
       saddleStrategyFixture.vaultName,
       saddleStrategyFixture.vaultSymbol,
-      tbtcSaddlePoolLPToken,
+      tmewcSaddlePoolLPToken,
       vaultGovernance,
       saddleStrategyFixture.vaultDepositLimit
     )
@@ -92,8 +92,8 @@ describeFn("System -- saddle strategy", () => {
     const SaddleStrategy = await ethers.getContractFactory("SaddleStrategy")
     strategy = await SaddleStrategy.deploy(
       vault.address,
-      tbtc.saddlePoolSwapAddress,
-      tbtc.saddleLPRewards
+      tmewc.saddlePoolSwapAddress,
+      tmewc.saddleLPRewards
     )
     await strategy.deployed()
 
@@ -109,7 +109,7 @@ describeFn("System -- saddle strategy", () => {
 
   describe("when depositor deposits to the vault", () => {
     before(async () => {
-      await tbtcSaddlePoolLPToken
+      await tmewcSaddlePoolLPToken
         .connect(vaultDepositor)
         .approve(vault.address, saddleStrategyFixture.vaultDepositAmount)
       await vault
@@ -142,43 +142,43 @@ describeFn("System -- saddle strategy", () => {
       // 100% of debt ratio and deposits them to the Saddle reward pool.
 
       // All LP tokens deposited in the Saddle reward pool generate extra
-      // KEEP rewards which are used to buy wBTC. Acquired wBTC are deposited
+      // KEEP rewards which are used to buy wMEWC. Acquired wMEWC are deposited
       // back to the Saddle pool in order to earn new LP tokens.
       // All numbers are presented in the 18 digits format.
       //
       // Day 1:
       // KEEP earned: 2354216975965155399
-      // wBTC bought: 2149
+      // wMEWC bought: 2149
       // LP tokens profit: 21019199600110
       //
       // Day 2:
       // KEEP earned: 2354216975965155399
-      // wBTC bought: 2149
+      // wMEWC bought: 2149
       // LP tokens profit: 21019199592617
       //
       // Day 3:
       // KEEP earned: 2354381859214170296
-      // wBTC bought: 2149
+      // wMEWC bought: 2149
       // LP tokens profit: 21019199585122
       //
       // Day 4:
       // KEEP earned: 2354546742454357499
-      // wBTC bought: 2150
+      // wMEWC bought: 2150
       // LP tokens profit: 21028980498790
       //
       // Day 5:
       // KEEP earned: 2354711625685716993
-      // wBTC bought: 2150
+      // wMEWC bought: 2150
       // LP tokens profit: 21028980491289
       //
       // Day 6:
       // KEEP earned: 2354876585633803994
-      // wBTC bought: 2150
+      // wMEWC bought: 2150
       // LP tokens profit: 21028980483789
       //
       // Day 7:
       // KEEP earned: 2354659946035572609
-      // wBTC bought: 2150
+      // wMEWC bought: 2150
       // LP tokens profit: 21028980476286
       //
       // Sum of LP tokens profits: 147173520728003 (15 digits)
@@ -195,11 +195,11 @@ describeFn("System -- saddle strategy", () => {
     let amountWithdrawn
 
     before(async () => {
-      const initialBalance = await tbtcSaddlePoolLPToken.balanceOf(
+      const initialBalance = await tmewcSaddlePoolLPToken.balanceOf(
         vaultDepositor.address
       )
       await vault.connect(vaultDepositor).withdraw() // withdraw all shares
-      const currentBalance = await tbtcSaddlePoolLPToken.balanceOf(
+      const currentBalance = await tmewcSaddlePoolLPToken.balanceOf(
         vaultDepositor.address
       )
       amountWithdrawn = currentBalance.sub(initialBalance)
@@ -233,12 +233,12 @@ describeFn("System -- saddle strategy", () => {
   })
 
   describe("eth to LP token (want) conversion", () => {
-    // At block 12786839 (Jul-08-2021) the exchange rate between wBTC/ETH was
-    // ~1/15.65. Swapping 1000ETH on Uniswap gave ~63.9wBTC. It means that by
-    // depositing 63.9wBTC to Saddle LP Pool a depositor would get
+    // At block 12786839 (Jul-08-2021) the exchange rate between wMEWC/ETH was
+    // ~1/15.65. Swapping 1000ETH on Uniswap gave ~63.9wMEWC. It means that by
+    // depositing 63.9wMEWC to Saddle LP Pool a depositor would get
     // ~62.4681 LP tokens.
     //
-    // TODO: When the new saddle pool with tBTC v2 is deployed, the fork block
+    // TODO: When the new saddle pool with tMEWC is deployed, the fork block
     // number would need to be adjusted accordingly. In consequence, the rates of
     // tokens will be different and they will need to be adjusted as well.
     it("should calculate LP tokens in exchange for ETH ", async () => {

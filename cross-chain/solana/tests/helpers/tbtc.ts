@@ -2,25 +2,25 @@ import { BN, Program, Wallet, workspace } from "@coral-xyz/anchor";
 import { getMint } from "@solana/spl-token";
 import { PublicKey, TransactionInstruction } from "@solana/web3.js";
 import { config, expect } from "chai";
-import { Tbtc } from "../../target/types/tbtc";
-import { TBTC_PROGRAM_ID } from "./consts";
+import { Tmewc } from "../../target/types/tmewc";
+import { TMEWC_PROGRAM_ID } from "./consts";
 import { PROGRAM_ID as METADATA_PROGRAM_ID } from "@metaplex-foundation/mpl-token-metadata";
 
 export function getConfigPDA(): PublicKey {
   return PublicKey.findProgramAddressSync(
     [Buffer.from("config")],
-    TBTC_PROGRAM_ID
+    TMEWC_PROGRAM_ID
   )[0];
 }
 
 export function getMintPDA(): PublicKey {
   return PublicKey.findProgramAddressSync(
-    [Buffer.from("tbtc-mint")],
-    TBTC_PROGRAM_ID
+    [Buffer.from("tmewc-mint")],
+    TMEWC_PROGRAM_ID
   )[0];
 }
 
-export function getTbtcMetadataPDA(): PublicKey {
+export function getTmewcMetadataPDA(): PublicKey {
   return PublicKey.findProgramAddressSync(
     [
       Buffer.from("metadata"),
@@ -34,33 +34,33 @@ export function getTbtcMetadataPDA(): PublicKey {
 export function getMinterInfoPDA(minter: PublicKey): PublicKey {
   return PublicKey.findProgramAddressSync(
     [Buffer.from("minter-info"), minter.toBuffer()],
-    TBTC_PROGRAM_ID
+    TMEWC_PROGRAM_ID
   )[0];
 }
 
 export function getGuardianInfoPDA(guardian: PublicKey): PublicKey {
   return PublicKey.findProgramAddressSync(
     [Buffer.from("guardian-info"), guardian.toBuffer()],
-    TBTC_PROGRAM_ID
+    TMEWC_PROGRAM_ID
   )[0];
 }
 
 export function getGuardiansPDA(): PublicKey {
   return PublicKey.findProgramAddressSync(
     [Buffer.from("guardians")],
-    TBTC_PROGRAM_ID
+    TMEWC_PROGRAM_ID
   )[0];
 }
 
 export function getMintersPDA(): PublicKey {
   return PublicKey.findProgramAddressSync(
     [Buffer.from("minters")],
-    TBTC_PROGRAM_ID
+    TMEWC_PROGRAM_ID
   )[0];
 }
 
 export async function getConfigData() {
-  const program = workspace.Tbtc as Program<Tbtc>;
+  const program = workspace.Tmewc as Program<Tmewc>;
   const config = getConfigPDA();
   return program.account.config.fetch(config);
 }
@@ -81,7 +81,7 @@ export async function checkConfig(expected: {
     paused,
     pendingAuthority,
   } = expected;
-  const program = workspace.Tbtc as Program<Tbtc>;
+  const program = workspace.Tmewc as Program<Tmewc>;
   const configState = await getConfigData();
 
   expect(configState.authority).to.eql(authority);
@@ -106,7 +106,7 @@ export async function checkConfig(expected: {
 }
 
 export async function getMinterInfo(minter: PublicKey) {
-  const program = workspace.Tbtc as Program<Tbtc>;
+  const program = workspace.Tmewc as Program<Tmewc>;
   const minterInfoPDA = getMinterInfoPDA(minter);
   return program.account.minterInfo.fetch(minterInfoPDA);
 }
@@ -117,7 +117,7 @@ export async function checkMinterInfo(minter: PublicKey) {
 }
 
 export async function getGuardianInfo(guardian: PublicKey) {
-  const program = workspace.Tbtc as Program<Tbtc>;
+  const program = workspace.Tmewc as Program<Tmewc>;
   const guardianInfoPDA = getGuardianInfoPDA(guardian);
   return program.account.guardianInfo.fetch(guardianInfoPDA);
 }
@@ -138,7 +138,7 @@ type AddGuardianContext = {
 export async function addGuardianIx(
   accounts: AddGuardianContext
 ): Promise<TransactionInstruction> {
-  const program = workspace.Tbtc as Program<Tbtc>;
+  const program = workspace.Tmewc as Program<Tmewc>;
 
   let { config, authority, guardians, guardianInfo, guardian } = accounts;
   if (config === undefined) {
@@ -176,7 +176,7 @@ type AddMinterContext = {
 export async function addMinterIx(
   accounts: AddMinterContext
 ): Promise<TransactionInstruction> {
-  const program = workspace.Tbtc as Program<Tbtc>;
+  const program = workspace.Tmewc as Program<Tmewc>;
 
   let { config, authority, minters, minterInfo, minter } = accounts;
   if (config === undefined) {
@@ -211,7 +211,7 @@ type CancelAuthorityChange = {
 export async function cancelAuthorityChangeIx(
   accounts: CancelAuthorityChange
 ): Promise<TransactionInstruction> {
-  const program = workspace.Tbtc as Program<Tbtc>;
+  const program = workspace.Tmewc as Program<Tmewc>;
 
   let { config, authority } = accounts;
   if (config === undefined) {
@@ -236,7 +236,7 @@ type ChangeAuthorityContext = {
 export async function changeAuthorityIx(
   accounts: ChangeAuthorityContext
 ): Promise<TransactionInstruction> {
-  const program = workspace.Tbtc as Program<Tbtc>;
+  const program = workspace.Tmewc as Program<Tmewc>;
 
   let { config, authority, newAuthority } = accounts;
   if (config === undefined) {
@@ -259,14 +259,14 @@ type InitializeContext = {
   guardians?: PublicKey;
   minters?: PublicKey;
   authority: PublicKey;
-  tbtcMetadata?: PublicKey;
+  tmewcMetadata?: PublicKey;
   mplTokenMetadataProgram?: PublicKey;
 };
 
 export async function initializeIx(
   accounts: InitializeContext
 ): Promise<TransactionInstruction> {
-  const program = workspace.Tbtc as Program<Tbtc>;
+  const program = workspace.Tmewc as Program<Tmewc>;
 
   let {
     mint,
@@ -274,7 +274,7 @@ export async function initializeIx(
     guardians,
     minters,
     authority,
-    tbtcMetadata,
+    tmewcMetadata,
     mplTokenMetadataProgram,
   } = accounts;
 
@@ -294,8 +294,8 @@ export async function initializeIx(
     minters = getMintersPDA();
   }
 
-  if (tbtcMetadata === undefined) {
-    tbtcMetadata = getTbtcMetadataPDA();
+  if (tmewcMetadata === undefined) {
+    tmewcMetadata = getTmewcMetadataPDA();
   }
 
   if (mplTokenMetadataProgram === undefined) {
@@ -310,7 +310,7 @@ export async function initializeIx(
       guardians,
       minters,
       authority,
-      tbtcMetadata,
+      tmewcMetadata,
       mplTokenMetadataProgram,
     })
     .instruction();
@@ -325,7 +325,7 @@ type PauseContext = {
 export async function pauseIx(
   accounts: PauseContext
 ): Promise<TransactionInstruction> {
-  const program = workspace.Tbtc as Program<Tbtc>;
+  const program = workspace.Tmewc as Program<Tmewc>;
 
   let { config, guardianInfo, guardian } = accounts;
   if (config === undefined) {
@@ -357,7 +357,7 @@ type RemoveGuardianContext = {
 export async function removeGuardianIx(
   accounts: RemoveGuardianContext
 ): Promise<TransactionInstruction> {
-  const program = workspace.Tbtc as Program<Tbtc>;
+  const program = workspace.Tmewc as Program<Tmewc>;
 
   let { config, authority, guardians, guardianInfo, guardian } = accounts;
   if (config === undefined) {
@@ -395,7 +395,7 @@ type RemoveMinterContext = {
 export async function removeMinterIx(
   accounts: RemoveMinterContext
 ): Promise<TransactionInstruction> {
-  const program = workspace.Tbtc as Program<Tbtc>;
+  const program = workspace.Tmewc as Program<Tmewc>;
 
   let { config, authority, minters, minterInfo, minter } = accounts;
   if (config === undefined) {
@@ -430,7 +430,7 @@ type TakeAuthorityContext = {
 export async function takeAuthorityIx(
   accounts: TakeAuthorityContext
 ): Promise<TransactionInstruction> {
-  const program = workspace.Tbtc as Program<Tbtc>;
+  const program = workspace.Tmewc as Program<Tmewc>;
 
   let { config, pendingAuthority } = accounts;
   if (config === undefined) {
@@ -454,7 +454,7 @@ type UnpauseContext = {
 export async function unpauseIx(
   accounts: UnpauseContext
 ): Promise<TransactionInstruction> {
-  const program = workspace.Tbtc as Program<Tbtc>;
+  const program = workspace.Tmewc as Program<Tmewc>;
 
   let { config, authority } = accounts;
   if (config === undefined) {
@@ -482,7 +482,7 @@ export async function mintIx(
   accounts: MintContext,
   amount: BN
 ): Promise<TransactionInstruction> {
-  const program = workspace.Tbtc as Program<Tbtc>;
+  const program = workspace.Tmewc as Program<Tmewc>;
 
   let { mint, config, minterInfo, minter, recipientToken } = accounts;
   if (mint === undefined) {

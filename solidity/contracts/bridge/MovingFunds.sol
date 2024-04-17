@@ -15,8 +15,8 @@
 
 pragma solidity 0.8.17;
 
-import {BTCUtils} from "@keep-network/bitcoin-spv-sol/contracts/BTCUtils.sol";
-import {BytesLib} from "@keep-network/bitcoin-spv-sol/contracts/BytesLib.sol";
+import {MEWCUtils} from "@keep-network/meowcoin-spv-sol/contracts/MEWCUtils.sol";
+import {BytesLib} from "@keep-network/meowcoin-spv-sol/contracts/BytesLib.sol";
 
 import "./BitcoinTx.sol";
 import "./BridgeState.sol";
@@ -24,7 +24,7 @@ import "./Redemption.sol";
 import "./Wallets.sol";
 
 /// @title Moving Bridge wallet funds
-/// @notice The library handles the logic for moving Bitcoin between Bridge
+/// @notice The library handles the logic for moving Meowcoin between Bridge
 ///         wallets.
 /// @dev A wallet that failed a heartbeat, did not process requested redemption
 ///      on time, or qualifies to be closed, begins the procedure of moving
@@ -33,26 +33,26 @@ import "./Wallets.sol";
 ///      SPV proof of moving funds to the previously committed wallets.
 ///      Once the proof is submitted, all target wallets are supposed to
 ///      sweep the received UTXOs with their own main UTXOs in order to
-///      update their BTC balances.
+///      update their MEWC balances.
 library MovingFunds {
     using BridgeState for BridgeState.Storage;
     using Wallets for BridgeState.Storage;
     using BitcoinTx for BridgeState.Storage;
 
-    using BTCUtils for bytes;
+    using MEWCUtils for bytes;
     using BytesLib for bytes;
 
     /// @notice Represents temporary information needed during the processing
-    ///         of the moving funds Bitcoin transaction outputs. This structure
+    ///         of the moving funds Meowcoin transaction outputs. This structure
     ///         is an internal one and should not be exported outside of the
     ///         moving funds transaction processing code.
     /// @dev Allows to mitigate "stack too deep" errors on EVM.
     struct MovingFundsTxOutputsProcessingInfo {
-        // 32-byte hash of the moving funds Bitcoin transaction.
+        // 32-byte hash of the moving funds Meowcoin transaction.
         bytes32 movingFundsTxHash;
-        // Output vector of the moving funds Bitcoin transaction. It is
+        // Output vector of the moving funds Meowcoin transaction. It is
         // assumed the vector's structure is valid so it must be validated
-        // using e.g. `BTCUtils.validateVout` function before being used
+        // using e.g. `MEWCUtils.validateVout` function before being used
         // during the processing. The validation is usually done as part
         // of the `BitcoinTx.validateProof` call that checks the SPV proof.
         bytes movingFundsTxOutputVector;
@@ -151,7 +151,7 @@ library MovingFunds {
     ///      - The `walletMainUtxo` components must point to the recent main
     ///        UTXO of the source wallet, as currently known on the Ethereum
     ///        chain,
-    ///      - Source wallet BTC balance must be greater than zero,
+    ///      - Source wallet MEWC balance must be greater than zero,
     ///      - At least one Live wallet must exist in the system,
     ///      - Submitted target wallets count must match the expected count
     ///        `N = min(liveWalletsCount, ceil(walletBtcBalance / walletMaxBtcTransfer))`
@@ -208,7 +208,7 @@ library MovingFunds {
             walletMainUtxo
         );
 
-        require(walletBtcBalance > 0, "Wallet BTC balance is zero");
+        require(walletBtcBalance > 0, "Wallet MEWC balance is zero");
 
         uint256 expectedTargetWalletsCount = Math.min(
             self.liveWalletsCount,
@@ -286,7 +286,7 @@ library MovingFunds {
 
         // If the moving funds wallet already submitted their target wallets
         // commitment, there is no point to reset the timeout since the
-        // wallet can make the BTC transaction and submit the proof.
+        // wallet can make the MEWC transaction and submit the proof.
         require(
             wallet.movingFundsTargetWalletsCommitmentHash == bytes32(0),
             "Target wallets commitment already submitted"
@@ -308,7 +308,7 @@ library MovingFunds {
         emit MovingFundsTimeoutReset(walletPubKeyHash);
     }
 
-    /// @notice Used by the wallet to prove the BTC moving funds transaction
+    /// @notice Used by the wallet to prove the MEWC moving funds transaction
     ///         and to make the necessary state changes. Moving funds is only
     ///         accepted if it satisfies SPV proof.
     ///
@@ -320,19 +320,19 @@ library MovingFunds {
     ///
     ///         It is possible to prove the given moving funds transaction only
     ///         one time.
-    /// @param movingFundsTx Bitcoin moving funds transaction data.
-    /// @param movingFundsProof Bitcoin moving funds proof data.
+    /// @param movingFundsTx Meowcoin moving funds transaction data.
+    /// @param movingFundsProof Meowcoin moving funds proof data.
     /// @param mainUtxo Data of the wallet's main UTXO, as currently known on
     ///        the Ethereum chain.
-    /// @param walletPubKeyHash 20-byte public key hash (computed using Bitcoin
+    /// @param walletPubKeyHash 20-byte public key hash (computed using Meowcoin
     ///        HASH160 over the compressed ECDSA public key) of the wallet
     ///        which performed the moving funds transaction.
     /// @dev Requirements:
     ///      - `movingFundsTx` components must match the expected structure. See
     ///        `BitcoinTx.Info` docs for reference. Their values must exactly
-    ///        correspond to appropriate Bitcoin transaction fields to produce
+    ///        correspond to appropriate Meowcoin transaction fields to produce
     ///        a provable transaction hash,
-    ///      - The `movingFundsTx` should represent a Bitcoin transaction with
+    ///      - The `movingFundsTx` should represent a Meowcoin transaction with
     ///        exactly 1 input that refers to the wallet's main UTXO. That
     ///        transaction should have 1..n outputs corresponding to the
     ///        pre-committed target wallets. Outputs must be ordered in the
@@ -351,7 +351,7 @@ library MovingFunds {
     ///        MovingFunds state,
     ///      - The target wallets commitment must be submitted by the wallet
     ///        that `walletPubKeyHash` points to,
-    ///      - The total Bitcoin transaction fee must be lesser or equal
+    ///      - The total Meowcoin transaction fee must be lesser or equal
     ///        to `movingFundsTxMaxTotalFee` governable parameter.
     function submitMovingFundsProof(
         BridgeState.Storage storage self,
@@ -363,7 +363,7 @@ library MovingFunds {
         // Wallet state is validated in `notifyWalletFundsMoved`.
 
         // The actual transaction proof is performed here. After that point, we
-        // can assume the transaction happened on Bitcoin chain and has
+        // can assume the transaction happened on Meowcoin chain and has
         // a sufficient number of confirmations as determined by
         // `txProofDifficultyFactor` constant.
         bytes32 movingFundsTxHash = self.validateProof(
@@ -420,7 +420,7 @@ library MovingFunds {
         emit MovingFundsCompleted(walletPubKeyHash, movingFundsTxHash);
     }
 
-    /// @notice Processes the moving funds Bitcoin transaction output vector
+    /// @notice Processes the moving funds Meowcoin transaction output vector
     ///         and extracts information required for further processing.
     /// @param processInfo Processing info containing the moving funds tx
     ///        hash and output vector.
@@ -436,7 +436,7 @@ library MovingFunds {
         BridgeState.Storage storage self,
         MovingFundsTxOutputsProcessingInfo memory processInfo
     ) internal returns (bytes32 targetWalletsHash, uint256 outputsTotalValue) {
-        // Determining the total number of Bitcoin transaction outputs in
+        // Determining the total number of Meowcoin transaction outputs in
         // the same way as for number of inputs. See `BitcoinTx.outputVector`
         // docs for more details.
         (
@@ -449,15 +449,15 @@ library MovingFunds {
         // must be added because `BtcUtils.parseVarInt` does not include
         // compactSize uint tag in the returned length.
         //
-        // For >= 0 && <= 252, `BTCUtils.determineVarIntDataLengthAt`
+        // For >= 0 && <= 252, `MEWCUtils.determineVarIntDataLengthAt`
         // returns `0`, so we jump over one byte of compactSize uint.
         //
         // For >= 253 && <= 0xffff there is `0xfd` tag,
-        // `BTCUtils.determineVarIntDataLengthAt` returns `2` (no
+        // `MEWCUtils.determineVarIntDataLengthAt` returns `2` (no
         // tag byte included) so we need to jump over 1+2 bytes of
         // compactSize uint.
         //
-        // Please refer `BTCUtils` library and compactSize uint
+        // Please refer `MEWCUtils` library and compactSize uint
         // docs in `BitcoinTx` library for more details.
         uint256 outputStartingIndex = 1 + outputsCompactSizeUintLength;
 
@@ -496,7 +496,7 @@ library MovingFunds {
             // Register a moved funds sweep request that must be handled
             // by the target wallet. The target wallet must sweep the
             // received funds with their own main UTXO in order to update
-            // their BTC balance. Worth noting there is no need to check
+            // their MEWC balance. Worth noting there is no need to check
             // if the sweep request already exists in the system because
             // the moving funds wallet is moved to the Closing state after
             // submitting the moving funds proof so there is no possibility
@@ -587,7 +587,7 @@ library MovingFunds {
         emit MovingFundsTimedOut(walletPubKeyHash);
     }
 
-    /// @notice Notifies about a moving funds wallet whose BTC balance is
+    /// @notice Notifies about a moving funds wallet whose MEWC balance is
     ///         below the moving funds dust threshold. Ends the moving funds
     ///         process and begins wallet closing immediately.
     /// @param walletPubKeyHash 20-byte public key hash of the wallet.
@@ -599,7 +599,7 @@ library MovingFunds {
     ///        of the given wallet, as currently known on the Ethereum chain.
     ///        If the wallet has no main UTXO, this parameter can be empty as it
     ///        is ignored,
-    ///      - The wallet BTC balance must be below the moving funds threshold.
+    ///      - The wallet MEWC balance must be below the moving funds threshold.
     function notifyMovingFundsBelowDust(
         BridgeState.Storage storage self,
         bytes20 walletPubKeyHash,
@@ -614,7 +614,7 @@ library MovingFunds {
 
         require(
             walletBtcBalance < self.movingFundsDustThreshold,
-            "Wallet BTC balance must be below the moving funds dust threshold"
+            "Wallet MEWC balance must be below the moving funds dust threshold"
         );
 
         self.notifyWalletMovingFundsBelowDust(walletPubKeyHash);
@@ -623,7 +623,7 @@ library MovingFunds {
         emit MovingFundsBelowDustReported(walletPubKeyHash);
     }
 
-    /// @notice Used by the wallet to prove the BTC moved funds sweep
+    /// @notice Used by the wallet to prove the MEWC moved funds sweep
     ///         transaction and to make the necessary state changes. Moved
     ///         funds sweep is only accepted if it satisfies SPV proof.
     ///
@@ -633,20 +633,20 @@ library MovingFunds {
     ///         value on the sweeping wallet's 20-byte public key hash using a
     ///         reasonable transaction fee. If all preconditions are
     ///         met, this function updates the sweeping wallet main UTXO, thus
-    ///         their BTC balance.
+    ///         their MEWC balance.
     ///
     ///         It is possible to prove the given sweep transaction only
     ///         one time.
-    /// @param sweepTx Bitcoin sweep funds transaction data.
-    /// @param sweepProof Bitcoin sweep funds proof data.
+    /// @param sweepTx Meowcoin sweep funds transaction data.
+    /// @param sweepProof Meowcoin sweep funds proof data.
     /// @param mainUtxo Data of the sweeping wallet's main UTXO, as currently
     ///        known on the Ethereum chain.
     /// @dev Requirements:
     ///      - `sweepTx` components must match the expected structure. See
     ///        `BitcoinTx.Info` docs for reference. Their values must exactly
-    ///        correspond to appropriate Bitcoin transaction fields to produce
+    ///        correspond to appropriate Meowcoin transaction fields to produce
     ///        a provable transaction hash,
-    ///      - The `sweepTx` should represent a Bitcoin transaction with
+    ///      - The `sweepTx` should represent a Meowcoin transaction with
     ///        the first input pointing to a wallet's sweep Pending request and,
     ///        optionally, the second input pointing to the wallet's main UTXO,
     ///        if the sweeping wallet has a main UTXO set. There should be only
@@ -660,7 +660,7 @@ library MovingFunds {
     ///        of the sweeping wallet, as currently known on the Ethereum chain.
     ///        If there is no main UTXO, this parameter is ignored,
     ///      - The sweeping wallet must be in the Live or MovingFunds state,
-    ///      - The total Bitcoin transaction fee must be lesser or equal
+    ///      - The total Meowcoin transaction fee must be lesser or equal
     ///        to `movedFundsSweepTxMaxTotalFee` governable parameter.
     function submitMovedFundsSweepProof(
         BridgeState.Storage storage self,
@@ -672,7 +672,7 @@ library MovingFunds {
         // `resolveMovedFundsSweepingWallet` function.
 
         // The actual transaction proof is performed here. After that point, we
-        // can assume the transaction happened on Bitcoin chain and has
+        // can assume the transaction happened on Meowcoin chain and has
         // a sufficient number of confirmations as determined by
         // `txProofDifficultyFactor` constant.
         bytes32 sweepTxHash = self.validateProof(sweepTx, sweepProof);
@@ -711,14 +711,14 @@ library MovingFunds {
         emit MovedFundsSwept(walletPubKeyHash, sweepTxHash);
     }
 
-    /// @notice Processes the Bitcoin moved funds sweep transaction output vector
+    /// @notice Processes the Meowcoin moved funds sweep transaction output vector
     ///         by extracting the single output and using it to gain additional
     ///         information required for further processing (e.g. value and
     ///         wallet public key hash).
-    /// @param sweepTxOutputVector Bitcoin moved funds sweep transaction output
+    /// @param sweepTxOutputVector Meowcoin moved funds sweep transaction output
     ///        vector.
     ///        This function assumes vector's structure is valid so it must be
-    ///        validated using e.g. `BTCUtils.validateVout` function before
+    ///        validated using e.g. `MEWCUtils.validateVout` function before
     ///        it is passed here.
     /// @return walletPubKeyHash 20-byte wallet public key hash.
     /// @return value 8-byte moved funds sweep transaction output value.
@@ -734,7 +734,7 @@ library MovingFunds {
         // parse the compactSize uint (VarInt) the output vector is prepended by.
         // That compactSize uint encodes the number of vector elements using the
         // format presented in:
-        // https://developer.bitcoin.org/reference/transactions.html#compactsize-unsigned-integers
+        // https://developer.meowcoin.org/reference/transactions.html#compactsize-unsigned-integers
         // We don't need asserting the compactSize uint is parseable since it
         // was already checked during `validateVout` validation performed as
         // part of the `BitcoinTx.validateProof` call.
@@ -756,7 +756,7 @@ library MovingFunds {
     ///         hash. Validates the wallet state and current main UTXO, as
     ///         currently known on the Ethereum chain.
     /// @param walletPubKeyHash public key hash of the wallet proving the sweep
-    ///        Bitcoin transaction.
+    ///        Meowcoin transaction.
     /// @param mainUtxo Data of the wallet's main UTXO, as currently known on
     ///        the Ethereum chain. If no main UTXO exists for the given wallet,
     ///        this parameter is ignored.
@@ -810,7 +810,7 @@ library MovingFunds {
         }
     }
 
-    /// @notice Processes the Bitcoin moved funds sweep transaction input vector.
+    /// @notice Processes the Meowcoin moved funds sweep transaction input vector.
     ///         It extracts the first input and tries to match it with one of
     ///         the moved funds sweep requests targeting the sweeping wallet.
     ///         If the sweep request is an existing Pending request, this
@@ -818,9 +818,9 @@ library MovingFunds {
     ///         main UTXO, this function extracts the second input, makes sure
     ///         it refers to the wallet main UTXO, and marks that main UTXO as
     ///         correctly spent.
-    /// @param sweepTxInputVector Bitcoin moved funds sweep transaction input vector.
+    /// @param sweepTxInputVector Meowcoin moved funds sweep transaction input vector.
     ///        This function assumes vector's structure is valid so it must be
-    ///        validated using e.g. `BTCUtils.validateVin` function before
+    ///        validated using e.g. `MEWCUtils.validateVin` function before
     ///        it is passed here.
     /// @param mainUtxo Data of the sweeping wallet's main UTXO. If no main UTXO
     ///        exists for the given the wallet, this parameter's fields should
@@ -843,11 +843,11 @@ library MovingFunds {
         BitcoinTx.UTXO memory mainUtxo,
         bytes20 walletPubKeyHash
     ) internal returns (uint256 inputsTotalValue) {
-        // To determine the total number of Bitcoin transaction inputs,
+        // To determine the total number of Meowcoin transaction inputs,
         // we need to parse the compactSize uint (VarInt) the input vector is
         // prepended by. That compactSize uint encodes the number of vector
         // elements using the format presented in:
-        // https://developer.bitcoin.org/reference/transactions.html#compactsize-unsigned-integers
+        // https://developer.meowcoin.org/reference/transactions.html#compactsize-unsigned-integers
         // We don't need asserting the compactSize uint is parseable since it
         // was already checked during `validateVin` validation performed as
         // part of the `BitcoinTx.validateProof` call.
@@ -862,15 +862,15 @@ library MovingFunds {
         // must be added because `BtcUtils.parseVarInt` does not include
         // compactSize uint tag in the returned length.
         //
-        // For >= 0 && <= 252, `BTCUtils.determineVarIntDataLengthAt`
+        // For >= 0 && <= 252, `MEWCUtils.determineVarIntDataLengthAt`
         // returns `0`, so we jump over one byte of compactSize uint.
         //
         // For >= 253 && <= 0xffff there is `0xfd` tag,
-        // `BTCUtils.determineVarIntDataLengthAt` returns `2` (no
+        // `MEWCUtils.determineVarIntDataLengthAt` returns `2` (no
         // tag byte included) so we need to jump over 1+2 bytes of
         // compactSize uint.
         //
-        // Please refer `BTCUtils` library and compactSize uint
+        // Please refer `MEWCUtils` library and compactSize uint
         // docs in `BitcoinTx` library for more details.
         uint256 inputStartingIndex = 1 + inputsCompactSizeUintLength;
 
@@ -969,16 +969,16 @@ library MovingFunds {
         return inputsTotalValue;
     }
 
-    /// @notice Parses a Bitcoin transaction input starting at the given index.
-    /// @param inputVector Bitcoin transaction input vector.
+    /// @notice Parses a Meowcoin transaction input starting at the given index.
+    /// @param inputVector Meowcoin transaction input vector.
     /// @param inputStartingIndex Index the given input starts at.
-    /// @return outpointTxHash 32-byte hash of the Bitcoin transaction which is
+    /// @return outpointTxHash 32-byte hash of the Meowcoin transaction which is
     ///         pointed in the given input's outpoint.
-    /// @return outpointIndex 4-byte index of the Bitcoin transaction output
+    /// @return outpointIndex 4-byte index of the Meowcoin transaction output
     ///         which is pointed in the given input's outpoint.
     /// @return inputLength Byte length of the given input.
     /// @dev This function assumes vector's structure is valid so it must be
-    ///      validated using e.g. `BTCUtils.validateVin` function before it
+    ///      validated using e.g. `MEWCUtils.validateVin` function before it
     ///      is passed here.
     function parseMovedFundsSweepTxInputAt(
         bytes memory inputVector,
@@ -994,7 +994,7 @@ library MovingFunds {
     {
         outpointTxHash = inputVector.extractInputTxIdLeAt(inputStartingIndex);
 
-        outpointIndex = BTCUtils.reverseUint32(
+        outpointIndex = MEWCUtils.reverseUint32(
             uint32(inputVector.extractTxIndexLeAt(inputStartingIndex))
         );
 

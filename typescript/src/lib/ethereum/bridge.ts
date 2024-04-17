@@ -30,7 +30,7 @@ import {
   BitcoinCompactSizeUint,
   BitcoinTxHash,
   BitcoinUtxo,
-} from "../bitcoin"
+} from "../meowcoin"
 import {
   EthersContractConfig,
   EthersContractDeployment,
@@ -42,7 +42,7 @@ import { EthereumWalletRegistry } from "./wallet-registry"
 
 import MainnetBridgeDeployment from "./artifacts/mainnet/Bridge.json"
 import SepoliaBridgeDeployment from "./artifacts/sepolia/Bridge.json"
-import LocalBridgeDeployment from "@keep-network/tbtc-v2/artifacts/Bridge.json"
+import LocalBridgeDeployment from "@keep-network/tmewc/artifacts/Bridge.json"
 
 type DepositRequestTypechain = DepositTypechain.DepositRequestStructOutput
 
@@ -287,7 +287,7 @@ export class EthereumBridge
     }
 
     const mainUtxoParam = {
-      // The Ethereum Bridge expects this hash to be in the Bitcoin internal
+      // The Ethereum Bridge expects this hash to be in the Meowcoin internal
       // byte order.
       txHash: mainUtxo.transactionHash.reverse().toPrefixedString(),
       txOutputIndex: mainUtxo.outputIndex,
@@ -341,7 +341,7 @@ export class EthereumBridge
       BitcoinHashUtils.computeHash160(walletPublicKey).toPrefixedString()
 
     const mainUtxoParam = {
-      // The Ethereum Bridge expects this hash to be in the Bitcoin internal
+      // The Ethereum Bridge expects this hash to be in the Meowcoin internal
       // byte order.
       txHash: mainUtxo.transactionHash.reverse().toPrefixedString(),
       txOutputIndex: mainUtxo.outputIndex,
@@ -397,7 +397,7 @@ export class EthereumBridge
     }
 
     const mainUtxoParam = {
-      // The Ethereum Bridge expects this hash to be in the Bitcoin internal
+      // The Ethereum Bridge expects this hash to be in the Meowcoin internal
       // byte order.
       txHash: mainUtxo.transactionHash.reverse().toPrefixedString(),
       txOutputIndex: mainUtxo.outputIndex,
@@ -641,7 +641,7 @@ export class EthereumBridge
     //        included in the currently used version of ethers.js.
     //        Ultimately, we should upgrade ethers.js to include that fix.
     //        Short-term, we can workaround the problem as presented in:
-    //        https://github.com/threshold-network/token-dashboard/blob/main/src/threshold-ts/tbtc/index.ts#L1041C1-L1093C1
+    //        https://github.com/threshold-network/token-dashboard/blob/main/src/threshold-ts/tmewc/index.ts#L1041C1-L1093C1
     const events: EthersEvent[] = await this.getEvents(
       "RedemptionRequested",
       options,

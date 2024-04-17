@@ -9,8 +9,8 @@ import type {
   IWalletRegistry,
   ReimbursementPool,
   MaintainerProxy,
-  TBTC,
-  TBTCVault,
+  TMEWC,
+  TMEWCVault,
   VendingMachine,
   BridgeGovernance,
   IRelay,
@@ -36,13 +36,13 @@ export default async function bridgeFixture() {
 
   const guardians = [guardian1, guardian2, guardian3]
 
-  const tbtc: TBTC = await helpers.contracts.getContract("TBTC")
+  const tmewc: TMEWC = await helpers.contracts.getContract("TMEWC")
 
   const vendingMachine: VendingMachine = await helpers.contracts.getContract(
     "VendingMachine"
   )
 
-  const tbtcVault: TBTCVault = await helpers.contracts.getContract("TBTCVault")
+  const tmewcVault: TMEWCVault = await helpers.contracts.getContract("TMEWCVault")
 
   const bank: Bank & BankStub = await helpers.contracts.getContract("Bank")
 
@@ -126,9 +126,9 @@ export default async function bridgeFixture() {
     treasury,
     redemptionWatchtowerManager,
     guardians,
-    tbtc,
+    tmewc,
     vendingMachine,
-    tbtcVault,
+    tmewcVault,
     bank,
     relay,
     walletRegistry,

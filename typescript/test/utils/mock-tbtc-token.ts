@@ -1,7 +1,7 @@
-import { ChainIdentifier, TBTCToken } from "../../src/lib/contracts"
+import { ChainIdentifier, TMEWCToken } from "../../src/lib/contracts"
 import { Hex } from "../../src/lib/utils"
 import { BigNumber } from "ethers"
-import { BitcoinUtxo } from "../../src/lib/bitcoin"
+import { BitcoinUtxo } from "../../src/lib/meowcoin"
 import { EthereumAddress } from "../../src"
 
 interface RequestRedemptionLog {
@@ -11,7 +11,7 @@ interface RequestRedemptionLog {
   amount: BigNumber
 }
 
-export class MockTBTCToken implements TBTCToken {
+export class MockTMEWCToken implements TMEWCToken {
   private _requestRedemptionLog: RequestRedemptionLog[] = []
 
   get requestRedemptionLog() {

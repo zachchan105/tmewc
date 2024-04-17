@@ -44,9 +44,9 @@ const config: HardhatUserConfig = {
   // Define local networks configuration file path to load networks from file.
   // localNetworksConfig: "./.hardhat/networks.ts",
 
-  // TODO: Once tBTC v2 is deployed, revisit `./external/mainnet` files and set
+  // TODO: Once tMEWC is deployed, revisit `./external/mainnet` files and set
   //       correct addresses and parameters.
-  // TODO: Once Saddle vault is created, revisit `./external/hardhat/TBTCSaddleVault.json`
+  // TODO: Once Saddle vault is created, revisit `./external/hardhat/TMEWCSaddleVault.json`
   //       and set its address hare. This will make the deployment script
   //       pass on hardhat network.
   external: {

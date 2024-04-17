@@ -1391,9 +1391,9 @@ contract BridgeGovernance is Ownable {
         );
     }
 
-    /// @notice Begins the wallet creation min btc balance update process.
+    /// @notice Begins the wallet creation min mewc balance update process.
     /// @dev Can be called only by the contract owner.
-    /// @param _newWalletCreationMinBtcBalance New wallet creation min btc balance.
+    /// @param _newWalletCreationMinBtcBalance New wallet creation min mewc balance.
     function beginWalletCreationMinBtcBalanceUpdate(
         uint64 _newWalletCreationMinBtcBalance
     ) external onlyOwner {
@@ -1402,7 +1402,7 @@ contract BridgeGovernance is Ownable {
         );
     }
 
-    /// @notice Finalizes the wallet creation min btc balance update process.
+    /// @notice Finalizes the wallet creation min mewc balance update process.
     /// @dev Can be called only by the contract owner, after the governance
     ///      delay elapses.
     function finalizeWalletCreationMinBtcBalanceUpdate() external onlyOwner {
@@ -1429,9 +1429,9 @@ contract BridgeGovernance is Ownable {
         );
     }
 
-    /// @notice Begins the wallet creation max btc balance update process.
+    /// @notice Begins the wallet creation max mewc balance update process.
     /// @dev Can be called only by the contract owner.
-    /// @param _newWalletCreationMaxBtcBalance New wallet creation max btc
+    /// @param _newWalletCreationMaxBtcBalance New wallet creation max mewc
     ///         balance.
     function beginWalletCreationMaxBtcBalanceUpdate(
         uint64 _newWalletCreationMaxBtcBalance
@@ -1441,7 +1441,7 @@ contract BridgeGovernance is Ownable {
         );
     }
 
-    /// @notice Finalizes the wallet creation max btc balance update process.
+    /// @notice Finalizes the wallet creation max mewc balance update process.
     /// @dev Can be called only by the contract owner, after the governance
     ///      delay elapses.
     function finalizeWalletCreationMaxBtcBalanceUpdate() external onlyOwner {
@@ -1468,9 +1468,9 @@ contract BridgeGovernance is Ownable {
         );
     }
 
-    /// @notice Begins the wallet closure min btc balance update process.
+    /// @notice Begins the wallet closure min mewc balance update process.
     /// @dev Can be called only by the contract owner.
-    /// @param _newWalletClosureMinBtcBalance New wallet closure min btc balance.
+    /// @param _newWalletClosureMinBtcBalance New wallet closure min mewc balance.
     function beginWalletClosureMinBtcBalanceUpdate(
         uint64 _newWalletClosureMinBtcBalance
     ) external onlyOwner {
@@ -1479,7 +1479,7 @@ contract BridgeGovernance is Ownable {
         );
     }
 
-    /// @notice Finalizes the wallet closure min btc balance update process.
+    /// @notice Finalizes the wallet closure min mewc balance update process.
     /// @dev Can be called only by the contract owner, after the governance
     ///      delay elapses.
     function finalizeWalletClosureMinBtcBalanceUpdate() external onlyOwner {
@@ -1542,9 +1542,9 @@ contract BridgeGovernance is Ownable {
         );
     }
 
-    /// @notice Begins the wallet max btc transfer amount update process.
+    /// @notice Begins the wallet max mewc transfer amount update process.
     /// @dev Can be called only by the contract owner.
-    /// @param _newWalletMaxBtcTransfer New wallet max btc transfer.
+    /// @param _newWalletMaxBtcTransfer New wallet max mewc transfer.
     function beginWalletMaxBtcTransferUpdate(uint64 _newWalletMaxBtcTransfer)
         external
         onlyOwner
@@ -1552,7 +1552,7 @@ contract BridgeGovernance is Ownable {
         walletData.beginWalletMaxBtcTransferUpdate(_newWalletMaxBtcTransfer);
     }
 
-    /// @notice Finalizes the wallet max btc transfer amount update process.
+    /// @notice Finalizes the wallet max mewc transfer amount update process.
     /// @dev Can be called only by the contract owner, after the governance
     ///      delay elapses.
     function finalizeWalletMaxBtcTransferUpdate() external onlyOwner {

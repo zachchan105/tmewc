@@ -1,6 +1,6 @@
 # Namespace: Chains
 
-Chains supported by tBTC v2 contracts.
+Chains supported by tMEWC contracts.
 
 ## Table of contents
 

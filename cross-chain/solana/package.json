@@ -1,7 +1,7 @@
 {
-    "name": "@keep-network/tbtc-v2-solana",
+    "name": "@keep-network/tmewc-solana",
     "version": "1.0.0-dev",
-    "description": "tBTC v2 on Solana",
+    "description": "tMEWC on Solana",
     "license": "GPL-3.0-only",
     "scripts": {
         "format": "npm run lint",

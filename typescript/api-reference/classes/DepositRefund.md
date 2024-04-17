@@ -1,7 +1,7 @@
 # Class: DepositRefund
 
-Component allowing to craft and submit the Bitcoin refund transaction using
-the given tBTC v2 deposit script.
+Component allowing to craft and submit the Meowcoin refund transaction using
+the given tMEWC deposit script.
 
  THIS IS EXPERIMENTAL CODE THAT CAN BE CHANGED OR REMOVED
               IN FUTURE RELEASES. IT SHOULD BE USED ONLY FOR INTERNAL
@@ -44,7 +44,7 @@ the given tBTC v2 deposit script.
 
 #### Defined in
 
-[src/services/deposits/refund.ts:37](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/deposits/refund.ts#L37)
+[src/services/deposits/refund.ts:37](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/deposits/refund.ts#L37)
 
 ## Properties
 
@@ -54,7 +54,7 @@ the given tBTC v2 deposit script.
 
 #### Defined in
 
-[src/services/deposits/refund.ts:35](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/deposits/refund.ts#L35)
+[src/services/deposits/refund.ts:35](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/deposits/refund.ts#L35)
 
 ## Methods
 
@@ -62,17 +62,17 @@ the given tBTC v2 deposit script.
 
 ▸ **assembleTransaction**(`bitcoinNetwork`, `fee`, `utxo`, `refunderAddress`, `refunderPrivateKey`): `Promise`\<\{ `rawTransaction`: [`BitcoinRawTx`](../interfaces/BitcoinRawTx.md) ; `transactionHash`: [`BitcoinTxHash`](BitcoinTxHash.md)  }\>
 
-Assembles a Bitcoin P2(W)PKH deposit refund transaction.
+Assembles a Meowcoin P2(W)PKH deposit refund transaction.
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `bitcoinNetwork` | [`BitcoinNetwork`](../enums/BitcoinNetwork-1.md) | The target Bitcoin network. |
+| `bitcoinNetwork` | [`BitcoinNetwork`](../enums/BitcoinNetwork-1.md) | The target Meowcoin network. |
 | `fee` | `BigNumber` | the value that will be subtracted from the deposit UTXO being refunded and used as the transaction fee. |
 | `utxo` | [`BitcoinTxOutpoint`](../interfaces/BitcoinTxOutpoint.md) & \{ `value`: `BigNumber`  } & [`BitcoinRawTx`](../interfaces/BitcoinRawTx.md) | UTXO that was created during depositing that needs be refunded. |
-| `refunderAddress` | `string` | Recipient Bitcoin wallet address of the refunded deposit. |
-| `refunderPrivateKey` | `string` | Bitcoin wallet private key of the refunder. It must correspond to the `refundPublicKeyHash` of the deposit script. |
+| `refunderAddress` | `string` | Recipient Meowcoin wallet address of the refunded deposit. |
+| `refunderPrivateKey` | `string` | Meowcoin wallet private key of the refunder. It must correspond to the `refundPublicKeyHash` of the deposit script. |
 
 #### Returns
 
@@ -84,7 +84,7 @@ The outcome consisting of:
 
 #### Defined in
 
-[src/services/deposits/refund.ts:111](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/deposits/refund.ts#L111)
+[src/services/deposits/refund.ts:111](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/deposits/refund.ts#L111)
 
 ___
 
@@ -113,7 +113,7 @@ Error if there are discrepancies in values or key formats.
 
 #### Defined in
 
-[src/services/deposits/refund.ts:191](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/deposits/refund.ts#L191)
+[src/services/deposits/refund.ts:191](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/deposits/refund.ts#L191)
 
 ___
 
@@ -139,7 +139,7 @@ An empty promise upon successful signing.
 
 #### Defined in
 
-[src/services/deposits/refund.ts:219](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/deposits/refund.ts#L219)
+[src/services/deposits/refund.ts:219](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/deposits/refund.ts#L219)
 
 ___
 
@@ -166,7 +166,7 @@ An empty promise upon successful signing.
 
 #### Defined in
 
-[src/services/deposits/refund.ts:256](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/deposits/refund.ts#L256)
+[src/services/deposits/refund.ts:256](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/deposits/refund.ts#L256)
 
 ___
 
@@ -174,18 +174,18 @@ ___
 
 ▸ **submitTransaction**(`bitcoinClient`, `fee`, `utxo`, `refunderAddress`, `refunderPrivateKey`): `Promise`\<\{ `transactionHash`: [`BitcoinTxHash`](BitcoinTxHash.md)  }\>
 
-Submits a deposit refund by creating and broadcasting a Bitcoin P2(W)PKH
+Submits a deposit refund by creating and broadcasting a Meowcoin P2(W)PKH
 deposit refund transaction.
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `bitcoinClient` | [`BitcoinClient`](../interfaces/BitcoinClient.md) | Bitcoin client used to interact with the network. |
+| `bitcoinClient` | [`BitcoinClient`](../interfaces/BitcoinClient.md) | Meowcoin client used to interact with the network. |
 | `fee` | `BigNumber` | the value that will be subtracted from the deposit UTXO being refunded and used as the transaction fee. |
 | `utxo` | [`BitcoinUtxo`](../README.md#bitcoinutxo) | UTXO that was created during depositing that needs be refunded. |
-| `refunderAddress` | `string` | Recipient Bitcoin wallet address of the refunded deposit. |
-| `refunderPrivateKey` | `string` | Bitcoin wallet private key of the refunder. It must correspond to the `refundPublicKeyHash` of the deposit script. |
+| `refunderAddress` | `string` | Recipient Meowcoin wallet address of the refunded deposit. |
+| `refunderPrivateKey` | `string` | Meowcoin wallet private key of the refunder. It must correspond to the `refundPublicKeyHash` of the deposit script. |
 
 #### Returns
 
@@ -203,7 +203,7 @@ This function should be called by the refunder after `refundLocktime`
 
 #### Defined in
 
-[src/services/deposits/refund.ts:63](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/deposits/refund.ts#L63)
+[src/services/deposits/refund.ts:63](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/deposits/refund.ts#L63)
 
 ___
 
@@ -223,4 +223,4 @@ ___
 
 #### Defined in
 
-[src/services/deposits/refund.ts:41](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/deposits/refund.ts#L41)
+[src/services/deposits/refund.ts:41](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/deposits/refund.ts#L41)

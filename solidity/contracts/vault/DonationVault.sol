@@ -18,13 +18,13 @@ pragma solidity 0.8.17;
 import "./IVault.sol";
 import "../bank/Bank.sol";
 
-/// @title BTC donation vault
-/// @notice Vault that allows making BTC donations to the system. Upon deposit,
+/// @title MEWC donation vault
+/// @notice Vault that allows making MEWC donations to the system. Upon deposit,
 ///         this vault does not increase depositors' balances and always
 ///         decreases its own balance in the same transaction. The vault also
 ///         allows making donations using existing Bank balances.
 ///
-///         BEWARE: ALL BTC DEPOSITS TARGETING THIS VAULT ARE NOT REDEEMABLE
+///         BEWARE: ALL MEWC DEPOSITS TARGETING THIS VAULT ARE NOT REDEEMABLE
 ///         AND THERE IS NO WAY TO RESTORE THE DONATED BALANCE.
 ///         USE THIS VAULT ONLY WHEN YOU REALLY KNOW WHAT YOU ARE DOING!
 contract DonationVault is IVault {
@@ -95,7 +95,7 @@ contract DonationVault is IVault {
     }
 
     /// @notice Ignores the deposited amounts and does not increase depositors'
-    ///         individual balances. The vault decreases its own tBTC balance
+    ///         individual balances. The vault decreases its own tMEWC balance
     ///         in the Bank by the total deposited amount.
     /// @param depositors Addresses of depositors whose deposits have been swept.
     /// @param depositedAmounts Amounts deposited by individual depositors and

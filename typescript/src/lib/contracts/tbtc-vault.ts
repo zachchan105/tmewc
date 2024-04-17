@@ -1,13 +1,13 @@
-import { BitcoinTxHash } from "../bitcoin"
+import { BitcoinTxHash } from "../meowcoin"
 import { Hex } from "../utils"
 import { ChainIdentifier } from "./chain-identifier"
 import { ChainEvent, GetChainEvents } from "./chain-event"
 import { BigNumber } from "ethers"
 
 /**
- * Interface for communication with the TBTCVault on-chain contract.
+ * Interface for communication with the TMEWCVault on-chain contract.
  */
-export interface TBTCVault {
+export interface TMEWCVault {
   /**
    * Gets the chain-specific identifier of this contract.
    */
@@ -17,7 +17,7 @@ export interface TBTCVault {
    * Gets optimistic minting delay.
    *
    * The time that needs to pass between the moment the optimistic minting is
-   * requested and the moment optimistic minting is finalized with minting TBTC.
+   * requested and the moment optimistic minting is finalized with minting TMEWC.
    * @returns Optimistic Minting Delay in seconds.
    */
   optimisticMintingDelay(): Promise<number>
@@ -150,11 +150,11 @@ export type OptimisticMintingRequestedEvent = {
   /**
    * Amount of tokens requested to mint.
    * This value is in ERC 1e18 precision, it has to be converted before using
-   * as Bitcoin value with 1e8 precision in satoshi.
+   * as Meowcoin value with 1e8 precision in satoshi.
    */
   amount: BigNumber
   /**
-   * Hash of a Bitcoin transaction made to fund the deposit.
+   * Hash of a Meowcoin transaction made to fund the deposit.
    */
   fundingTxHash: BitcoinTxHash
   /**
@@ -200,7 +200,7 @@ export type OptimisticMintingFinalizedEvent = {
   /**
    * Value of the new optimistic minting debt of the depositor.
    * This value is in ERC 1e18 precision, it has to be converted before using
-   * as Bitcoin value with 1e8 precision in satoshi.
+   * as Meowcoin value with 1e8 precision in satoshi.
    */
   optimisticMintingDebt: BigNumber
 } & ChainEvent

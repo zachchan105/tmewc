@@ -29,11 +29,11 @@ import { assert, expect } from "chai";
 import { WormholeGateway } from "../../target/types/wormhole_gateway"; // This is only here to hack a connection.
 import {
   CORE_BRIDGE_PROGRAM_ID,
-  ETHEREUM_TBTC_ADDRESS,
+  ETHEREUM_TMEWC_ADDRESS,
   GUARDIAN_DEVNET_PRIVATE_KEYS,
   GUARDIAN_SET_INDEX,
   TOKEN_BRIDGE_PROGRAM_ID,
-  WRAPPED_TBTC_MINT,
+  WRAPPED_TMEWC_MINT,
 } from "./consts";
 
 export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
@@ -111,7 +111,7 @@ export async function getTokenBalance(token: PublicKey): Promise<bigint> {
   );
 }
 
-export async function preloadWrappedTbtc(
+export async function preloadWrappedTmewc(
   payer: Keypair,
   ethereumTokenBridge: MockEthereumTokenBridge,
   amount: bigint,
@@ -120,19 +120,19 @@ export async function preloadWrappedTbtc(
   const program = workspace.WormholeGateway as Program<WormholeGateway>;
   const connection = program.provider.connection;
 
-  const wrappedTbtcToken = await getOrCreateAta(
+  const wrappedTmewcToken = await getOrCreateAta(
     payer,
-    WRAPPED_TBTC_MINT,
+    WRAPPED_TMEWC_MINT,
     tokenOwner
   );
 
-  // Bridge tbtc to token account.
+  // Bridge tmewc to token account.
   const published = ethereumTokenBridge.publishTransferTokens(
-    tryNativeToHexString(ETHEREUM_TBTC_ADDRESS, "ethereum"),
+    tryNativeToHexString(ETHEREUM_TMEWC_ADDRESS, "ethereum"),
     2,
     amount,
     1,
-    wrappedTbtcToken.toBuffer().toString("hex"),
+    wrappedTmewcToken.toBuffer().toString("hex"),
     BigInt(0),
     0,
     0
@@ -149,7 +149,7 @@ export async function preloadWrappedTbtc(
   );
   await web3.sendAndConfirmTransaction(connection, tx, [payer]);
 
-  return wrappedTbtcToken;
+  return wrappedTmewcToken;
 }
 
 export async function mockSignAndPostVaa(
@@ -177,7 +177,7 @@ export async function mockSignAndPostVaa(
   return signedVaa;
 }
 
-export async function ethereumGatewaySendTbtc(
+export async function ethereumGatewaySendTmewc(
   payer: web3.Keypair,
   ethereumTokenBridge: MockEthereumTokenBridge,
   amount: bigint,
@@ -190,7 +190,7 @@ export async function ethereumGatewaySendTbtc(
   const program = workspace.WormholeGateway as Program<WormholeGateway>;
 
   const published = ethereumTokenBridge.publishTransferTokensWithPayload(
-    tryNativeToHexString(tokenAddress ?? ETHEREUM_TBTC_ADDRESS, "ethereum"),
+    tryNativeToHexString(tokenAddress ?? ETHEREUM_TMEWC_ADDRESS, "ethereum"),
     tokenChain ?? 2,
     amount,
     1,

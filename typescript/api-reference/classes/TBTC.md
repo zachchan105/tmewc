@@ -1,53 +1,53 @@
-# Class: TBTC
+# Class: TMEWC
 
-Entrypoint component of the tBTC v2 SDK.
+Entrypoint component of the tMEWC SDK.
 
 ## Table of contents
 
 ### Constructors
 
-- [constructor](TBTC.md#constructor)
+- [constructor](TMEWC.md#constructor)
 
 ### Properties
 
-- [#crossChainContracts](TBTC.md##crosschaincontracts)
-- [#crossChainContractsLoader](TBTC.md##crosschaincontractsloader)
-- [bitcoinClient](TBTC.md#bitcoinclient)
-- [deposits](TBTC.md#deposits)
-- [maintenance](TBTC.md#maintenance)
-- [redemptions](TBTC.md#redemptions)
-- [tbtcContracts](TBTC.md#tbtccontracts)
+- [#crossChainContracts](TMEWC.md##crosschaincontracts)
+- [#crossChainContractsLoader](TMEWC.md##crosschaincontractsloader)
+- [bitcoinClient](TMEWC.md#bitcoinclient)
+- [deposits](TMEWC.md#deposits)
+- [maintenance](TMEWC.md#maintenance)
+- [redemptions](TMEWC.md#redemptions)
+- [tmewcContracts](TMEWC.md#tmewccontracts)
 
 ### Methods
 
-- [crossChainContracts](TBTC.md#crosschaincontracts)
-- [initializeCrossChain](TBTC.md#initializecrosschain)
-- [initializeCustom](TBTC.md#initializecustom)
-- [initializeEthereum](TBTC.md#initializeethereum)
-- [initializeMainnet](TBTC.md#initializemainnet)
-- [initializeSepolia](TBTC.md#initializesepolia)
+- [crossChainContracts](TMEWC.md#crosschaincontracts)
+- [initializeCrossChain](TMEWC.md#initializecrosschain)
+- [initializeCustom](TMEWC.md#initializecustom)
+- [initializeEthereum](TMEWC.md#initializeethereum)
+- [initializeMainnet](TMEWC.md#initializemainnet)
+- [initializeSepolia](TMEWC.md#initializesepolia)
 
 ## Constructors
 
 ### constructor
 
-• **new TBTC**(`tbtcContracts`, `bitcoinClient`, `crossChainContractsLoader?`): [`TBTC`](TBTC.md)
+• **new TMEWC**(`tmewcContracts`, `bitcoinClient`, `crossChainContractsLoader?`): [`TMEWC`](TMEWC.md)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `tbtcContracts` | [`TBTCContracts`](../README.md#tbtccontracts) |
+| `tmewcContracts` | [`TMEWCContracts`](../README.md#tmewccontracts) |
 | `bitcoinClient` | [`BitcoinClient`](../interfaces/BitcoinClient.md) |
 | `crossChainContractsLoader?` | [`CrossChainContractsLoader`](../interfaces/CrossChainContractsLoader.md) |
 
 #### Returns
 
-[`TBTC`](TBTC.md)
+[`TMEWC`](TMEWC.md)
 
 #### Defined in
 
-[src/services/tbtc.ts:59](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/tbtc.ts#L59)
+[src/services/tmewc.ts:59](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/tmewc.ts#L59)
 
 ## Properties
 
@@ -61,7 +61,7 @@ the `initializeCrossChain` method.
 
 #### Defined in
 
-[src/services/tbtc.ts:57](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/tbtc.ts#L57)
+[src/services/tmewc.ts:57](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/tmewc.ts#L57)
 
 ___
 
@@ -73,7 +73,7 @@ Reference to the cross-chain contracts loader.
 
 #### Defined in
 
-[src/services/tbtc.ts:51](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/tbtc.ts#L51)
+[src/services/tmewc.ts:51](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/tmewc.ts#L51)
 
 ___
 
@@ -81,11 +81,11 @@ ___
 
 • `Readonly` **bitcoinClient**: [`BitcoinClient`](../interfaces/BitcoinClient.md)
 
-Bitcoin client handle for low-level access.
+Meowcoin client handle for low-level access.
 
 #### Defined in
 
-[src/services/tbtc.ts:47](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/tbtc.ts#L47)
+[src/services/tmewc.ts:47](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/tmewc.ts#L47)
 
 ___
 
@@ -93,11 +93,11 @@ ___
 
 • `Readonly` **deposits**: [`DepositsService`](DepositsService.md)
 
-Service supporting the tBTC v2 deposit flow.
+Service supporting the tMEWC deposit flow.
 
 #### Defined in
 
-[src/services/tbtc.ts:30](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/tbtc.ts#L30)
+[src/services/tmewc.ts:30](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/tmewc.ts#L30)
 
 ___
 
@@ -105,12 +105,12 @@ ___
 
 • `Readonly` **maintenance**: [`MaintenanceService`](MaintenanceService.md)
 
-Service supporting authorized operations of tBTC v2 system maintainers
+Service supporting authorized operations of tMEWC system maintainers
 and operators.
 
 #### Defined in
 
-[src/services/tbtc.ts:35](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/tbtc.ts#L35)
+[src/services/tmewc.ts:35](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/tmewc.ts#L35)
 
 ___
 
@@ -118,23 +118,23 @@ ___
 
 • `Readonly` **redemptions**: [`RedemptionsService`](RedemptionsService.md)
 
-Service supporting the tBTC v2 redemption flow.
+Service supporting the tMEWC redemption flow.
 
 #### Defined in
 
-[src/services/tbtc.ts:39](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/tbtc.ts#L39)
+[src/services/tmewc.ts:39](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/tmewc.ts#L39)
 
 ___
 
-### tbtcContracts
+### tmewcContracts
 
-• `Readonly` **tbtcContracts**: [`TBTCContracts`](../README.md#tbtccontracts)
+• `Readonly` **tmewcContracts**: [`TMEWCContracts`](../README.md#tmewccontracts)
 
-Handle to tBTC contracts for low-level access.
+Handle to tMEWC contracts for low-level access.
 
 #### Defined in
 
-[src/services/tbtc.ts:43](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/tbtc.ts#L43)
+[src/services/tmewc.ts:43](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/tmewc.ts#L43)
 
 ## Methods
 
@@ -166,7 +166,7 @@ Cross-chain contracts for the given L2 chain or
 
 #### Defined in
 
-[src/services/tbtc.ts:252](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/tbtc.ts#L252)
+[src/services/tmewc.ts:252](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/tmewc.ts#L252)
 
 ___
 
@@ -198,7 +198,7 @@ Void promise.
 **`Throws`**
 
 Throws an error if:
-        - Cross-chain contracts loader is not available for this TBTC SDK instance,
+        - Cross-chain contracts loader is not available for this TMEWC SDK instance,
         - Chain mapping between the L1 and the given L2 chain is not defined.
 
 **`Dev`**
@@ -210,49 +210,49 @@ In case this function needs to support non-EVM L2 chains that can't
 
 #### Defined in
 
-[src/services/tbtc.ts:198](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/tbtc.ts#L198)
+[src/services/tmewc.ts:198](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/tmewc.ts#L198)
 
 ___
 
 ### initializeCustom
 
-▸ **initializeCustom**(`tbtcContracts`, `bitcoinClient`): `Promise`\<[`TBTC`](TBTC.md)\>
+▸ **initializeCustom**(`tmewcContracts`, `bitcoinClient`): `Promise`\<[`TMEWC`](TMEWC.md)\>
 
-Initializes the tBTC v2 SDK entrypoint with custom tBTC contracts and
-Bitcoin client.
+Initializes the tMEWC SDK entrypoint with custom tMEWC contracts and
+Meowcoin client.
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `tbtcContracts` | [`TBTCContracts`](../README.md#tbtccontracts) | Custom tBTC contracts handle. |
-| `bitcoinClient` | [`BitcoinClient`](../interfaces/BitcoinClient.md) | Custom Bitcoin client implementation. |
+| `tmewcContracts` | [`TMEWCContracts`](../README.md#tmewccontracts) | Custom tMEWC contracts handle. |
+| `bitcoinClient` | [`BitcoinClient`](../interfaces/BitcoinClient.md) | Custom Meowcoin client implementation. |
 
 #### Returns
 
-`Promise`\<[`TBTC`](TBTC.md)\>
+`Promise`\<[`TMEWC`](TMEWC.md)\>
 
-Initialized tBTC v2 SDK entrypoint.
+Initialized tMEWC SDK entrypoint.
 
 **`Dev`**
 
 This function is especially useful for local development as it gives
-     flexibility to combine different implementations of tBTC v2 contracts
-     with different Bitcoin networks.
+     flexibility to combine different implementations of tMEWC contracts
+     with different Meowcoin networks.
 
 #### Defined in
 
-[src/services/tbtc.ts:170](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/tbtc.ts#L170)
+[src/services/tmewc.ts:170](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/tmewc.ts#L170)
 
 ___
 
 ### initializeEthereum
 
-▸ **initializeEthereum**(`signer`, `ethereumChainId`, `bitcoinNetwork`, `crossChainSupport?`): `Promise`\<[`TBTC`](TBTC.md)\>
+▸ **initializeEthereum**(`signer`, `ethereumChainId`, `bitcoinNetwork`, `crossChainSupport?`): `Promise`\<[`TMEWC`](TMEWC.md)\>
 
-Initializes the tBTC v2 SDK entrypoint for the given Ethereum network and Bitcoin network.
+Initializes the tMEWC SDK entrypoint for the given Ethereum network and Meowcoin network.
 The initialized instance uses default Electrum servers to interact
-with Bitcoin network.
+with Meowcoin network.
 
 #### Parameters
 
@@ -260,14 +260,14 @@ with Bitcoin network.
 | :------ | :------ | :------ | :------ |
 | `signer` | [`EthereumSigner`](../README.md#ethereumsigner) | `undefined` | Ethereum signer. |
 | `ethereumChainId` | [`Ethereum`](../enums/Chains.Ethereum.md) | `undefined` | Ethereum chain ID. |
-| `bitcoinNetwork` | [`BitcoinNetwork`](../enums/BitcoinNetwork-1.md) | `undefined` | Bitcoin network. |
+| `bitcoinNetwork` | [`BitcoinNetwork`](../enums/BitcoinNetwork-1.md) | `undefined` | Meowcoin network. |
 | `crossChainSupport` | `boolean` | `false` | Whether to enable cross-chain support. False by default. |
 
 #### Returns
 
-`Promise`\<[`TBTC`](TBTC.md)\>
+`Promise`\<[`TMEWC`](TMEWC.md)\>
 
-Initialized tBTC v2 SDK entrypoint.
+Initialized tMEWC SDK entrypoint.
 
 **`Throws`**
 
@@ -276,17 +276,17 @@ Throws an error if the underlying signer's Ethereum network is
 
 #### Defined in
 
-[src/services/tbtc.ts:123](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/tbtc.ts#L123)
+[src/services/tmewc.ts:123](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/tmewc.ts#L123)
 
 ___
 
 ### initializeMainnet
 
-▸ **initializeMainnet**(`signer`): `Promise`\<[`TBTC`](TBTC.md)\>
+▸ **initializeMainnet**(`signer`): `Promise`\<[`TMEWC`](TMEWC.md)\>
 
-Initializes the tBTC v2 SDK entrypoint for Ethereum and Bitcoin mainnets.
+Initializes the tMEWC SDK entrypoint for Ethereum and Meowcoin mainnets.
 The initialized instance uses default Electrum servers to interact
-with Bitcoin mainnet
+with Meowcoin mainnet
 
 #### Parameters
 
@@ -296,9 +296,9 @@ with Bitcoin mainnet
 
 #### Returns
 
-`Promise`\<[`TBTC`](TBTC.md)\>
+`Promise`\<[`TMEWC`](TMEWC.md)\>
 
-Initialized tBTC v2 SDK entrypoint.
+Initialized tMEWC SDK entrypoint.
 
 **`Throws`**
 
@@ -307,17 +307,17 @@ Throws an error if the signer's Ethereum network is other than
 
 #### Defined in
 
-[src/services/tbtc.ts:86](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/tbtc.ts#L86)
+[src/services/tmewc.ts:86](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/tmewc.ts#L86)
 
 ___
 
 ### initializeSepolia
 
-▸ **initializeSepolia**(`signer`): `Promise`\<[`TBTC`](TBTC.md)\>
+▸ **initializeSepolia**(`signer`): `Promise`\<[`TMEWC`](TMEWC.md)\>
 
-Initializes the tBTC v2 SDK entrypoint for Ethereum Sepolia and Bitcoin testnet.
+Initializes the tMEWC SDK entrypoint for Ethereum Sepolia and Meowcoin testnet.
 The initialized instance uses default Electrum servers to interact
-with Bitcoin testnet
+with Meowcoin testnet
 
 #### Parameters
 
@@ -327,9 +327,9 @@ with Bitcoin testnet
 
 #### Returns
 
-`Promise`\<[`TBTC`](TBTC.md)\>
+`Promise`\<[`TMEWC`](TMEWC.md)\>
 
-Initialized tBTC v2 SDK entrypoint.
+Initialized tMEWC SDK entrypoint.
 
 **`Throws`**
 
@@ -338,4 +338,4 @@ Throws an error if the signer's Ethereum network is other than
 
 #### Defined in
 
-[src/services/tbtc.ts:103](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/tbtc.ts#L103)
+[src/services/tmewc.ts:103](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/tmewc.ts#L103)

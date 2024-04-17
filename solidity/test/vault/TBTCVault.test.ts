@@ -9,8 +9,8 @@ import { toSatoshis } from "../helpers/contract-test-helpers"
 import type {
   Bank,
   Bridge,
-  TBTC,
-  TBTCVault,
+  TMEWC,
+  TMEWCVault,
   TestERC20,
   TestERC721,
 } from "../../typechain"
@@ -38,19 +38,19 @@ const fixture = async () => {
 
   await bank.connect(deployer).updateBridge(bridge.address)
 
-  const TBTC = await ethers.getContractFactory("TBTC")
-  const tbtc = await TBTC.deploy()
-  await tbtc.deployed()
+  const TMEWC = await ethers.getContractFactory("TMEWC")
+  const tmewc = await TMEWC.deploy()
+  await tmewc.deployed()
 
-  const TBTCVault = await ethers.getContractFactory("TBTCVault")
-  const vault = await TBTCVault.deploy(
+  const TMEWCVault = await ethers.getContractFactory("TMEWCVault")
+  const vault = await TMEWCVault.deploy(
     bank.address,
-    tbtc.address,
+    tmewc.address,
     bridge.address
   )
   await vault.deployed()
 
-  await tbtc.connect(deployer).transferOwnership(vault.address)
+  await tmewc.connect(deployer).transferOwnership(vault.address)
   await vault.connect(deployer).transferOwnership(governance.address)
 
   return {
@@ -58,18 +58,18 @@ const fixture = async () => {
     governance,
     bank,
     vault,
-    tbtc,
+    tmewc,
   }
 }
 
-describe("TBTCVault", () => {
+describe("TMEWCVault", () => {
   let bridge: FakeContract<Bridge>
   let governance: SignerWithAddress
   let bank: Bank
-  let vault: TBTCVault
-  let tbtc: TBTC
+  let vault: TMEWCVault
+  let tmewc: TMEWC
 
-  // 100 BTC initial balance in the Bank.
+  // 100 MEWC initial balance in the Bank.
   // Bank balance is denominated in satoshi.
   const initialBalance = toSatoshis(100)
 
@@ -78,7 +78,7 @@ describe("TBTCVault", () => {
 
   before(async () => {
     // eslint-disable-next-line @typescript-eslint/no-extra-semi
-    ;({ bridge, governance, bank, vault, tbtc } = await waffle.loadFixture(
+    ;({ bridge, governance, bank, vault, tmewc } = await waffle.loadFixture(
       fixture
     ))
 
@@ -100,27 +100,27 @@ describe("TBTCVault", () => {
   describe("constructor", () => {
     context("when called with a 0-address bank", () => {
       it("should revert", async () => {
-        const TBTCVault = await ethers.getContractFactory("TBTCVault")
+        const TMEWCVault = await ethers.getContractFactory("TMEWCVault")
         await expect(
-          TBTCVault.deploy(ZERO_ADDRESS, tbtc.address, bridge.address)
+          TMEWCVault.deploy(ZERO_ADDRESS, tmewc.address, bridge.address)
         ).to.be.revertedWith("Bank can not be the zero address")
       })
     })
 
-    context("when called with a 0-address TBTC token", () => {
+    context("when called with a 0-address TMEWC token", () => {
       it("should revert", async () => {
-        const TBTCVault = await ethers.getContractFactory("TBTCVault")
+        const TMEWCVault = await ethers.getContractFactory("TMEWCVault")
         await expect(
-          TBTCVault.deploy(bank.address, ZERO_ADDRESS, bridge.address)
-        ).to.be.revertedWith("TBTC token can not be the zero address")
+          TMEWCVault.deploy(bank.address, ZERO_ADDRESS, bridge.address)
+        ).to.be.revertedWith("TMEWC token can not be the zero address")
       })
     })
 
     context("when called with a 0-address bridge", () => {
       it("should revert", async () => {
-        const TBTCVault = await ethers.getContractFactory("TBTCVault")
+        const TMEWCVault = await ethers.getContractFactory("TMEWCVault")
         await expect(
-          TBTCVault.deploy(bank.address, tbtc.address, ZERO_ADDRESS)
+          TMEWCVault.deploy(bank.address, tmewc.address, ZERO_ADDRESS)
         ).to.be.revertedWith("Bridge can not be the zero address")
       })
     })
@@ -130,8 +130,8 @@ describe("TBTCVault", () => {
         expect(await vault.bank()).to.equal(bank.address)
       })
 
-      it("should set the TBTC token field", async () => {
-        expect(await vault.tbtcToken()).to.equal(tbtc.address)
+      it("should set the TMEWC token field", async () => {
+        expect(await vault.tmewcToken()).to.equal(tmewc.address)
       })
     })
   })
@@ -169,7 +169,7 @@ describe("TBTCVault", () => {
 
         // Do the misfund.
         await testToken.mint(account1.address, to1e18(1000))
-        await testToken.connect(account1).transfer(tbtc.address, to1e18(1000))
+        await testToken.connect(account1).transfer(tmewc.address, to1e18(1000))
 
         await vault
           .connect(governance)
@@ -188,7 +188,7 @@ describe("TBTCVault", () => {
         expect(await testToken.balanceOf(account1.address)).to.be.equal(
           to1e18(800)
         )
-        expect(await testToken.balanceOf(tbtc.address)).to.be.equal(to1e18(200))
+        expect(await testToken.balanceOf(tmewc.address)).to.be.equal(to1e18(200))
       })
     })
   })
@@ -228,7 +228,7 @@ describe("TBTCVault", () => {
         await testToken.mint(account1.address, 1)
         await testToken
           .connect(account1)
-          .transferFrom(account1.address, tbtc.address, 1)
+          .transferFrom(account1.address, tmewc.address, 1)
 
         await vault
           .connect(governance)
@@ -349,7 +349,7 @@ describe("TBTCVault", () => {
 
   describe("mint", () => {
     context("when minter has not enough balance in the bank", () => {
-      const amount = to1e18(101) // The initial Bank balance is 100 BTC.
+      const amount = to1e18(101) // The initial Bank balance is 100 MEWC.
 
       before(async () => {
         await createSnapshot()
@@ -394,9 +394,9 @@ describe("TBTCVault", () => {
         )
       })
 
-      it("should mint TBTC", async () => {
-        expect(await tbtc.balanceOf(account1.address)).to.equal(amount)
-        expect(await tbtc.totalSupply()).to.equal(amount)
+      it("should mint TMEWC", async () => {
+        expect(await tmewc.balanceOf(account1.address)).to.equal(amount)
+        expect(await tmewc.totalSupply()).to.equal(amount)
       })
 
       it("should emit Minted event", async () => {
@@ -413,7 +413,7 @@ describe("TBTCVault", () => {
     })
 
     context("when amount is not fully convertible to satoshis", () => {
-      // Amount is 2 Bitcoin in 1e18 precision plus 0.1 satoshi in 1e18 precision
+      // Amount is 2 Meowcoin in 1e18 precision plus 0.1 satoshi in 1e18 precision
       const amount = ethers.BigNumber.from("2000000001000000000")
 
       let transaction: ContractTransaction
@@ -428,7 +428,7 @@ describe("TBTCVault", () => {
         await restoreSnapshot()
       })
 
-      // minting 2 BTC, the remainder is ignored
+      // minting 2 MEWC, the remainder is ignored
 
       it("should transfer balance to the vault", async () => {
         expect(await bank.balanceOf(vault.address)).to.equal(toSatoshis(2))
@@ -437,9 +437,9 @@ describe("TBTCVault", () => {
         )
       })
 
-      it("should mint TBTC", async () => {
-        expect(await tbtc.balanceOf(account1.address)).to.equal(to1e18(2))
-        expect(await tbtc.totalSupply()).to.equal(to1e18(2))
+      it("should mint TMEWC", async () => {
+        expect(await tmewc.balanceOf(account1.address)).to.equal(to1e18(2))
+        expect(await tmewc.totalSupply()).to.equal(to1e18(2))
       })
 
       it("should emit Minted event", async () => {
@@ -481,10 +481,10 @@ describe("TBTCVault", () => {
         )
       })
 
-      it("should mint TBTC", async () => {
-        expect(await tbtc.balanceOf(account1.address)).to.equal(amount1)
-        expect(await tbtc.balanceOf(account2.address)).to.equal(amount2)
-        expect(await tbtc.totalSupply()).to.equal(amount1.add(amount2))
+      it("should mint TMEWC", async () => {
+        expect(await tmewc.balanceOf(account1.address)).to.equal(amount1)
+        expect(await tmewc.balanceOf(account2.address)).to.equal(amount2)
+        expect(await tmewc.totalSupply()).to.equal(amount1.add(amount2))
       })
 
       it("should emit Minted event", async () => {
@@ -508,12 +508,12 @@ describe("TBTCVault", () => {
   })
 
   describe("unmint", () => {
-    context("when the unminter has no TBTC", () => {
+    context("when the unminter has no TMEWC", () => {
       const amount = to1e18(1)
       before(async () => {
         await createSnapshot()
 
-        await tbtc.connect(account1).approve(vault.address, amount)
+        await tmewc.connect(account1).approve(vault.address, amount)
       })
 
       after(async () => {
@@ -527,7 +527,7 @@ describe("TBTCVault", () => {
       })
     })
 
-    context("when the unminter has not enough TBTC", () => {
+    context("when the unminter has not enough TMEWC", () => {
       const mintedAmount = to1e18(1)
       const unmintedAmount = mintedAmount.add(constants.satoshiMultiplier)
 
@@ -535,7 +535,7 @@ describe("TBTCVault", () => {
         await createSnapshot()
 
         await vault.connect(account1).mint(mintedAmount)
-        await tbtc.connect(account1).approve(vault.address, unmintedAmount)
+        await tmewc.connect(account1).approve(vault.address, unmintedAmount)
       })
 
       after(async () => {
@@ -560,7 +560,7 @@ describe("TBTCVault", () => {
         await createSnapshot()
 
         await vault.connect(account1).mint(mintedAmount)
-        await tbtc.connect(account1).approve(vault.address, unmintedAmount)
+        await tmewc.connect(account1).approve(vault.address, unmintedAmount)
         transactions.push(await vault.connect(account1).unmint(to1e18(1)))
         transactions.push(await vault.connect(account1).unmint(to1e18(3)))
         transactions.push(await vault.connect(account1).unmint(to1e18(8)))
@@ -577,11 +577,11 @@ describe("TBTCVault", () => {
         )
       })
 
-      it("should burn TBTC", async () => {
-        expect(await tbtc.balanceOf(account1.address)).to.equal(
+      it("should burn TMEWC", async () => {
+        expect(await tmewc.balanceOf(account1.address)).to.equal(
           notUnmintedAmount
         )
-        expect(await tbtc.totalSupply()).to.be.equal(notUnmintedAmount)
+        expect(await tmewc.totalSupply()).to.be.equal(notUnmintedAmount)
       })
 
       it("should emit Unminted events", async () => {
@@ -599,7 +599,7 @@ describe("TBTCVault", () => {
 
     context("when amount is not fully convertible to satoshis", () => {
       const mintedAmount = to1e18(20)
-      // Amount is 2 Bitcoin in 1e18 precision plus 0.1 satoshi in 1e18 precision
+      // Amount is 2 Meowcoin in 1e18 precision plus 0.1 satoshi in 1e18 precision
       const unmintedAmount = ethers.BigNumber.from("2000000001000000000")
       const notUnmintedAmount = to1e18(18) // 20 - 2; remainder should be ignored
 
@@ -609,7 +609,7 @@ describe("TBTCVault", () => {
         await createSnapshot()
 
         await vault.connect(account1).mint(mintedAmount)
-        await tbtc.connect(account1).approve(vault.address, unmintedAmount)
+        await tmewc.connect(account1).approve(vault.address, unmintedAmount)
         transaction = await vault.connect(account1).unmint(unmintedAmount)
       })
 
@@ -617,7 +617,7 @@ describe("TBTCVault", () => {
         await restoreSnapshot()
       })
 
-      // unminting 2 BTC, the remainder is ignored
+      // unminting 2 MEWC, the remainder is ignored
 
       it("should transfer balance to the unminter", async () => {
         expect(await bank.balanceOf(vault.address)).to.equal(toSatoshis(18)) // 20 - 2
@@ -626,11 +626,11 @@ describe("TBTCVault", () => {
         )
       })
 
-      it("should burn TBTC", async () => {
-        expect(await tbtc.balanceOf(account1.address)).to.equal(
+      it("should burn TMEWC", async () => {
+        expect(await tmewc.balanceOf(account1.address)).to.equal(
           notUnmintedAmount
         )
-        expect(await tbtc.totalSupply()).to.be.equal(notUnmintedAmount)
+        expect(await tmewc.totalSupply()).to.be.equal(notUnmintedAmount)
       })
 
       it("should emit Unminted events", async () => {
@@ -656,8 +656,8 @@ describe("TBTCVault", () => {
 
         await vault.connect(account1).mint(mintedAmount1)
         await vault.connect(account2).mint(mintedAmount2)
-        await tbtc.connect(account1).approve(vault.address, unmintedAmount1)
-        await tbtc.connect(account2).approve(vault.address, unmintedAmount2)
+        await tmewc.connect(account1).approve(vault.address, unmintedAmount1)
+        await tmewc.connect(account2).approve(vault.address, unmintedAmount2)
         transactions.push(await vault.connect(account1).unmint(to1e18(1)))
         transactions.push(await vault.connect(account2).unmint(to1e18(20)))
         transactions.push(await vault.connect(account1).unmint(to1e18(3)))
@@ -681,14 +681,14 @@ describe("TBTCVault", () => {
         )
       })
 
-      it("should burn TBTC", async () => {
-        expect(await tbtc.balanceOf(account1.address)).to.equal(
+      it("should burn TMEWC", async () => {
+        expect(await tmewc.balanceOf(account1.address)).to.equal(
           notUnmintedAmount1
         )
-        expect(await tbtc.balanceOf(account2.address)).to.equal(
+        expect(await tmewc.balanceOf(account2.address)).to.equal(
           notUnmintedAmount2
         )
-        expect(await tbtc.totalSupply()).to.be.equal(
+        expect(await tmewc.totalSupply()).to.be.equal(
           notUnmintedAmount1.add(notUnmintedAmount2)
         )
       })
@@ -714,13 +714,13 @@ describe("TBTCVault", () => {
   })
 
   describe("receiveApproval", () => {
-    context("when called not for TBTC token", () => {
+    context("when called not for TMEWC token", () => {
       it("should revert", async () => {
         await expect(
           vault
             .connect(account1)
             .receiveApproval(account1.address, to1e18(1), account1.address, [])
-        ).to.be.revertedWith("Token is not TBTC")
+        ).to.be.revertedWith("Token is not TMEWC")
       })
     })
 
@@ -729,8 +729,8 @@ describe("TBTCVault", () => {
         await expect(
           vault
             .connect(account1)
-            .receiveApproval(account1.address, to1e18(1), tbtc.address, [])
-        ).to.be.revertedWith("Only TBTC caller allowed")
+            .receiveApproval(account1.address, to1e18(1), tmewc.address, [])
+        ).to.be.revertedWith("Only TMEWC caller allowed")
       })
     })
 
@@ -746,7 +746,7 @@ describe("TBTCVault", () => {
           await createSnapshot()
 
           await vault.connect(account1).mint(mintedAmount)
-          tx = await tbtc
+          tx = await tmewc
             .connect(account1)
             .approveAndCall(vault.address, unmintedAmount, [])
         })
@@ -762,11 +762,11 @@ describe("TBTCVault", () => {
           )
         })
 
-        it("should burn TBTC", async () => {
-          expect(await tbtc.balanceOf(account1.address)).to.equal(
+        it("should burn TMEWC", async () => {
+          expect(await tmewc.balanceOf(account1.address)).to.equal(
             notUnmintedAmount
           )
-          expect(await tbtc.totalSupply()).to.be.equal(notUnmintedAmount)
+          expect(await tmewc.totalSupply()).to.be.equal(notUnmintedAmount)
         })
 
         it("should emit Unminted event", async () => {
@@ -778,7 +778,7 @@ describe("TBTCVault", () => {
 
       context("when amount is not fully convertible to satoshis", () => {
         const mintedAmount = to1e18(20)
-        // Amount is 3 Bitcoin in 1e18 precision plus 0.1 satoshi in 1e18 precision
+        // Amount is 3 Meowcoin in 1e18 precision plus 0.1 satoshi in 1e18 precision
         const unmintedAmount = ethers.BigNumber.from("3000000001000000000")
         const notUnmintedAmount = to1e18(17) // 20 - 3; remainder should be ignored
 
@@ -788,7 +788,7 @@ describe("TBTCVault", () => {
           await createSnapshot()
 
           await vault.connect(account1).mint(mintedAmount)
-          transaction = await tbtc
+          transaction = await tmewc
             .connect(account1)
             .approveAndCall(vault.address, unmintedAmount, [])
         })
@@ -797,7 +797,7 @@ describe("TBTCVault", () => {
           await restoreSnapshot()
         })
 
-        // unminting 3 BTC, the remainder is ignored
+        // unminting 3 MEWC, the remainder is ignored
 
         it("should transfer balance to the unminter", async () => {
           expect(await bank.balanceOf(vault.address)).to.equal(toSatoshis(17)) // 20 - 3
@@ -806,11 +806,11 @@ describe("TBTCVault", () => {
           )
         })
 
-        it("should burn TBTC", async () => {
-          expect(await tbtc.balanceOf(account1.address)).to.equal(
+        it("should burn TMEWC", async () => {
+          expect(await tmewc.balanceOf(account1.address)).to.equal(
             notUnmintedAmount
           )
-          expect(await tbtc.totalSupply()).to.be.equal(notUnmintedAmount)
+          expect(await tmewc.totalSupply()).to.be.equal(notUnmintedAmount)
         })
 
         it("should emit Unminted events", async () => {
@@ -888,9 +888,9 @@ describe("TBTCVault", () => {
         )
       })
 
-      it("should mint TBTC", async () => {
-        expect(await tbtc.balanceOf(account1.address)).to.equal(to1e18(19))
-        expect(await tbtc.totalSupply()).to.equal(to1e18(19))
+      it("should mint TMEWC", async () => {
+        expect(await tmewc.balanceOf(account1.address)).to.equal(to1e18(19))
+        expect(await tmewc.totalSupply()).to.equal(to1e18(19))
       })
 
       it("should emit Minted event", async () => {
@@ -958,10 +958,10 @@ describe("TBTCVault", () => {
         )
       })
 
-      it("should mint TBTC", async () => {
-        expect(await tbtc.balanceOf(account1.address)).to.equal(to1e18(4))
-        expect(await tbtc.balanceOf(account2.address)).to.equal(to1e18(5))
-        expect(await tbtc.totalSupply()).to.equal(to1e18(9)) // 4 + 5
+      it("should mint TMEWC", async () => {
+        expect(await tmewc.balanceOf(account1.address)).to.equal(to1e18(4))
+        expect(await tmewc.balanceOf(account2.address)).to.equal(to1e18(5))
+        expect(await tmewc.totalSupply()).to.equal(to1e18(9)) // 4 + 5
       })
 
       it("should emit Minted event", async () => {
@@ -1040,9 +1040,9 @@ describe("TBTCVault", () => {
         await restoreSnapshot()
       })
 
-      it("should mint TBTC", async () => {
-        expect(await tbtc.balanceOf(depositor1)).to.equal(to1e18(19))
-        expect(await tbtc.totalSupply()).to.equal(to1e18(19))
+      it("should mint TMEWC", async () => {
+        expect(await tmewc.balanceOf(depositor1)).to.equal(to1e18(19))
+        expect(await tmewc.totalSupply()).to.equal(to1e18(19))
       })
 
       it("should emit Minted event", async () => {
@@ -1071,11 +1071,11 @@ describe("TBTCVault", () => {
         await restoreSnapshot()
       })
 
-      it("should mint TBTC", async () => {
-        expect(await tbtc.balanceOf(depositor1)).to.equal(to1e18(19))
-        expect(await tbtc.balanceOf(depositor2)).to.equal(to1e18(11))
-        expect(await tbtc.balanceOf(depositor3)).to.equal(to1e18(301))
-        expect(await tbtc.totalSupply()).to.equal(to1e18(331)) // 19 + 11 + 301
+      it("should mint TMEWC", async () => {
+        expect(await tmewc.balanceOf(depositor1)).to.equal(to1e18(19))
+        expect(await tmewc.balanceOf(depositor2)).to.equal(to1e18(11))
+        expect(await tmewc.balanceOf(depositor3)).to.equal(to1e18(301))
+        expect(await tmewc.totalSupply()).to.equal(to1e18(331)) // 19 + 11 + 301
       })
 
       it("should emit Minted events", async () => {
@@ -1124,8 +1124,8 @@ describe("TBTCVault", () => {
           await restoreSnapshot()
         })
 
-        it("should not transfer TBTC token ownership", async () => {
-          expect(await tbtc.owner()).is.equal(vault.address)
+        it("should not transfer TMEWC token ownership", async () => {
+          expect(await tmewc.owner()).is.equal(vault.address)
         })
 
         it("should set the upgrade initiation time", async () => {
@@ -1172,7 +1172,7 @@ describe("TBTCVault", () => {
           await createSnapshot()
           await vault.connect(governance).initiateUpgrade(newVault)
 
-          // Mint some TBTC to increase the balance of TBTCVault
+          // Mint some TMEWC to increase the balance of TMEWCVault
           await bank
             .connect(account1)
             .approveBalanceAndCall(vault.address, initialBalance, [])
@@ -1216,13 +1216,13 @@ describe("TBTCVault", () => {
             await restoreSnapshot()
           })
 
-          it("should transfer TBTC token ownership", async () => {
-            expect(await tbtc.owner()).is.equal(newVault)
+          it("should transfer TMEWC token ownership", async () => {
+            expect(await tmewc.owner()).is.equal(newVault)
           })
 
           it("should transfer the entire bank balance", async () => {
             expect(await bank.balanceOf(vault.address)).to.equal(0)
-            // In the setup, each account minted `initialBalance` of TBTC.
+            // In the setup, each account minted `initialBalance` of TMEWC.
             expect(await bank.balanceOf(newVault)).to.equal(
               initialBalance.mul(2)
             )
@@ -1248,10 +1248,10 @@ describe("TBTCVault", () => {
 
   describe("amountToSatoshis", () => {
     context("when the amount is convertible with a remainder", () => {
-      // 0.000000001 BTC = 0.1 satoshi
+      // 0.000000001 MEWC = 0.1 satoshi
       // 1000000000 in 1e18 precision
       //
-      // Amount is 1 Bitcoin in 1e18 precision plus 0.1 satoshi in 1e18 precision
+      // Amount is 1 Meowcoin in 1e18 precision plus 0.1 satoshi in 1e18 precision
       const amount = ethers.BigNumber.from("1000000001000000000")
 
       it("should calculate correct convertible amount", async () => {
@@ -1268,12 +1268,12 @@ describe("TBTCVault", () => {
 
       it("should calculate correct satoshi amount", async () => {
         const { satoshis } = await await vault.amountToSatoshis(amount)
-        expect(satoshis).to.equal(ethers.BigNumber.from("100000000")) // 1 BTC in satoshi
+        expect(satoshis).to.equal(ethers.BigNumber.from("100000000")) // 1 MEWC in satoshi
       })
     })
 
     context("when the amount is convertible without a remainder", () => {
-      // Amount is 1.1 Bitcoin in 1e18 precision
+      // Amount is 1.1 Meowcoin in 1e18 precision
       const amount = ethers.BigNumber.from("1100000000000000000")
 
       it("should calculate correct convertible amount", async () => {
@@ -1288,7 +1288,7 @@ describe("TBTCVault", () => {
 
       it("should calculate correct satoshi amount", async () => {
         const { satoshis } = await await vault.amountToSatoshis(amount)
-        expect(satoshis).to.equal(ethers.BigNumber.from("110000000")) // 1.1 BTC in satoshi
+        expect(satoshis).to.equal(ethers.BigNumber.from("110000000")) // 1.1 MEWC in satoshi
       })
     })
   })

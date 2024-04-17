@@ -3,28 +3,28 @@ import { expect } from "chai"
 
 import type { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers"
 
-import type { PolygonTBTC, PolygonTBTCUpgraded } from "../typechain"
+import type { PolygonTMEWC, PolygonTMEWCUpgraded } from "../typechain"
 
-describe("PolygonTBTC - Upgrade", async () => {
+describe("PolygonTMEWC - Upgrade", async () => {
   let governance: SignerWithAddress
-  let polygonTBTC: PolygonTBTC
+  let polygonTMEWC: PolygonTMEWC
 
   before(async () => {
     await deployments.fixture()
     ;({ governance } = await helpers.signers.getNamedSigners())
 
-    polygonTBTC = (await helpers.contracts.getContract(
-      "PolygonTBTC"
-    )) as PolygonTBTC
+    polygonTMEWC = (await helpers.contracts.getContract(
+      "PolygonTMEWC"
+    )) as PolygonTMEWC
   })
 
   describe("when a new contract is valid", () => {
-    let polygonTBTCUpgraded: PolygonTBTCUpgraded
+    let polygonTMEWCUpgraded: PolygonTMEWCUpgraded
 
     before(async () => {
       const [upgradedContract] = await helpers.upgrades.upgradeProxy(
-        "PolygonTBTC",
-        "PolygonTBTCUpgraded",
+        "PolygonTMEWC",
+        "PolygonTMEWCUpgraded",
         {
           proxyOpts: {
             call: {
@@ -37,30 +37,30 @@ describe("PolygonTBTC - Upgrade", async () => {
           },
         }
       )
-      polygonTBTCUpgraded = upgradedContract as PolygonTBTCUpgraded
+      polygonTMEWCUpgraded = upgradedContract as PolygonTMEWCUpgraded
     })
 
     it("new instance should have the same address as the old one", async () => {
-      expect(polygonTBTCUpgraded.address).equal(polygonTBTC.address)
+      expect(polygonTMEWCUpgraded.address).equal(polygonTMEWC.address)
     })
 
     it("should initialize new variable", async () => {
-      expect(await polygonTBTCUpgraded.newVar()).to.be.equal(
+      expect(await polygonTMEWCUpgraded.newVar()).to.be.equal(
         "Hello darkness my old friend"
       )
     })
 
     it("should not update already set name", async () => {
-      expect(await polygonTBTCUpgraded.name()).to.be.equal("Polygon tBTC v2")
+      expect(await polygonTMEWCUpgraded.name()).to.be.equal("Polygon tMEWC")
     })
 
     it("should not update already set symbol", async () => {
-      expect(await polygonTBTCUpgraded.symbol()).to.be.equal("tBTC")
+      expect(await polygonTMEWCUpgraded.symbol()).to.be.equal("tMEWC")
     })
 
     it("should revert when V1's initializer is called", async () => {
       await expect(
-        polygonTBTCUpgraded.initialize("PolygonTBTCv2", "PolTBTCv2")
+        polygonTMEWCUpgraded.initialize("PolygonTMEWC", "PolTMEWC")
       ).to.be.revertedWith("Initializable: contract is already initialized")
     })
   })

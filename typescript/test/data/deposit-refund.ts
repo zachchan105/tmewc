@@ -33,9 +33,9 @@ export interface DepositRefundTestData {
 }
 
 /**
- * Test data based on a Bitcoin deposit refund transaction in which a witness
+ * Test data based on a Meowcoin deposit refund transaction in which a witness
  * (P2WSH) deposit was refunded and the refunder's address was witness:
- * https://live.blockcypher.com/btc-testnet/tx/b49bd6c0219066f0c76d85818b047e4685425844cda42dae9b9508b9bfbb483d/
+ * https://live.blockcypher.com/mewc-testnet/tx/b49bd6c0219066f0c76d85818b047e4685425844cda42dae9b9508b9bfbb483d/
  */
 export const depositRefundOfWitnessDepositAndWitnessRefunderAddress: DepositRefundTestData =
   {
@@ -95,9 +95,9 @@ export const depositRefundOfWitnessDepositAndWitnessRefunderAddress: DepositRefu
   }
 
 /**
- * Test data based on a Bitcoin deposit refund transaction in which a non-witness
+ * Test data based on a Meowcoin deposit refund transaction in which a non-witness
  * (P2SH) deposit was refunded and the refunder's address was witness:
- * https://live.blockcypher.com/btc-testnet/tx/7df9ed885525899ccbe144fd129062cec59be43d428b85fb847808b8790ad262/
+ * https://live.blockcypher.com/mewc-testnet/tx/7df9ed885525899ccbe144fd129062cec59be43d428b85fb847808b8790ad262/
  */
 export const depositRefundOfNonWitnessDepositAndWitnessRefunderAddress: DepositRefundTestData =
   {
@@ -156,9 +156,9 @@ export const depositRefundOfNonWitnessDepositAndWitnessRefunderAddress: DepositR
   }
 
 /**
- * Test data based on a Bitcoin deposit refund transaction in which a witness
+ * Test data based on a Meowcoin deposit refund transaction in which a witness
  * (P2WSH) deposit was refunded and the refunder's address was non-witness:
- * https://live.blockcypher.com/btc-testnet/tx/0400678f7ae0275338cb0418236960c04c016b980cb7d1763c1d957f534ae0eb/
+ * https://live.blockcypher.com/mewc-testnet/tx/0400678f7ae0275338cb0418236960c04c016b980cb7d1763c1d957f534ae0eb/
  */
 export const depositRefundOfWitnessDepositAndNonWitnessRefunderAddress: DepositRefundTestData =
   {

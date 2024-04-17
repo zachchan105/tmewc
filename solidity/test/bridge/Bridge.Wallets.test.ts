@@ -112,7 +112,7 @@ describe("Bridge - Wallets", () => {
             context("when the active wallet main UTXO data are valid", () => {
               context("when wallet creation conditions are met", () => {
                 context(
-                  "when active wallet is old enough and its balance is greater or equal the minimum BTC balance threshold",
+                  "when active wallet is old enough and its balance is greater or equal the minimum MEWC balance threshold",
                   () => {
                     let tx: ContractTransaction
 
@@ -122,8 +122,8 @@ describe("Bridge - Wallets", () => {
                       // Make the wallet old enough.
                       await increaseTime(constants.walletCreationPeriod)
 
-                      // Simulate the wallet has a BTC balance equal to the
-                      // minimum BTC amount threshold by preparing the wallet's
+                      // Simulate the wallet has a MEWC balance equal to the
+                      // minimum MEWC amount threshold by preparing the wallet's
                       // main UTXO accordingly.
                       const activeWalletMainUtxo = {
                         txHash:
@@ -159,15 +159,15 @@ describe("Bridge - Wallets", () => {
                 )
 
                 context(
-                  "when active wallet is not old enough but its balance is greater or equal the maximum BTC balance threshold",
+                  "when active wallet is not old enough but its balance is greater or equal the maximum MEWC balance threshold",
                   () => {
                     let tx: ContractTransaction
 
                     before(async () => {
                       await createSnapshot()
 
-                      // Simulate the wallet has a BTC balance equal to the
-                      // maximum BTC amount threshold by preparing the wallet's
+                      // Simulate the wallet has a MEWC balance equal to the
+                      // maximum MEWC amount threshold by preparing the wallet's
                       // main UTXO accordingly. Note that the time is not
                       // increased at all so the wallet is not old enough
                       // for sure.
@@ -206,15 +206,15 @@ describe("Bridge - Wallets", () => {
               })
 
               context(
-                "when active wallet is not old enough and its balance is greater or equal the minimum but lesser than the maximum BTC balance threshold",
+                "when active wallet is not old enough and its balance is greater or equal the minimum but lesser than the maximum MEWC balance threshold",
                 () => {
                   let tx: Promise<ContractTransaction>
 
                   before(async () => {
                     await createSnapshot()
 
-                    // Simulate the wallet has a BTC balance between the minimum
-                    // and maximum BTC amount thresholds by preparing the
+                    // Simulate the wallet has a MEWC balance between the minimum
+                    // and maximum MEWC amount thresholds by preparing the
                     // wallet's main UTXO accordingly. Note that the time is not
                     // increased at all so the wallet is not old enough for sure.
                     const activeWalletMainUtxo = {
@@ -246,7 +246,7 @@ describe("Bridge - Wallets", () => {
               )
 
               context(
-                "when active wallet is old enough but its balance is lesser than the minimum BTC balance threshold",
+                "when active wallet is old enough but its balance is lesser than the minimum MEWC balance threshold",
                 () => {
                   let tx: Promise<ContractTransaction>
 
@@ -256,8 +256,8 @@ describe("Bridge - Wallets", () => {
                     // Make the wallet old enough.
                     await increaseTime(constants.walletCreationPeriod)
 
-                    // Simulate the wallet has a BTC balance below the minimum
-                    // BTC amount threshold by preparing the wallet's main
+                    // Simulate the wallet has a MEWC balance below the minimum
+                    // MEWC amount threshold by preparing the wallet's main
                     // UTXO accordingly.
                     const activeWalletMainUtxo = {
                       txHash:
@@ -324,7 +324,7 @@ describe("Bridge - Wallets", () => {
 
           context("when active wallet has no main UTXO set", () => {
             context(
-              "when the minimum BTC balance threshold is non-zero",
+              "when the minimum MEWC balance threshold is non-zero",
               () => {
                 before(async () => {
                   await createSnapshot()
@@ -343,7 +343,7 @@ describe("Bridge - Wallets", () => {
             )
 
             context(
-              "when the minimum BTC balance threshold is non-zero",
+              "when the minimum MEWC balance threshold is non-zero",
               () => {
                 before(async () => {
                   await createSnapshot()
@@ -361,14 +361,14 @@ describe("Bridge - Wallets", () => {
               }
             )
 
-            context("when the minimum BTC balance threshold is zero", () => {
+            context("when the minimum MEWC balance threshold is zero", () => {
               context("when wallet creation conditions are met", () => {
                 let tx: ContractTransaction
 
                 before(async () => {
                   await createSnapshot()
 
-                  // Set the minimum BTC balance to zero.
+                  // Set the minimum MEWC balance to zero.
                   await bridgeGovernance
                     .connect(governance)
                     .beginWalletCreationMinBtcBalanceUpdate(0)

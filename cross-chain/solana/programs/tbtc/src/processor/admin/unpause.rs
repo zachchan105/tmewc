@@ -1,11 +1,11 @@
-use crate::{error::TbtcError, state::Config};
+use crate::{error::TmewcError, state::Config};
 use anchor_lang::prelude::*;
 
 #[derive(Accounts)]
 pub struct Unpause<'info> {
     #[account(
         mut,
-        has_one = authority @ TbtcError::IsNotAuthority,
+        has_one = authority @ TmewcError::IsNotAuthority,
         seeds = [Config::SEED_PREFIX],
         bump,
     )]
@@ -16,7 +16,7 @@ pub struct Unpause<'info> {
 
 impl<'info> Unpause<'info> {
     fn constraints(ctx: &Context<Self>) -> Result<()> {
-        require!(ctx.accounts.config.paused, TbtcError::IsNotPaused);
+        require!(ctx.accounts.config.paused, TmewcError::IsNotPaused);
 
         Ok(())
     }

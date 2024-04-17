@@ -9,7 +9,7 @@ source solana.env
 ## Transfer authority to the Threshold Council Multisig. (for mainnet only)
 # make transfer_authority
 
-## Transfer upgrade authority to Threshold Council Multisig for tbtc
+## Transfer upgrade authority to Threshold Council Multisig for tmewc
 # solana program set-upgrade-authority -k <current_keypair_path> <programID> --new-upgrade-authority <pubkey>
 
 ## Transfer upgrade authority to Threshold Council Multisig for wormhole_gateway

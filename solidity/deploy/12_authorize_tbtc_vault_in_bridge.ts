@@ -6,18 +6,18 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { execute } = deployments
   const { deployer } = await getNamedAccounts()
 
-  const TBTCVault = await deployments.get("TBTCVault")
+  const TMEWCVault = await deployments.get("TMEWCVault")
 
   await execute(
     "Bridge",
     { from: deployer, log: true, waitConfirmations: 1 },
     "setVaultStatus",
-    TBTCVault.address,
+    TMEWCVault.address,
     true
   )
 }
 
 export default func
 
-func.tags = ["AuthorizeTBTCVault"]
-func.dependencies = ["Bridge", "TBTCVault"]
+func.tags = ["AuthorizeTMEWCVault"]
+func.dependencies = ["Bridge", "TMEWCVault"]

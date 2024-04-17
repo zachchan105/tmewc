@@ -1,6 +1,6 @@
 import {
   RedemptionRequest,
-  TBTCContracts,
+  TMEWCContracts,
   WalletState,
 } from "../../lib/contracts"
 import {
@@ -10,39 +10,39 @@ import {
   BitcoinScriptUtils,
   BitcoinTxOutput,
   BitcoinUtxo,
-} from "../../lib/bitcoin"
+} from "../../lib/meowcoin"
 import { BigNumber } from "ethers"
 import { Hex } from "../../lib/utils"
 
 /**
- * Service exposing features related to tBTC v2 redemptions.
+ * Service exposing features related to tMEWC redemptions.
  */
 export class RedemptionsService {
   /**
-   * Handle to tBTC contracts.
+   * Handle to tMEWC contracts.
    */
-  private readonly tbtcContracts: TBTCContracts
+  private readonly tmewcContracts: TMEWCContracts
   /**
-   * Bitcoin client handle.
+   * Meowcoin client handle.
    */
   private readonly bitcoinClient: BitcoinClient
 
-  constructor(tbtcContracts: TBTCContracts, bitcoinClient: BitcoinClient) {
-    this.tbtcContracts = tbtcContracts
+  constructor(tmewcContracts: TMEWCContracts, bitcoinClient: BitcoinClient) {
+    this.tmewcContracts = tmewcContracts
     this.bitcoinClient = bitcoinClient
   }
 
   /**
-   * Requests a redemption of TBTC v2 token into BTC.
-   * @param bitcoinRedeemerAddress Bitcoin address redeemed BTC should be
+   * Requests a redemption of TMEWC token into MEWC.
+   * @param bitcoinRedeemerAddress Meowcoin address redeemed MEWC should be
    *                               sent to. Only P2PKH, P2WPKH, P2SH, and P2WSH
    *                               address types are supported.
-   * @param amount The amount to be redeemed with the precision of the tBTC
+   * @param amount The amount to be redeemed with the precision of the tMEWC
    *        on-chain token contract.
    * @returns Object containing:
    *          - Target chain hash of the request redemption transaction
    *            (for example, Ethereum transaction hash)
-   *          - Bitcoin public key of the wallet asked to handle the redemption.
+   *          - Meowcoin public key of the wallet asked to handle the redemption.
    *            Presented in the compressed form (33 bytes long with 02 or 03 prefix).
    */
   async requestRedemption(
@@ -75,14 +75,14 @@ export class RedemptionsService {
     }
 
     // The findWalletForRedemption operates on satoshi amount precision (1e8)
-    // while the amount parameter is TBTC token precision (1e18). We need to
+    // while the amount parameter is TMEWC token precision (1e18). We need to
     // convert the amount to get proper results.
     const { walletPublicKey, mainUtxo } = await this.findWalletForRedemption(
       redeemerOutputScript,
       amountToSatoshi(amount)
     )
 
-    const txHash = await this.tbtcContracts.tbtcToken.requestRedemption(
+    const txHash = await this.tmewcContracts.tmewcToken.requestRedemption(
       walletPublicKey,
       mainUtxo,
       redeemerOutputScript,
@@ -96,7 +96,7 @@ export class RedemptionsService {
   }
 
   /**
-   * Finds the oldest live wallet that has enough BTC to handle a redemption
+   * Finds the oldest live wallet that has enough MEWC to handle a redemption
    * request.
    * @param redeemerOutputScript The redeemer output script the redeemed funds are
    *        supposed to be locked on. Must not be prepended with length.
@@ -111,7 +111,7 @@ export class RedemptionsService {
     mainUtxo: BitcoinUtxo
   }> {
     const wallets =
-      await this.tbtcContracts.bridge.getNewWalletRegisteredEvents()
+      await this.tmewcContracts.bridge.getNewWalletRegisteredEvents()
 
     let walletData:
       | {
@@ -127,7 +127,7 @@ export class RedemptionsService {
     for (const wallet of wallets) {
       const { walletPublicKeyHash } = wallet
       const { state, walletPublicKey, pendingRedemptionsValue } =
-        await this.tbtcContracts.bridge.wallets(walletPublicKeyHash)
+        await this.tmewcContracts.bridge.wallets(walletPublicKeyHash)
 
       // Wallet must be in Live state.
       if (state !== WalletState.Live) {
@@ -155,7 +155,7 @@ export class RedemptionsService {
       }
 
       const pendingRedemption =
-        await this.tbtcContracts.bridge.pendingRedemptions(
+        await this.tmewcContracts.bridge.pendingRedemptions(
           walletPublicKey,
           redeemerOutputScript
         )
@@ -163,7 +163,7 @@ export class RedemptionsService {
       if (pendingRedemption.requestedAt != 0) {
         console.debug(
           `There is a pending redemption request from this wallet to the ` +
-            `same Bitcoin address. Given wallet public key hash` +
+            `same Meowcoin address. Given wallet public key hash` +
             `(${walletPublicKeyHash.toString()}) and redeemer output script ` +
             `(${redeemerOutputScript.toString()}) pair can be used for only one ` +
             `pending request at the same time. ` +
@@ -172,12 +172,12 @@ export class RedemptionsService {
         continue
       }
 
-      const walletBTCBalance = mainUtxo.value.sub(pendingRedemptionsValue)
+      const walletMEWCBalance = mainUtxo.value.sub(pendingRedemptionsValue)
 
       // Save the max possible redemption amount.
-      maxAmount = walletBTCBalance.gt(maxAmount) ? walletBTCBalance : maxAmount
+      maxAmount = walletMEWCBalance.gt(maxAmount) ? walletMEWCBalance : maxAmount
 
-      if (walletBTCBalance.gte(amount)) {
+      if (walletMEWCBalance.gte(amount)) {
         walletData = {
           walletPublicKey,
           mainUtxo,
@@ -198,11 +198,11 @@ export class RedemptionsService {
     }
 
     // Cover a corner case when the user requested redemption for all live wallets
-    // in the network using the same Bitcoin address.
+    // in the network using the same Meowcoin address.
     if (!walletData && liveWalletsCounter > 0 && maxAmount.eq(0)) {
       throw new Error(
-        "All live wallets in the network have the pending redemption for a given Bitcoin address. " +
-          "Please use another Bitcoin address."
+        "All live wallets in the network have the pending redemption for a given Meowcoin address. " +
+          "Please use another Meowcoin address."
       )
     }
 
@@ -219,14 +219,14 @@ export class RedemptionsService {
    * Bridge on-chain contract. The returned main UTXO can be undefined if the
    * wallet does not have a main UTXO registered in the Bridge at the moment.
    * @param walletPublicKeyHash - Public key hash of the wallet.
-   * @param bitcoinNetwork - Bitcoin network.
+   * @param bitcoinNetwork - Meowcoin network.
    * @returns Promise holding the wallet main UTXO or undefined value.
    */
   protected async determineWalletMainUtxo(
     walletPublicKeyHash: Hex,
     bitcoinNetwork: BitcoinNetwork
   ): Promise<BitcoinUtxo | undefined> {
-    const { mainUtxoHash } = await this.tbtcContracts.bridge.wallets(
+    const { mainUtxoHash } = await this.tmewcContracts.bridge.wallets(
       walletPublicKeyHash
     )
 
@@ -243,11 +243,11 @@ export class RedemptionsService {
     }
 
     // The wallet main UTXO registered in the Bridge almost always comes
-    // from the latest BTC transaction made by the wallet. However, there may
-    // be cases where the BTC transaction was made but their SPV proof is
+    // from the latest MEWC transaction made by the wallet. However, there may
+    // be cases where the MEWC transaction was made but their SPV proof is
     // not yet submitted to the Bridge thus the registered main UTXO points
-    // to the second last BTC transaction. In theory, such a gap between
-    // the actual latest BTC transaction and the registered main UTXO in
+    // to the second last MEWC transaction. In theory, such a gap between
+    // the actual latest MEWC transaction and the registered main UTXO in
     // the Bridge may be even wider. To cover the worst possible cases, we
     // must rely on the full transaction history. Due to performance reasons,
     // we are first taking just the transactions hashes (fast call) and then
@@ -307,14 +307,14 @@ export class RedemptionsService {
 
       // Check whether the candidate UTXO hash matches the main UTXO hash stored
       // on the Bridge.
-      if (mainUtxoHash.equals(this.tbtcContracts.bridge.buildUtxoHash(utxo))) {
+      if (mainUtxoHash.equals(this.tmewcContracts.bridge.buildUtxoHash(utxo))) {
         return utxo
       }
     }
 
     // Should never happen if the wallet has the main UTXO registered in the
     // Bridge. It could only happen due to some serious error, e.g. wrong main
-    // UTXO hash stored in the Bridge or Bitcoin blockchain data corruption.
+    // UTXO hash stored in the Bridge or Meowcoin blockchain data corruption.
     console.error(
       `main UTXO with hash ${mainUtxoHash.toPrefixedString()} not found for wallet ${walletPublicKeyHash.toString()}`
     )
@@ -323,9 +323,9 @@ export class RedemptionsService {
 
   /**
    * Gets data of a registered redemption request from the Bridge contract.
-   * @param bitcoinRedeemerAddress Bitcoin redeemer address used to request
+   * @param bitcoinRedeemerAddress Meowcoin redeemer address used to request
    *                               the redemption.
-   * @param walletPublicKey Bitcoin public key of the wallet handling the
+   * @param walletPublicKey Meowcoin public key of the wallet handling the
    *                        redemption. Must be in the compressed form
    *                        (33 bytes long with 02 or 03 prefix).
    * @param type Type of redemption requests the function will look for. Can be
@@ -350,14 +350,14 @@ export class RedemptionsService {
 
     switch (type) {
       case "pending": {
-        redemptionRequest = await this.tbtcContracts.bridge.pendingRedemptions(
+        redemptionRequest = await this.tmewcContracts.bridge.pendingRedemptions(
           walletPublicKey,
           redeemerOutputScript
         )
         break
       }
       case "timedOut": {
-        redemptionRequest = await this.tbtcContracts.bridge.timedOutRedemptions(
+        redemptionRequest = await this.tmewcContracts.bridge.timedOutRedemptions(
           walletPublicKey,
           redeemerOutputScript
         )

@@ -1,6 +1,6 @@
 # Interface: BitcoinTxOutput
 
-Data about a Bitcoin transaction output.
+Data about a Meowcoin transaction output.
 
 ## Table of contents
 
@@ -20,7 +20,7 @@ The 0-based index of the output.
 
 #### Defined in
 
-[src/lib/bitcoin/tx.ts:77](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/bitcoin/tx.ts#L77)
+[src/lib/meowcoin/tx.ts:77](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/meowcoin/tx.ts#L77)
 
 ___
 
@@ -32,7 +32,7 @@ The receiving scriptPubKey.
 
 #### Defined in
 
-[src/lib/bitcoin/tx.ts:87](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/bitcoin/tx.ts#L87)
+[src/lib/meowcoin/tx.ts:87](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/meowcoin/tx.ts#L87)
 
 ___
 
@@ -44,4 +44,4 @@ The value of the output in satoshis.
 
 #### Defined in
 
-[src/lib/bitcoin/tx.ts:82](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/bitcoin/tx.ts#L82)
+[src/lib/meowcoin/tx.ts:82](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/meowcoin/tx.ts#L82)

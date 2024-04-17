@@ -1,6 +1,6 @@
-# Class: EthereumTBTCVault
+# Class: EthereumTMEWCVault
 
-Implementation of the Ethereum TBTCVault handle.
+Implementation of the Ethereum TMEWCVault handle.
 
 **`See`**
 
@@ -8,49 +8,49 @@ for reference.
 
 ## Hierarchy
 
-- `EthersContractHandle`\<`TBTCVaultTypechain`\>
+- `EthersContractHandle`\<`TMEWCVaultTypechain`\>
 
-  ↳ **`EthereumTBTCVault`**
+  ↳ **`EthereumTMEWCVault`**
 
 ## Implements
 
-- [`TBTCVault`](../interfaces/TBTCVault.md)
+- [`TMEWCVault`](../interfaces/TMEWCVault.md)
 
 ## Table of contents
 
 ### Constructors
 
-- [constructor](EthereumTBTCVault.md#constructor)
+- [constructor](EthereumTMEWCVault.md#constructor)
 
 ### Properties
 
-- [\_deployedAtBlockNumber](EthereumTBTCVault.md#_deployedatblocknumber)
-- [\_instance](EthereumTBTCVault.md#_instance)
-- [\_totalRetryAttempts](EthereumTBTCVault.md#_totalretryattempts)
+- [\_deployedAtBlockNumber](EthereumTMEWCVault.md#_deployedatblocknumber)
+- [\_instance](EthereumTMEWCVault.md#_instance)
+- [\_totalRetryAttempts](EthereumTMEWCVault.md#_totalretryattempts)
 
 ### Methods
 
-- [cancelOptimisticMint](EthereumTBTCVault.md#canceloptimisticmint)
-- [finalizeOptimisticMint](EthereumTBTCVault.md#finalizeoptimisticmint)
-- [getAddress](EthereumTBTCVault.md#getaddress)
-- [getChainIdentifier](EthereumTBTCVault.md#getchainidentifier)
-- [getEvents](EthereumTBTCVault.md#getevents)
-- [getMinters](EthereumTBTCVault.md#getminters)
-- [getOptimisticMintingCancelledEvents](EthereumTBTCVault.md#getoptimisticmintingcancelledevents)
-- [getOptimisticMintingFinalizedEvents](EthereumTBTCVault.md#getoptimisticmintingfinalizedevents)
-- [getOptimisticMintingRequestedEvents](EthereumTBTCVault.md#getoptimisticmintingrequestedevents)
-- [isGuardian](EthereumTBTCVault.md#isguardian)
-- [isMinter](EthereumTBTCVault.md#isminter)
-- [optimisticMintingDelay](EthereumTBTCVault.md#optimisticmintingdelay)
-- [optimisticMintingRequests](EthereumTBTCVault.md#optimisticmintingrequests)
-- [parseOptimisticMintingRequest](EthereumTBTCVault.md#parseoptimisticmintingrequest)
-- [requestOptimisticMint](EthereumTBTCVault.md#requestoptimisticmint)
+- [cancelOptimisticMint](EthereumTMEWCVault.md#canceloptimisticmint)
+- [finalizeOptimisticMint](EthereumTMEWCVault.md#finalizeoptimisticmint)
+- [getAddress](EthereumTMEWCVault.md#getaddress)
+- [getChainIdentifier](EthereumTMEWCVault.md#getchainidentifier)
+- [getEvents](EthereumTMEWCVault.md#getevents)
+- [getMinters](EthereumTMEWCVault.md#getminters)
+- [getOptimisticMintingCancelledEvents](EthereumTMEWCVault.md#getoptimisticmintingcancelledevents)
+- [getOptimisticMintingFinalizedEvents](EthereumTMEWCVault.md#getoptimisticmintingfinalizedevents)
+- [getOptimisticMintingRequestedEvents](EthereumTMEWCVault.md#getoptimisticmintingrequestedevents)
+- [isGuardian](EthereumTMEWCVault.md#isguardian)
+- [isMinter](EthereumTMEWCVault.md#isminter)
+- [optimisticMintingDelay](EthereumTMEWCVault.md#optimisticmintingdelay)
+- [optimisticMintingRequests](EthereumTMEWCVault.md#optimisticmintingrequests)
+- [parseOptimisticMintingRequest](EthereumTMEWCVault.md#parseoptimisticmintingrequest)
+- [requestOptimisticMint](EthereumTMEWCVault.md#requestoptimisticmint)
 
 ## Constructors
 
 ### constructor
 
-• **new EthereumTBTCVault**(`config`, `chainId?`): [`EthereumTBTCVault`](EthereumTBTCVault.md)
+• **new EthereumTMEWCVault**(`config`, `chainId?`): [`EthereumTMEWCVault`](EthereumTMEWCVault.md)
 
 #### Parameters
 
@@ -61,15 +61,15 @@ for reference.
 
 #### Returns
 
-[`EthereumTBTCVault`](EthereumTBTCVault.md)
+[`EthereumTMEWCVault`](EthereumTMEWCVault.md)
 
 #### Overrides
 
-EthersContractHandle\&lt;TBTCVaultTypechain\&gt;.constructor
+EthersContractHandle\&lt;TMEWCVaultTypechain\&gt;.constructor
 
 #### Defined in
 
-[src/lib/ethereum/tbtc-vault.ts:41](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/ethereum/tbtc-vault.ts#L41)
+[src/lib/ethereum/tmewc-vault.ts:41](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/tmewc-vault.ts#L41)
 
 ## Properties
 
@@ -87,13 +87,13 @@ EthersContractHandle.\_deployedAtBlockNumber
 
 #### Defined in
 
-[src/lib/ethereum/adapter.ts:80](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/ethereum/adapter.ts#L80)
+[src/lib/ethereum/adapter.ts:80](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/adapter.ts#L80)
 
 ___
 
 ### \_instance
 
-• `Protected` `Readonly` **\_instance**: `TBTCVault`
+• `Protected` `Readonly` **\_instance**: `TMEWCVault`
 
 Ethers instance of the deployed contract.
 
@@ -103,7 +103,7 @@ EthersContractHandle.\_instance
 
 #### Defined in
 
-[src/lib/ethereum/adapter.ts:74](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/ethereum/adapter.ts#L74)
+[src/lib/ethereum/adapter.ts:74](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/adapter.ts#L74)
 
 ___
 
@@ -119,7 +119,7 @@ EthersContractHandle.\_totalRetryAttempts
 
 #### Defined in
 
-[src/lib/ethereum/adapter.ts:84](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/ethereum/adapter.ts#L84)
+[src/lib/ethereum/adapter.ts:84](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/adapter.ts#L84)
 
 ## Methods
 
@@ -142,11 +142,11 @@ EthersContractHandle.\_totalRetryAttempts
 
 #### Implementation of
 
-[TBTCVault](../interfaces/TBTCVault.md).[cancelOptimisticMint](../interfaces/TBTCVault.md#canceloptimisticmint)
+[TMEWCVault](../interfaces/TMEWCVault.md).[cancelOptimisticMint](../interfaces/TMEWCVault.md#canceloptimisticmint)
 
 #### Defined in
 
-[src/lib/ethereum/tbtc-vault.ts:150](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/ethereum/tbtc-vault.ts#L150)
+[src/lib/ethereum/tmewc-vault.ts:150](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/tmewc-vault.ts#L150)
 
 ___
 
@@ -169,11 +169,11 @@ ___
 
 #### Implementation of
 
-[TBTCVault](../interfaces/TBTCVault.md).[finalizeOptimisticMint](../interfaces/TBTCVault.md#finalizeoptimisticmint)
+[TMEWCVault](../interfaces/TMEWCVault.md).[finalizeOptimisticMint](../interfaces/TMEWCVault.md#finalizeoptimisticmint)
 
 #### Defined in
 
-[src/lib/ethereum/tbtc-vault.ts:173](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/ethereum/tbtc-vault.ts#L173)
+[src/lib/ethereum/tmewc-vault.ts:173](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/tmewc-vault.ts#L173)
 
 ___
 
@@ -195,7 +195,7 @@ EthersContractHandle.getAddress
 
 #### Defined in
 
-[src/lib/ethereum/adapter.ts:112](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/ethereum/adapter.ts#L112)
+[src/lib/ethereum/adapter.ts:112](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/adapter.ts#L112)
 
 ___
 
@@ -211,11 +211,11 @@ ___
 
 #### Implementation of
 
-[TBTCVault](../interfaces/TBTCVault.md).[getChainIdentifier](../interfaces/TBTCVault.md#getchainidentifier)
+[TMEWCVault](../interfaces/TMEWCVault.md).[getChainIdentifier](../interfaces/TMEWCVault.md#getchainidentifier)
 
 #### Defined in
 
-[src/lib/ethereum/tbtc-vault.ts:68](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/ethereum/tbtc-vault.ts#L68)
+[src/lib/ethereum/tmewc-vault.ts:68](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/tmewc-vault.ts#L68)
 
 ___
 
@@ -249,7 +249,7 @@ EthersContractHandle.getEvents
 
 #### Defined in
 
-[src/lib/ethereum/adapter.ts:127](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/ethereum/adapter.ts#L127)
+[src/lib/ethereum/adapter.ts:127](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/adapter.ts#L127)
 
 ___
 
@@ -265,11 +265,11 @@ ___
 
 #### Implementation of
 
-[TBTCVault](../interfaces/TBTCVault.md).[getMinters](../interfaces/TBTCVault.md#getminters)
+[TMEWCVault](../interfaces/TMEWCVault.md).[getMinters](../interfaces/TMEWCVault.md#getminters)
 
 #### Defined in
 
-[src/lib/ethereum/tbtc-vault.ts:90](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/ethereum/tbtc-vault.ts#L90)
+[src/lib/ethereum/tmewc-vault.ts:90](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/tmewc-vault.ts#L90)
 
 ___
 
@@ -292,11 +292,11 @@ ___
 
 #### Implementation of
 
-TBTCVault.getOptimisticMintingCancelledEvents
+TMEWCVault.getOptimisticMintingCancelledEvents
 
 #### Defined in
 
-[src/lib/ethereum/tbtc-vault.ts:268](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/ethereum/tbtc-vault.ts#L268)
+[src/lib/ethereum/tmewc-vault.ts:268](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/tmewc-vault.ts#L268)
 
 ___
 
@@ -319,11 +319,11 @@ ___
 
 #### Implementation of
 
-TBTCVault.getOptimisticMintingFinalizedEvents
+TMEWCVault.getOptimisticMintingFinalizedEvents
 
 #### Defined in
 
-[src/lib/ethereum/tbtc-vault.ts:295](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/ethereum/tbtc-vault.ts#L295)
+[src/lib/ethereum/tmewc-vault.ts:295](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/tmewc-vault.ts#L295)
 
 ___
 
@@ -346,11 +346,11 @@ ___
 
 #### Implementation of
 
-TBTCVault.getOptimisticMintingRequestedEvents
+TMEWCVault.getOptimisticMintingRequestedEvents
 
 #### Defined in
 
-[src/lib/ethereum/tbtc-vault.ts:235](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/ethereum/tbtc-vault.ts#L235)
+[src/lib/ethereum/tmewc-vault.ts:235](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/tmewc-vault.ts#L235)
 
 ___
 
@@ -372,11 +372,11 @@ ___
 
 #### Implementation of
 
-[TBTCVault](../interfaces/TBTCVault.md).[isGuardian](../interfaces/TBTCVault.md#isguardian)
+[TMEWCVault](../interfaces/TMEWCVault.md).[isGuardian](../interfaces/TMEWCVault.md#isguardian)
 
 #### Defined in
 
-[src/lib/ethereum/tbtc-vault.ts:114](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/ethereum/tbtc-vault.ts#L114)
+[src/lib/ethereum/tmewc-vault.ts:114](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/tmewc-vault.ts#L114)
 
 ___
 
@@ -398,11 +398,11 @@ ___
 
 #### Implementation of
 
-[TBTCVault](../interfaces/TBTCVault.md).[isMinter](../interfaces/TBTCVault.md#isminter)
+[TMEWCVault](../interfaces/TMEWCVault.md).[isMinter](../interfaces/TMEWCVault.md#isminter)
 
 #### Defined in
 
-[src/lib/ethereum/tbtc-vault.ts:104](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/ethereum/tbtc-vault.ts#L104)
+[src/lib/ethereum/tmewc-vault.ts:104](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/tmewc-vault.ts#L104)
 
 ___
 
@@ -418,11 +418,11 @@ ___
 
 #### Implementation of
 
-[TBTCVault](../interfaces/TBTCVault.md).[optimisticMintingDelay](../interfaces/TBTCVault.md#optimisticmintingdelay)
+[TMEWCVault](../interfaces/TMEWCVault.md).[optimisticMintingDelay](../interfaces/TMEWCVault.md#optimisticmintingdelay)
 
 #### Defined in
 
-[src/lib/ethereum/tbtc-vault.ts:76](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/ethereum/tbtc-vault.ts#L76)
+[src/lib/ethereum/tmewc-vault.ts:76](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/tmewc-vault.ts#L76)
 
 ___
 
@@ -445,11 +445,11 @@ ___
 
 #### Implementation of
 
-[TBTCVault](../interfaces/TBTCVault.md).[optimisticMintingRequests](../interfaces/TBTCVault.md#optimisticmintingrequests)
+[TMEWCVault](../interfaces/TMEWCVault.md).[optimisticMintingRequests](../interfaces/TMEWCVault.md#optimisticmintingrequests)
 
 #### Defined in
 
-[src/lib/ethereum/tbtc-vault.ts:199](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/ethereum/tbtc-vault.ts#L199)
+[src/lib/ethereum/tmewc-vault.ts:199](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/tmewc-vault.ts#L199)
 
 ___
 
@@ -473,7 +473,7 @@ Parsed optimistic minting request.
 
 #### Defined in
 
-[src/lib/ethereum/tbtc-vault.ts:222](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/ethereum/tbtc-vault.ts#L222)
+[src/lib/ethereum/tmewc-vault.ts:222](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/tmewc-vault.ts#L222)
 
 ___
 
@@ -496,8 +496,8 @@ ___
 
 #### Implementation of
 
-[TBTCVault](../interfaces/TBTCVault.md).[requestOptimisticMint](../interfaces/TBTCVault.md#requestoptimisticmint)
+[TMEWCVault](../interfaces/TMEWCVault.md).[requestOptimisticMint](../interfaces/TMEWCVault.md#requestoptimisticmint)
 
 #### Defined in
 
-[src/lib/ethereum/tbtc-vault.ts:124](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/ethereum/tbtc-vault.ts#L124)
+[src/lib/ethereum/tmewc-vault.ts:124](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/tmewc-vault.ts#L124)

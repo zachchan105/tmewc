@@ -31,9 +31,9 @@ library BridgeState {
     struct Storage {
         // Address of the Bank the Bridge belongs to.
         Bank bank;
-        // Bitcoin relay providing the current Bitcoin network difficulty.
+        // Meowcoin relay providing the current Meowcoin network difficulty.
         IRelay relay;
-        // The number of confirmations on the Bitcoin chain required to
+        // The number of confirmations on the Meowcoin chain required to
         // successfully evaluate an SPV proof.
         uint96 txProofDifficultyFactor;
         // ECDSA Wallet Registry contract handle.
@@ -61,9 +61,9 @@ library BridgeState {
         // the `depositTreasuryFeeDivisor` should be set to `50` because
         // `1/50 = 0.02 = 2%`.
         uint64 depositTreasuryFeeDivisor;
-        // Maximum amount of BTC transaction fee that can be incurred by each
+        // Maximum amount of MEWC transaction fee that can be incurred by each
         // swept deposit being part of the given sweep transaction. If the
-        // maximum BTC transaction fee is exceeded, such transaction is
+        // maximum MEWC transaction fee is exceeded, such transaction is
         // considered a fraud.
         //
         // This is a per-deposit input max fee for the sweep transaction.
@@ -79,7 +79,7 @@ library BridgeState {
         // efficient variable layout in the storage.
         // slither-disable-next-line unused-state
         bytes32 __depositAlignmentGap;
-        // Maximum amount of the total BTC transaction fee that is acceptable in
+        // Maximum amount of the total MEWC transaction fee that is acceptable in
         // a single moving funds transaction.
         //
         // This is a TOTAL max fee for the moving funds transaction. Note
@@ -88,10 +88,10 @@ library BridgeState {
         // fee for the entire transaction.
         uint64 movingFundsTxMaxTotalFee;
         // The minimal satoshi amount that makes sense to be transferred during
-        // the moving funds process. Moving funds wallets having their BTC
+        // the moving funds process. Moving funds wallets having their MEWC
         // balance below that value can begin closing immediately as
         // transferring such a low value may not be possible due to
-        // BTC network fees. The value of this parameter must always be lower
+        // MEWC network fees. The value of this parameter must always be lower
         // than `redemptionDustThreshold` in order to prevent redemption requests
         // with values lower or equal to `movingFundsDustThreshold`.
         uint64 movingFundsDustThreshold;
@@ -122,7 +122,7 @@ library BridgeState {
         // efficient variable layout in the storage.
         // slither-disable-next-line unused-state
         bytes32 __movingFundsAlignmentGap;
-        // Maximum amount of the total BTC transaction fee that is acceptable in
+        // Maximum amount of the total MEWC transaction fee that is acceptable in
         // a single moved funds sweep transaction.
         //
         // This is a TOTAL max fee for the moved funds sweep transaction. Note
@@ -158,15 +158,15 @@ library BridgeState {
         // redemption request, the `redemptionTreasuryFeeDivisor` should
         // be set to `50` because `1/50 = 0.02 = 2%`.
         uint64 redemptionTreasuryFeeDivisor;
-        // Maximum amount of BTC transaction fee that can be incurred by
+        // Maximum amount of MEWC transaction fee that can be incurred by
         // each redemption request being part of the given redemption
-        // transaction. If the maximum BTC transaction fee is exceeded, such
+        // transaction. If the maximum MEWC transaction fee is exceeded, such
         // transaction is considered a fraud.
         //
         // This is a per-redemption output max fee for the redemption
         // transaction.
         uint64 redemptionTxMaxFee;
-        // Maximum amount of the total BTC transaction fee that is acceptable in
+        // Maximum amount of the total MEWC transaction fee that is acceptable in
         // a single redemption transaction.
         //
         // This is a TOTAL max fee for the redemption transaction. Note
@@ -180,7 +180,7 @@ library BridgeState {
         // Time after which the redemption request can be reported as
         // timed out. It is counted from the moment when the redemption
         // request was created via `requestRedemption` call. Reported
-        // timed out requests are cancelled and locked TBTC is returned
+        // timed out requests are cancelled and locked TMEWC is returned
         // to the redeemer in full amount. If a redemption watchtower
         // is set, the redemption timeout should be greater than the maximum
         // value of the redemption delay that can be enforced by the watchtower.
@@ -206,19 +206,19 @@ library BridgeState {
         // Determines how frequently a new wallet creation can be requested.
         // Value in seconds.
         uint32 walletCreationPeriod;
-        // The minimum BTC threshold in satoshi that is used to decide about
+        // The minimum MEWC threshold in satoshi that is used to decide about
         // wallet creation. Specifically, we allow for the creation of a new
-        // wallet if the active wallet is old enough and their amount of BTC
+        // wallet if the active wallet is old enough and their amount of MEWC
         // is greater than or equal this threshold.
         uint64 walletCreationMinBtcBalance;
-        // The maximum BTC threshold in satoshi that is used to decide about
+        // The maximum MEWC threshold in satoshi that is used to decide about
         // wallet creation. Specifically, we allow for the creation of a new
-        // wallet if the active wallet's amount of BTC is greater than or equal
+        // wallet if the active wallet's amount of MEWC is greater than or equal
         // this threshold, regardless of the active wallet's age.
         uint64 walletCreationMaxBtcBalance;
-        // The minimum BTC threshold in satoshi that is used to decide about
+        // The minimum MEWC threshold in satoshi that is used to decide about
         // wallet closing. Specifically, we allow for the closure of the given
-        // wallet if their amount of BTC is lesser than this threshold,
+        // wallet if their amount of MEWC is lesser than this threshold,
         // regardless of the wallet's age.
         uint64 walletClosureMinBtcBalance;
         // The maximum age of a wallet in seconds, after which the wallet
@@ -230,7 +230,7 @@ library BridgeState {
         bytes20 activeWalletPubKeyHash;
         // The current number of wallets in the Live state.
         uint32 liveWalletsCount;
-        // The maximum BTC amount in satoshi than can be transferred to a single
+        // The maximum MEWC amount in satoshi than can be transferred to a single
         // target wallet during the moving funds process.
         uint64 walletMaxBtcTransfer;
         // Determines the length of the wallet closing period, i.e. the period
@@ -240,7 +240,7 @@ library BridgeState {
         uint32 walletClosingPeriod;
         // Collection of all revealed deposits indexed by
         // `keccak256(fundingTxHash | fundingOutputIndex)`.
-        // The `fundingTxHash` is `bytes32` (ordered as in Bitcoin internally)
+        // The `fundingTxHash` is `bytes32` (ordered as in Meowcoin internally)
         // and `fundingOutputIndex` an `uint32`. This mapping may contain valid
         // and invalid deposits and the wallet is responsible for validating
         // them before attempting to execute a sweep.
@@ -254,20 +254,20 @@ library BridgeState {
         mapping(address => bool) isVaultTrusted;
         // Indicates if the address is a trusted SPV maintainer.
         // The SPV proof does not check whether the transaction is a part of the
-        // Bitcoin mainnet, it only checks whether the transaction has been
-        // mined performing the required amount of work as on Bitcoin mainnet.
+        // Meowcoin mainnet, it only checks whether the transaction has been
+        // mined performing the required amount of work as on Meowcoin mainnet.
         // The possibility of submitting SPV proofs is limited to trusted SPV
         // maintainers. The system expects transaction confirmations with the
         // required work accumulated, so trusted SPV maintainers can not prove
-        // the transaction without providing the required Bitcoin proof of work.
+        // the transaction without providing the required Meowcoin proof of work.
         // Trusted maintainers address the issue of an economic game between
-        // tBTC and Bitcoin mainnet where large Bitcoin mining pools can decide
-        // to use their hash power to mine fake Bitcoin blocks to prove them in
-        // tBTC instead of receiving Bitcoin miner rewards.
+        // tMEWC and Meowcoin mainnet where large Meowcoin mining pools can decide
+        // to use their hash power to mine fake Meowcoin blocks to prove them in
+        // tMEWC instead of receiving Meowcoin miner rewards.
         mapping(address => bool) isSpvMaintainer;
         // Collection of all moved funds sweep requests indexed by
         // `keccak256(movingFundsTxHash | movingFundsOutputIndex)`.
-        // The `movingFundsTxHash` is `bytes32` (ordered as in Bitcoin
+        // The `movingFundsTxHash` is `bytes32` (ordered as in Meowcoin
         // internally) and `movingFundsOutputIndex` an `uint32`. Each entry
         // is actually an UTXO representing the moved funds and is supposed
         // to be swept with the current main UTXO of the recipient wallet.
@@ -276,10 +276,10 @@ library BridgeState {
         // redemption key built as
         // `keccak256(keccak256(redeemerOutputScript) | walletPubKeyHash)`.
         // The `walletPubKeyHash` is the 20-byte wallet's public key hash
-        // (computed using Bitcoin HASH160 over the compressed ECDSA
-        // public key) and `redeemerOutputScript` is a Bitcoin script
+        // (computed using Meowcoin HASH160 over the compressed ECDSA
+        // public key) and `redeemerOutputScript` is a Meowcoin script
         // (P2PKH, P2WPKH, P2SH or P2WSH) that will be used to lock
-        // redeemed BTC as requested by the redeemer. Requests are added
+        // redeemed MEWC as requested by the redeemer. Requests are added
         // to this mapping by the `requestRedemption` method (duplicates
         // not allowed) and are removed by one of the following methods:
         // - `submitRedemptionProof` in case the request was handled
@@ -291,8 +291,8 @@ library BridgeState {
         // redemption key built as
         // `keccak256(keccak256(redeemerOutputScript) | walletPubKeyHash)`.
         // The `walletPubKeyHash` is the 20-byte wallet's public key hash
-        // (computed using Bitcoin HASH160 over the compressed ECDSA
-        // public key) and `redeemerOutputScript` is the Bitcoin script
+        // (computed using Meowcoin HASH160 over the compressed ECDSA
+        // public key) and `redeemerOutputScript` is the Meowcoin script
         // (P2PKH, P2WPKH, P2SH or P2WSH) that is involved in the timed
         // out request.
         // Only one method can add to this mapping:
@@ -308,12 +308,12 @@ library BridgeState {
         mapping(uint256 => Fraud.FraudChallenge) fraudChallenges;
         // Collection of main UTXOs that are honestly spent indexed by
         // `keccak256(fundingTxHash | fundingOutputIndex)`. The `fundingTxHash`
-        // is `bytes32` (ordered as in Bitcoin internally) and
+        // is `bytes32` (ordered as in Meowcoin internally) and
         // `fundingOutputIndex` an `uint32`. A main UTXO is considered honestly
         // spent if it was used as an input of a transaction that have been
         // proven in the Bridge.
         mapping(uint256 => bool) spentMainUTXOs;
-        // Maps the 20-byte wallet public key hash (computed using Bitcoin
+        // Maps the 20-byte wallet public key hash (computed using Meowcoin
         // HASH160 over the compressed ECDSA public key) to the basic wallet
         // information like state and pending redemptions value.
         mapping(bytes20 => Wallets.Wallet) registeredWallets;
@@ -398,9 +398,9 @@ library BridgeState {
     ///        the `depositTreasuryFeeDivisor` should be set to `50`
     ///        because `1/50 = 0.02 = 2%`.
     /// @param _depositTxMaxFee New value of the deposit tx max fee in satoshis.
-    ///        It is the maximum amount of BTC transaction fee that can
+    ///        It is the maximum amount of MEWC transaction fee that can
     ///        be incurred by each swept deposit being part of the given sweep
-    ///        transaction. If the maximum BTC transaction fee is exceeded,
+    ///        transaction. If the maximum MEWC transaction fee is exceeded,
     ///        such transaction is considered a fraud.
     /// @param _depositRevealAheadPeriod New value of the deposit reveal ahead
     ///        period parameter in seconds. It defines the length of the period
@@ -463,22 +463,22 @@ library BridgeState {
     ///        redemption request, the `redemptionTreasuryFeeDivisor` should
     ///        be set to `50` because `1/50 = 0.02 = 2%`.
     /// @param _redemptionTxMaxFee New value of the redemption transaction max
-    ///        fee in satoshis. It is the maximum amount of BTC transaction fee
+    ///        fee in satoshis. It is the maximum amount of MEWC transaction fee
     ///        that can be incurred by each redemption request being part of the
-    ///        given redemption transaction. If the maximum BTC transaction fee
+    ///        given redemption transaction. If the maximum MEWC transaction fee
     ///        is exceeded, such transaction is considered a fraud.
     ///        This is a per-redemption output max fee for the redemption
     ///        transaction.
     /// @param _redemptionTxMaxTotalFee New value of the redemption transaction
     ///        max total fee in satoshis. It is the maximum amount of the total
-    ///        BTC transaction fee that is acceptable in a single redemption
+    ///        MEWC transaction fee that is acceptable in a single redemption
     ///        transaction. This is a _total_ max fee for the entire redemption
     ///        transaction.
     /// @param _redemptionTimeout New value of the redemption timeout in seconds.
     ///        It is the time after which the redemption request can be reported
     ///        as timed out. It is counted from the moment when the redemption
     ///        request was created via `requestRedemption` call. Reported  timed
-    ///        out requests are cancelled and locked TBTC is returned to the
+    ///        out requests are cancelled and locked TMEWC is returned to the
     ///        redeemer in full amount.
     /// @param _redemptionTimeoutSlashingAmount New value of the redemption
     ///        timeout slashing amount in T, it is the amount slashed from each
@@ -562,15 +562,15 @@ library BridgeState {
     /// @notice Updates parameters of moving funds.
     /// @param _movingFundsTxMaxTotalFee New value of the moving funds transaction
     ///        max total fee in satoshis. It is the maximum amount of the total
-    ///        BTC transaction fee that is acceptable in a single moving funds
+    ///        MEWC transaction fee that is acceptable in a single moving funds
     ///        transaction. This is a _total_ max fee for the entire moving
     ///        funds transaction.
     /// @param _movingFundsDustThreshold New value of the moving funds dust
     ///        threshold. It is the minimal satoshi amount that makes sense to
     ///        be transferred during the moving funds process. Moving funds
-    ///        wallets having their BTC balance below that value can begin
+    ///        wallets having their MEWC balance below that value can begin
     ///        closing immediately as transferring such a low value may not be
-    ///        possible due to BTC network fees.
+    ///        possible due to MEWC network fees.
     /// @param _movingFundsTimeoutResetDelay New value of the moving funds
     ///        timeout reset delay in seconds. It is the time after which the
     ///        moving funds timeout can be reset in case the target wallet
@@ -596,7 +596,7 @@ library BridgeState {
     ///        reimbursement.
     /// @param _movedFundsSweepTxMaxTotalFee New value of the moved funds sweep
     ///        transaction max total fee in satoshis. It is the maximum amount
-    ///        of the total BTC transaction fee that is acceptable in a single
+    ///        of the total MEWC transaction fee that is acceptable in a single
     ///        moved funds sweep transaction. This is a _total_ max fee for the
     ///        entire moved funds sweep transaction.
     /// @param _movedFundsSweepTimeout New value of the moved funds sweep
@@ -715,16 +715,16 @@ library BridgeState {
     /// @param _walletCreationPeriod New value of the wallet creation period in
     ///        seconds, determines how frequently a new wallet creation can be
     ///        requested.
-    /// @param _walletCreationMinBtcBalance New value of the wallet minimum BTC
+    /// @param _walletCreationMinBtcBalance New value of the wallet minimum MEWC
     ///        balance in satoshi, used to decide about wallet creation.
-    /// @param _walletCreationMaxBtcBalance New value of the wallet maximum BTC
+    /// @param _walletCreationMaxBtcBalance New value of the wallet maximum MEWC
     ///        balance in satoshi, used to decide about wallet creation.
-    /// @param _walletClosureMinBtcBalance New value of the wallet minimum BTC
+    /// @param _walletClosureMinBtcBalance New value of the wallet minimum MEWC
     ///        balance in satoshi, used to decide about wallet closure.
     /// @param _walletMaxAge New value of the wallet maximum age in seconds,
     ///        indicates the maximum age of a wallet in seconds, after which
     ///        the wallet moving funds process can be requested.
-    /// @param _walletMaxBtcTransfer New value of the wallet maximum BTC transfer
+    /// @param _walletMaxBtcTransfer New value of the wallet maximum MEWC transfer
     ///        in satoshi, determines the maximum amount that can be transferred
     ///        to a single target wallet during the moving funds process.
     /// @param _walletClosingPeriod New value of the wallet closing period in
@@ -732,9 +732,9 @@ library BridgeState {
     //         i.e. the period when the wallet remains in the Closing state
     //         and can be subject of deposit fraud challenges.
     /// @dev Requirements:
-    ///      - Wallet maximum BTC balance must be greater than the wallet
-    ///        minimum BTC balance,
-    ///      - Wallet maximum BTC transfer must be greater than zero,
+    ///      - Wallet maximum MEWC balance must be greater than the wallet
+    ///        minimum MEWC balance,
+    ///      - Wallet maximum MEWC transfer must be greater than zero,
     ///      - Wallet closing period must be greater than zero.
     function updateWalletParameters(
         Storage storage self,
@@ -748,11 +748,11 @@ library BridgeState {
     ) internal {
         require(
             _walletCreationMaxBtcBalance > _walletCreationMinBtcBalance,
-            "Wallet creation maximum BTC balance must be greater than the creation minimum BTC balance"
+            "Wallet creation maximum MEWC balance must be greater than the creation minimum MEWC balance"
         );
         require(
             _walletMaxBtcTransfer > 0,
-            "Wallet maximum BTC transfer must be greater than zero"
+            "Wallet maximum MEWC transfer must be greater than zero"
         );
         require(
             _walletClosingPeriod > 0,

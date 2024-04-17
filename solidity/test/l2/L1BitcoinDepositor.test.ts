@@ -7,7 +7,7 @@ import { BigNumber, ContractTransaction } from "ethers"
 import {
   IBridge,
   IL2WormholeGateway,
-  ITBTCVault,
+  ITMEWCVault,
   IWormhole,
   IWormholeRelayer,
   IWormholeTokenBridge,
@@ -37,17 +37,17 @@ describe("L1BitcoinDepositor", () => {
     const relayer = await ethers.getSigner(accounts[1])
 
     const bridge = await smock.fake<IBridge>("IBridge")
-    const tbtcToken = await (
+    const tmewcToken = await (
       await ethers.getContractFactory("TestERC20")
     ).deploy()
-    const tbtcVault = await smock.fake<ITBTCVault>("ITBTCVault", {
-      // The TBTCVault contract address must be known in advance and match
+    const tmewcVault = await smock.fake<ITMEWCVault>("ITMEWCVault", {
+      // The TMEWCVault contract address must be known in advance and match
       // the one used in initializeDeposit fixture. This is necessary to
       // pass the vault address check in the initializeDeposit function.
-      address: tbtcVaultAddress,
+      address: tmewcVaultAddress,
     })
-    // Attack the tbtcToken mock to the tbtcVault mock.
-    tbtcVault.tbtcToken.returns(tbtcToken.address)
+    // Attack the tmewcToken mock to the tmewcVault mock.
+    tmewcVault.tmewcToken.returns(tmewcToken.address)
 
     const wormhole = await smock.fake<IWormhole>("IWormhole")
     wormhole.chainId.returns(l1ChainId)
@@ -76,7 +76,7 @@ describe("L1BitcoinDepositor", () => {
         contractName: "L1BitcoinDepositor",
         initializerArgs: [
           bridge.address,
-          tbtcVault.address,
+          tmewcVault.address,
           wormhole.address,
           wormholeRelayer.address,
           wormholeTokenBridge.address,
@@ -99,8 +99,8 @@ describe("L1BitcoinDepositor", () => {
       governance,
       relayer,
       bridge,
-      tbtcToken,
-      tbtcVault,
+      tmewcToken,
+      tmewcVault,
       wormhole,
       wormholeRelayer,
       wormholeTokenBridge,
@@ -115,8 +115,8 @@ describe("L1BitcoinDepositor", () => {
   let relayer: SignerWithAddress
 
   let bridge: FakeContract<IBridge>
-  let tbtcToken: TestERC20
-  let tbtcVault: FakeContract<ITBTCVault>
+  let tmewcToken: TestERC20
+  let tmewcVault: FakeContract<ITMEWCVault>
   let wormhole: FakeContract<IWormhole>
   let wormholeRelayer: FakeContract<IWormholeRelayer>
   let wormholeTokenBridge: FakeContract<IWormholeTokenBridge>
@@ -131,8 +131,8 @@ describe("L1BitcoinDepositor", () => {
       governance,
       relayer,
       bridge,
-      tbtcToken,
-      tbtcVault,
+      tmewcToken,
+      tmewcVault,
       wormhole,
       wormholeRelayer,
       wormholeTokenBridge,
@@ -173,7 +173,7 @@ describe("L1BitcoinDepositor", () => {
             l1BitcoinDepositor
               .connect(governance)
               .attachL2BitcoinDepositor(l2BitcoinDepositor)
-          ).to.be.revertedWith("L2 Bitcoin Depositor already set")
+          ).to.be.revertedWith("L2 Meowcoin Depositor already set")
         })
       })
 
@@ -184,7 +184,7 @@ describe("L1BitcoinDepositor", () => {
               l1BitcoinDepositor
                 .connect(governance)
                 .attachL2BitcoinDepositor(ethers.constants.AddressZero)
-            ).to.be.revertedWith("L2 Bitcoin Depositor must not be 0x0")
+            ).to.be.revertedWith("L2 Meowcoin Depositor must not be 0x0")
           })
         })
 
@@ -398,14 +398,14 @@ describe("L1BitcoinDepositor", () => {
     })
 
     context("when the L2 deposit owner is non-zero", () => {
-      context("when the requested vault is not TBTCVault", () => {
+      context("when the requested vault is not TMEWCVault", () => {
         it("should revert", async () => {
           const corruptedReveal = JSON.parse(
             JSON.stringify(initializeDepositFixture.reveal)
           )
 
           // Set another vault address deliberately. This value must be
-          // different from the tbtcVaultAddress constant used in the fixture.
+          // different from the tmewcVaultAddress constant used in the fixture.
           corruptedReveal.vault = ethers.constants.AddressZero
 
           await expect(
@@ -420,7 +420,7 @@ describe("L1BitcoinDepositor", () => {
         })
       })
 
-      context("when the requested vault is TBTCVault", () => {
+      context("when the requested vault is TMEWCVault", () => {
         context("when the deposit state is wrong", () => {
           context("when the deposit state is Initialized", () => {
             before(async () => {
@@ -482,9 +482,9 @@ describe("L1BitcoinDepositor", () => {
                   extraData: ethers.constants.HashZero,
                 })
 
-              // Set the TBTCVault mock to return a deposit state
+              // Set the TMEWCVault mock to return a deposit state
               // that allows to finalize the deposit.
-              tbtcVault.optimisticMintingRequests
+              tmewcVault.optimisticMintingRequests
                 .whenCalledWith(initializeDepositFixture.depositKey)
                 .returns([revealedAt, finalizedAt])
 
@@ -509,7 +509,7 @@ describe("L1BitcoinDepositor", () => {
             after(async () => {
               bridge.revealDepositWithExtraData.reset()
               bridge.deposits.reset()
-              tbtcVault.optimisticMintingRequests.reset()
+              tmewcVault.optimisticMintingRequests.reset()
               wormhole.messageFee.reset()
               wormholeRelayer.quoteEVMDeliveryPrice.reset()
               wormholeTokenBridge.transferTokensWithPayload.reset()
@@ -885,9 +885,9 @@ describe("L1BitcoinDepositor", () => {
               extraData: ethers.constants.HashZero,
             })
 
-          // Set the TBTCVault mock to return a deposit state
+          // Set the TMEWCVault mock to return a deposit state
           // that allows to finalize the deposit.
-          tbtcVault.optimisticMintingRequests
+          tmewcVault.optimisticMintingRequests
             .whenCalledWith(initializeDepositFixture.depositKey)
             .returns([revealedAt, finalizedAt])
 
@@ -912,7 +912,7 @@ describe("L1BitcoinDepositor", () => {
         after(async () => {
           bridge.revealDepositWithExtraData.reset()
           bridge.deposits.reset()
-          tbtcVault.optimisticMintingRequests.reset()
+          tmewcVault.optimisticMintingRequests.reset()
           wormhole.messageFee.reset()
           wormholeRelayer.quoteEVMDeliveryPrice.reset()
           wormholeTokenBridge.transferTokensWithPayload.reset()
@@ -959,9 +959,9 @@ describe("L1BitcoinDepositor", () => {
               extraData: ethers.constants.HashZero,
             })
 
-          // Set the TBTCVault mock to return a deposit state
+          // Set the TMEWCVault mock to return a deposit state
           // that does not allow to finalize the deposit.
-          tbtcVault.optimisticMintingRequests
+          tmewcVault.optimisticMintingRequests
             .whenCalledWith(initializeDepositFixture.depositKey)
             .returns([revealedAt, 0])
         })
@@ -969,7 +969,7 @@ describe("L1BitcoinDepositor", () => {
         after(async () => {
           bridge.revealDepositWithExtraData.reset()
           bridge.deposits.reset()
-          tbtcVault.optimisticMintingRequests.reset()
+          tmewcVault.optimisticMintingRequests.reset()
 
           await restoreSnapshot()
         })
@@ -1013,9 +1013,9 @@ describe("L1BitcoinDepositor", () => {
                 extraData: ethers.constants.HashZero,
               })
 
-            // Set the TBTCVault mock to return a deposit state that pass the
+            // Set the TMEWCVault mock to return a deposit state that pass the
             // finalization check and move to the normalized amount check.
-            tbtcVault.optimisticMintingRequests
+            tmewcVault.optimisticMintingRequests
               .whenCalledWith(initializeDepositFixture.depositKey)
               .returns([revealedAt, finalizedAt])
           })
@@ -1023,7 +1023,7 @@ describe("L1BitcoinDepositor", () => {
           after(async () => {
             bridge.revealDepositWithExtraData.reset()
             bridge.deposits.reset()
-            tbtcVault.optimisticMintingRequests.reset()
+            tmewcVault.optimisticMintingRequests.reset()
 
             await restoreSnapshot()
           })
@@ -1069,9 +1069,9 @@ describe("L1BitcoinDepositor", () => {
                   extraData: ethers.constants.HashZero,
                 })
 
-              // Set the TBTCVault mock to return a deposit state
+              // Set the TMEWCVault mock to return a deposit state
               // that allows to finalize the deposit.
-              tbtcVault.optimisticMintingRequests
+              tmewcVault.optimisticMintingRequests
                 .whenCalledWith(initializeDepositFixture.depositKey)
                 .returns([revealedAt, finalizedAt])
 
@@ -1088,7 +1088,7 @@ describe("L1BitcoinDepositor", () => {
             after(async () => {
               bridge.revealDepositWithExtraData.reset()
               bridge.deposits.reset()
-              tbtcVault.optimisticMintingRequests.reset()
+              tmewcVault.optimisticMintingRequests.reset()
               wormhole.messageFee.reset()
               wormholeRelayer.quoteEVMDeliveryPrice.reset()
               wormholeTokenBridge.transferTokensWithPayload.reset()
@@ -1122,8 +1122,8 @@ describe("L1BitcoinDepositor", () => {
             // amountSubTreasury = (depositAmount - treasuryFee) * satoshiMultiplier = 99500 * 1e10
             // omFee = amountSubTreasury / optimisticMintingFeeDivisor = 4975 * 1e10
             // txMaxFee = depositTxMaxFee * satoshiMultiplier = 1000 * 1e10
-            // tbtcAmount = amountSubTreasury - omFee - txMaxFee = 93525 * 1e10
-            const expectedTbtcAmount = to1ePrecision(93525, 10)
+            // tmewcAmount = amountSubTreasury - omFee - txMaxFee = 93525 * 1e10
+            const expectedTmewcAmount = to1ePrecision(93525, 10)
 
             let tx: ContractTransaction
 
@@ -1146,7 +1146,7 @@ describe("L1BitcoinDepositor", () => {
                   depositTxMaxFee,
                   depositRevealAheadPeriod: 0,
                 })
-                tbtcVault.optimisticMintingFeeDivisor.returns(
+                tmewcVault.optimisticMintingFeeDivisor.returns(
                   optimisticMintingFeeDivisor
                 )
 
@@ -1168,9 +1168,9 @@ describe("L1BitcoinDepositor", () => {
                     ),
                   })
 
-                // Set the TBTCVault mock to return a deposit state
+                // Set the TMEWCVault mock to return a deposit state
                 // that allows to finalize the deposit.
-                tbtcVault.optimisticMintingRequests
+                tmewcVault.optimisticMintingRequests
                   .whenCalledWith(initializeDepositFixture.depositKey)
                   .returns([revealedAt, finalizedAt])
 
@@ -1195,10 +1195,10 @@ describe("L1BitcoinDepositor", () => {
 
               after(async () => {
                 bridge.depositParameters.reset()
-                tbtcVault.optimisticMintingFeeDivisor.reset()
+                tmewcVault.optimisticMintingFeeDivisor.reset()
                 bridge.revealDepositWithExtraData.reset()
                 bridge.deposits.reset()
-                tbtcVault.optimisticMintingRequests.reset()
+                tmewcVault.optimisticMintingRequests.reset()
                 wormhole.messageFee.reset()
                 wormholeRelayer.quoteEVMDeliveryPrice.reset()
                 wormholeTokenBridge.transferTokensWithPayload.reset()
@@ -1223,17 +1223,17 @@ describe("L1BitcoinDepositor", () => {
                     initializeDepositFixture.l2DepositOwner,
                     relayer.address,
                     depositAmount.mul(satoshiMultiplier),
-                    expectedTbtcAmount
+                    expectedTmewcAmount
                   )
               })
 
-              it("should increase TBTC allowance for Wormhole Token Bridge", async () => {
+              it("should increase TMEWC allowance for Wormhole Token Bridge", async () => {
                 expect(
-                  await tbtcToken.allowance(
+                  await tmewcToken.allowance(
                     l1BitcoinDepositor.address,
                     wormholeTokenBridge.address
                   )
-                ).to.equal(expectedTbtcAmount)
+                ).to.equal(expectedTmewcAmount)
               })
 
               it("should create a proper Wormhole token transfer", async () => {
@@ -1248,8 +1248,8 @@ describe("L1BitcoinDepositor", () => {
                 const call =
                   wormholeTokenBridge.transferTokensWithPayload.getCall(0)
                 expect(call.value).to.equal(messageFee)
-                expect(call.args[0]).to.equal(tbtcToken.address)
-                expect(call.args[1]).to.equal(expectedTbtcAmount)
+                expect(call.args[0]).to.equal(tmewcToken.address)
+                expect(call.args[1]).to.equal(expectedTmewcAmount)
                 expect(call.args[2]).to.equal(
                   await l1BitcoinDepositor.l2ChainId()
                 )
@@ -1357,7 +1357,7 @@ describe("L1BitcoinDepositor", () => {
                     depositTxMaxFee,
                     depositRevealAheadPeriod: 0,
                   })
-                  tbtcVault.optimisticMintingFeeDivisor.returns(
+                  tmewcVault.optimisticMintingFeeDivisor.returns(
                     optimisticMintingFeeDivisor
                   )
 
@@ -1379,9 +1379,9 @@ describe("L1BitcoinDepositor", () => {
                       ),
                     })
 
-                  // Set the TBTCVault mock to return a deposit state
+                  // Set the TMEWCVault mock to return a deposit state
                   // that allows to finalize the deposit.
-                  tbtcVault.optimisticMintingRequests
+                  tmewcVault.optimisticMintingRequests
                     .whenCalledWith(initializeDepositFixture.depositKey)
                     .returns([revealedAt, finalizedAt])
 
@@ -1409,10 +1409,10 @@ describe("L1BitcoinDepositor", () => {
                   reimbursementPool.staticGas.reset()
                   reimbursementPool.refund.reset()
                   bridge.depositParameters.reset()
-                  tbtcVault.optimisticMintingFeeDivisor.reset()
+                  tmewcVault.optimisticMintingFeeDivisor.reset()
                   bridge.revealDepositWithExtraData.reset()
                   bridge.deposits.reset()
-                  tbtcVault.optimisticMintingRequests.reset()
+                  tmewcVault.optimisticMintingRequests.reset()
                   wormhole.messageFee.reset()
                   wormholeRelayer.quoteEVMDeliveryPrice.reset()
                   wormholeTokenBridge.transferTokensWithPayload.reset()
@@ -1437,17 +1437,17 @@ describe("L1BitcoinDepositor", () => {
                       initializeDepositFixture.l2DepositOwner,
                       relayer.address,
                       depositAmount.mul(satoshiMultiplier),
-                      expectedTbtcAmount
+                      expectedTmewcAmount
                     )
                 })
 
-                it("should increase TBTC allowance for Wormhole Token Bridge", async () => {
+                it("should increase TMEWC allowance for Wormhole Token Bridge", async () => {
                   expect(
-                    await tbtcToken.allowance(
+                    await tmewcToken.allowance(
                       l1BitcoinDepositor.address,
                       wormholeTokenBridge.address
                     )
-                  ).to.equal(expectedTbtcAmount)
+                  ).to.equal(expectedTmewcAmount)
                 })
 
                 it("should create a proper Wormhole token transfer", async () => {
@@ -1462,8 +1462,8 @@ describe("L1BitcoinDepositor", () => {
                   const call =
                     wormholeTokenBridge.transferTokensWithPayload.getCall(0)
                   expect(call.value).to.equal(messageFee)
-                  expect(call.args[0]).to.equal(tbtcToken.address)
-                  expect(call.args[1]).to.equal(expectedTbtcAmount)
+                  expect(call.args[0]).to.equal(tmewcToken.address)
+                  expect(call.args[1]).to.equal(expectedTmewcAmount)
                   expect(call.args[2]).to.equal(
                     await l1BitcoinDepositor.l2ChainId()
                   )
@@ -1599,7 +1599,7 @@ describe("L1BitcoinDepositor", () => {
                     depositTxMaxFee,
                     depositRevealAheadPeriod: 0,
                   })
-                  tbtcVault.optimisticMintingFeeDivisor.returns(
+                  tmewcVault.optimisticMintingFeeDivisor.returns(
                     optimisticMintingFeeDivisor
                   )
 
@@ -1621,9 +1621,9 @@ describe("L1BitcoinDepositor", () => {
                       ),
                     })
 
-                  // Set the TBTCVault mock to return a deposit state
+                  // Set the TMEWCVault mock to return a deposit state
                   // that allows to finalize the deposit.
-                  tbtcVault.optimisticMintingRequests
+                  tmewcVault.optimisticMintingRequests
                     .whenCalledWith(initializeDepositFixture.depositKey)
                     .returns([revealedAt, finalizedAt])
 
@@ -1656,10 +1656,10 @@ describe("L1BitcoinDepositor", () => {
                   reimbursementPool.staticGas.reset()
                   reimbursementPool.refund.reset()
                   bridge.depositParameters.reset()
-                  tbtcVault.optimisticMintingFeeDivisor.reset()
+                  tmewcVault.optimisticMintingFeeDivisor.reset()
                   bridge.revealDepositWithExtraData.reset()
                   bridge.deposits.reset()
-                  tbtcVault.optimisticMintingRequests.reset()
+                  tmewcVault.optimisticMintingRequests.reset()
                   wormhole.messageFee.reset()
                   wormholeRelayer.quoteEVMDeliveryPrice.reset()
                   wormholeTokenBridge.transferTokensWithPayload.reset()
@@ -1684,17 +1684,17 @@ describe("L1BitcoinDepositor", () => {
                       initializeDepositFixture.l2DepositOwner,
                       relayer.address,
                       depositAmount.mul(satoshiMultiplier),
-                      expectedTbtcAmount
+                      expectedTmewcAmount
                     )
                 })
 
-                it("should increase TBTC allowance for Wormhole Token Bridge", async () => {
+                it("should increase TMEWC allowance for Wormhole Token Bridge", async () => {
                   expect(
-                    await tbtcToken.allowance(
+                    await tmewcToken.allowance(
                       l1BitcoinDepositor.address,
                       wormholeTokenBridge.address
                     )
-                  ).to.equal(expectedTbtcAmount)
+                  ).to.equal(expectedTmewcAmount)
                 })
 
                 it("should create a proper Wormhole token transfer", async () => {
@@ -1709,8 +1709,8 @@ describe("L1BitcoinDepositor", () => {
                   const call =
                     wormholeTokenBridge.transferTokensWithPayload.getCall(0)
                   expect(call.value).to.equal(messageFee)
-                  expect(call.args[0]).to.equal(tbtcToken.address)
-                  expect(call.args[1]).to.equal(expectedTbtcAmount)
+                  expect(call.args[0]).to.equal(tmewcToken.address)
+                  expect(call.args[1]).to.equal(expectedTmewcAmount)
                   expect(call.args[2]).to.equal(
                     await l1BitcoinDepositor.l2ChainId()
                   )
@@ -1812,8 +1812,8 @@ describe("L1BitcoinDepositor", () => {
   })
 })
 
-// Just an arbitrary TBTCVault address.
-const tbtcVaultAddress = "0xB5679dE944A79732A75CE556191DF11F489448d5"
+// Just an arbitrary TMEWCVault address.
+const tmewcVaultAddress = "0xB5679dE944A79732A75CE556191DF11F489448d5"
 
 export type InitializeDepositFixture = {
   // Deposit key built as keccak256(fundingTxHash, reveal.fundingOutputIndex)
@@ -1845,7 +1845,7 @@ export const initializeDepositFixture: InitializeDepositFixture = {
     walletPubKeyHash: "0xf997563fee8610ca28f99ac05bd8a29506800d4d",
     refundPubKeyHash: "0x7ac2d9378a1c47e589dfb8095ca95ed2140d2726",
     refundLocktime: "0xde2b4c67",
-    vault: tbtcVaultAddress,
+    vault: tmewcVaultAddress,
   },
   l2DepositOwner: "0x23b82a7108F9CEb34C3CDC44268be21D151d4124",
 }

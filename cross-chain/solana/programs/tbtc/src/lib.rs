@@ -18,16 +18,16 @@ use anchor_lang::prelude::*;
 declare_id!("HksEtDgsXJV1BqcuhzbLRTmXp5gHgHJktieJCtQd3pG");
 
 #[derive(Clone)]
-pub struct Tbtc;
+pub struct Tmewc;
 
-impl Id for Tbtc {
+impl Id for Tmewc {
     fn id() -> Pubkey {
         ID
     }
 }
 
 #[program]
-pub mod tbtc {
+pub mod tmewc {
     use super::*;
 
     pub fn initialize(ctx: Context<Initialize>) -> Result<()> {

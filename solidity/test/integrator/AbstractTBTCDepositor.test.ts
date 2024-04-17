@@ -3,8 +3,8 @@ import { expect } from "chai"
 import { BigNumber, ContractTransaction } from "ethers"
 import type {
   MockBridge,
-  MockTBTCVault,
-  TestTBTCDepositor,
+  MockTMEWCVault,
+  TestTMEWCDepositor,
 } from "../../typechain"
 import { to1ePrecision } from "../helpers/contract-test-helpers"
 
@@ -36,10 +36,10 @@ const loadFixture = (vault: string) => ({
     "0xebff13c2304229ab4a97bfbfabeac82c9c0704e4aae2acf022252ac8dc1101d1",
 })
 
-describe("AbstractTBTCDepositor", () => {
+describe("AbstractTMEWCDepositor", () => {
   let bridge: MockBridge
-  let tbtcVault: MockTBTCVault
-  let depositor: TestTBTCDepositor
+  let tmewcVault: MockTMEWCVault
+  let depositor: TestTMEWCDepositor
 
   let fixture
 
@@ -47,21 +47,21 @@ describe("AbstractTBTCDepositor", () => {
     const MockBridge = await ethers.getContractFactory("MockBridge")
     bridge = await MockBridge.deploy()
 
-    const MockTBTCVault = await ethers.getContractFactory("MockTBTCVault")
-    tbtcVault = await MockTBTCVault.deploy()
+    const MockTMEWCVault = await ethers.getContractFactory("MockTMEWCVault")
+    tmewcVault = await MockTMEWCVault.deploy()
 
-    fixture = loadFixture(tbtcVault.address)
+    fixture = loadFixture(tmewcVault.address)
 
-    const TestTBTCDepositor = await ethers.getContractFactory(
-      "TestTBTCDepositor"
+    const TestTMEWCDepositor = await ethers.getContractFactory(
+      "TestTMEWCDepositor"
     )
-    depositor = await TestTBTCDepositor.deploy()
-    await depositor.initialize(bridge.address, tbtcVault.address)
+    depositor = await TestTMEWCDepositor.deploy()
+    await depositor.initialize(bridge.address, tmewcVault.address)
 
     // Assert that contract initializer works as expected.
     await expect(
-      depositor.initialize(bridge.address, tbtcVault.address)
-    ).to.be.revertedWith("AbstractTBTCDepositor already initialized")
+      depositor.initialize(bridge.address, tmewcVault.address)
+    ).to.be.revertedWith("AbstractTMEWCDepositor already initialized")
   })
 
   describe("_initializeDeposit", () => {
@@ -84,7 +84,7 @@ describe("AbstractTBTCDepositor", () => {
           await createSnapshot()
 
           // Pre-reveal the deposit to cause a revert on the second attempt
-          // made by the AbstractTBTCDepositor.
+          // made by the AbstractTMEWCDepositor.
           await bridge.revealDepositWithExtraData(
             fixture.fundingTx,
             fixture.reveal,
@@ -200,16 +200,16 @@ describe("AbstractTBTCDepositor", () => {
       })
 
       context("when deposit is finalized by the Bridge", () => {
-        // The expected tbtcAmount is calculated as follows:
+        // The expected tmewcAmount is calculated as follows:
         //
         // - Deposit amount = 10000 satoshi (hardcoded in funding transaction fixture)
         // - Treasury fee = 2% (default value used in MockBridge)
-        // - Optimistic minting fee = 1% (default value used in MockTBTCVault)
+        // - Optimistic minting fee = 1% (default value used in MockTMEWCVault)
         // - Transaction max fee = 1000 satoshi (default value used in MockBridge)
         //
-        // ((10000 sat - 200 sat) * 0.99) - 2000 sat = 8702 sat = 8702 * 1e10 TBTC
+        // ((10000 sat - 200 sat) * 0.99) - 2000 sat = 8702 sat = 8702 * 1e10 TMEWC
         const expectedInitialDepositAmount = to1ePrecision(10000, 10)
-        const expectedTbtcAmount = to1ePrecision(8702, 10).toString()
+        const expectedTmewcAmount = to1ePrecision(8702, 10).toString()
 
         context("when the deposit is swept", () => {
           let tx: ContractTransaction
@@ -233,7 +233,7 @@ describe("AbstractTBTCDepositor", () => {
               .to.emit(depositor, "FinalizeDepositReturned")
               .withArgs(
                 expectedInitialDepositAmount,
-                expectedTbtcAmount,
+                expectedTmewcAmount,
                 fixture.extraData
               )
           })
@@ -245,11 +245,11 @@ describe("AbstractTBTCDepositor", () => {
           before(async () => {
             await createSnapshot()
 
-            await tbtcVault.createOptimisticMintingRequest(
+            await tmewcVault.createOptimisticMintingRequest(
               fixture.expectedDepositKey
             )
 
-            await tbtcVault.finalizeOptimisticMintingRequest(
+            await tmewcVault.finalizeOptimisticMintingRequest(
               fixture.expectedDepositKey
             )
 
@@ -267,7 +267,7 @@ describe("AbstractTBTCDepositor", () => {
               .to.emit(depositor, "FinalizeDepositReturned")
               .withArgs(
                 expectedInitialDepositAmount,
-                expectedTbtcAmount,
+                expectedTmewcAmount,
                 fixture.extraData
               )
           })
@@ -276,11 +276,11 @@ describe("AbstractTBTCDepositor", () => {
     })
   })
 
-  describe("_calculateTbtcAmount", () => {
+  describe("_calculateTmewcAmount", () => {
     before(async () => {
       await createSnapshot()
 
-      // Set the transaction max fee to 0.1 BTC.
+      // Set the transaction max fee to 0.1 MEWC.
       await bridge.setDepositTxMaxFee(10000000)
     })
 
@@ -290,22 +290,22 @@ describe("AbstractTBTCDepositor", () => {
 
     context("when all fees are non-zero", () => {
       it("should return the correct amount", async () => {
-        const depositAmount = to1ePrecision(10, 8) // 10 BTC
-        const treasuryFee = to1ePrecision(1, 8) // 1 BTC
+        const depositAmount = to1ePrecision(10, 8) // 10 MEWC
+        const treasuryFee = to1ePrecision(1, 8) // 1 MEWC
 
-        // The expected tbtcAmount is calculated as follows:
+        // The expected tmewcAmount is calculated as follows:
         //
-        // - Deposit amount = 10 BTC
-        // - Treasury fee = 1 BTC
-        // - Optimistic minting fee = 1%  (default value used in MockTBTCVault)
-        // - Transaction max fee = 0.1 BTC (set in MockBridge)
+        // - Deposit amount = 10 MEWC
+        // - Treasury fee = 1 MEWC
+        // - Optimistic minting fee = 1%  (default value used in MockTMEWCVault)
+        // - Transaction max fee = 0.1 MEWC (set in MockBridge)
         //
-        // ((10 BTC - 1 BTC) * 0.99) - 0.1 BTC = 8.81 BTC = 8.81 * 1e8 sat = 8.81 * 1e18 TBTC
-        const expectedTbtcAmount = to1ePrecision(881, 16)
+        // ((10 MEWC - 1 MEWC) * 0.99) - 0.1 MEWC = 8.81 MEWC = 8.81 * 1e8 sat = 8.81 * 1e18 TMEWC
+        const expectedTmewcAmount = to1ePrecision(881, 16)
 
         expect(
-          await depositor.calculateTbtcAmountPublic(depositAmount, treasuryFee)
-        ).to.equal(expectedTbtcAmount)
+          await depositor.calculateTmewcAmountPublic(depositAmount, treasuryFee)
+        ).to.equal(expectedTmewcAmount)
       })
     })
 
@@ -316,7 +316,7 @@ describe("AbstractTBTCDepositor", () => {
         // Set the transaction max fee to 0.
         await bridge.setDepositTxMaxFee(0)
         // Set the optimistic minting fee to 0%.
-        await tbtcVault.setOptimisticMintingFeeDivisor(0)
+        await tmewcVault.setOptimisticMintingFeeDivisor(0)
       })
 
       after(async () => {
@@ -324,47 +324,47 @@ describe("AbstractTBTCDepositor", () => {
       })
 
       it("should return the correct amount", async () => {
-        const depositAmount = to1ePrecision(10, 8) // 10 BTC
+        const depositAmount = to1ePrecision(10, 8) // 10 MEWC
         const treasuryFee = BigNumber.from(0)
 
-        // The expected tbtcAmount is calculated as follows:
+        // The expected tmewcAmount is calculated as follows:
         //
-        // - Deposit amount = 10 BTC
-        // - Treasury fee = 0 BTC
-        // - Optimistic minting fee = 0%  (set in MockTBTCVault)
-        // - Transaction max fee = 0 BTC (set in MockBridge)
+        // - Deposit amount = 10 MEWC
+        // - Treasury fee = 0 MEWC
+        // - Optimistic minting fee = 0%  (set in MockTMEWCVault)
+        // - Transaction max fee = 0 MEWC (set in MockBridge)
         //
-        // ((10 BTC - 0 BTC) * 1) - 0 BTC = 10 BTC = 10 * 1e18 TBTC
-        const expectedTbtcAmount = to1ePrecision(10, 18)
+        // ((10 MEWC - 0 MEWC) * 1) - 0 MEWC = 10 MEWC = 10 * 1e18 TMEWC
+        const expectedTmewcAmount = to1ePrecision(10, 18)
 
         expect(
-          await depositor.calculateTbtcAmountPublic(depositAmount, treasuryFee)
-        ).to.equal(expectedTbtcAmount)
+          await depositor.calculateTmewcAmountPublic(depositAmount, treasuryFee)
+        ).to.equal(expectedTmewcAmount)
       })
     })
 
     context("when one of the fees is zero", () => {
       context("when treasury fee is zero", () => {
         it("should return the correct amount", async () => {
-          const depositAmount = to1ePrecision(10, 8) // 10 BTC
+          const depositAmount = to1ePrecision(10, 8) // 10 MEWC
           const treasuryFee = BigNumber.from(0)
 
-          // The expected tbtcAmount is calculated as follows:
+          // The expected tmewcAmount is calculated as follows:
           //
-          // - Deposit amount = 10 BTC
-          // - Treasury fee = 0 BTC
-          // - Optimistic minting fee = 1%  (default value used in MockTBTCVault)
-          // - Transaction max fee = 0.1 BTC (set in MockBridge)
+          // - Deposit amount = 10 MEWC
+          // - Treasury fee = 0 MEWC
+          // - Optimistic minting fee = 1%  (default value used in MockTMEWCVault)
+          // - Transaction max fee = 0.1 MEWC (set in MockBridge)
           //
-          // ((10 BTC - 0 BTC) * 0.99) - 0.1 BTC = 9.8 BTC = 9.8 * 1e8 sat = 9.8 * 1e18 TBTC
-          const expectedTbtcAmount = to1ePrecision(98, 17)
+          // ((10 MEWC - 0 MEWC) * 0.99) - 0.1 MEWC = 9.8 MEWC = 9.8 * 1e8 sat = 9.8 * 1e18 TMEWC
+          const expectedTmewcAmount = to1ePrecision(98, 17)
 
           expect(
-            await depositor.calculateTbtcAmountPublic(
+            await depositor.calculateTmewcAmountPublic(
               depositAmount,
               treasuryFee
             )
-          ).to.equal(expectedTbtcAmount)
+          ).to.equal(expectedTmewcAmount)
         })
       })
 
@@ -373,7 +373,7 @@ describe("AbstractTBTCDepositor", () => {
           await createSnapshot()
 
           // Set the optimistic minting fee to 0%.
-          await tbtcVault.setOptimisticMintingFeeDivisor(0)
+          await tmewcVault.setOptimisticMintingFeeDivisor(0)
         })
 
         after(async () => {
@@ -381,25 +381,25 @@ describe("AbstractTBTCDepositor", () => {
         })
 
         it("should return the correct amount", async () => {
-          const depositAmount = to1ePrecision(10, 8) // 10 BTC
-          const treasuryFee = to1ePrecision(1, 8) // 1 BTC
+          const depositAmount = to1ePrecision(10, 8) // 10 MEWC
+          const treasuryFee = to1ePrecision(1, 8) // 1 MEWC
 
-          // The expected tbtcAmount is calculated as follows:
+          // The expected tmewcAmount is calculated as follows:
           //
-          // - Deposit amount = 10 BTC
-          // - Treasury fee = 1 BTC
-          // - Optimistic minting fee = 0%  (set in MockTBTCVault)
-          // - Transaction max fee = 0.1 BTC (set in MockBridge)
+          // - Deposit amount = 10 MEWC
+          // - Treasury fee = 1 MEWC
+          // - Optimistic minting fee = 0%  (set in MockTMEWCVault)
+          // - Transaction max fee = 0.1 MEWC (set in MockBridge)
           //
-          // ((10 BTC - 1 BTC) * 1) - 0.1 BTC = 8.9 BTC = 8.9 * 1e8 sat = 8.9 * 1e18 TBTC
-          const expectedTbtcAmount = to1ePrecision(89, 17)
+          // ((10 MEWC - 1 MEWC) * 1) - 0.1 MEWC = 8.9 MEWC = 8.9 * 1e8 sat = 8.9 * 1e18 TMEWC
+          const expectedTmewcAmount = to1ePrecision(89, 17)
 
           expect(
-            await depositor.calculateTbtcAmountPublic(
+            await depositor.calculateTmewcAmountPublic(
               depositAmount,
               treasuryFee
             )
-          ).to.equal(expectedTbtcAmount)
+          ).to.equal(expectedTmewcAmount)
         })
       })
 
@@ -416,25 +416,25 @@ describe("AbstractTBTCDepositor", () => {
         })
 
         it("should return the correct amount", async () => {
-          const depositAmount = to1ePrecision(10, 8) // 10 BTC
-          const treasuryFee = to1ePrecision(1, 8) // 1 BTC
+          const depositAmount = to1ePrecision(10, 8) // 10 MEWC
+          const treasuryFee = to1ePrecision(1, 8) // 1 MEWC
 
-          // The expected tbtcAmount is calculated as follows:
+          // The expected tmewcAmount is calculated as follows:
           //
-          // - Deposit amount = 10 BTC
-          // - Treasury fee = 1 BTC
-          // - Optimistic minting fee = 1%  (default value used in MockTBTCVault)
-          // - Transaction max fee = 0 BTC (set in MockBridge)
+          // - Deposit amount = 10 MEWC
+          // - Treasury fee = 1 MEWC
+          // - Optimistic minting fee = 1%  (default value used in MockTMEWCVault)
+          // - Transaction max fee = 0 MEWC (set in MockBridge)
           //
-          // ((10 BTC - 1 BTC) * 0.99) - 0 BTC = 8.91 BTC = 8.91 * 1e8 sat = 8.91 * 1e18 TBTC
-          const expectedTbtcAmount = to1ePrecision(891, 16)
+          // ((10 MEWC - 1 MEWC) * 0.99) - 0 MEWC = 8.91 MEWC = 8.91 * 1e8 sat = 8.91 * 1e18 TMEWC
+          const expectedTmewcAmount = to1ePrecision(891, 16)
 
           expect(
-            await depositor.calculateTbtcAmountPublic(
+            await depositor.calculateTmewcAmountPublic(
               depositAmount,
               treasuryFee
             )
-          ).to.equal(expectedTbtcAmount)
+          ).to.equal(expectedTmewcAmount)
         })
       })
     })
@@ -444,7 +444,7 @@ describe("AbstractTBTCDepositor", () => {
     before(async () => {
       await createSnapshot()
 
-      // Set deposit dust threshold to 0.1 BTC.
+      // Set deposit dust threshold to 0.1 MEWC.
       await bridge.setDepositDustThreshold(1000000)
     })
 
@@ -452,8 +452,8 @@ describe("AbstractTBTCDepositor", () => {
       await restoreSnapshot()
     })
 
-    it("returns value in TBTC token precision", async () => {
-      // 1000000 sat * 1e10 TBTC
+    it("returns value in TMEWC token precision", async () => {
+      // 1000000 sat * 1e10 TMEWC
       expect(await depositor.minDepositAmountPublic()).to.be.equal(
         to1ePrecision(1000000, 10)
       )

@@ -36,22 +36,22 @@ import "./MovingFunds.sol";
 import "../bank/IReceiveBalanceApproval.sol";
 import "../bank/Bank.sol";
 
-/// @title Bitcoin Bridge
-/// @notice Bridge manages BTC deposit and redemption flow and is increasing and
-///         decreasing balances in the Bank as a result of BTC deposit and
+/// @title Meowcoin Bridge
+/// @notice Bridge manages MEWC deposit and redemption flow and is increasing and
+///         decreasing balances in the Bank as a result of MEWC deposit and
 ///         redemption operations performed by depositors and redeemers.
 ///
-///         Depositors send BTC funds to the most recently created off-chain
+///         Depositors send MEWC funds to the most recently created off-chain
 ///         ECDSA wallet of the bridge using pay-to-script-hash (P2SH) or
 ///         pay-to-witness-script-hash (P2WSH) containing hashed information
 ///         about the depositor’s Ethereum address. Then, the depositor reveals
 ///         their Ethereum address along with their deposit blinding factor,
 ///         refund public key hash and refund locktime to the Bridge on Ethereum
 ///         chain. The off-chain ECDSA wallet listens for these sorts of
-///         messages and when it gets one, it checks the Bitcoin network to make
+///         messages and when it gets one, it checks the Meowcoin network to make
 ///         sure the deposit lines up. If it does, the off-chain ECDSA wallet
 ///         may decide to pick the deposit transaction for sweeping, and when
-///         the sweep operation is confirmed on the Bitcoin network, the ECDSA
+///         the sweep operation is confirmed on the Meowcoin network, the ECDSA
 ///         wallet informs the Bridge about the sweep increasing appropriate
 ///         balances in the Bank.
 /// @dev Bridge is an upgradeable component of the Bank. The order of
@@ -253,13 +253,13 @@ contract Bridge is
 
     /// @dev Initializes upgradable contract on deployment.
     /// @param _bank Address of the Bank the Bridge belongs to.
-    /// @param _relay Address of the Bitcoin relay providing the current Bitcoin
+    /// @param _relay Address of the Meowcoin relay providing the current Meowcoin
     ///        network difficulty.
     /// @param _treasury Address where the deposit and redemption treasury fees
     ///        will be sent to.
     /// @param _ecdsaWalletRegistry Address of the ECDSA Wallet Registry contract.
     /// @param _reimbursementPool Address of the Reimbursement Pool contract.
-    /// @param _txProofDifficultyFactor The number of confirmations on the Bitcoin
+    /// @param _txProofDifficultyFactor The number of confirmations on the Meowcoin
     ///        chain required to successfully evaluate an SPV proof.
     function initialize(
         address _bank,
@@ -300,25 +300,25 @@ contract Bridge is
         // pretty forgiving and valid only for the early stage of the network.
         //
 
-        self.depositDustThreshold = 1000000; // 1000000 satoshi = 0.01 BTC
-        self.depositTxMaxFee = 100000; // 100000 satoshi = 0.001 BTC
+        self.depositDustThreshold = 1000000; // 1000000 satoshi = 0.01 MEWC
+        self.depositTxMaxFee = 100000; // 100000 satoshi = 0.001 MEWC
         self.depositRevealAheadPeriod = 15 days;
         self.depositTreasuryFeeDivisor = 2000; // 1/2000 == 5bps == 0.05% == 0.0005
-        self.redemptionDustThreshold = 1000000; // 1000000 satoshi = 0.01 BTC
+        self.redemptionDustThreshold = 1000000; // 1000000 satoshi = 0.01 MEWC
         self.redemptionTreasuryFeeDivisor = 2000; // 1/2000 == 5bps == 0.05% == 0.0005
-        self.redemptionTxMaxFee = 100000; // 100000 satoshi = 0.001 BTC
-        self.redemptionTxMaxTotalFee = 1000000; // 1000000 satoshi = 0.01 BTC
+        self.redemptionTxMaxFee = 100000; // 100000 satoshi = 0.001 MEWC
+        self.redemptionTxMaxTotalFee = 1000000; // 1000000 satoshi = 0.01 MEWC
         self.redemptionTimeout = 5 days;
         self.redemptionTimeoutSlashingAmount = 100 * 1e18; // 100 T
         self.redemptionTimeoutNotifierRewardMultiplier = 100; // 100%
-        self.movingFundsTxMaxTotalFee = 100000; // 100000 satoshi = 0.001 BTC
-        self.movingFundsDustThreshold = 200000; // 200000 satoshi = 0.002 BTC
+        self.movingFundsTxMaxTotalFee = 100000; // 100000 satoshi = 0.001 MEWC
+        self.movingFundsDustThreshold = 200000; // 200000 satoshi = 0.002 MEWC
         self.movingFundsTimeoutResetDelay = 6 days;
         self.movingFundsTimeout = 7 days;
         self.movingFundsTimeoutSlashingAmount = 100 * 1e18; // 100 T
         self.movingFundsTimeoutNotifierRewardMultiplier = 100; //100%
         self.movingFundsCommitmentGasOffset = 15000;
-        self.movedFundsSweepTxMaxTotalFee = 100000; // 100000 satoshi = 0.001 BTC
+        self.movedFundsSweepTxMaxTotalFee = 100000; // 100000 satoshi = 0.001 MEWC
         self.movedFundsSweepTimeout = 7 days;
         self.movedFundsSweepTimeoutSlashingAmount = 100 * 1e18; // 100 T
         self.movedFundsSweepTimeoutNotifierRewardMultiplier = 100; //100%
@@ -327,50 +327,50 @@ contract Bridge is
         self.fraudSlashingAmount = 100 * 1e18; // 100 T
         self.fraudNotifierRewardMultiplier = 100; // 100%
         self.walletCreationPeriod = 1 weeks;
-        self.walletCreationMinBtcBalance = 1e8; // 1 BTC
-        self.walletCreationMaxBtcBalance = 100e8; // 100 BTC
-        self.walletClosureMinBtcBalance = 5 * 1e7; // 0.5 BTC
+        self.walletCreationMinBtcBalance = 1e8; // 1 MEWC
+        self.walletCreationMaxBtcBalance = 100e8; // 100 MEWC
+        self.walletClosureMinBtcBalance = 5 * 1e7; // 0.5 MEWC
         self.walletMaxAge = 26 weeks; // ~6 months
-        self.walletMaxBtcTransfer = 10e8; // 10 BTC
+        self.walletMaxBtcTransfer = 10e8; // 10 MEWC
         self.walletClosingPeriod = 40 days;
 
         _transferGovernance(msg.sender);
     }
 
     /// @notice Used by the depositor to reveal information about their P2(W)SH
-    ///         Bitcoin deposit to the Bridge on Ethereum chain. The off-chain
+    ///         Meowcoin deposit to the Bridge on Ethereum chain. The off-chain
     ///         wallet listens for revealed deposit events and may decide to
     ///         include the revealed deposit in the next executed sweep.
-    ///         Information about the Bitcoin deposit can be revealed before or
-    ///         after the Bitcoin transaction with P2(W)SH deposit is mined on
-    ///         the Bitcoin chain. Worth noting, the gas cost of this function
+    ///         Information about the Meowcoin deposit can be revealed before or
+    ///         after the Meowcoin transaction with P2(W)SH deposit is mined on
+    ///         the Meowcoin chain. Worth noting, the gas cost of this function
     ///         scales with the number of P2(W)SH transaction inputs and
     ///         outputs. The deposit may be routed to one of the trusted vaults.
     ///         When a deposit is routed to a vault, vault gets notified when
     ///         the deposit gets swept and it may execute the appropriate action.
-    /// @param fundingTx Bitcoin funding transaction data, see `BitcoinTx.Info`.
+    /// @param fundingTx Meowcoin funding transaction data, see `BitcoinTx.Info`.
     /// @param reveal Deposit reveal data, see `RevealInfo struct.
     /// @dev Requirements:
     ///      - This function must be called by the same Ethereum address as the
-    ///        one used in the P2(W)SH BTC deposit transaction as a depositor,
+    ///        one used in the P2(W)SH MEWC deposit transaction as a depositor,
     ///      - `reveal.walletPubKeyHash` must identify a `Live` wallet,
     ///      - `reveal.vault` must be 0x0 or point to a trusted vault,
     ///      - `reveal.fundingOutputIndex` must point to the actual P2(W)SH
-    ///        output of the BTC deposit transaction,
+    ///        output of the MEWC deposit transaction,
     ///      - `reveal.blindingFactor` must be the blinding factor used in the
-    ///        P2(W)SH BTC deposit transaction,
+    ///        P2(W)SH MEWC deposit transaction,
     ///      - `reveal.walletPubKeyHash` must be the wallet pub key hash used in
-    ///        the P2(W)SH BTC deposit transaction,
+    ///        the P2(W)SH MEWC deposit transaction,
     ///      - `reveal.refundPubKeyHash` must be the refund pub key hash used in
-    ///        the P2(W)SH BTC deposit transaction,
+    ///        the P2(W)SH MEWC deposit transaction,
     ///      - `reveal.refundLocktime` must be the refund locktime used in the
-    ///        P2(W)SH BTC deposit transaction,
-    ///      - BTC deposit for the given `fundingTxHash`, `fundingOutputIndex`
+    ///        P2(W)SH MEWC deposit transaction,
+    ///      - MEWC deposit for the given `fundingTxHash`, `fundingOutputIndex`
     ///        can be revealed only one time.
     ///
     ///      If any of these requirements is not met, the wallet _must_ refuse
     ///      to sweep the deposit and the depositor has to wait until the
-    ///      deposit script unlocks to receive their BTC back.
+    ///      deposit script unlocks to receive their MEWC back.
     function revealDeposit(
         BitcoinTx.Info calldata fundingTx,
         Deposit.DepositRevealInfo calldata reveal
@@ -379,7 +379,7 @@ contract Bridge is
     }
 
     /// @notice Sibling of the `revealDeposit` function. This function allows
-    ///         to reveal a P2(W)SH Bitcoin deposit with 32-byte extra data
+    ///         to reveal a P2(W)SH Meowcoin deposit with 32-byte extra data
     ///         embedded in the deposit script. The extra data allows to
     ///         attach additional context to the deposit. For example,
     ///         it allows a third-party smart contract to reveal the
@@ -387,18 +387,18 @@ contract Bridge is
     ///         additional services once the deposit is handled. In this
     ///         case, the address of the original depositor can be encoded
     ///         as extra data.
-    /// @param fundingTx Bitcoin funding transaction data, see `BitcoinTx.Info`.
+    /// @param fundingTx Meowcoin funding transaction data, see `BitcoinTx.Info`.
     /// @param reveal Deposit reveal data, see `RevealInfo struct.
     /// @param extraData 32-byte deposit extra data.
     /// @dev Requirements:
     ///      - All requirements from `revealDeposit` function must be met,
     ///      - `extraData` must not be bytes32(0),
     ///      - `extraData` must be the actual extra data used in the P2(W)SH
-    ///        BTC deposit transaction.
+    ///        MEWC deposit transaction.
     ///
     ///      If any of these requirements is not met, the wallet _must_ refuse
     ///      to sweep the deposit and the depositor has to wait until the
-    ///      deposit script unlocks to receive their BTC back.
+    ///      deposit script unlocks to receive their MEWC back.
     function revealDepositWithExtraData(
         BitcoinTx.Info calldata fundingTx,
         Deposit.DepositRevealInfo calldata reveal,
@@ -407,19 +407,19 @@ contract Bridge is
         self.revealDepositWithExtraData(fundingTx, reveal, extraData);
     }
 
-    /// @notice Used by the wallet to prove the BTC deposit sweep transaction
+    /// @notice Used by the wallet to prove the MEWC deposit sweep transaction
     ///         and to update Bank balances accordingly. Sweep is only accepted
     ///         if it satisfies SPV proof.
     ///
     ///         The function is performing Bank balance updates by first
-    ///         computing the Bitcoin fee for the sweep transaction. The fee is
+    ///         computing the Meowcoin fee for the sweep transaction. The fee is
     ///         divided evenly between all swept deposits. Each depositor
     ///         receives a balance in the bank equal to the amount inferred
     ///         during the reveal transaction, minus their fee share.
     ///
     ///         It is possible to prove the given sweep only one time.
-    /// @param sweepTx Bitcoin sweep transaction data.
-    /// @param sweepProof Bitcoin sweep proof data.
+    /// @param sweepTx Meowcoin sweep transaction data.
+    /// @param sweepProof Meowcoin sweep proof data.
     /// @param mainUtxo Data of the wallet's main UTXO, as currently known on
     ///        the Ethereum chain. If no main UTXO exists for the given wallet,
     ///        this parameter is ignored.
@@ -435,9 +435,9 @@ contract Bridge is
     /// @dev Requirements:
     ///      - `sweepTx` components must match the expected structure. See
     ///        `BitcoinTx.Info` docs for reference. Their values must exactly
-    ///        correspond to appropriate Bitcoin transaction fields to produce
+    ///        correspond to appropriate Meowcoin transaction fields to produce
     ///        a provable transaction hash,
-    ///      - The `sweepTx` should represent a Bitcoin transaction with 1..n
+    ///      - The `sweepTx` should represent a Meowcoin transaction with 1..n
     ///        inputs. If the wallet has no main UTXO, all n inputs should
     ///        correspond to P2(W)SH revealed deposits UTXOs. If the wallet has
     ///        an existing main UTXO, one of the n inputs must point to that
@@ -465,21 +465,21 @@ contract Bridge is
     }
 
     /// @notice Requests redemption of the given amount from the specified
-    ///         wallet to the redeemer Bitcoin output script. Handles the
+    ///         wallet to the redeemer Meowcoin output script. Handles the
     ///         simplest case in which the redeemer's balance is decreased in
     ///         the Bank.
     /// @param walletPubKeyHash The 20-byte wallet public key hash (computed
-    ///        using Bitcoin HASH160 over the compressed ECDSA public key).
+    ///        using Meowcoin HASH160 over the compressed ECDSA public key).
     /// @param mainUtxo Data of the wallet's main UTXO, as currently known on
     ///        the Ethereum chain.
     /// @param redeemerOutputScript The redeemer's length-prefixed output
     ///        script (P2PKH, P2WPKH, P2SH or P2WSH) that will be used to lock
-    ///        redeemed BTC.
+    ///        redeemed MEWC.
     /// @param amount Requested amount in satoshi. This is also the Bank balance
     ///        that is taken from the `balanceOwner` upon request.
-    ///        Once the request is handled, the actual amount of BTC locked
+    ///        Once the request is handled, the actual amount of MEWC locked
     ///        on the redeemer output script will be always lower than this value
-    ///        since the treasury and Bitcoin transaction fees must be incurred.
+    ///        since the treasury and Meowcoin transaction fees must be incurred.
     ///        The minimal amount satisfying the request can be computed as:
     ///        `amount - (amount / redemptionTreasuryFeeDivisor) - redemptionTxMaxFee`.
     ///        Fees values are taken at the moment of request creation.
@@ -487,12 +487,12 @@ contract Bridge is
     ///      - Wallet behind `walletPubKeyHash` must be live,
     ///      - `mainUtxo` components must point to the recent main UTXO
     ///        of the given wallet, as currently known on the Ethereum chain,
-    ///      - `redeemerOutputScript` must be a proper Bitcoin script,
+    ///      - `redeemerOutputScript` must be a proper Meowcoin script,
     ///      - `redeemerOutputScript` cannot have wallet PKH as payload,
     ///      - `amount` must be above or equal the `redemptionDustThreshold`,
     ///      - Given `walletPubKeyHash` and `redeemerOutputScript` pair can be
     ///        used for only one pending request at the same time,
-    ///      - Wallet must have enough Bitcoin balance to process the request,
+    ///      - Wallet must have enough Meowcoin balance to process the request,
     ///      - Redeemer must make an allowance in the Bank that the Bridge
     ///        contract can spend the given `amount`.
     function requestRedemption(
@@ -511,7 +511,7 @@ contract Bridge is
     }
 
     /// @notice Requests redemption of the given amount from the specified
-    ///         wallet to the redeemer Bitcoin output script. Used by
+    ///         wallet to the redeemer Meowcoin output script. Used by
     ///         `Bank.approveBalanceAndCall`. Can handle more complex cases
     ///         where balance owner may be someone else than the redeemer.
     ///         For example, vault redeeming its balance for some depositor.
@@ -519,9 +519,9 @@ contract Bridge is
     ///        is getting redeemed.
     /// @param amount Requested amount in satoshi. This is also the Bank balance
     ///        that is taken from the `balanceOwner` upon request.
-    ///        Once the request is handled, the actual amount of BTC locked
+    ///        Once the request is handled, the actual amount of MEWC locked
     ///        on the redeemer output script will be always lower than this value
-    ///        since the treasury and Bitcoin transaction fees must be incurred.
+    ///        since the treasury and Meowcoin transaction fees must be incurred.
     ///        The minimal amount satisfying the request can be computed as:
     ///        `amount - (amount / redemptionTreasuryFeeDivisor) - redemptionTxMaxFee`.
     ///        Fees values are taken at the moment of request creation.
@@ -544,7 +544,7 @@ contract Bridge is
     ///        into that Vault), `balanceOwner` is the Vault, and `redeemer` is
     ///        the address for which the vault is redeeming its balance to,
     ///        - walletPubKeyHash: The 20-byte wallet public key hash (computed
-    ///        using Bitcoin HASH160 over the compressed ECDSA public key),
+    ///        using Meowcoin HASH160 over the compressed ECDSA public key),
     ///        - mainUtxoTxHash: Data of the wallet's main UTXO TX hash, as
     ///        currently known on the Ethereum chain,
     ///        - mainUtxoTxOutputIndex: Data of the wallet's main UTXO output
@@ -553,18 +553,18 @@ contract Bridge is
     ///        value, as currently known on Ethereum chain,
     ///        - redeemerOutputScript The redeemer's length-prefixed output
     ///        script (P2PKH, P2WPKH, P2SH or P2WSH) that will be used to lock
-    ///        redeemed BTC.
+    ///        redeemed MEWC.
     /// @dev Requirements:
     ///      - The caller must be the Bank,
     ///      - Wallet behind `walletPubKeyHash` must be live,
     ///      - `mainUtxo` components must point to the recent main UTXO
     ///        of the given wallet, as currently known on the Ethereum chain,
-    ///      - `redeemerOutputScript` must be a proper Bitcoin script,
+    ///      - `redeemerOutputScript` must be a proper Meowcoin script,
     ///      - `redeemerOutputScript` cannot have wallet PKH as payload,
     ///      - `amount` must be above or equal the `redemptionDustThreshold`,
     ///      - Given `walletPubKeyHash` and `redeemerOutputScript` pair can be
     ///        used for only one pending request at the same time,
-    ///      - Wallet must have enough Bitcoin balance to process the request.
+    ///      - Wallet must have enough Meowcoin balance to process the request.
     ///
     ///      Note on upgradeability:
     ///      Bridge is an upgradeable contract deployed behind
@@ -591,35 +591,35 @@ contract Bridge is
         );
     }
 
-    /// @notice Used by the wallet to prove the BTC redemption transaction
+    /// @notice Used by the wallet to prove the MEWC redemption transaction
     ///         and to make the necessary bookkeeping. Redemption is only
     ///         accepted if it satisfies SPV proof.
     ///
     ///         The function is performing Bank balance updates by burning
-    ///         the total redeemed Bitcoin amount from Bridge balance and
+    ///         the total redeemed Meowcoin amount from Bridge balance and
     ///         transferring the treasury fee sum to the treasury address.
     ///
     ///         It is possible to prove the given redemption only one time.
-    /// @param redemptionTx Bitcoin redemption transaction data.
-    /// @param redemptionProof Bitcoin redemption proof data.
+    /// @param redemptionTx Meowcoin redemption transaction data.
+    /// @param redemptionProof Meowcoin redemption proof data.
     /// @param mainUtxo Data of the wallet's main UTXO, as currently known on
     ///        the Ethereum chain.
-    /// @param walletPubKeyHash 20-byte public key hash (computed using Bitcoin
+    /// @param walletPubKeyHash 20-byte public key hash (computed using Meowcoin
     ///        HASH160 over the compressed ECDSA public key) of the wallet which
     ///        performed the redemption transaction.
     /// @dev Requirements:
     ///      - `redemptionTx` components must match the expected structure. See
     ///        `BitcoinTx.Info` docs for reference. Their values must exactly
-    ///        correspond to appropriate Bitcoin transaction fields to produce
+    ///        correspond to appropriate Meowcoin transaction fields to produce
     ///        a provable transaction hash,
-    ///      - The `redemptionTx` should represent a Bitcoin transaction with
+    ///      - The `redemptionTx` should represent a Meowcoin transaction with
     ///        exactly 1 input that refers to the wallet's main UTXO. That
     ///        transaction should have 1..n outputs handling existing pending
     ///        redemption requests or pointing to reported timed out requests.
     ///        There can be also 1 optional output representing the
     ///        change and pointing back to the 20-byte wallet public key hash.
     ///        The change should be always present if the redeemed value sum
-    ///        is lower than the total wallet's BTC balance,
+    ///        is lower than the total wallet's MEWC balance,
     ///      - `redemptionProof` components must match the expected structure.
     ///        See `BitcoinTx.Proof` docs for reference. The `bitcoinHeaders`
     ///        field must contain a valid number of block headers, not less
@@ -727,7 +727,7 @@ contract Bridge is
     ///      - The `walletMainUtxo` components must point to the recent main
     ///        UTXO of the source wallet, as currently known on the Ethereum
     ///        chain,
-    ///      - Source wallet BTC balance must be greater than zero,
+    ///      - Source wallet MEWC balance must be greater than zero,
     ///      - At least one Live wallet must exist in the system,
     ///      - Submitted target wallets count must match the expected count
     ///        `N = min(liveWalletsCount, ceil(walletBtcBalance / walletMaxBtcTransfer))`
@@ -774,7 +774,7 @@ contract Bridge is
         self.resetMovingFundsTimeout(walletPubKeyHash);
     }
 
-    /// @notice Used by the wallet to prove the BTC moving funds transaction
+    /// @notice Used by the wallet to prove the MEWC moving funds transaction
     ///         and to make the necessary state changes. Moving funds is only
     ///         accepted if it satisfies SPV proof.
     ///
@@ -786,19 +786,19 @@ contract Bridge is
     ///
     ///         It is possible to prove the given moving funds transaction only
     ///         one time.
-    /// @param movingFundsTx Bitcoin moving funds transaction data.
-    /// @param movingFundsProof Bitcoin moving funds proof data.
+    /// @param movingFundsTx Meowcoin moving funds transaction data.
+    /// @param movingFundsProof Meowcoin moving funds proof data.
     /// @param mainUtxo Data of the wallet's main UTXO, as currently known on
     ///        the Ethereum chain.
-    /// @param walletPubKeyHash 20-byte public key hash (computed using Bitcoin
+    /// @param walletPubKeyHash 20-byte public key hash (computed using Meowcoin
     ///        HASH160 over the compressed ECDSA public key) of the wallet
     ///        which performed the moving funds transaction.
     /// @dev Requirements:
     ///      - `movingFundsTx` components must match the expected structure. See
     ///        `BitcoinTx.Info` docs for reference. Their values must exactly
-    ///        correspond to appropriate Bitcoin transaction fields to produce
+    ///        correspond to appropriate Meowcoin transaction fields to produce
     ///        a provable transaction hash,
-    ///      - The `movingFundsTx` should represent a Bitcoin transaction with
+    ///      - The `movingFundsTx` should represent a Meowcoin transaction with
     ///        exactly 1 input that refers to the wallet's main UTXO. That
     ///        transaction should have 1..n outputs corresponding to the
     ///        pre-committed target wallets. Outputs must be ordered in the
@@ -817,7 +817,7 @@ contract Bridge is
     ///        MovingFunds state,
     ///      - The target wallets commitment must be submitted by the wallet
     ///        that `walletPubKeyHash` points to,
-    ///      - The total Bitcoin transaction fee must be lesser or equal
+    ///      - The total Meowcoin transaction fee must be lesser or equal
     ///        to `movingFundsTxMaxTotalFee` governable parameter.
     function submitMovingFundsProof(
         BitcoinTx.Info calldata movingFundsTx,
@@ -853,7 +853,7 @@ contract Bridge is
         self.notifyMovingFundsTimeout(walletPubKeyHash, walletMembersIDs);
     }
 
-    /// @notice Notifies about a moving funds wallet whose BTC balance is
+    /// @notice Notifies about a moving funds wallet whose MEWC balance is
     ///         below the moving funds dust threshold. Ends the moving funds
     ///         process and begins wallet closing immediately.
     /// @param walletPubKeyHash 20-byte public key hash of the wallet
@@ -865,7 +865,7 @@ contract Bridge is
     ///        of the given wallet, as currently known on the Ethereum chain.
     ///        If the wallet has no main UTXO, this parameter can be empty as it
     ///        is ignored,
-    ///      - The wallet BTC balance must be below the moving funds threshold.
+    ///      - The wallet MEWC balance must be below the moving funds threshold.
     function notifyMovingFundsBelowDust(
         bytes20 walletPubKeyHash,
         BitcoinTx.UTXO calldata mainUtxo
@@ -873,7 +873,7 @@ contract Bridge is
         self.notifyMovingFundsBelowDust(walletPubKeyHash, mainUtxo);
     }
 
-    /// @notice Used by the wallet to prove the BTC moved funds sweep
+    /// @notice Used by the wallet to prove the MEWC moved funds sweep
     ///         transaction and to make the necessary state changes. Moved
     ///         funds sweep is only accepted if it satisfies SPV proof.
     ///
@@ -883,20 +883,20 @@ contract Bridge is
     ///         value on the sweeping wallet's 20-byte public key hash using a
     ///         reasonable transaction fee. If all preconditions are
     ///         met, this function updates the sweeping wallet main UTXO, thus
-    ///         their BTC balance.
+    ///         their MEWC balance.
     ///
     ///         It is possible to prove the given sweep transaction only
     ///         one time.
-    /// @param sweepTx Bitcoin sweep funds transaction data.
-    /// @param sweepProof Bitcoin sweep funds proof data.
+    /// @param sweepTx Meowcoin sweep funds transaction data.
+    /// @param sweepProof Meowcoin sweep funds proof data.
     /// @param mainUtxo Data of the sweeping wallet's main UTXO, as currently
     ///        known on the Ethereum chain.
     /// @dev Requirements:
     ///      - `sweepTx` components must match the expected structure. See
     ///        `BitcoinTx.Info` docs for reference. Their values must exactly
-    ///        correspond to appropriate Bitcoin transaction fields to produce
+    ///        correspond to appropriate Meowcoin transaction fields to produce
     ///        a provable transaction hash,
-    ///      - The `sweepTx` should represent a Bitcoin transaction with
+    ///      - The `sweepTx` should represent a Meowcoin transaction with
     ///        the first input pointing to a moved funds sweep request targeted
     ///        to the wallet, and optionally, the second input pointing to the
     ///        wallet's main UTXO, if the sweeping wallet has a main UTXO set.
@@ -910,7 +910,7 @@ contract Bridge is
     ///        of the sweeping wallet, as currently known on the Ethereum chain.
     ///        If there is no main UTXO, this parameter is ignored,
     ///      - The sweeping wallet must be in the Live or MovingFunds state,
-    ///      - The total Bitcoin transaction fee must be lesser or equal
+    ///      - The total Meowcoin transaction fee must be lesser or equal
     ///        to `movedFundsSweepTxMaxTotalFee` governable parameter.
     function submitMovedFundsSweepProof(
         BitcoinTx.Info calldata sweepTx,
@@ -968,10 +968,10 @@ contract Bridge is
     ///      - Wallet creation must not be in progress,
     ///      - If the active wallet is set, one of the following
     ///        conditions must be true:
-    ///        - The active wallet BTC balance is above the minimum threshold
+    ///        - The active wallet MEWC balance is above the minimum threshold
     ///          and the active wallet is old enough, i.e. the creation period
     ///          was elapsed since its creation time,
-    ///        - The active wallet BTC balance is above the maximum threshold.
+    ///        - The active wallet MEWC balance is above the maximum threshold.
     function requestNewWallet(BitcoinTx.UTXO calldata activeWalletMainUtxo)
         external
     {
@@ -1016,7 +1016,7 @@ contract Bridge is
     ///        known on the Ethereum chain.
     /// @dev Requirements:
     ///      - Wallet must not be set as the current active wallet,
-    ///      - Wallet must exceed the wallet maximum age OR the wallet BTC
+    ///      - Wallet must exceed the wallet maximum age OR the wallet MEWC
     ///        balance must be lesser than the minimum threshold. If the latter
     ///        case is true, the `walletMainUtxo` components must point to the
     ///        recent main UTXO of the given wallet, as currently known on the
@@ -1069,7 +1069,7 @@ contract Bridge is
     ///        in `sighash`.  The path from `preimage` to `sighash` looks like
     ///        this:
     ///        preimage -> (SHA-256) -> preimageSha256 -> (SHA-256) -> sighash.
-    /// @param signature Bitcoin signature in the R/S/V format.
+    /// @param signature Meowcoin signature in the R/S/V format.
     /// @dev Requirements:
     ///      - Wallet behind `walletPublicKey` must be in Live or MovingFunds
     ///        or Closing state,
@@ -1226,16 +1226,16 @@ contract Bridge is
     ///         or no longer trusted SPV maintainer. Addresses are not trusted
     ///         as SPV maintainers by default.
     /// @dev The SPV proof does not check whether the transaction is a part of
-    ///      the Bitcoin mainnet, it only checks whether the transaction has been
-    ///      mined performing the required amount of work as on Bitcoin mainnet.
+    ///      the Meowcoin mainnet, it only checks whether the transaction has been
+    ///      mined performing the required amount of work as on Meowcoin mainnet.
     ///      The possibility of submitting SPV proofs is limited to trusted SPV
     ///      maintainers. The system expects transaction confirmations with the
     ///      required work accumulated, so trusted SPV maintainers can not prove
-    ///      the transaction without providing the required Bitcoin proof of work.
+    ///      the transaction without providing the required Meowcoin proof of work.
     ///      Trusted maintainers address the issue of an economic game between
-    ///      tBTC and Bitcoin mainnet where large Bitcoin mining pools can decide
-    ///      to use their hash power to mine fake Bitcoin blocks to prove them in
-    ///      tBTC instead of receiving Bitcoin miner rewards.
+    ///      tMEWC and Meowcoin mainnet where large Meowcoin mining pools can decide
+    ///      to use their hash power to mine fake Meowcoin blocks to prove them in
+    ///      tMEWC instead of receiving Meowcoin miner rewards.
     /// @param spvMaintainer The address of the SPV maintainer.
     /// @param isTrusted flag indicating whether the address is trusted or not.
     /// @dev Can only be called by the Governance.
@@ -1263,9 +1263,9 @@ contract Bridge is
     ///        the `depositTreasuryFeeDivisor` should be set to `50`
     ///        because `1/50 = 0.02 = 2%`.
     /// @param depositTxMaxFee New value of the deposit tx max fee in satoshis.
-    ///        It is the maximum amount of BTC transaction fee that can
+    ///        It is the maximum amount of MEWC transaction fee that can
     ///        be incurred by each swept deposit being part of the given sweep
-    ///        transaction. If the maximum BTC transaction fee is exceeded,
+    ///        transaction. If the maximum MEWC transaction fee is exceeded,
     ///        such transaction is considered a fraud.
     /// @param depositRevealAheadPeriod New value of the deposit reveal ahead
     ///        period parameter in seconds. It defines the length of the period
@@ -1307,15 +1307,15 @@ contract Bridge is
     ///        redemption request, the `redemptionTreasuryFeeDivisor` should
     ///        be set to `50` because `1/50 = 0.02 = 2%`.
     /// @param redemptionTxMaxFee New value of the redemption transaction max
-    ///        fee in satoshis. It is the maximum amount of BTC transaction fee
+    ///        fee in satoshis. It is the maximum amount of MEWC transaction fee
     ///        that can be incurred by each redemption request being part of the
-    ///        given redemption transaction. If the maximum BTC transaction fee
+    ///        given redemption transaction. If the maximum MEWC transaction fee
     ///        is exceeded, such transaction is considered a fraud.
     ///        This is a per-redemption output max fee for the redemption
     ///        transaction.
     /// @param redemptionTxMaxTotalFee New value of the redemption transaction
     ///        max total fee in satoshis. It is the maximum amount of the total
-    ///        BTC transaction fee that is acceptable in a single redemption
+    ///        MEWC transaction fee that is acceptable in a single redemption
     ///        transaction. This is a _total_ max fee for the entire redemption
     ///        transaction.
     /// @param redemptionTimeout New value of the redemption timeout in seconds.
@@ -1366,15 +1366,15 @@ contract Bridge is
     /// @notice Updates parameters of moving funds.
     /// @param movingFundsTxMaxTotalFee New value of the moving funds transaction
     ///        max total fee in satoshis. It is the maximum amount of the total
-    ///        BTC transaction fee that is acceptable in a single moving funds
+    ///        MEWC transaction fee that is acceptable in a single moving funds
     ///        transaction. This is a _total_ max fee for the entire moving
     ///        funds transaction.
     /// @param movingFundsDustThreshold New value of the moving funds dust
     ///        threshold. It is the minimal satoshi amount that makes sense to
     ///        be transferred during the moving funds process. Moving funds
-    ///        wallets having their BTC balance below that value can begin
+    ///        wallets having their MEWC balance below that value can begin
     ///        closing immediately as transferring such a low value may not be
-    ///        possible due to BTC network fees.
+    ///        possible due to MEWC network fees.
     /// @param movingFundsTimeoutResetDelay New value of the moving funds
     ///        timeout reset delay in seconds. It is the time after which the
     ///        moving funds timeout can be reset in case the target wallet
@@ -1400,7 +1400,7 @@ contract Bridge is
     ///        reimbursement.
     /// @param movedFundsSweepTxMaxTotalFee New value of the moved funds sweep
     ///        transaction max total fee in satoshis. It is the maximum amount
-    ///        of the total BTC transaction fee that is acceptable in a single
+    ///        of the total MEWC transaction fee that is acceptable in a single
     ///        moved funds sweep transaction. This is a _total_ max fee for the
     ///        entire moved funds sweep transaction.
     /// @param movedFundsSweepTimeout New value of the moved funds sweep
@@ -1461,16 +1461,16 @@ contract Bridge is
     /// @param walletCreationPeriod New value of the wallet creation period in
     ///        seconds, determines how frequently a new wallet creation can be
     ///        requested.
-    /// @param walletCreationMinBtcBalance New value of the wallet minimum BTC
+    /// @param walletCreationMinBtcBalance New value of the wallet minimum MEWC
     ///        balance in satoshi, used to decide about wallet creation.
-    /// @param walletCreationMaxBtcBalance New value of the wallet maximum BTC
+    /// @param walletCreationMaxBtcBalance New value of the wallet maximum MEWC
     ///        balance in satoshi, used to decide about wallet creation.
-    /// @param walletClosureMinBtcBalance New value of the wallet minimum BTC
+    /// @param walletClosureMinBtcBalance New value of the wallet minimum MEWC
     ///        balance in satoshi, used to decide about wallet closure.
     /// @param walletMaxAge New value of the wallet maximum age in seconds,
     ///        indicates the maximum age of a wallet in seconds, after which
     ///        the wallet moving funds process can be requested.
-    /// @param walletMaxBtcTransfer New value of the wallet maximum BTC transfer
+    /// @param walletMaxBtcTransfer New value of the wallet maximum MEWC transfer
     ///        in satoshi, determines the maximum amount that can be transferred
     //         to a single target wallet during the moving funds process.
     /// @param walletClosingPeriod New value of the wallet closing period in
@@ -1478,9 +1478,9 @@ contract Bridge is
     //         i.e. the period when the wallet remains in the Closing state
     //         and can be subject of deposit fraud challenges.
     /// @dev Requirements:
-    ///      - Wallet maximum BTC balance must be greater than the wallet
-    ///        minimum BTC balance,
-    ///      - Wallet maximum BTC transfer must be greater than zero,
+    ///      - Wallet maximum MEWC balance must be greater than the wallet
+    ///        minimum MEWC balance,
+    ///      - Wallet maximum MEWC transfer must be greater than zero,
     ///      - Wallet closing period must be greater than zero.
     function updateWalletParameters(
         uint32 walletCreationPeriod,
@@ -1543,7 +1543,7 @@ contract Bridge is
 
     /// @notice Collection of all revealed deposits indexed by
     ///         keccak256(fundingTxHash | fundingOutputIndex).
-    ///         The fundingTxHash is bytes32 (ordered as in Bitcoin internally)
+    ///         The fundingTxHash is bytes32 (ordered as in Meowcoin internally)
     ///         and fundingOutputIndex an uint32. This mapping may contain valid
     ///         and invalid deposits and the wallet is responsible for
     ///         validating them before attempting to execute a sweep.
@@ -1559,10 +1559,10 @@ contract Bridge is
     ///         redemption key built as
     ///         `keccak256(keccak256(redeemerOutputScript) | walletPubKeyHash)`.
     ///         The walletPubKeyHash is the 20-byte wallet's public key hash
-    ///         (computed using Bitcoin HASH160 over the compressed ECDSA
-    ///         public key) and `redeemerOutputScript` is a Bitcoin script
+    ///         (computed using Meowcoin HASH160 over the compressed ECDSA
+    ///         public key) and `redeemerOutputScript` is a Meowcoin script
     ///         (P2PKH, P2WPKH, P2SH or P2WSH) that will be used to lock
-    ///         redeemed BTC as requested by the redeemer. Requests are added
+    ///         redeemed MEWC as requested by the redeemer. Requests are added
     ///         to this mapping by the `requestRedemption` method (duplicates
     ///         not allowed) and are removed by one of the following methods:
     ///         - `submitRedemptionProof` in case the request was handled
@@ -1581,8 +1581,8 @@ contract Bridge is
     ///         redemption key built as
     ///         `keccak256(keccak256(redeemerOutputScript) | walletPubKeyHash)`.
     ///         The walletPubKeyHash is the 20-byte wallet's public key hash
-    ///         (computed using Bitcoin HASH160 over the compressed ECDSA
-    ///         public key) and `redeemerOutputScript` is the Bitcoin script
+    ///         (computed using Meowcoin HASH160 over the compressed ECDSA
+    ///         public key) and `redeemerOutputScript` is the Meowcoin script
     ///         (P2PKH, P2WPKH, P2SH or P2WSH) that is involved in the timed
     ///         out request.
     ///         Only one method can add to this mapping:
@@ -1602,7 +1602,7 @@ contract Bridge is
 
     /// @notice Collection of main UTXOs that are honestly spent indexed by
     ///         keccak256(fundingTxHash | fundingOutputIndex). The fundingTxHash
-    ///         is bytes32 (ordered as in Bitcoin internally) and
+    ///         is bytes32 (ordered as in Meowcoin internally) and
     ///         fundingOutputIndex an uint32. A main UTXO is considered honestly
     ///         spent if it was used as an input of a transaction that have been
     ///         proven in the Bridge.
@@ -1612,7 +1612,7 @@ contract Bridge is
 
     /// @notice Gets details about a registered wallet.
     /// @param walletPubKeyHash The 20-byte wallet public key hash (computed
-    ///        using Bitcoin HASH160 over the compressed ECDSA public key).
+    ///        using Meowcoin HASH160 over the compressed ECDSA public key).
     /// @return Wallet details.
     function wallets(bytes20 walletPubKeyHash)
         external
@@ -1623,7 +1623,7 @@ contract Bridge is
     }
 
     /// @notice Gets the public key hash of the active wallet.
-    /// @return The 20-byte public key hash (computed using Bitcoin HASH160
+    /// @return The 20-byte public key hash (computed using Meowcoin HASH160
     ///         over the compressed ECDSA public key) of the active wallet.
     ///         Returns bytes20(0) if there is no active wallet at the moment.
     function activeWalletPubKeyHash() external view returns (bytes20) {
@@ -1648,7 +1648,7 @@ contract Bridge is
 
     /// @notice Collection of all moved funds sweep requests indexed by
     ///         `keccak256(movingFundsTxHash | movingFundsOutputIndex)`.
-    ///         The `movingFundsTxHash` is `bytes32` (ordered as in Bitcoin
+    ///         The `movingFundsTxHash` is `bytes32` (ordered as in Meowcoin
     ///         internally) and `movingFundsOutputIndex` an `uint32`. Each entry
     ///         is actually an UTXO representing the moved funds and is supposed
     ///         to be swept with the current main UTXO of the recipient wallet.
@@ -1687,9 +1687,9 @@ contract Bridge is
     ///         For example, if the treasury fee needs to be 2% of each deposit,
     ///         the `depositTreasuryFeeDivisor` should be set to `50`
     ///         because `1/50 = 0.02 = 2%`.
-    /// @return depositTxMaxFee Maximum amount of BTC transaction fee that can
+    /// @return depositTxMaxFee Maximum amount of MEWC transaction fee that can
     ///         be incurred by each swept deposit being part of the given sweep
-    ///         transaction. If the maximum BTC transaction fee is exceeded,
+    ///         transaction. If the maximum MEWC transaction fee is exceeded,
     ///         such transaction is considered a fraud.
     /// @return depositRevealAheadPeriod Defines the length of the period that
     ///         must be preserved between the deposit reveal time and the
@@ -1726,13 +1726,13 @@ contract Bridge is
     ///         For example, if the treasury fee needs to be 2% of each
     ///         redemption request, the `redemptionTreasuryFeeDivisor` should
     ///         be set to `50` because `1/50 = 0.02 = 2%`.
-    /// @return redemptionTxMaxFee Maximum amount of BTC transaction fee that
+    /// @return redemptionTxMaxFee Maximum amount of MEWC transaction fee that
     ///         can be incurred by each redemption request being part of the
-    ///         given redemption transaction. If the maximum BTC transaction
+    ///         given redemption transaction. If the maximum MEWC transaction
     ///         fee is exceeded, such transaction is considered a fraud.
     ///         This is a per-redemption output max fee for the redemption
     ///         transaction.
-    /// @return redemptionTxMaxTotalFee Maximum amount of the total BTC
+    /// @return redemptionTxMaxTotalFee Maximum amount of the total MEWC
     ///         transaction fee that is acceptable in a single redemption
     ///         transaction. This is a _total_ max fee for the entire redemption
     ///         transaction.
@@ -1771,15 +1771,15 @@ contract Bridge is
 
     /// @notice Returns the current values of Bridge moving funds between
     ///         wallets parameters.
-    /// @return movingFundsTxMaxTotalFee Maximum amount of the total BTC
+    /// @return movingFundsTxMaxTotalFee Maximum amount of the total MEWC
     ///         transaction fee that is acceptable in a single moving funds
     ///         transaction. This is a _total_ max fee for the entire moving
     ///         funds transaction.
     /// @return movingFundsDustThreshold The minimal satoshi amount that makes
     ///         sense to be transferred during the moving funds process. Moving
-    ///         funds wallets having their BTC balance below that value can
+    ///         funds wallets having their MEWC balance below that value can
     ///         begin closing immediately as transferring such a low value may
-    ///         not be possible due to BTC network fees.
+    ///         not be possible due to MEWC network fees.
     /// @return movingFundsTimeoutResetDelay Time after which the moving funds
     ///         timeout can be reset in case the target wallet commitment
     ///         cannot be submitted due to a lack of live wallets in the system.
@@ -1800,7 +1800,7 @@ contract Bridge is
     /// @return movingFundsCommitmentGasOffset The gas offset used for the
     ///         moving funds target wallet commitment transaction cost
     ///         reimbursement.
-    /// @return movedFundsSweepTxMaxTotalFee Maximum amount of the total BTC
+    /// @return movedFundsSweepTxMaxTotalFee Maximum amount of the total MEWC
     ///         transaction fee that is acceptable in a single moved funds
     ///         sweep transaction. This is a _total_ max fee for the entire
     ///         moved funds sweep transaction.
@@ -1850,15 +1850,15 @@ contract Bridge is
 
     /// @return walletCreationPeriod Determines how frequently a new wallet
     ///         creation can be requested. Value in seconds.
-    /// @return walletCreationMinBtcBalance The minimum BTC threshold in satoshi
+    /// @return walletCreationMinBtcBalance The minimum MEWC threshold in satoshi
     ///         that is used to decide about wallet creation.
-    /// @return walletCreationMaxBtcBalance The maximum BTC threshold in satoshi
+    /// @return walletCreationMaxBtcBalance The maximum MEWC threshold in satoshi
     ///         that is used to decide about wallet creation.
-    /// @return walletClosureMinBtcBalance The minimum BTC threshold in satoshi
+    /// @return walletClosureMinBtcBalance The minimum MEWC threshold in satoshi
     ///         that is used to decide about wallet closure.
     /// @return walletMaxAge The maximum age of a wallet in seconds, after which
     ///         the wallet moving funds process can be requested.
-    /// @return walletMaxBtcTransfer The maximum BTC amount in satoshi than
+    /// @return walletMaxBtcTransfer The maximum MEWC amount in satoshi than
     ///         can be transferred to a single target wallet during the moving
     ///         funds process.
     /// @return walletClosingPeriod Determines the length of the wallet closing
@@ -1915,7 +1915,7 @@ contract Bridge is
 
     /// @notice Returns the addresses of contracts Bridge is interacting with.
     /// @return bank Address of the Bank the Bridge belongs to.
-    /// @return relay Address of the Bitcoin relay providing the current Bitcoin
+    /// @return relay Address of the Meowcoin relay providing the current Meowcoin
     ///         network difficulty.
     /// @return ecdsaWalletRegistry Address of the ECDSA Wallet Registry.
     /// @return reimbursementPool Address of the Reimbursement Pool.
@@ -1941,7 +1941,7 @@ contract Bridge is
         return self.treasury;
     }
 
-    /// @notice The number of confirmations on the Bitcoin chain required to
+    /// @notice The number of confirmations on the Meowcoin chain required to
     ///         successfully evaluate an SPV proof.
     function txProofDifficultyFactor() external view returns (uint256) {
         return self.txProofDifficultyFactor;

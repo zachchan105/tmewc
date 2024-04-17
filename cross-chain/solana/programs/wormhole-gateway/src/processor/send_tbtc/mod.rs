@@ -10,18 +10,18 @@ use anchor_lang::prelude::*;
 use anchor_spl::token;
 
 pub fn validate_send(
-    wrapped_tbtc_token: &Account<'_, token::TokenAccount>,
+    wrapped_tmewc_token: &Account<'_, token::TokenAccount>,
     recipient: &[u8; 32],
     amount: u64,
 ) -> Result<()> {
     require!(*recipient != [0; 32], WormholeGatewayError::ZeroRecipient);
     require_gt!(amount, 0, WormholeGatewayError::ZeroAmount);
 
-    // Check that the wrapped tBTC in custody is at least enough to bridge out.
+    // Check that the wrapped tMEWC in custody is at least enough to bridge out.
     require_gte!(
-        wrapped_tbtc_token.amount,
+        wrapped_tmewc_token.amount,
         amount,
-        WormholeGatewayError::NotEnoughWrappedTbtc
+        WormholeGatewayError::NotEnoughWrappedTmewc
     );
 
     Ok(())
@@ -29,10 +29,10 @@ pub fn validate_send(
 
 pub struct PrepareTransfer<'ctx, 'info> {
     custodian: &'ctx mut Account<'info, Custodian>,
-    tbtc_mint: &'ctx Account<'info, token::Mint>,
+    tmewc_mint: &'ctx Account<'info, token::Mint>,
     sender_token: &'ctx Account<'info, token::TokenAccount>,
     sender: &'ctx Signer<'info>,
-    wrapped_tbtc_token: &'ctx Account<'info, token::TokenAccount>,
+    wrapped_tmewc_token: &'ctx Account<'info, token::TokenAccount>,
     token_bridge_transfer_authority: &'ctx AccountInfo<'info>,
     token_program: &'ctx Program<'info, token::Token>,
 }
@@ -48,26 +48,26 @@ pub fn burn_and_prepare_transfer(
 ) -> Result<()> {
     let PrepareTransfer {
         custodian,
-        tbtc_mint,
+        tmewc_mint,
         sender_token,
         sender,
-        wrapped_tbtc_token,
+        wrapped_tmewc_token,
         token_bridge_transfer_authority,
         token_program,
     } = prepare_transfer;
 
-    // Account for burning tBTC.
+    // Account for burning tMEWC.
     custodian.minted_amount = custodian
         .minted_amount
         .checked_sub(amount)
         .ok_or(WormholeGatewayError::MintedAmountUnderflow)?;
 
-    // Burn TBTC mint.
+    // Burn TMEWC mint.
     token::burn(
         CpiContext::new(
             token_program.to_account_info(),
             token::Burn {
-                mint: tbtc_mint.to_account_info(),
+                mint: tmewc_mint.to_account_info(),
                 from: sender_token.to_account_info(),
                 authority: sender.to_account_info(),
             },
@@ -75,7 +75,7 @@ pub fn burn_and_prepare_transfer(
         amount,
     )?;
 
-    emit!(crate::event::WormholeTbtcSent {
+    emit!(crate::event::WormholeTmewcSent {
         amount,
         recipient_chain,
         gateway: gateway.unwrap_or_default(),
@@ -89,7 +89,7 @@ pub fn burn_and_prepare_transfer(
         CpiContext::new_with_signer(
             token_program.to_account_info(),
             token::Approve {
-                to: wrapped_tbtc_token.to_account_info(),
+                to: wrapped_tmewc_token.to_account_info(),
                 delegate: token_bridge_transfer_authority.to_account_info(),
                 authority: custodian.to_account_info(),
             },

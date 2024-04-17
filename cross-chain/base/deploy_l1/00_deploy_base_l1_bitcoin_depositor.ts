@@ -9,8 +9,8 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   const wormholeChains = getWormholeChains(hre.network.name)
 
-  const tbtcBridge = await deployments.get("Bridge")
-  const tbtcVault = await deployments.get("TBTCVault")
+  const tmewcBridge = await deployments.get("Bridge")
+  const tmewcVault = await deployments.get("TMEWCVault")
   const wormhole = await deployments.get("Wormhole")
   const wormholeRelayer = await deployments.get("WormholeRelayer")
   const wormholeTokenBridge = await deployments.get("TokenBridge")
@@ -20,10 +20,10 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     "BaseL1BitcoinDepositor",
     {
       contractName:
-        "@keep-network/tbtc-v2/contracts/l2/L1BitcoinDepositor.sol:L1BitcoinDepositor",
+        "@keep-network/tmewc/contracts/l2/L1BitcoinDepositor.sol:L1BitcoinDepositor",
       initializerArgs: [
-        tbtcBridge.address,
-        tbtcVault.address,
+        tmewcBridge.address,
+        tmewcVault.address,
         wormhole.address,
         wormholeRelayer.address,
         wormholeTokenBridge.address,

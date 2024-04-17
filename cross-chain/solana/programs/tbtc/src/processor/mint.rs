@@ -1,6 +1,6 @@
 use crate::{
-    constants::SEED_PREFIX_TBTC_MINT,
-    error::TbtcError,
+    constants::SEED_PREFIX_TMEWC_MINT,
+    error::TmewcError,
     state::{Config, MinterInfo},
 };
 use anchor_lang::prelude::*;
@@ -11,7 +11,7 @@ pub struct Mint<'info> {
     // Use the correct token mint for the program.
     #[account(
         mut,
-        seeds = [SEED_PREFIX_TBTC_MINT],
+        seeds = [SEED_PREFIX_TMEWC_MINT],
         bump = config.mint_bump,
         mint::authority = config,
     )]
@@ -46,7 +46,7 @@ pub struct Mint<'info> {
 impl<'info> Mint<'info> {
     fn constraints(ctx: &Context<Self>) -> Result<()> {
         // Can not mint when paused.
-        require!(!ctx.accounts.config.paused, TbtcError::IsPaused);
+        require!(!ctx.accounts.config.paused, TmewcError::IsPaused);
 
         Ok(())
     }

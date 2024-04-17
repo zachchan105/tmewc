@@ -15,8 +15,8 @@
 
 pragma solidity 0.8.17;
 
-/// @title Interface for the Bitcoin relay
-/// @notice Contains only the methods needed by tBTC v2. The Bitcoin relay
+/// @title Interface for the Meowcoin relay
+/// @notice Contains only the methods needed by tMEWC. The Meowcoin relay
 ///         provides the difficulty of the previous and current epoch. One
 ///         difficulty epoch spans 2016 blocks.
 interface IRelay {

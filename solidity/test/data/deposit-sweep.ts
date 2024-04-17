@@ -79,7 +79,7 @@ export interface DepositSweepTestData {
   }
 
   /**
-   * Chain difficulty which was in force at the moment of Bitcoin transaction
+   * Chain difficulty which was in force at the moment of Meowcoin transaction
    * execution. It is used to mock the difficulty provided by `Relay` contract
    * with a correct value thus making proof validation possible.
    */
@@ -102,7 +102,7 @@ export const NO_MAIN_UTXO = {
 export const SingleP2SHDeposit: DepositSweepTestData = {
   deposits: [
     {
-      // https://live.blockcypher.com/btc-testnet/tx/c580e0e352570d90e303d912a506055ceeb0ee06f97dce6988c69941374f5479
+      // https://live.blockcypher.com/mewc-testnet/tx/c580e0e352570d90e303d912a506055ceeb0ee06f97dce6988c69941374f5479
       fundingTx: {
         hash: "0x79544f374199c68869ce7df906eeb0ee5c0506a512d903e3900d5752e3e080c5",
         version: "0x01000000",
@@ -145,7 +145,7 @@ export const SingleP2SHDeposit: DepositSweepTestData = {
 
   mainUtxo: NO_MAIN_UTXO,
 
-  // https://live.blockcypher.com/btc-testnet/tx/f5b9ad4e8cd5317925319ebc64dc923092bef3b56429c6b1bc2261bbdc73f351
+  // https://live.blockcypher.com/mewc-testnet/tx/f5b9ad4e8cd5317925319ebc64dc923092bef3b56429c6b1bc2261bbdc73f351
   sweepTx: {
     hash: "0x51f373dcbb6122bcb1c62964b5f3be923092dc64bc9e31257931d58c4eadb9f5",
     version: "0x01000000",
@@ -216,7 +216,7 @@ export const SingleP2SHDeposit: DepositSweepTestData = {
 export const SingleP2WSHDeposit: DepositSweepTestData = {
   deposits: [
     {
-      // https://live.blockcypher.com/btc-testnet/tx/c1082c460527079a84e39ec6481666db72e5a22e473a78db03b996d26fd1dc83
+      // https://live.blockcypher.com/mewc-testnet/tx/c1082c460527079a84e39ec6481666db72e5a22e473a78db03b996d26fd1dc83
       fundingTx: {
         hash: "0x83dcd16fd296b903db783a472ea2e572db661648c69ee3849a072705462c08c1",
         version: "0x01000000",
@@ -247,7 +247,7 @@ export const SingleP2WSHDeposit: DepositSweepTestData = {
 
   mainUtxo: NO_MAIN_UTXO,
 
-  // https://live.blockcypher.com/btc-testnet/tx/9efc9d555233e12e06378a35a7b988d54f7043b5c3156adc79c7af0a0fd6f1a0
+  // https://live.blockcypher.com/mewc-testnet/tx/9efc9d555233e12e06378a35a7b988d54f7043b5c3156adc79c7af0a0fd6f1a0
   sweepTx: {
     hash: "0xa0f1d60f0aafc779dc6a15c3b543704fd588b9a7358a37062ee13352559dfc9e",
     version: "0x01000000",
@@ -310,7 +310,7 @@ export const SingleMainUtxo: DepositSweepTestData = {
 
   vault: "0x0000000000000000000000000000000000000000",
 
-  // https://live.blockcypher.com/btc-testnet/tx/f5b9ad4e8cd5317925319ebc64dc923092bef3b56429c6b1bc2261bbdc73f351
+  // https://live.blockcypher.com/mewc-testnet/tx/f5b9ad4e8cd5317925319ebc64dc923092bef3b56429c6b1bc2261bbdc73f351
   mainUtxo: {
     txHash:
       "0x51f373dcbb6122bcb1c62964b5f3be923092dc64bc9e31257931d58c4eadb9f5",
@@ -318,7 +318,7 @@ export const SingleMainUtxo: DepositSweepTestData = {
     txOutputValue: 18500,
   },
 
-  // https://live.blockcypher.com/btc-testnet/tx/3c5e414be0a36e7cd8a6b3a554b4bd9bebe3eee4eddd0dd2a182652e5772b1ad
+  // https://live.blockcypher.com/mewc-testnet/tx/3c5e414be0a36e7cd8a6b3a554b4bd9bebe3eee4eddd0dd2a182652e5772b1ad
   sweepTx: {
     hash: "0xadb172572e6582a1d20dddede4eee3eb9bbdb454a5b3a6d87c6ea3e04b415e3c",
     version: "0x01000000",
@@ -383,7 +383,7 @@ export const SingleMainUtxo: DepositSweepTestData = {
 export const MultipleDepositsNoMainUtxo: DepositSweepTestData = {
   deposits: [
     {
-      // https://live.blockcypher.com/btc-testnet/tx/d6a04c76aab203fe9cd8a2498bb4a8c50eb767fd95719c7790ac675ed5dec526
+      // https://live.blockcypher.com/mewc-testnet/tx/d6a04c76aab203fe9cd8a2498bb4a8c50eb767fd95719c7790ac675ed5dec526
       fundingTx: {
         hash: "0x26c5ded55e67ac90779c7195fd67b70ec5a8b48b49a2d89cfe03b2aa764ca0d6",
         version: "0x01000000",
@@ -410,7 +410,7 @@ export const MultipleDepositsNoMainUtxo: DepositSweepTestData = {
       },
     },
     {
-      // https://live.blockcypher.com/btc-testnet/tx/659ea860a4879acba52c1518fb44f71ed8bb0db78074da29eaf0afac6e2d79d1
+      // https://live.blockcypher.com/mewc-testnet/tx/659ea860a4879acba52c1518fb44f71ed8bb0db78074da29eaf0afac6e2d79d1
       fundingTx: {
         hash: "0xd1792d6eacaff0ea29da7480b70dbbd81ef744fb18152ca5cb9a87a460a89e65",
         version: "0x01000000",
@@ -436,7 +436,7 @@ export const MultipleDepositsNoMainUtxo: DepositSweepTestData = {
       },
     },
     {
-      // https://live.blockcypher.com/btc-testnet/tx/bab571c612c36d764d22f058097d8ece2e3ca255e886d4cb91131ee39823fc48
+      // https://live.blockcypher.com/mewc-testnet/tx/bab571c612c36d764d22f058097d8ece2e3ca255e886d4cb91131ee39823fc48
       fundingTx: {
         hash: "0x48fc2398e31e1391cbd486e855a23c2ece8e7d0958f0224d766dc312c671b5ba",
         version: "0x01000000",
@@ -462,7 +462,7 @@ export const MultipleDepositsNoMainUtxo: DepositSweepTestData = {
       },
     },
     {
-      // https://live.blockcypher.com/btc-testnet/tx/c66e9ef85c94240c76c0372173e2371d746426f30df003b13e8653bf91042ee7
+      // https://live.blockcypher.com/mewc-testnet/tx/c66e9ef85c94240c76c0372173e2371d746426f30df003b13e8653bf91042ee7
       fundingTx: {
         hash: "0xe72e0491bf53863eb103f00df32664741d37e2732137c0760c24945cf89e6ec6",
         version: "0x01000000",
@@ -488,7 +488,7 @@ export const MultipleDepositsNoMainUtxo: DepositSweepTestData = {
       },
     },
     {
-      // https://live.blockcypher.com/btc-testnet/tx/e2131bdd5017d078ec2c17d463c9bc17abf79a9c8a37746f032b2d48ac2ff189
+      // https://live.blockcypher.com/mewc-testnet/tx/e2131bdd5017d078ec2c17d463c9bc17abf79a9c8a37746f032b2d48ac2ff189
       fundingTx: {
         hash: "0x89f12fac482d2b036f74378a9c9af7ab17bcc963d4172cec78d01750dd1b13e2",
         version: "0x01000000",
@@ -519,7 +519,7 @@ export const MultipleDepositsNoMainUtxo: DepositSweepTestData = {
 
   mainUtxo: NO_MAIN_UTXO,
 
-  // https://live.blockcypher.com/btc-testnet/tx/2a5d5f472e376dc28964e1b597b1ca5ee5ac042101b5199a3ca8dae2deec3538
+  // https://live.blockcypher.com/mewc-testnet/tx/2a5d5f472e376dc28964e1b597b1ca5ee5ac042101b5199a3ca8dae2deec3538
   sweepTx: {
     hash: "0x3835ecdee2daa83c9a19b5012104ace55ecab197b5e16489c26d372e475f5d2a",
     version: "0x01000000",
@@ -594,7 +594,7 @@ export const MultipleDepositsNoMainUtxo: DepositSweepTestData = {
 export const MultipleDepositsWithMainUtxo: DepositSweepTestData = {
   deposits: [
     {
-      // https://live.blockcypher.com/btc-testnet/tx/85eb466ed605916ea764860ceda68fa05e7448cc772558c866a409366b997a85
+      // https://live.blockcypher.com/mewc-testnet/tx/85eb466ed605916ea764860ceda68fa05e7448cc772558c866a409366b997a85
       fundingTx: {
         hash: "0x857a996b3609a466c8582577cc48745ea08fa6ed0c8664a76e9105d66e46eb85",
         version: "0x01000000",
@@ -620,7 +620,7 @@ export const MultipleDepositsWithMainUtxo: DepositSweepTestData = {
       },
     },
     {
-      // https://live.blockcypher.com/btc-testnet/tx/468e0be44cf5b2a529f22c49d8006fb29a147a4f1b6a54326a8c181208560ec6
+      // https://live.blockcypher.com/mewc-testnet/tx/468e0be44cf5b2a529f22c49d8006fb29a147a4f1b6a54326a8c181208560ec6
       fundingTx: {
         hash: "0xc60e560812188c6a32546a1b4f7a149ab26f00d8492cf229a5b2f54ce40b8e46",
         version: "0x01000000",
@@ -646,7 +646,7 @@ export const MultipleDepositsWithMainUtxo: DepositSweepTestData = {
       },
     },
     {
-      // https://live.blockcypher.com/btc-testnet/tx/71b13c7b1e2968f869c832ccdb72bbdccd35d64b78826d251d350d79a7a32f30
+      // https://live.blockcypher.com/mewc-testnet/tx/71b13c7b1e2968f869c832ccdb72bbdccd35d64b78826d251d350d79a7a32f30
       fundingTx: {
         hash:
           "0x302fa3a7790d351d256d82784bd635cddcbb72dbcc32c869f868291e7b" +
@@ -674,7 +674,7 @@ export const MultipleDepositsWithMainUtxo: DepositSweepTestData = {
       },
     },
     {
-      // https://live.blockcypher.com/btc-testnet/tx/68f4041f6bbddb146f672d31e4a2cce6431e1583bb24a33a2c836a7f238625d3
+      // https://live.blockcypher.com/mewc-testnet/tx/68f4041f6bbddb146f672d31e4a2cce6431e1583bb24a33a2c836a7f238625d3
       fundingTx: {
         hash: "0xd32586237f6a832c3aa324bb83151e43e6cca2e4312d676f14dbbd6b1f04f468",
         version: "0x01000000",
@@ -700,7 +700,7 @@ export const MultipleDepositsWithMainUtxo: DepositSweepTestData = {
       },
     },
     {
-      // https://live.blockcypher.com/btc-testnet/tx/8c535793b98f1dbd638773e7ee07ebbbc5f86a55b5ae31ba91f63a67682e95aa
+      // https://live.blockcypher.com/mewc-testnet/tx/8c535793b98f1dbd638773e7ee07ebbbc5f86a55b5ae31ba91f63a67682e95aa
       fundingTx: {
         hash: "0xaa952e68673af691ba31aeb5556af8c5bbeb07eee7738763bd1d8fb99357538c",
         version: "0x01000000",
@@ -729,7 +729,7 @@ export const MultipleDepositsWithMainUtxo: DepositSweepTestData = {
 
   vault: "0x0000000000000000000000000000000000000000",
 
-  // https://live.blockcypher.com/btc-testnet/tx/2a5d5f472e376dc28964e1b597b1ca5ee5ac042101b5199a3ca8dae2deec3538
+  // https://live.blockcypher.com/mewc-testnet/tx/2a5d5f472e376dc28964e1b597b1ca5ee5ac042101b5199a3ca8dae2deec3538
   mainUtxo: {
     txHash:
       "0x3835ecdee2daa83c9a19b5012104ace55ecab197b5e16489c26d372e475f5d2a",
@@ -737,7 +737,7 @@ export const MultipleDepositsWithMainUtxo: DepositSweepTestData = {
     txOutputValue: 1058000,
   },
 
-  // https://live.blockcypher.com/btc-testnet/tx/4459881f4964ee08dd298a12dfc1f461bf35cca8a105974d8baf0955c830d836/
+  // https://live.blockcypher.com/mewc-testnet/tx/4459881f4964ee08dd298a12dfc1f461bf35cca8a105974d8baf0955c830d836/
   sweepTx: {
     hash: "0x36d830c85509af8b4d9705a1a8cc35bf61f4c1df128a29dd08ee64491f885944",
     version: "0x01000000",
@@ -829,7 +829,7 @@ export const SingleMainUtxoP2SHOutput: DepositSweepTestData = {
     txOutputValue: 1669207,
   },
 
-  // https://live.blockcypher.com/btc-testnet/tx/588a0e5e68ec8d3cf80d1190e51a68a431737a33c3a09f16303945dd49e369cd
+  // https://live.blockcypher.com/mewc-testnet/tx/588a0e5e68ec8d3cf80d1190e51a68a431737a33c3a09f16303945dd49e369cd
   sweepTx: {
     hash: "0xcd69e349dd453930169fa0c3337a7331a4681ae590110df83c8dec685e0e8a58",
     version: "0x01000000",

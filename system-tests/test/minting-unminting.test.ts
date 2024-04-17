@@ -9,48 +9,48 @@ import {
   WalletTx,
   BitcoinHashUtils,
   EthereumAddress,
-  TBTC,
-} from "@keep-network/tbtc-v2.ts"
+  TMEWC,
+} from "@keep-network/tmewc.ts"
 import { BigNumber, constants, Contract } from "ethers"
 import chai, { expect } from "chai"
 import chaiAsPromised from "chai-as-promised"
 
 import {
   setupSystemTestsContext,
-  createTbtcContractsHandle,
+  createTmewcContractsHandle,
 } from "./utils/context"
-import { fakeRelayDifficulty, waitTransactionConfirmed } from "./utils/bitcoin"
+import { fakeRelayDifficulty, waitTransactionConfirmed } from "./utils/meowcoin"
 
 import type { SystemTestsContext } from "./utils/context"
 import type {
   RedemptionRequest,
   BitcoinUtxo,
   DepositReceipt,
-} from "@keep-network/tbtc-v2.ts"
+} from "@keep-network/tmewc.ts"
 
 chai.use(chaiAsPromised)
 
-// Converts satoshi to TBTC token units
+// Converts satoshi to TMEWC token units
 const satoshiMultiplier = 1e10
 
 /**
- * This system test scenario mints TBTC by depositing into the TBTCVault
- * and use the TBTC token approve-and-call mechanism to unmint and redeem
- * deposited BTC.
+ * This system test scenario mints TMEWC by depositing into the TMEWCVault
+ * and use the TMEWC token approve-and-call mechanism to unmint and redeem
+ * deposited MEWC.
  *
  * The scenario consists of the following steps:
- * 1. The depositor broadcasts the deposit transaction on BTC chain and reveals
- *    it to the bridge by pointing TBTCVault as the target vault.
- * 2. The wallet broadcasts the sweep transaction of the given deposit on BTC
+ * 1. The depositor broadcasts the deposit transaction on MEWC chain and reveals
+ *    it to the bridge by pointing TMEWCVault as the target vault.
+ * 2. The wallet broadcasts the sweep transaction of the given deposit on MEWC
  *    chain and submits the sweep proof to the bridge.
- * 3. The depositor (redeemer) uses the TBTC token approve-and-call mechanism
- *    to unmint their token balance and redeem deposited BTC.
+ * 3. The depositor (redeemer) uses the TMEWC token approve-and-call mechanism
+ *    to unmint their token balance and redeem deposited MEWC.
  * 4. The wallet broadcasts the redemption transaction handling the given
  *    request and submits the redemption proof to the bridge.
  *
  * Following prerequisites must be fulfilled to make a successful pass:
- * - The depositor's BTC balance must allow to perform the deposit
- * - tBTC v2 contracts must be deployed on used Ethereum network
+ * - The depositor's MEWC balance must allow to perform the deposit
+ * - tMEWC contracts must be deployed on used Ethereum network
  * - A fresh live wallet (with no main UTXO yet) must be registered in
  *   the bridge
  */
@@ -62,10 +62,10 @@ describe("System Test - Minting and unminting", () => {
 
   let bank: Contract
   let relay: Contract
-  let tbtc: Contract
+  let tmewc: Contract
 
-  let depositorSdk: TBTC
-  let maintainerSdk: TBTC
+  let depositorSdk: TMEWC
+  let maintainerSdk: TMEWC
   let walletTx: WalletTx
 
   const depositAmount = BigNumber.from(2000000)
@@ -96,7 +96,7 @@ describe("System Test - Minting and unminting", () => {
     )
 
     bridgeAddress = deployedContracts.Bridge.address
-    vaultAddress = deployedContracts.TBTCVault.address
+    vaultAddress = deployedContracts.TMEWCVault.address
 
     const bankDeploymentInfo = deployedContracts.Bank
     bank = new Contract(
@@ -112,34 +112,34 @@ describe("System Test - Minting and unminting", () => {
       maintainer
     )
 
-    const tbtcDeploymentInfo = deployedContracts.TBTC
-    tbtc = new Contract(
-      tbtcDeploymentInfo.address,
-      tbtcDeploymentInfo.abi,
+    const tmewcDeploymentInfo = deployedContracts.TMEWC
+    tmewc = new Contract(
+      tmewcDeploymentInfo.address,
+      tmewcDeploymentInfo.abi,
       maintainer
     )
 
-    const depositorTbtcContracts = await createTbtcContractsHandle(
+    const depositorTmewcContracts = await createTmewcContractsHandle(
       deployedContracts,
       depositor
     )
 
-    depositorSdk = await TBTC.initializeCustom(
-      depositorTbtcContracts,
+    depositorSdk = await TMEWC.initializeCustom(
+      depositorTmewcContracts,
       electrumClient
     )
 
-    const maintainerTbtcContracts = await createTbtcContractsHandle(
+    const maintainerTmewcContracts = await createTmewcContractsHandle(
       deployedContracts,
       maintainer
     )
 
-    maintainerSdk = await TBTC.initializeCustom(
-      maintainerTbtcContracts,
+    maintainerSdk = await TMEWC.initializeCustom(
+      maintainerTmewcContracts,
       electrumClient
     )
 
-    walletTx = new WalletTx(maintainerTbtcContracts, electrumClient)
+    walletTx = new WalletTx(maintainerTmewcContracts, electrumClient)
 
     depositorBitcoinAddress = BitcoinAddressConverter.publicKeyToAddress(
       systemTestsContext.depositorBitcoinKeyPair.publicKey.compressed,
@@ -152,7 +152,7 @@ describe("System Test - Minting and unminting", () => {
   })
 
   context(
-    "when minting is initiated by making and revealing a deposit to the TBTCVault",
+    "when minting is initiated by making and revealing a deposit to the TMEWCVault",
     () => {
       before("make and reveal deposit", async () => {
         const deposit = await depositorSdk.deposits.initiateDeposit(
@@ -186,15 +186,15 @@ describe("System Test - Minting and unminting", () => {
         ))
 
         console.log(`
-          Deposit made on BTC chain:
+          Deposit made on MEWC chain:
           - Transaction hash: ${depositUtxo.transactionHash}
           - Output index: ${depositUtxo.outputIndex}
         `)
 
         // It happens from time to time that a deposit reveal process starts when
-        // a deposit is not captured by the Bitcoin chain yet and a deposit is
-        // revealed with a non-existing Bitcoin tx. We should wait some time so
-        // the Bitcoin chain is in sync and then start the revealing process.
+        // a deposit is not captured by the Meowcoin chain yet and a deposit is
+        // revealed with a non-existing Meowcoin tx. We should wait some time so
+        // the Meowcoin chain is in sync and then start the revealing process.
         await new Promise((r) => setTimeout(r, 3000))
 
         await deposit.initiateMinting(depositUtxo)
@@ -204,7 +204,7 @@ describe("System Test - Minting and unminting", () => {
       `)
       })
 
-      it("should broadcast the deposit transaction on the Bitcoin network", async () => {
+      it("should broadcast the deposit transaction on the Meowcoin network", async () => {
         expect(
           (
             await depositorSdk.bitcoinClient.getRawTransaction(
@@ -216,15 +216,15 @@ describe("System Test - Minting and unminting", () => {
 
       it("should reveal the deposit to the bridge", async () => {
         const { revealedAt } =
-          await maintainerSdk.tbtcContracts.bridge.deposits(
+          await maintainerSdk.tmewcContracts.bridge.deposits(
             depositUtxo.transactionHash,
             depositUtxo.outputIndex
           )
         expect(revealedAt).to.be.greaterThan(0)
       })
 
-      it("should set TBTCVault as target vault of the revealed deposit", async () => {
-        const { vault } = await maintainerSdk.tbtcContracts.bridge.deposits(
+      it("should set TMEWCVault as target vault of the revealed deposit", async () => {
+        const { vault } = await maintainerSdk.tmewcContracts.bridge.deposits(
           depositUtxo.transactionHash,
           depositUtxo.outputIndex
         )
@@ -244,7 +244,7 @@ describe("System Test - Minting and unminting", () => {
             ))
 
           console.log(`
-        Deposit swept on Bitcoin chain:
+        Deposit swept on Meowcoin chain:
         - Transaction hash: ${sweepUtxo.transactionHash}
       `)
 
@@ -282,7 +282,7 @@ describe("System Test - Minting and unminting", () => {
       `)
         })
 
-        it("should broadcast the sweep transaction on the Bitcoin network", async () => {
+        it("should broadcast the sweep transaction on the Meowcoin network", async () => {
           expect(
             (
               await maintainerSdk.bitcoinClient.getRawTransaction(
@@ -293,16 +293,16 @@ describe("System Test - Minting and unminting", () => {
         })
 
         it("should sweep the deposit on the bridge", async () => {
-          const { sweptAt } = await maintainerSdk.tbtcContracts.bridge.deposits(
+          const { sweptAt } = await maintainerSdk.tmewcContracts.bridge.deposits(
             depositUtxo.transactionHash,
             depositUtxo.outputIndex
           )
           expect(sweptAt).to.be.greaterThan(0)
         })
 
-        it("should increase TBTCVault's balance in the bank", async () => {
+        it("should increase TMEWCVault's balance in the bank", async () => {
           const { treasuryFee } =
-            await maintainerSdk.tbtcContracts.bridge.deposits(
+            await maintainerSdk.tmewcContracts.bridge.deposits(
               depositUtxo.transactionHash,
               depositUtxo.outputIndex
             )
@@ -315,9 +315,9 @@ describe("System Test - Minting and unminting", () => {
           expect(actualBalance).to.be.equal(expectedBalance)
         })
 
-        it("should mint TBTC to the depositor", async () => {
+        it("should mint TMEWC to the depositor", async () => {
           const { treasuryFee } =
-            await maintainerSdk.tbtcContracts.bridge.deposits(
+            await maintainerSdk.tmewcContracts.bridge.deposits(
               depositUtxo.transactionHash,
               depositUtxo.outputIndex
             )
@@ -327,7 +327,7 @@ describe("System Test - Minting and unminting", () => {
             .sub(depositSweepTxFee)
             .mul(satoshiMultiplier) // The minted balance is expected to be 1e18
 
-          const actualMintedAmount = await tbtc.balanceOf(
+          const actualMintedAmount = await tmewc.balanceOf(
             systemTestsContext.depositor.address
           )
 
@@ -339,9 +339,9 @@ describe("System Test - Minting and unminting", () => {
           let redeemerOutputScript: Hex
           let redemptionRequest: RedemptionRequest
 
-          before("do unminting through TBTC approve-and-call", async () => {
-            // Unmint all depositor's TBTC tokens.
-            unmintedAmount = await tbtc.balanceOf(
+          before("do unminting through TMEWC approve-and-call", async () => {
+            // Unmint all depositor's TMEWC tokens.
+            unmintedAmount = await tmewc.balanceOf(
               systemTestsContext.depositor.address
             )
 
@@ -359,7 +359,7 @@ describe("System Test - Minting and unminting", () => {
             )
 
             console.log(
-              `Unminted ${unmintedAmount} TBTC and requested redemption to script ${redeemerOutputScript} on the bridge`
+              `Unminted ${unmintedAmount} TMEWC and requested redemption to script ${redeemerOutputScript} on the bridge`
             )
 
             redemptionRequest =
@@ -370,13 +370,13 @@ describe("System Test - Minting and unminting", () => {
               )
           })
 
-          it("should burn depositor's TBTC tokens", async () => {
+          it("should burn depositor's TMEWC tokens", async () => {
             expect(
-              await tbtc.balanceOf(systemTestsContext.depositor.address)
+              await tmewc.balanceOf(systemTestsContext.depositor.address)
             ).to.be.equal(0)
           })
 
-          it("should transfer TBTCVault's bank balance to the Bridge", async () => {
+          it("should transfer TMEWCVault's bank balance to the Bridge", async () => {
             expect(await bank.balanceOf(vaultAddress)).to.be.equal(0)
             expect(await bank.balanceOf(bridgeAddress)).to.be.equal(
               unmintedAmount.div(satoshiMultiplier)
@@ -409,7 +409,7 @@ describe("System Test - Minting and unminting", () => {
                     ))
 
                   console.log(
-                    "Redemption made on Bitcoin chain:\n" +
+                    "Redemption made on Meowcoin chain:\n" +
                       `- Transaction hash: ${redemptionTxHash}`
                   )
 
@@ -434,7 +434,7 @@ describe("System Test - Minting and unminting", () => {
                 }
               )
 
-              it("should broadcast the redemption transaction on the Bitcoin network", async () => {
+              it("should broadcast the redemption transaction on the Meowcoin network", async () => {
                 expect(
                   (
                     await maintainerSdk.bitcoinClient.getRawTransaction(

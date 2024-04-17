@@ -1,13 +1,13 @@
-# tBTC v2 SDK
+# tMEWC SDK
 
-[![build](https://img.shields.io/github/actions/workflow/status/keep-network/tbtc-v2/typescript.yml?branch=main&event=push&label=build)](https://github.com/keep-network/tbtc-v2/actions/workflows/typescript.yml)
-[![npm](https://img.shields.io/npm/v/%40keep-network%2Ftbtc-v2.ts)](https://www.npmjs.com/package/@keep-network/tbtc-v2.ts)
-[![documentation](https://badgen.net/static/GitBook/Documentation/yellow)](https://docs.threshold.network/app-development/tbtc-v2/tbtc-sdk)
+[![build](https://img.shields.io/github/actions/workflow/status/keep-network/tmewc/typescript.yml?branch=main&event=push&label=build)](https://github.com/keep-network/tmewc/actions/workflows/typescript.yml)
+[![npm](https://img.shields.io/npm/v/%40keep-network%2Ftmewc.ts)](https://www.npmjs.com/package/@keep-network/tmewc.ts)
+[![documentation](https://badgen.net/static/GitBook/Documentation/yellow)](https://docs.threshold.network/app-development/tmewc/tmewc-sdk)
 
-tBTC SDK is a TypeScript library that provides effortless access to the
-fundamental features of the tBTC Bitcoin bridge. The SDK allows developers
-to integrate tBTC into their own applications and offer the power of
-trustless tokenized Bitcoin to their users.
+tMEWC SDK is a TypeScript library that provides effortless access to the
+fundamental features of the tMEWC Meowcoin bridge. The SDK allows developers
+to integrate tMEWC into their own applications and offer the power of
+trustless tokenized Meowcoin to their users.
 
 **Table of contents:**
 
@@ -30,16 +30,16 @@ project.
 
 ### Installation
 
-To install the tBTC SDK in your project using `yarn`, run:
+To install the tMEWC SDK in your project using `yarn`, run:
 
 ```bash
-yarn add @keep-network/tbtc-v2.ts
+yarn add @keep-network/tmewc.ts
 ```
 
 If you prefer to use `npm`, do:
 
 ```bash
-npm i @keep-network/tbtc-v2.ts
+npm i @keep-network/tmewc.ts
 ```
 
 Please note that you will also need to install the
@@ -65,22 +65,22 @@ Here is a short example demonstrating SDK usage:
 
 ```typescript
 // Import SDK entrypoint component.
-import { TBTC } from "@keep-network/tbtc-v2.ts"
+import { TMEWC } from "@keep-network/tmewc.ts"
 
 // Create an instance of ethers signer.
 const signer = (...)
 
 // Initialize the SDK.
-const sdk = await TBTC.initializeMainnet(signer)
+const sdk = await TMEWC.initializeMainnet(signer)
 
 // Access SDK features.
 sdk.deposits.(...)
 sdk.redemptions.(...)
 
-// Access tBTC smart contracts directly.
-sdk.tbtcContracts.(...)
+// Access tMEWC smart contracts directly.
+sdk.tmewcContracts.(...)
 
-// Access Bitcoin client directly.
+// Access Meowcoin client directly.
 sdk.bitcoinClient.(...)
 ```
 
@@ -88,7 +88,7 @@ sdk.bitcoinClient.(...)
 
 Contributions are always welcome! Feel free to open any issue or send a pull request.
 Please refer the repository-level
-[CONTRIBUTING.adoc](https://github.com/keep-network/tbtc-v2/blob/main/CONTRIBUTING.adoc)
+[CONTRIBUTING.adoc](https://github.com/keep-network/tmewc/blob/main/CONTRIBUTING.adoc)
 document for general contribution guidelines. Below, you can find how to set up
 the SDK module for development.
 
@@ -152,4 +152,4 @@ to the [`api-reference`](./api-reference) directory.
 
 This README provides just a basic guidance. Comprehensive documentation for
 this SDK can be found on the
-[Threshold Network Docs website](https://docs.threshold.network/app-development/tbtc-v2/tbtc-sdk).
+[Threshold Network Docs website](https://docs.threshold.network/app-development/tmewc/tmewc-sdk).

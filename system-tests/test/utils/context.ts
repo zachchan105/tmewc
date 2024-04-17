@@ -3,16 +3,16 @@ import fs from "fs"
 import { helpers, network } from "hardhat"
 import {
   EthereumBridge,
-  EthereumTBTCToken,
-  EthereumTBTCVault,
-} from "@keep-network/tbtc-v2.ts"
+  EthereumTMEWCToken,
+  EthereumTMEWCVault,
+} from "@keep-network/tmewc.ts"
 
-import { keyPairFromWif } from "./bitcoin"
+import { keyPairFromWif } from "./meowcoin"
 
 import type { ContractExport, Export } from "hardhat-deploy/dist/types"
 import type { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers"
-import type { KeyPair as BitcoinKeyPair } from "./bitcoin"
-import type { TBTCContracts } from "@keep-network/tbtc-v2.ts"
+import type { KeyPair as BitcoinKeyPair } from "./meowcoin"
+import type { TMEWCContracts } from "@keep-network/tmewc.ts"
 
 // TODO: For now, the context and its setup is global and identical for each
 //       scenario. Once more scenarios is added, this should be probably
@@ -43,11 +43,11 @@ export interface SystemTestsContext {
    */
   depositor: SignerWithAddress
   /**
-   * Bitcoin key pair of the depositor.
+   * Meowcoin key pair of the depositor.
    */
   depositorBitcoinKeyPair: BitcoinKeyPair
   /**
-   * Bitcoin key pair of the wallet.
+   * Meowcoin key pair of the wallet.
    */
   walletBitcoinKeyPair: BitcoinKeyPair
 }
@@ -101,13 +101,13 @@ export async function setupSystemTestsContext(): Promise<SystemTestsContext> {
     - Electrum URL: ${electrumUrl}
     - Ethereum network: ${network.name}
     - Bridge address ${deployedContracts.Bridge.address}
-    - TBTCVault address ${deployedContracts.TBTCVault.address}
-    - TBTC token address ${deployedContracts.TBTC.address}
+    - TMEWCVault address ${deployedContracts.TMEWCVault.address}
+    - TMEWC token address ${deployedContracts.TMEWC.address}
     - Governance Ethereum address ${governance.address}
     - Maintainer Ethereum address ${maintainer.address}
     - Depositor Ethereum address ${depositor.address}
-    - Depositor Bitcoin public key ${depositorBitcoinKeyPair.publicKey.compressed}
-    - Wallet Bitcoin public key ${walletBitcoinKeyPair.publicKey.compressed}
+    - Depositor Meowcoin public key ${depositorBitcoinKeyPair.publicKey.compressed}
+    - Wallet Meowcoin public key ${walletBitcoinKeyPair.publicKey.compressed}
   `)
 
   return {
@@ -141,10 +141,10 @@ function readContractsDeploymentExportFile(): Export {
 }
 
 /**
- * Reads a Bitcoin WIF from an environment variable and creates a key pair
+ * Reads a Meowcoin WIF from an environment variable and creates a key pair
  * based on it. Throws if the environment variable is not set.
  * @param wifEnvName Name of the environment variable that contains the WIF.
- * @returns Bitcoin key pair corresponding to the WIF.
+ * @returns Meowcoin key pair corresponding to the WIF.
  */
 function readBitcoinWif(wifEnvName: string): BitcoinKeyPair {
   const wif = process.env[wifEnvName] as string
@@ -157,27 +157,27 @@ function readBitcoinWif(wifEnvName: string): BitcoinKeyPair {
 }
 
 /**
- * Creates TBTC contract handles for the given signer.
+ * Creates TMEWC contract handles for the given signer.
  * @param deployedContracts Deployed contracts info.
  * @param signer Signer used when communicating with the contracts.
- * @returns TBTC contract handles.
+ * @returns TMEWC contract handles.
  */
-export async function createTbtcContractsHandle(
+export async function createTmewcContractsHandle(
   deployedContracts: DeployedContracts,
   signer: SignerWithAddress
-): Promise<TBTCContracts> {
+): Promise<TMEWCContracts> {
   const bridge = new EthereumBridge({
     address: deployedContracts.Bridge.address,
     signerOrProvider: signer,
   })
 
-  const tbtcToken = new EthereumTBTCToken({
-    address: deployedContracts.TBTC.address,
+  const tmewcToken = new EthereumTMEWCToken({
+    address: deployedContracts.TMEWC.address,
     signerOrProvider: signer,
   })
 
-  const tbtcVault = new EthereumTBTCVault({
-    address: deployedContracts.TBTCVault.address,
+  const tmewcVault = new EthereumTMEWCVault({
+    address: deployedContracts.TMEWCVault.address,
     signerOrProvider: signer,
   })
 
@@ -185,8 +185,8 @@ export async function createTbtcContractsHandle(
 
   return {
     bridge,
-    tbtcToken,
-    tbtcVault,
+    tmewcToken,
+    tmewcVault,
     walletRegistry,
   }
 }

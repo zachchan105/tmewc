@@ -1,6 +1,6 @@
 # Interface: BitcoinRawTxVectors
 
-Represents a raw Bitcoin transaction decomposed into specific vectors.
+Represents a raw Meowcoin transaction decomposed into specific vectors.
 
 ## Table of contents
 
@@ -22,7 +22,7 @@ as a hex string.
 
 #### Defined in
 
-[src/lib/bitcoin/tx.ts:113](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/bitcoin/tx.ts#L113)
+[src/lib/meowcoin/tx.ts:113](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/meowcoin/tx.ts#L113)
 
 ___
 
@@ -34,7 +34,7 @@ Transaction locktime as a hex string.
 
 #### Defined in
 
-[src/lib/bitcoin/tx.ts:124](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/bitcoin/tx.ts#L124)
+[src/lib/meowcoin/tx.ts:124](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/meowcoin/tx.ts#L124)
 
 ___
 
@@ -47,7 +47,7 @@ as a hex string.
 
 #### Defined in
 
-[src/lib/bitcoin/tx.ts:119](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/bitcoin/tx.ts#L119)
+[src/lib/meowcoin/tx.ts:119](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/meowcoin/tx.ts#L119)
 
 ___
 
@@ -59,4 +59,4 @@ Transaction version as a hex string.
 
 #### Defined in
 
-[src/lib/bitcoin/tx.ts:107](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/bitcoin/tx.ts#L107)
+[src/lib/meowcoin/tx.ts:107](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/meowcoin/tx.ts#L107)

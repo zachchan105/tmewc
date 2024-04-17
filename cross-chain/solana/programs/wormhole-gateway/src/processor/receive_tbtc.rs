@@ -1,5 +1,5 @@
 use crate::{
-    constants::{TBTC_ETHEREUM_TOKEN_ADDRESS, TBTC_ETHEREUM_TOKEN_CHAIN},
+    constants::{TMEWC_ETHEREUM_TOKEN_ADDRESS, TMEWC_ETHEREUM_TOKEN_CHAIN},
     error::WormholeGatewayError,
     state::Custodian,
 };
@@ -12,7 +12,7 @@ use wormhole_anchor_sdk::{
 
 #[derive(Accounts)]
 #[instruction(message_hash: [u8; 32])]
-pub struct ReceiveTbtc<'info> {
+pub struct ReceiveTmewc<'info> {
     #[account(mut)]
     payer: Signer<'info>,
 
@@ -20,9 +20,9 @@ pub struct ReceiveTbtc<'info> {
         mut,
         seeds = [Custodian::SEED_PREFIX],
         bump = custodian.bump,
-        has_one = wrapped_tbtc_token,
-        has_one = wrapped_tbtc_mint,
-        has_one = tbtc_mint
+        has_one = wrapped_tmewc_token,
+        has_one = wrapped_tmewc_mint,
+        has_one = tmewc_mint
     )]
     custodian: Account<'info, Custodian>,
 
@@ -42,24 +42,24 @@ pub struct ReceiveTbtc<'info> {
 
     /// Custody account.
     #[account(mut)]
-    wrapped_tbtc_token: Box<Account<'info, token::TokenAccount>>,
+    wrapped_tmewc_token: Box<Account<'info, token::TokenAccount>>,
 
     /// This mint is owned by the Wormhole Token Bridge program. This PDA address is stored in the
     /// custodian account.
     #[account(mut)]
-    wrapped_tbtc_mint: Box<Account<'info, token::Mint>>,
+    wrapped_tmewc_mint: Box<Account<'info, token::Mint>>,
 
     #[account(mut)]
-    tbtc_mint: Box<Account<'info, token::Mint>>,
+    tmewc_mint: Box<Account<'info, token::Mint>>,
 
-    /// Token account for minted tBTC.
+    /// Token account for minted tMEWC.
     ///
     /// NOTE: Because the recipient is encoded in the transfer message payload, we can check the
     /// authority from the deserialized VAA. But we should still check whether the authority is the
     /// zero address in access control.
     #[account(
         mut,
-        token::mint = tbtc_mint,
+        token::mint = tmewc_mint,
         token::authority = recipient,
     )]
     recipient_token: Box<Account<'info, token::TokenAccount>>,
@@ -73,21 +73,21 @@ pub struct ReceiveTbtc<'info> {
     /// The gateway will create an associated token account for the recipient if it doesn't exist.
     ///
     /// NOTE: When the minting limit increases, the recipient can use this token account to mint
-    /// tBTC using the deposit_wormhole_tbtc instruction.
+    /// tMEWC using the deposit_wormhole_tmewc instruction.
     #[account(
         mut,
         address = associated_token::get_associated_token_address(
             &recipient.key(),
-            &wrapped_tbtc_mint.key()
+            &wrapped_tmewc_mint.key()
         ),
     )]
     recipient_wrapped_token: AccountInfo<'info>,
 
-    /// CHECK: This account is needed for the TBTC program.
-    tbtc_config: UncheckedAccount<'info>,
+    /// CHECK: This account is needed for the TMEWC program.
+    tmewc_config: UncheckedAccount<'info>,
 
-    /// CHECK: This account is needed for the TBTC program.
-    tbtc_minter_info: UncheckedAccount<'info>,
+    /// CHECK: This account is needed for the TMEWC program.
+    tmewc_minter_info: UncheckedAccount<'info>,
 
     /// CHECK: This account is needed for the Token Bridge program.
     token_bridge_config: UncheckedAccount<'info>,
@@ -104,7 +104,7 @@ pub struct ReceiveTbtc<'info> {
     /// CHECK: This account is needed for the Token Bridge program.
     rent: UncheckedAccount<'info>,
 
-    tbtc_program: Program<'info, tbtc::Tbtc>,
+    tmewc_program: Program<'info, tmewc::Tmewc>,
     token_bridge_program: Program<'info, TokenBridge>,
     core_bridge_program: Program<'info, CoreBridge>,
     associated_token_program: Program<'info, associated_token::AssociatedToken>,
@@ -112,7 +112,7 @@ pub struct ReceiveTbtc<'info> {
     system_program: Program<'info, System>,
 }
 
-impl<'info> ReceiveTbtc<'info> {
+impl<'info> ReceiveTmewc<'info> {
     fn constraints(ctx: &Context<Self>) -> Result<()> {
         // Check if transfer has already been claimed.
         require!(
@@ -120,19 +120,19 @@ impl<'info> ReceiveTbtc<'info> {
             WormholeGatewayError::TransferAlreadyRedeemed
         );
 
-        // Token info must match Ethereum's canonical tBTC token info.
+        // Token info must match Ethereum's canonical tMEWC token info.
         let transfer = ctx.accounts.posted_vaa.data();
         require!(
-            transfer.token_chain() == TBTC_ETHEREUM_TOKEN_CHAIN
-                && *transfer.token_address() == TBTC_ETHEREUM_TOKEN_ADDRESS,
-            WormholeGatewayError::InvalidEthereumTbtc
+            transfer.token_chain() == TMEWC_ETHEREUM_TOKEN_CHAIN
+                && *transfer.token_address() == TMEWC_ETHEREUM_TOKEN_ADDRESS,
+            WormholeGatewayError::InvalidEthereumTmewc
         );
 
         // There must be an encoded amount.
         require_gt!(
             transfer.amount(),
             0,
-            WormholeGatewayError::NoTbtcTransferred
+            WormholeGatewayError::NoTmewcTransferred
         );
 
         // Recipient must not be zero address.
@@ -146,10 +146,10 @@ impl<'info> ReceiveTbtc<'info> {
     }
 }
 
-#[access_control(ReceiveTbtc::constraints(&ctx))]
-pub fn receive_tbtc(ctx: Context<ReceiveTbtc>, _message_hash: [u8; 32]) -> Result<()> {
-    let wrapped_tbtc_token = &ctx.accounts.wrapped_tbtc_token;
-    let wrapped_tbtc_mint = &ctx.accounts.wrapped_tbtc_mint;
+#[access_control(ReceiveTmewc::constraints(&ctx))]
+pub fn receive_tmewc(ctx: Context<ReceiveTmewc>, _message_hash: [u8; 32]) -> Result<()> {
+    let wrapped_tmewc_token = &ctx.accounts.wrapped_tmewc_token;
+    let wrapped_tmewc_mint = &ctx.accounts.wrapped_tmewc_mint;
 
     // Redeem the token transfer.
     token_bridge::complete_transfer_wrapped_with_payload(CpiContext::new_with_signer(
@@ -163,9 +163,9 @@ pub fn receive_tbtc(ctx: Context<ReceiveTbtc>, _message_hash: [u8; 32]) -> Resul
                 .accounts
                 .token_bridge_registered_emitter
                 .to_account_info(),
-            to: wrapped_tbtc_token.to_account_info(),
+            to: wrapped_tmewc_token.to_account_info(),
             redeemer: ctx.accounts.custodian.to_account_info(),
-            wrapped_mint: wrapped_tbtc_mint.to_account_info(),
+            wrapped_mint: wrapped_tmewc_mint.to_account_info(),
             wrapped_metadata: ctx.accounts.token_bridge_wrapped_asset.to_account_info(),
             mint_authority: ctx.accounts.token_bridge_mint_authority.to_account_info(),
             rent: ctx.accounts.rent.to_account_info(),
@@ -184,7 +184,7 @@ pub fn receive_tbtc(ctx: Context<ReceiveTbtc>, _message_hash: [u8; 32]) -> Resul
     let amount = ctx.accounts.posted_vaa.data().amount();
     let recipient = &ctx.accounts.recipient;
 
-    emit!(crate::event::WormholeTbtcReceived {
+    emit!(crate::event::WormholeTmewcReceived {
         receiver: recipient.key(),
         amount
     });
@@ -192,10 +192,10 @@ pub fn receive_tbtc(ctx: Context<ReceiveTbtc>, _message_hash: [u8; 32]) -> Resul
     let updated_minted_amount = ctx.accounts.custodian.minted_amount.saturating_add(amount);
     let custodian_seeds = &[Custodian::SEED_PREFIX, &[ctx.accounts.custodian.bump]];
 
-    // We send Wormhole tBTC OR mint canonical tBTC. We do not want to send dust. Sending Wormhole
-    // tBTC is an exceptional situation and we want to keep it simple.
+    // We send Wormhole tMEWC OR mint canonical tMEWC. We do not want to send dust. Sending Wormhole
+    // tMEWC is an exceptional situation and we want to keep it simple.
     if updated_minted_amount > ctx.accounts.custodian.minting_limit {
-        msg!("Insufficient minted amount. Sending Wormhole tBTC instead");
+        msg!("Insufficient minted amount. Sending Wormhole tMEWC instead");
 
         let ata = &ctx.accounts.recipient_wrapped_token;
 
@@ -207,7 +207,7 @@ pub fn receive_tbtc(ctx: Context<ReceiveTbtc>, _message_hash: [u8; 32]) -> Resul
                     payer: ctx.accounts.payer.to_account_info(),
                     associated_token: ata.to_account_info(),
                     authority: recipient.to_account_info(),
-                    mint: wrapped_tbtc_mint.to_account_info(),
+                    mint: wrapped_tmewc_mint.to_account_info(),
                     token_program: ctx.accounts.token_program.to_account_info(),
                     system_program: ctx.accounts.system_program.to_account_info(),
                 },
@@ -219,7 +219,7 @@ pub fn receive_tbtc(ctx: Context<ReceiveTbtc>, _message_hash: [u8; 32]) -> Resul
             CpiContext::new_with_signer(
                 ctx.accounts.token_program.to_account_info(),
                 token::Transfer {
-                    from: wrapped_tbtc_token.to_account_info(),
+                    from: wrapped_tmewc_token.to_account_info(),
                     to: ata.to_account_info(),
                     authority: ctx.accounts.custodian.to_account_info(),
                 },
@@ -232,13 +232,13 @@ pub fn receive_tbtc(ctx: Context<ReceiveTbtc>, _message_hash: [u8; 32]) -> Resul
         // call that does not allow to use the same VAA again.
         ctx.accounts.custodian.minted_amount = updated_minted_amount;
 
-        tbtc::cpi::mint(
+        tmewc::cpi::mint(
             CpiContext::new_with_signer(
-                ctx.accounts.tbtc_program.to_account_info(),
-                tbtc::cpi::accounts::Mint {
-                    mint: ctx.accounts.tbtc_mint.to_account_info(),
-                    config: ctx.accounts.tbtc_config.to_account_info(),
-                    minter_info: ctx.accounts.tbtc_minter_info.to_account_info(),
+                ctx.accounts.tmewc_program.to_account_info(),
+                tmewc::cpi::accounts::Mint {
+                    mint: ctx.accounts.tmewc_mint.to_account_info(),
+                    config: ctx.accounts.tmewc_config.to_account_info(),
+                    minter_info: ctx.accounts.tmewc_minter_info.to_account_info(),
                     minter: ctx.accounts.custodian.to_account_info(),
                     recipient_token: ctx.accounts.recipient_token.to_account_info(),
                     token_program: ctx.accounts.token_program.to_account_info(),

@@ -9,14 +9,14 @@ import {
   BitcoinTxHash,
   BitcoinUtxo,
   toBitcoinJsLibNetwork,
-} from "../../lib/bitcoin"
+} from "../../lib/meowcoin"
 import { BigNumber } from "ethers"
 import { Psbt, Transaction } from "bitcoinjs-lib"
 import { Hex } from "../../lib/utils"
 
 /**
- * Component allowing to craft and submit the Bitcoin funding transaction using
- * the given tBTC v2 deposit script.
+ * Component allowing to craft and submit the Meowcoin funding transaction using
+ * the given tMEWC deposit script.
  *
  * @experimental THIS IS EXPERIMENTAL CODE THAT CAN BE CHANGED OR REMOVED
  *               IN FUTURE RELEASES. IT SHOULD BE USED ONLY FOR INTERNAL
@@ -36,18 +36,18 @@ export class DepositFunding {
   }
 
   /**
-   * Assembles and signs the Bitcoin P2(W)SH funding transaction using
+   * Assembles and signs the Meowcoin P2(W)SH funding transaction using
    * the underlying deposit script.
    * @dev It is up to the caller to ensure that input UTXOs are valid and
    *      can be unlocked using the depositor's private key. It is also
    *      caller's responsibility to ensure the given deposit is funded exactly
    *      once.
-   * @param bitcoinNetwork The target Bitcoin network.
+   * @param bitcoinNetwork The target Meowcoin network.
    * @param amount Deposit amount in satoshis.
    * @param inputUtxos UTXOs to be used for funding the deposit transaction.
    *                   So far only P2WPKH UTXO inputs are supported.
    * @param fee Transaction fee to be subtracted from the sum of the UTXOs' values.
-   * @param depositorPrivateKey Bitcoin private key of the depositor. Must
+   * @param depositorPrivateKey Meowcoin private key of the depositor. Must
    *        be able to unlock input UTXOs.
    * @returns The outcome consisting of:
    *          - the deposit transaction hash,
@@ -155,7 +155,7 @@ export class DepositFunding {
   }
 
   /**
-   * Assembles, signs and submits the Bitcoin P2(W)SH funding transaction
+   * Assembles, signs and submits the Meowcoin P2(W)SH funding transaction
    * using the underlying deposit script.
    * @dev It is up to the caller to ensure that depositor's private key controls
    *      some UTXOs that can be used as input. It is also caller's responsibility
@@ -165,8 +165,8 @@ export class DepositFunding {
    *        far only P2WPKH UTXO inputs are supported.
    * @param fee The value that should be subtracted from the sum of the UTXOs
    *        values and used as the transaction fee.
-   * @param depositorPrivateKey Bitcoin private key of the depositor.
-   * @param bitcoinClient Bitcoin client used to interact with the network.
+   * @param depositorPrivateKey Meowcoin private key of the depositor.
+   * @param bitcoinClient Meowcoin client used to interact with the network.
    * @returns The outcome consisting of:
    *          - the deposit transaction hash,
    *          - the deposit UTXO produced by this transaction.

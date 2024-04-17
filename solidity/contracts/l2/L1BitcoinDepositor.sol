@@ -20,15 +20,15 @@ import "@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC20/utils/SafeERC20Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 
-import "../integrator/AbstractTBTCDepositor.sol";
+import "../integrator/AbstractTMEWCDepositor.sol";
 import "../integrator/IBridge.sol";
-import "../integrator/ITBTCVault.sol";
+import "../integrator/ITMEWCVault.sol";
 import "./Wormhole.sol";
 
 /// @title L1BitcoinDepositor
 /// @notice This contract is part of the direct bridging mechanism allowing
-///         users to obtain ERC20 TBTC on supported L2 chains, without the need
-///         to interact with the L1 tBTC ledger chain where minting occurs.
+///         users to obtain ERC20 TMEWC on supported L2 chains, without the need
+///         to interact with the L1 tMEWC ledger chain where minting occurs.
 ///
 ///         `L1BitcoinDepositor` is deployed on the L1 chain and interacts with
 ///         their L2 counterpart, the `L2BitcoinDepositor`, deployed on the given
@@ -36,13 +36,13 @@ import "./Wormhole.sol";
 ///         responsible for a specific L2 chain.
 ///
 ///         The outline of the direct bridging mechanism is as follows:
-///         1. An L2 user issues a Bitcoin funding transaction to a P2(W)SH
+///         1. An L2 user issues a Meowcoin funding transaction to a P2(W)SH
 ///            deposit address that embeds the `L1BitcoinDepositor` contract
 ///            and L2 user addresses. The `L1BitcoinDepositor` contract serves
 ///            as the actual depositor on the L1 chain while the L2 user
 ///            address is set as the deposit owner who will receive the
-///            minted ERC20 TBTC.
-///         2. The data about the Bitcoin funding transaction and deposit
+///            minted ERC20 TMEWC.
+///         2. The data about the Meowcoin funding transaction and deposit
 ///            address are passed to the relayer. In the first iteration of
 ///            the direct bridging mechanism, this is achieved using an
 ///            on-chain event emitted by the `L2BitcoinDepositor` contract.
@@ -51,25 +51,25 @@ import "./Wormhole.sol";
 ///         3. The relayer uses the data to initialize a deposit on the L1
 ///            chain by calling the `initializeDeposit` function of the
 ///            `L1BitcoinDepositor` contract. The `initializeDeposit` function
-///            reveals the deposit to the tBTC Bridge so minting of ERC20 L1 TBTC
+///            reveals the deposit to the tMEWC Bridge so minting of ERC20 L1 TMEWC
 ///            can occur.
 ///         4. Once minting is complete, the `L1BitcoinDepositor` contract
-///            receives minted ERC20 L1 TBTC. The relayer then calls the
+///            receives minted ERC20 L1 TMEWC. The relayer then calls the
 ///            `finalizeDeposit` function of the `L1BitcoinDepositor` contract
-///            to transfer the minted ERC20 L1 TBTC to the L2 user address. This
+///            to transfer the minted ERC20 L1 TMEWC to the L2 user address. This
 ///            is achieved using the Wormhole protocol. First, the `finalizeDeposit`
 ///            function initiates a Wormhole token transfer that locks the ERC20
-///            L1 TBTC within the Wormhole Token Bridge contract and assigns
-///            Wormhole-wrapped L2 TBTC to the corresponding `L2WormholeGateway`
+///            L1 TMEWC within the Wormhole Token Bridge contract and assigns
+///            Wormhole-wrapped L2 TMEWC to the corresponding `L2WormholeGateway`
 ///            contract. Then, `finalizeDeposit` notifies the `L2BitcoinDepositor`
 ///            contract by sending a Wormhole message containing the VAA
 ///            of the Wormhole token transfer. The `L2BitcoinDepositor` contract
 ///            receives the Wormhole message, and calls the `L2WormholeGateway`
-///            contract that redeems Wormhole-wrapped L2 TBTC from the Wormhole
-///            Token Bridge and uses it to mint canonical L2 TBTC to the L2 user
+///            contract that redeems Wormhole-wrapped L2 TMEWC from the Wormhole
+///            Token Bridge and uses it to mint canonical L2 TMEWC to the L2 user
 ///            address.
 contract L1BitcoinDepositor is
-    AbstractTBTCDepositor,
+    AbstractTMEWCDepositor,
     OwnableUpgradeable,
     Reimbursable
 {
@@ -79,9 +79,9 @@ contract L1BitcoinDepositor is
     ///         - Unknown deposit has not been initialized yet.
     ///         - Initialized deposit has been initialized with a call to
     ///           `initializeDeposit` function and is known to this contract.
-    ///         - Finalized deposit led to TBTC ERC20 minting and was finalized
+    ///         - Finalized deposit led to TMEWC ERC20 minting and was finalized
     ///           with a call to `finalizeDeposit` function that transferred
-    ///           TBTC ERC20 to the L2 deposit owner.
+    ///           TMEWC ERC20 to the L2 deposit owner.
     enum DepositState {
         Unknown,
         Initialized,
@@ -100,19 +100,19 @@ contract L1BitcoinDepositor is
     ///         the individual deposit during the call to `initializeDeposit`
     ///         function.
     mapping(uint256 => DepositState) public deposits;
-    /// @notice ERC20 L1 TBTC token contract.
-    IERC20Upgradeable public tbtcToken;
+    /// @notice ERC20 L1 TMEWC token contract.
+    IERC20Upgradeable public tmewcToken;
     /// @notice `Wormhole` core contract on L1.
     IWormhole public wormhole;
     /// @notice `WormholeRelayer` contract on L1.
     IWormholeRelayer public wormholeRelayer;
     /// @notice Wormhole `TokenBridge` contract on L1.
     IWormholeTokenBridge public wormholeTokenBridge;
-    /// @notice tBTC `L2WormholeGateway` contract on the corresponding L2 chain.
+    /// @notice tMEWC `L2WormholeGateway` contract on the corresponding L2 chain.
     address public l2WormholeGateway;
     /// @notice Wormhole chain ID of the corresponding L2 chain.
     uint16 public l2ChainId;
-    /// @notice tBTC `L2BitcoinDepositor` contract on the corresponding L2 chain.
+    /// @notice tMEWC `L2BitcoinDepositor` contract on the corresponding L2 chain.
     address public l2BitcoinDepositor;
     /// @notice Gas limit necessary to execute the L2 part of the deposit
     ///         finalization. This value is used to calculate the payment for
@@ -123,8 +123,8 @@ contract L1BitcoinDepositor is
     /// @notice Holds deferred gas reimbursements for deposit initialization
     ///         (indexed by deposit key). Reimbursement for deposit
     ///         initialization is paid out upon deposit finalization. This is
-    ///         because the tBTC Bridge accepts all (even invalid) deposits but
-    ///         mints ERC20 TBTC only for the valid ones. Paying out the
+    ///         because the tMEWC Bridge accepts all (even invalid) deposits but
+    ///         mints ERC20 TMEWC only for the valid ones. Paying out the
     ///         reimbursement directly upon initialization would make the
     ///         reimbursement pool vulnerable to malicious actors that could
     ///         drain it by initializing invalid deposits.
@@ -151,7 +151,7 @@ contract L1BitcoinDepositor is
         address indexed l2DepositOwner,
         address indexed l1Sender,
         uint256 initialAmount,
-        uint256 tbtcAmount
+        uint256 tmewcAmount
     );
 
     event L2FinalizeDepositGasLimitUpdated(uint256 l2FinalizeDepositGasLimit);
@@ -179,15 +179,15 @@ contract L1BitcoinDepositor is
     }
 
     function initialize(
-        address _tbtcBridge,
-        address _tbtcVault,
+        address _tmewcBridge,
+        address _tmewcVault,
         address _wormhole,
         address _wormholeRelayer,
         address _wormholeTokenBridge,
         address _l2WormholeGateway,
         uint16 _l2ChainId
     ) external initializer {
-        __AbstractTBTCDepositor_initialize(_tbtcBridge, _tbtcVault);
+        __AbstractTMEWCDepositor_initialize(_tmewcBridge, _tmewcVault);
         __Ownable_init();
 
         require(_wormhole != address(0), "Wormhole address cannot be zero");
@@ -204,7 +204,7 @@ contract L1BitcoinDepositor is
             "L2WormholeGateway address cannot be zero"
         );
 
-        tbtcToken = IERC20Upgradeable(ITBTCVault(_tbtcVault).tbtcToken());
+        tmewcToken = IERC20Upgradeable(ITMEWCVault(_tmewcVault).tmewcToken());
         wormhole = IWormhole(_wormhole);
         wormholeRelayer = IWormholeRelayer(_wormholeRelayer);
         wormholeTokenBridge = IWormholeTokenBridge(_wormholeTokenBridge);
@@ -231,11 +231,11 @@ contract L1BitcoinDepositor is
     {
         require(
             l2BitcoinDepositor == address(0),
-            "L2 Bitcoin Depositor already set"
+            "L2 Meowcoin Depositor already set"
         );
         require(
             _l2BitcoinDepositor != address(0),
-            "L2 Bitcoin Depositor must not be 0x0"
+            "L2 Meowcoin Depositor must not be 0x0"
         );
         l2BitcoinDepositor = _l2BitcoinDepositor;
     }
@@ -286,14 +286,14 @@ contract L1BitcoinDepositor is
 
     /// @notice Initializes the deposit process on L1 by revealing the deposit
     ///         data (funding transaction and components of the P2(W)SH deposit
-    ///         address) to the tBTC Bridge. Once tBTC minting is completed,
+    ///         address) to the tMEWC Bridge. Once tMEWC minting is completed,
     ///         this call should be followed by a call to `finalizeDeposit`.
     ///         Callers of `initializeDeposit` are eligible for a gas refund
     ///         that is paid out upon deposit finalization (only if the
     ///         reimbursement pool is attached and the given caller is
     ///         authorized for refunds).
     ///
-    ///         The Bitcoin funding transaction must transfer funds to a P2(W)SH
+    ///         The Meowcoin funding transaction must transfer funds to a P2(W)SH
     ///         deposit address whose underlying script is built from the
     ///         following components:
     ///
@@ -318,38 +318,38 @@ contract L1BitcoinDepositor is
     ///         format, i.e. 32-byte value left-padded with 0.
     ///
     ///         <blinding-factor> 8-byte deposit blinding factor, as used in the
-    ///         tBTC bridge.
+    ///         tMEWC bridge.
     ///
-    ///         <signingGroupPubkeyHash> The compressed Bitcoin public key (33
+    ///         <signingGroupPubkeyHash> The compressed Meowcoin public key (33
     ///         bytes and 02 or 03 prefix) of the deposit's wallet hashed in the
-    ///         HASH160 Bitcoin opcode style. This must point to the active tBTC
+    ///         HASH160 Meowcoin opcode style. This must point to the active tMEWC
     ///         bridge wallet.
     ///
-    ///         <refundPubkeyHash> The compressed Bitcoin public key (33 bytes
+    ///         <refundPubkeyHash> The compressed Meowcoin public key (33 bytes
     ///         and 02 or 03 prefix) that can be used to make the deposit refund
-    ///         after the tBTC bridge refund locktime passed. Hashed in the
-    ///         HASH160 Bitcoin opcode style. This is needed only as a security
-    ///         measure protecting the user in case tBTC bridge completely stops
+    ///         after the tMEWC bridge refund locktime passed. Hashed in the
+    ///         HASH160 Meowcoin opcode style. This is needed only as a security
+    ///         measure protecting the user in case tMEWC bridge completely stops
     ///         functioning.
     ///
-    ///         <locktime> The Bitcoin script refund locktime (4-byte LE),
-    ///         according to tBTC bridge rules.
+    ///         <locktime> The Meowcoin script refund locktime (4-byte LE),
+    ///         according to tMEWC bridge rules.
     ///
-    ///         Please consult tBTC `Bridge.revealDepositWithExtraData` function
+    ///         Please consult tMEWC `Bridge.revealDepositWithExtraData` function
     ///         documentation for more information.
-    /// @param fundingTx Bitcoin funding transaction data.
+    /// @param fundingTx Meowcoin funding transaction data.
     /// @param reveal Deposit reveal data.
     /// @param l2DepositOwner Address of the L2 deposit owner.
     /// @dev Requirements:
     ///      - The L2 deposit owner address must not be 0x0,
-    ///      - The function can be called only one time for the given Bitcoin
+    ///      - The function can be called only one time for the given Meowcoin
     ///        funding transaction,
-    ///      - The L2 deposit owner must be embedded in the Bitcoin P2(W)SH
+    ///      - The L2 deposit owner must be embedded in the Meowcoin P2(W)SH
     ///        deposit script as the <depositor-extra-data> field. The 20-byte
     ///        address must be expressed as a 32-byte value left-padded with 0.
-    ///        If the value in the Bitcoin script and the value passed as
+    ///        If the value in the Meowcoin script and the value passed as
     ///        parameter do not match, the function will revert,
-    ///      - All the requirements of tBTC Bridge.revealDepositWithExtraData
+    ///      - All the requirements of tMEWC Bridge.revealDepositWithExtraData
     ///        must be met.
     function initializeDeposit(
         IBridgeTypes.BitcoinTxInfo calldata fundingTx,
@@ -368,11 +368,11 @@ contract L1BitcoinDepositor is
         bytes32 extraData = WormholeUtils.toWormholeAddress(l2DepositOwner);
 
         // Input parameters do not have to be validated in any way.
-        // The tBTC Bridge is responsible for validating whether the provided
-        // Bitcoin funding transaction transfers funds to the P2(W)SH deposit
-        // address built from the reveal data. Despite the tBTC Bridge accepts
+        // The tMEWC Bridge is responsible for validating whether the provided
+        // Meowcoin funding transaction transfers funds to the P2(W)SH deposit
+        // address built from the reveal data. Despite the tMEWC Bridge accepts
         // all transactions that meet the format requirements, it mints ERC20
-        // L1 TBTC only for the ones that actually occurred on the Bitcoin
+        // L1 TMEWC only for the ones that actually occurred on the Meowcoin
         // network and gathered enough confirmations.
         (uint256 depositKey, ) = _initializeDeposit(
             fundingTx,
@@ -409,8 +409,8 @@ contract L1BitcoinDepositor is
 
             // Do not issue a reimbursement immediately. Record
             // a deferred reimbursement that will be paid out upon deposit
-            // finalization. This is because the tBTC Bridge accepts all
-            // (even invalid) deposits but mints ERC20 TBTC only for the valid
+            // finalization. This is because the tMEWC Bridge accepts all
+            // (even invalid) deposits but mints ERC20 TMEWC only for the valid
             // ones. Paying out the reimbursement directly upon initialization
             // would make the reimbursement pool vulnerable to malicious actors
             // that could drain it by initializing invalid deposits.
@@ -422,10 +422,10 @@ contract L1BitcoinDepositor is
         }
     }
 
-    /// @notice Finalizes the deposit process by transferring ERC20 L1 TBTC
+    /// @notice Finalizes the deposit process by transferring ERC20 L1 TMEWC
     ///         to the L2 deposit owner. This function should be called after
     ///         the deposit was initialized with a call to `initializeDeposit`
-    ///         function and after ERC20 L1 TBTC was minted by the tBTC Bridge
+    ///         function and after ERC20 L1 TMEWC was minted by the tMEWC Bridge
     ///         to the `L1BitcoinDepositor` contract. Please note several hours
     ///         may pass between `initializeDeposit`and `finalizeDeposit`.
     ///         If the reimbursement pool is attached, the function pays out
@@ -437,7 +437,7 @@ contract L1BitcoinDepositor is
     ///        event emitted by the `initializeDeposit` function for the deposit.
     /// @dev Requirements:
     ///      - `initializeDeposit` was called for the given deposit before,
-    ///      - ERC20 L1 TBTC was minted by tBTC Bridge to this contract,
+    ///      - ERC20 L1 TMEWC was minted by tMEWC Bridge to this contract,
     ///      - The function was not called for the given deposit before,
     ///      - The call must carry a payment for the Wormhole Relayer that
     ///        is responsible for executing the deposit finalization on the
@@ -455,7 +455,7 @@ contract L1BitcoinDepositor is
 
         (
             uint256 initialDepositAmount,
-            uint256 tbtcAmount,
+            uint256 tmewcAmount,
             // Deposit extra data is actually the L2 deposit owner
             // address in Wormhole format.
             bytes32 l2DepositOwner
@@ -467,10 +467,10 @@ contract L1BitcoinDepositor is
             WormholeUtils.fromWormholeAddress(l2DepositOwner),
             msg.sender,
             initialDepositAmount,
-            tbtcAmount
+            tmewcAmount
         );
 
-        _transferTbtc(tbtcAmount, l2DepositOwner);
+        _transferTmewc(tmewcAmount, l2DepositOwner);
 
         // `ReimbursementPool` calls the untrusted receiver address using a
         // low-level call. Reentrancy risk is mitigated by making sure that
@@ -578,18 +578,18 @@ contract L1BitcoinDepositor is
         cost = deliveryCost + messageFee;
     }
 
-    /// @notice Transfers ERC20 L1 TBTC to the L2 deposit owner using the Wormhole
+    /// @notice Transfers ERC20 L1 TMEWC to the L2 deposit owner using the Wormhole
     ///         protocol. The function initiates a Wormhole token transfer that
-    ///         locks the ERC20 L1 TBTC within the Wormhole Token Bridge contract
-    ///         and assigns Wormhole-wrapped L2 TBTC to the corresponding
+    ///         locks the ERC20 L1 TMEWC within the Wormhole Token Bridge contract
+    ///         and assigns Wormhole-wrapped L2 TMEWC to the corresponding
     ///         `L2WormholeGateway` contract. Then, the function notifies the
     ///         `L2BitcoinDepositor` contract by sending a Wormhole message
     ///         containing the VAA of the Wormhole token transfer. The
     ///         `L2BitcoinDepositor` contract receives the Wormhole message,
     ///         and calls the `L2WormholeGateway` contract that redeems
-    ///         Wormhole-wrapped L2 TBTC from the Wormhole Token Bridge and
-    ///         uses it to mint canonical L2 TBTC to the L2 deposit owner address.
-    /// @param amount Amount of TBTC L1 ERC20 to transfer (1e18 precision).
+    ///         Wormhole-wrapped L2 TMEWC from the Wormhole Token Bridge and
+    ///         uses it to mint canonical L2 TMEWC to the L2 deposit owner address.
+    /// @param amount Amount of TMEWC L1 ERC20 to transfer (1e18 precision).
     /// @param l2Receiver Address of the L2 deposit owner.
     /// @dev Requirements:
     ///      - The normalized amount (1e8 precision) must be greater than 0,
@@ -597,8 +597,8 @@ contract L1BitcoinDepositor is
     ///        attached to the call (as calculated by `quoteFinalizeDeposit`).
     /// @dev Implemented based on examples presented as part of the Wormhole SDK:
     ///      https://github.com/wormhole-foundation/hello-token/blob/8ec757248788dc12183f13627633e1d6fd1001bb/src/example-extensions/HelloTokenWithoutSDK.sol#L29
-    function _transferTbtc(uint256 amount, bytes32 l2Receiver) internal {
-        // Wormhole supports the 1e8 precision at most. TBTC is 1e18 so
+    function _transferTmewc(uint256 amount, bytes32 l2Receiver) internal {
+        // Wormhole supports the 1e8 precision at most. TMEWC is 1e18 so
         // the amount needs to be normalized.
         amount = WormholeUtils.normalize(amount);
 
@@ -611,18 +611,18 @@ contract L1BitcoinDepositor is
 
         require(msg.value == cost, "Payment for Wormhole Relayer is too low");
 
-        // The Wormhole Token Bridge will pull the TBTC amount
+        // The Wormhole Token Bridge will pull the TMEWC amount
         // from this contract. We need to approve the transfer first.
-        tbtcToken.safeIncreaseAllowance(address(wormholeTokenBridge), amount);
+        tmewcToken.safeIncreaseAllowance(address(wormholeTokenBridge), amount);
 
-        // Initiate a Wormhole token transfer that will lock L1 TBTC within
+        // Initiate a Wormhole token transfer that will lock L1 TMEWC within
         // the Wormhole Token Bridge contract and assign Wormhole-wrapped
-        // L2 TBTC to the corresponding `L2WormholeGateway` contract.
+        // L2 TMEWC to the corresponding `L2WormholeGateway` contract.
         // slither-disable-next-line arbitrary-send-eth
         uint64 transferSequence = wormholeTokenBridge.transferTokensWithPayload{
             value: wormholeMessageFee
         }(
-            address(tbtcToken),
+            address(tmewcToken),
             amount,
             l2ChainId,
             WormholeUtils.toWormholeAddress(l2WormholeGateway),
@@ -645,8 +645,8 @@ contract L1BitcoinDepositor is
         // the L2 chain. We achieve that by sending the transfer's VAA to the
         // `L2BitcoinDepositor` contract. Once, the `L2BitcoinDepositor`
         // contract receives it, it calls the `L2WormholeGateway` contract
-        // that redeems Wormhole-wrapped L2 TBTC from the Wormhole Token
-        // Bridge and use it to mint canonical L2 TBTC to the receiver address.
+        // that redeems Wormhole-wrapped L2 TMEWC from the Wormhole Token
+        // Bridge and use it to mint canonical L2 TMEWC to the receiver address.
         // slither-disable-next-line arbitrary-send-eth,unused-return
         wormholeRelayer.sendVaasToEvm{value: cost - wormholeMessageFee}(
             l2ChainId,

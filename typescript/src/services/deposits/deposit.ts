@@ -1,7 +1,7 @@
 import {
   DepositorProxy,
   DepositReceipt,
-  TBTCContracts,
+  TMEWCContracts,
   validateDepositReceipt,
 } from "../../lib/contracts"
 import {
@@ -12,26 +12,26 @@ import {
   BitcoinUtxo,
   extractBitcoinRawTxVectors,
   toBitcoinJsLibNetwork,
-} from "../../lib/bitcoin"
+} from "../../lib/meowcoin"
 import { payments, Stack, script, opcodes } from "bitcoinjs-lib"
 import { Hex } from "../../lib/utils"
 
 /**
- * Component representing an instance of the tBTC v2 deposit process.
- * Depositing is a complex process spanning both the Bitcoin and the target chain.
+ * Component representing an instance of the tMEWC deposit process.
+ * Depositing is a complex process spanning both the Meowcoin and the target chain.
  * This component tries to abstract away that complexity.
  */
 export class Deposit {
   /**
-   * Bitcoin script corresponding to this deposit.
+   * Meowcoin script corresponding to this deposit.
    */
   private readonly script: DepositScript
   /**
-   * Handle to tBTC contracts.
+   * Handle to tMEWC contracts.
    */
-  private readonly tbtcContracts: TBTCContracts
+  private readonly tmewcContracts: TMEWCContracts
   /**
-   * Bitcoin client handle.
+   * Meowcoin client handle.
    */
   private readonly bitcoinClient: BitcoinClient
   /**
@@ -39,20 +39,20 @@ export class Deposit {
    */
   private readonly depositorProxy?: DepositorProxy
   /**
-   * Bitcoin network the deposit is relevant for. Has an impact on the
+   * Meowcoin network the deposit is relevant for. Has an impact on the
    * generated deposit address.
    */
   public readonly bitcoinNetwork: BitcoinNetwork
 
   private constructor(
     receipt: DepositReceipt,
-    tbtcContracts: TBTCContracts,
+    tmewcContracts: TMEWCContracts,
     bitcoinClient: BitcoinClient,
     bitcoinNetwork: BitcoinNetwork,
     depositorProxy?: DepositorProxy
   ) {
     this.script = DepositScript.fromReceipt(receipt)
-    this.tbtcContracts = tbtcContracts
+    this.tmewcContracts = tmewcContracts
     this.bitcoinClient = bitcoinClient
     this.bitcoinNetwork = bitcoinNetwork
     this.depositorProxy = depositorProxy
@@ -60,7 +60,7 @@ export class Deposit {
 
   static async fromReceipt(
     receipt: DepositReceipt,
-    tbtcContracts: TBTCContracts,
+    tmewcContracts: TMEWCContracts,
     bitcoinClient: BitcoinClient,
     depositorProxy?: DepositorProxy
   ): Promise<Deposit> {
@@ -68,7 +68,7 @@ export class Deposit {
 
     return new Deposit(
       receipt,
-      tbtcContracts,
+      tmewcContracts,
       bitcoinClient,
       bitcoinNetwork,
       depositorProxy
@@ -83,14 +83,14 @@ export class Deposit {
   }
 
   /**
-   * @returns Bitcoin address corresponding to this deposit.
+   * @returns Meowcoin address corresponding to this deposit.
    */
   async getBitcoinAddress(): Promise<string> {
     return this.script.deriveAddress(this.bitcoinNetwork)
   }
 
   /**
-   * Detects Bitcoin funding transactions transferring BTC to this deposit.
+   * Detects Meowcoin funding transactions transferring MEWC to this deposit.
    * The list includes UTXOs from both the blockchain and the mempool, sorted by
    * age with the newest ones first. Mempool UTXOs are listed at the beginning.
    * @returns Specific UTXOs targeting this deposit. Empty array in case
@@ -109,9 +109,9 @@ export class Deposit {
   }
 
   /**
-   * Initiates minting of the TBTC token, based on the Bitcoin funding
+   * Initiates minting of the TMEWC token, based on the Meowcoin funding
    * transaction outpoint targeting this deposit. By default, it detects and
-   * uses the outpoint of the recent Bitcoin funding transaction and throws if
+   * uses the outpoint of the recent Meowcoin funding transaction and throws if
    * such a transaction does not exist. This behavior can be changed by pointing
    * a funding transaction explicitly, using the fundingOutpoint parameter.
    * @param fundingOutpoint Optional parameter. Can be used to point
@@ -147,14 +147,14 @@ export class Deposit {
       await this.bitcoinClient.getRawTransaction(transactionHash)
     )
 
-    const { bridge, tbtcVault } = this.tbtcContracts
+    const { bridge, tmewcVault } = this.tmewcContracts
 
     if (typeof this.depositorProxy !== "undefined") {
       return this.depositorProxy.revealDeposit(
         depositFundingTx,
         outputIndex,
         this.getReceipt(),
-        tbtcVault.getChainIdentifier()
+        tmewcVault.getChainIdentifier()
       )
     }
 
@@ -162,26 +162,26 @@ export class Deposit {
       depositFundingTx,
       outputIndex,
       this.getReceipt(),
-      tbtcVault.getChainIdentifier()
+      tmewcVault.getChainIdentifier()
     )
   }
 }
 
 /**
- * Represents a Bitcoin script corresponding to a tBTC v2 deposit.
- * On a high-level, the script is used to derive the Bitcoin address that is
- * used to fund the deposit with BTC. On a low-level, the script is used to
+ * Represents a Meowcoin script corresponding to a tMEWC deposit.
+ * On a high-level, the script is used to derive the Meowcoin address that is
+ * used to fund the deposit with MEWC. On a low-level, the script is used to
  * produce a properly locked funding transaction output that can be unlocked
  * by the target wallet during the deposit sweep process.
  */
 export class DepositScript {
   /**
    * Deposit receipt holding the most important information about the deposit
-   * and allowing to build a unique deposit script (and address) on Bitcoin chain.
+   * and allowing to build a unique deposit script (and address) on Meowcoin chain.
    */
   public readonly receipt: DepositReceipt
   /**
-   * Flag indicating whether the generated Bitcoin deposit script (and address)
+   * Flag indicating whether the generated Meowcoin deposit script (and address)
    * should be a witness P2WSH one. If false, legacy P2SH will be used instead.
    */
   public readonly witness: boolean
@@ -251,9 +251,9 @@ export class DepositScript {
   }
 
   /**
-   * Derives a Bitcoin address for the given network for this deposit script.
-   * @param bitcoinNetwork Bitcoin network the address should be derived for.
-   * @returns Bitcoin address corresponding to this deposit script.
+   * Derives a Meowcoin address for the given network for this deposit script.
+   * @param bitcoinNetwork Meowcoin network the address should be derived for.
+   * @returns Meowcoin address corresponding to this deposit script.
    */
   async deriveAddress(bitcoinNetwork: BitcoinNetwork): Promise<string> {
     const scriptHash = await this.getHash()

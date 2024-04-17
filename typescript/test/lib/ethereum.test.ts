@@ -3,7 +3,7 @@ import {
   BitcoinHashUtils,
   EthereumAddress,
   EthereumBridge,
-  EthereumTBTCToken,
+  EthereumTMEWCToken,
   ethereumAddressFromSigner,
   Hex,
   chainIdFromSigner,
@@ -25,8 +25,8 @@ import { waffleChai } from "@ethereum-waffle/chai"
 import { assertContractCalledWith } from "../utils/helpers"
 
 // ABI imports.
-import { abi as BridgeABI } from "@keep-network/tbtc-v2/artifacts/Bridge.json"
-import { abi as TBTCTokenABI } from "@keep-network/tbtc-v2/artifacts/TBTC.json"
+import { abi as BridgeABI } from "@keep-network/tmewc/artifacts/Bridge.json"
+import { abi as TMEWCTokenABI } from "@keep-network/tmewc/artifacts/TMEWC.json"
 import { abi as WalletRegistryABI } from "@keep-network/ecdsa/artifacts/WalletRegistry.json"
 import { abi as BaseL1BitcoinDepositorABI } from "../../src/lib/ethereum/artifacts/sepolia/BaseL1BitcoinDepositor.json"
 
@@ -569,19 +569,19 @@ describe("Ethereum", () => {
     })
   })
 
-  describe("EthereumTBTCToken", () => {
-    let tbtcToken: MockContract
-    let tokenHandle: EthereumTBTCToken
+  describe("EthereumTMEWCToken", () => {
+    let tmewcToken: MockContract
+    let tokenHandle: EthereumTMEWCToken
     const signer: Wallet = new MockProvider().getWallets()[0]
 
     beforeEach(async () => {
-      tbtcToken = await deployMockContract(
+      tmewcToken = await deployMockContract(
         signer,
-        `${JSON.stringify(TBTCTokenABI)}`
+        `${JSON.stringify(TMEWCTokenABI)}`
       )
 
-      tokenHandle = new EthereumTBTCToken({
-        address: tbtcToken.address,
+      tokenHandle = new EthereumTMEWCToken({
+        address: tmewcToken.address,
         signerOrProvider: signer,
       })
     })
@@ -614,8 +614,8 @@ describe("Ethereum", () => {
       }
 
       beforeEach(async () => {
-        await tbtcToken.mock.owner.returns(data.vault.identifierHex)
-        await tbtcToken.mock.approveAndCall.returns(true)
+        await tmewcToken.mock.owner.returns(data.vault.identifierHex)
+        await tmewcToken.mock.approveAndCall.returns(true)
 
         await tokenHandle.requestRedemption(
           data.walletPublicKey,
@@ -646,7 +646,7 @@ describe("Ethereum", () => {
           ]
         )
 
-        assertContractCalledWith(tbtcToken, "approveAndCall", [
+        assertContractCalledWith(tmewcToken, "approveAndCall", [
           vault.identifierHex,
           amount,
           expectedExtraData,

@@ -4,30 +4,30 @@ import { BitcoinTxMerkleBranch } from "./spv"
 import { Hex } from "../../lib/utils"
 
 /**
- * Represents a Bitcoin client.
+ * Represents a Meowcoin client.
  */
 export interface BitcoinClient {
   /**
    * Gets the network supported by the server the client connected to.
-   * @returns Bitcoin network.
+   * @returns Meowcoin network.
    */
   getNetwork(): Promise<BitcoinNetwork>
 
   /**
-   * Finds all unspent transaction outputs (UTXOs) for given Bitcoin address.
+   * Finds all unspent transaction outputs (UTXOs) for given Meowcoin address.
    * The list includes UTXOs from both the blockchain and the mempool, sorted by
    * age with the newest ones first. Mempool UTXOs are listed at the beginning.
-   * @param address - Bitcoin address UTXOs should be determined for.
+   * @param address - Meowcoin address UTXOs should be determined for.
    * @returns List of UTXOs.
    */
   findAllUnspentTransactionOutputs(address: string): Promise<BitcoinUtxo[]>
 
   /**
-   * Gets the history of confirmed transactions for given Bitcoin address.
+   * Gets the history of confirmed transactions for given Meowcoin address.
    * Returned transactions are sorted from oldest to newest. The returned
    * result does not contain unconfirmed transactions living in the mempool
    * at the moment of request.
-   * @param address - Bitcoin address transaction history should be determined for.
+   * @param address - Meowcoin address transaction history should be determined for.
    * @param limit - Optional parameter that can limit the resulting list to
    *        a specific number of last transaction. For example, limit = 5 will
    *        return only the last 5 transactions for the given address.

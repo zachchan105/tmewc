@@ -27,8 +27,8 @@ export interface ProofTestData {
 }
 
 /**
- * Test data that is based on a Bitcoin testnet transaction with a single input
- * https://live.blockcypher.com/btc-testnet/tx/44c568bc0eac07a2a9c2b46829be5b5d46e7d00e17bfb613f506a75ccf86a473/
+ * Test data that is based on a Meowcoin testnet transaction with a single input
+ * https://live.blockcypher.com/mewc-testnet/tx/44c568bc0eac07a2a9c2b46829be5b5d46e7d00e17bfb613f506a75ccf86a473/
  */
 export const singleInputProofTestData: ProofTestData = {
   requiredConfirmations: 6,
@@ -221,8 +221,8 @@ export const singleInputProofTestData: ProofTestData = {
 }
 
 /**
- * Test data that is based on a Bitcoin testnet transaction with multiple inputs
- * https://live.blockcypher.com/btc-testnet/tx/5083822ed0b8d0bc661362b778e666cb572ff6d5152193992dd69d3207995753/
+ * Test data that is based on a Meowcoin testnet transaction with multiple inputs
+ * https://live.blockcypher.com/mewc-testnet/tx/5083822ed0b8d0bc661362b778e666cb572ff6d5152193992dd69d3207995753/
  */
 export const multipleInputsProofTestData: ProofTestData = {
   requiredConfirmations: 6,
@@ -480,9 +480,9 @@ export interface TransactionProofData {
 }
 
 /**
- * Test data that is based on a random Bitcoin mainnet transaction with all the
+ * Test data that is based on a random Meowcoin mainnet transaction with all the
  * blocks headers from one difficulty epoch
- * https://live.blockcypher.com/btc/tx/713525ee9d9ab23433cd6ad470566ba1f47cac2d7f119cc50119128a84d718aa/
+ * https://live.blockcypher.com/mewc/tx/713525ee9d9ab23433cd6ad470566ba1f47cac2d7f119cc50119128a84d718aa/
  */
 export const transactionConfirmationsInOneEpochData: TransactionProofData = {
   requiredConfirmations: 6,
@@ -651,9 +651,9 @@ export const transactionConfirmationsInOneEpochData: TransactionProofData = {
 }
 
 /**
- * Test data that is based on a random Bitcoin mainnet transaction with the
+ * Test data that is based on a random Meowcoin mainnet transaction with the
  * blocks headers spanning two difficulty epochs
- * https://live.blockcypher.com/btc/tx/e073636400e132b8c1082133ab2b48866919153998f4f04877b580e9932d5a17/
+ * https://live.blockcypher.com/mewc/tx/e073636400e132b8c1082133ab2b48866919153998f4f04877b580e9932d5a17/
  */
 export const transactionConfirmationsInTwoEpochsData: TransactionProofData = {
   requiredConfirmations: 6,
@@ -796,8 +796,8 @@ export const transactionConfirmationsInTwoEpochsData: TransactionProofData = {
 }
 
 /**
- * Test data that is based on a random Bitcoin testnet transaction
- * https://live.blockcypher.com/btc-testnet/tx/b78636ae08e6c17261a9f3134109c13c2eb69f6df52e591cc0e0780f5ebf6472/
+ * Test data that is based on a random Meowcoin testnet transaction
+ * https://live.blockcypher.com/mewc-testnet/tx/b78636ae08e6c17261a9f3134109c13c2eb69f6df52e591cc0e0780f5ebf6472/
  */
 export const testnetTransactionData: TransactionProofData = {
   requiredConfirmations: 6,

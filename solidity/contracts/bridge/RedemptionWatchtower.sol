@@ -61,8 +61,8 @@ contract RedemptionWatchtower is OwnableUpgradeable {
     /// @notice Set of veto proposals indexed by the redemption key built as
     ///         `keccak256(keccak256(redeemerOutputScript) | walletPubKeyHash)`.
     ///         The `walletPubKeyHash` is the 20-byte wallet's public key hash
-    ///         (computed using Bitcoin HASH160 over the compressed ECDSA
-    ///         public key) and `redeemerOutputScript` is the Bitcoin script
+    ///         (computed using Meowcoin HASH160 over the compressed ECDSA
+    ///         public key) and `redeemerOutputScript` is the Meowcoin script
     ///         (P2PKH, P2WPKH, P2SH or P2WSH) that is involved in the
     ///         redemption request.
     mapping(uint256 => VetoProposal) public vetoProposals;

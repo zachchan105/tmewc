@@ -1,5 +1,5 @@
 use crate::{
-    constants::SEED_PREFIX_TBTC_MINT,
+    constants::SEED_PREFIX_TMEWC_MINT,
     state::{Config, Guardians, Minters},
 };
 use anchor_lang::prelude::*;
@@ -11,7 +11,7 @@ pub struct Initialize<'info> {
     // so we can sign for it from the program
     #[account(
         init,
-        seeds = [SEED_PREFIX_TBTC_MINT],
+        seeds = [SEED_PREFIX_TMEWC_MINT],
         bump,
         payer = authority,
         mint::decimals = 8,
@@ -51,7 +51,7 @@ pub struct Initialize<'info> {
 
     /// CHECK: This account is needed for the MPL Token Metadata program.
     #[account(mut)]
-    tbtc_metadata: UncheckedAccount<'info>,
+    tmewc_metadata: UncheckedAccount<'info>,
 
     /// CHECK: This account is needed for the MPL Token Metadata program.
     rent: UncheckedAccount<'info>,
@@ -86,12 +86,12 @@ pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
         keys: Vec::new(),
     });
 
-    // Create metadata for tBTC.
+    // Create metadata for tMEWC.
     metadata::create_metadata_accounts_v3(
         CpiContext::new_with_signer(
             ctx.accounts.mpl_token_metadata_program.to_account_info(),
             metadata::CreateMetadataAccountsV3 {
-                metadata: ctx.accounts.tbtc_metadata.to_account_info(),
+                metadata: ctx.accounts.tmewc_metadata.to_account_info(),
                 mint: ctx.accounts.mint.to_account_info(),
                 mint_authority: ctx.accounts.config.to_account_info(),
                 payer: ctx.accounts.authority.to_account_info(),
@@ -102,8 +102,8 @@ pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
             &[&[Config::SEED_PREFIX, &[ctx.bumps["config"]]]],
         ),
         mpl_token_metadata::state::DataV2 {
-            symbol: "tBTC".to_string(),
-            name: "tBTC v2".to_string(),
+            symbol: "tMEWC".to_string(),
+            name: "tMEWC".to_string(),
             uri: "".to_string(),
             seller_fee_basis_points: 0,
             creators: None,

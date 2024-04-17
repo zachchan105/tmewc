@@ -3,8 +3,8 @@ import { Hex } from "../utils"
 import { BitcoinHashUtils } from "./hash"
 
 /**
- * BitcoinHeader represents the header of a Bitcoin block. For reference, see:
- * https://developer.bitcoin.org/reference/block_chain.html#block-headers.
+ * BitcoinHeader represents the header of a Meowcoin block. For reference, see:
+ * https://developer.meowcoin.org/reference/block_chain.html#block-headers.
  */
 export interface BitcoinHeader {
   /**
@@ -45,9 +45,9 @@ export interface BitcoinHeader {
 }
 
 /**
- * Serializes a Bitcoin block header to the raw representation.
- * @param header - Bitcoin block header.
- * @returns Serialized Bitcoin block header.
+ * Serializes a Meowcoin block header to the raw representation.
+ * @param header - Meowcoin block header.
+ * @returns Serialized Meowcoin block header.
  */
 function serializeHeader(header: BitcoinHeader): Hex {
   const buffer = Buffer.alloc(80)
@@ -61,9 +61,9 @@ function serializeHeader(header: BitcoinHeader): Hex {
 }
 
 /**
- * Deserializes a raw representation of a Bitcoin block header.
- * @param rawHeader - Raw Bitcoin block header.
- * @returns Deserialized Bitcoin block header.
+ * Deserializes a raw representation of a Meowcoin block header.
+ * @param rawHeader - Raw Meowcoin block header.
+ * @returns Deserialized Meowcoin block header.
  */
 function deserializeHeader(rawHeader: Hex): BitcoinHeader {
   const buffer = rawHeader.toBuffer()
@@ -85,14 +85,14 @@ function deserializeHeader(rawHeader: Hex): BitcoinHeader {
 }
 
 /**
- * Deserializes a raw representation of a Bitcoin block headers chain.
- * @param rawHeadersChain - Raw Bitcoin block headers chain.
- * @returns Deserialized Bitcoin block headers.
+ * Deserializes a raw representation of a Meowcoin block headers chain.
+ * @param rawHeadersChain - Raw Meowcoin block headers chain.
+ * @returns Deserialized Meowcoin block headers.
  */
 function deserializeHeadersChain(rawHeadersChain: Hex): BitcoinHeader[] {
   const headersChain = rawHeadersChain.toString()
   if (headersChain.length % 160 !== 0) {
-    throw new Error("Incorrect length of Bitcoin headers")
+    throw new Error("Incorrect length of Meowcoin headers")
   }
 
   const result: BitcoinHeader[] = []
@@ -104,7 +104,7 @@ function deserializeHeadersChain(rawHeadersChain: Hex): BitcoinHeader[] {
 }
 
 /**
- * Utility functions allowing to serialize and deserialize Bitcoin block headers.
+ * Utility functions allowing to serialize and deserialize Meowcoin block headers.
  */
 export const BitcoinHeaderSerializer = {
   serializeHeader,
@@ -115,16 +115,16 @@ export const BitcoinHeaderSerializer = {
 /**
  * Validates a chain of consecutive block headers by checking each header's
  * difficulty, hash, and continuity with the previous header. This function can
- * be used to validate a series of Bitcoin block headers for their validity.
+ * be used to validate a series of Meowcoin block headers for their validity.
  * @param headers An array of block headers that form the chain to be
  *        validated.
- * @param previousEpochDifficulty The difficulty of the previous Bitcoin epoch.
- * @param currentEpochDifficulty The difficulty of the current Bitcoin epoch.
- * @dev The block headers must come from Bitcoin epochs with difficulties marked
- *      by the previous and current difficulties. If a Bitcoin difficulty relay
+ * @param previousEpochDifficulty The difficulty of the previous Meowcoin epoch.
+ * @param currentEpochDifficulty The difficulty of the current Meowcoin epoch.
+ * @dev The block headers must come from Meowcoin epochs with difficulties marked
+ *      by the previous and current difficulties. If a Meowcoin difficulty relay
  *      is used to provide these values and the relay is up-to-date, only the
  *      recent block headers will pass validation. Block headers older than the
- *      current and previous Bitcoin epochs will fail.
+ *      current and previous Meowcoin epochs will fail.
  * @throws {Error} If any of the block headers are invalid, or if the block
  *         header chain is not continuous.
  * @returns An empty return value.
@@ -176,7 +176,7 @@ export function validateBitcoinHeadersChain(
     const difficulty = targetToDifficulty(difficultyTarget)
 
     if (previousEpochDifficulty.eq(1) && currentEpochDifficulty.eq(1)) {
-      // Special case for Bitcoin Testnet. Do not check block's difficulty
+      // Special case for Meowcoin Testnet. Do not check block's difficulty
       // due to required difficulty falling to `1` for Testnet.
       continue
     }
@@ -186,7 +186,7 @@ export function validateBitcoinHeadersChain(
       !difficulty.eq(currentEpochDifficulty)
     ) {
       throw new Error(
-        "Header difficulty not at current or previous Bitcoin difficulty"
+        "Header difficulty not at current or previous Meowcoin difficulty"
       )
     }
 
@@ -194,7 +194,7 @@ export function validateBitcoinHeadersChain(
     // headers at current difficulty have already been seen. This ensures
     // there is at most one switch from previous to current difficulties.
     if (requireCurrentDifficulty && !difficulty.eq(currentEpochDifficulty)) {
-      throw new Error("Header must be at current Bitcoin difficulty")
+      throw new Error("Header must be at current Meowcoin difficulty")
     }
 
     // If the header is at current difficulty, require the subsequent headers to
@@ -240,7 +240,7 @@ function bitsToTarget(bits: number): BigNumber {
   // 1653206561150525499452195696179626311675293455763937233695932416 (decimal)
   //
   // Sources:
-  // - https://developer.bitcoin.org/reference/block_chain.html#target-nbits
+  // - https://developer.meowcoin.org/reference/block_chain.html#target-nbits
   // - https://wiki.bitcoinsv.io/index.php/Target
 
   const exponent = ((bits >>> 24) & 0xff) - 3
@@ -263,7 +263,7 @@ function targetToDifficulty(target: BigNumber): BigNumber {
 }
 
 /**
- * Utility functions allowing to perform Bitcoin target conversions.
+ * Utility functions allowing to perform Meowcoin target conversions.
  */
 export const BitcoinTargetConverter = {
   bitsToTarget,

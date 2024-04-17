@@ -1,16 +1,16 @@
 :toc: macro
 
-= tBTC v2 contracts
+= tMEWC contracts
 
-https://github.com/keep-network/tbtc-v2/actions/workflows/contracts.yml[image:https://img.shields.io/github/actions/workflow/status/keep-network/tbtc-v2/contracts.yml?branch=main&event=push&label=TBTC%20contracts%20build[TBTC contracts build status]]
+https://github.com/keep-network/tmewc/actions/workflows/contracts.yml[image:https://img.shields.io/github/actions/workflow/status/keep-network/tmewc/contracts.yml?branch=main&event=push&label=TMEWC%20contracts%20build[TMEWC contracts build status]]
 
-This package contains tBTC v2 contracts.
+This package contains tMEWC contracts.
 
 toc::[]
 
 == Build, test and deploy
 
-tBTC v2 contracts use https://hardhat.org/[*Hardhat*] development environment.
+tMEWC contracts use https://hardhat.org/[*Hardhat*] development environment.
 To build and deploy these contracts, please follow the instructions presented
 below.
 
@@ -33,7 +33,7 @@ yarn build
 ```
 Compiled contracts will land in the `build` directory.
 
-*NOTE:* The `tbtc-v2` package contains an indirect dependency to
+*NOTE:* The `tmewc` package contains an indirect dependency to
 `@summa-tx/relay-sol@2.0.2` package, which downloads one of its sub-dependencies
 via unathenticated `git://` protocol. That protocol is no longer supported by
 GitHub. This means that in certain situations installation of the package or
@@ -63,7 +63,7 @@ yarn test:integration
 ```
 
 System tests are implemented separately, in the
-link:../system-tests/[`system-tests`] directory of the `tbtc-v2` repository.
+link:../system-tests/[`system-tests`] directory of the `tmewc` repository.
 
 === Deploy contracts
 

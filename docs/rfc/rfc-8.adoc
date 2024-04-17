@@ -1,6 +1,6 @@
 :toc: macro
 
-= RFC 8: Cross-chain Tokenized Threshold BTC
+= RFC 8: Cross-chain Tokenized Threshold MEWC
 
 :icons: font
 :numbered:
@@ -8,28 +8,28 @@ toc::[]
 
 == Goal
 
-The goal of this proposal is to enable *efficient* cross-chain tBTC liquidity.
+The goal of this proposal is to enable *efficient* cross-chain tMEWC liquidity.
 
-In the Ethereum ecosystem, that means bringing Bitcoin to L2s and sidechains like
+In the Ethereum ecosystem, that means bringing Meowcoin to L2s and sidechains like
 Arbitrum, Optimism, Polygon, Avalanche, and Binance Smart Chain. In the Cosmos
-ecosystem, that means Bitcoin on IBC-enabled zones (chains) like Osmosis and
+ecosystem, that means Meowcoin on IBC-enabled zones (chains) like Osmosis and
 Penumbra. And in newer ecosystems, that means chains like Solana, Aptos, and
 Sui.
 
 Efficiency requires minimizing liquidity fragmentation by avoiding the need for
-tBTC wrapper tokens by each chain and bridge. This situation quickly leads to an
+tMEWC wrapper tokens by each chain and bridge. This situation quickly leads to an
 `n*m` problem, where liquidity on `n` chains is divided between `m`
 bridges. Each of these token variants soaks up valuable liquidity that could be
 better utilized elsewhere.
 
-Because tBTC is minted "centrally" on Ethereum L1, we can do better. By
-deploying a canonical token on each chain, we can ensure the supply of tBTC
+Because tMEWC is minted "centrally" on Ethereum L1, we can do better. By
+deploying a canonical token on each chain, we can ensure the supply of tMEWC
 remains sacrosanct, while enabling quick, interoperable cross-chain bridges and
 localizing ecosystem risk.
 
 == Overview
 
-To achieve this goal, I propose we deploy a canonical tBTC contract on each
+To achieve this goal, I propose we deploy a canonical tMEWC contract on each
 chain we support. This contract should be flexible enough to:
 
 * Delegate restricted minting authority to a native bridge on the chain, if
@@ -42,7 +42,7 @@ chain we support. This contract should be flexible enough to:
 
 == Initial implementation
 
-The goal of the initial implementation is to bring Bitcoin to the following L2s
+The goal of the initial implementation is to bring Meowcoin to the following L2s
 and sidechains:
 
 * Arbitrum,
@@ -55,7 +55,7 @@ us to scale to other L2s, sidechains, and chains quickly.
 === Minting on L1
 
 Rather than change our L1 implementation to be aware of L2s and sidechains,
-we'll start as simply as possible. Every tBTC mint will continue to require
+we'll start as simply as possible. Every tMEWC mint will continue to require
 transactions on Ethereum from the user — first a deposit reveal, then a lock  
 to bridge to another network.
 
@@ -67,7 +67,7 @@ will be upgradeable, owned by Threshold Council, will delegate the minting
 authority to multiple parties, and have a pause functionality for mints and
 burns.
 
-Given those requirements, the address of the canonical tBTC token on L2s and
+Given those requirements, the address of the canonical tMEWC token on L2s and
 sidechains will be different from the one deployed on L1.
 
 A generic implementation of the token will be provided in the `solidity` smart
@@ -90,14 +90,14 @@ Examples of chains with native bridges include:
 
 ==== Arbitrum native bridge
 
-Since our tBTC L2 token is upgradeable and will allow multiple minting
+Since our tMEWC L2 token is upgradeable and will allow multiple minting
 authorities, the Arbitrum Standard ERC20 Gateway is not sufficient.
 
-Given our tBTC L1 token does not conform to `ICustomToken` interface, we can not
+Given our tMEWC L1 token does not conform to `ICustomToken` interface, we can not
 use Arbitrum Generic Custom Gateway.
 
 The only option is to implement our custom gateway that will have a minting
-authority for Arbitrum L2 tBTC token.
+authority for Arbitrum L2 tMEWC token.
 
 One working example of a custom gateway is the DAI gateway:
 
@@ -118,7 +118,7 @@ for more information.
 
 For similar reasons as for Arbitrum, we have to implement our custom `FxTunnel`
 implementation. The child tunnel implementation on the Polygon sidechain will
-have a minting authority for the Polygon tBTC token.
+have a minting authority for the Polygon tMEWC token.
 
 This is out of the scope of the initial implementation.
 
@@ -129,9 +129,9 @@ for more information.
 
 The Optimism Standard Bridge creates L2 token with a call to
 `OptimismMintableERC20Factory`. The created token does not have the capabilities
-we expect from tBTC canonical tokens on L2. For this reason, using the Optimism
+we expect from tMEWC canonical tokens on L2. For this reason, using the Optimism
 Standard Bridge is not an option and we must implement our own L2 minter
-contract with an authority to mint Optimism tBTC. Note that going back from L2
+contract with an authority to mint Optimism tMEWC. Note that going back from L2
 to L1 will take at least one week given the one-week Optimism challenge period.
 
 This is out of the scope of the initial implementation.
@@ -142,29 +142,29 @@ for more details.
 
 === Supporting cross-ecosystem bridges
 
-Selected cross-ecosystem bridges will be given minting authority for tBTC token
+Selected cross-ecosystem bridges will be given minting authority for tMEWC token
 on L2 and sidechains.
 
 Usually, the process of bridging from L1 to L2 (or sidechain) looks as follows
 on a high level:
 
-* There is a tBTC holder on L1. The holder goes to the Bridge dApp and
+* There is a tMEWC holder on L1. The holder goes to the Bridge dApp and
   selects the chain they want to bridge to.
-* The holder submits one transaction to L1 locking their tBTC tokens in the
+* The holder submits one transaction to L1 locking their tMEWC tokens in the
   bridge's smart contract. After the transaction is mined, they wait about 15
   minutes for the Ethereum block finality.
 * The holder submits one transaction to L2 that is minting tokens. After that
-  transaction is mined, they have their tBTC on L2.
+  transaction is mined, they have their tMEWC on L2.
 
 Usually, the process of bridging from L2 (or sidechain) to L1 looks as follows
 on a high level:
 
-* There is a tBTC holder on L2. That holder goes to the Bridge dApp and
+* There is a tMEWC holder on L2. That holder goes to the Bridge dApp and
   selects one of the L2 chains they want to bridge from.
 * The holder submits one transaction to L2 that is burning the token. After the
   transaction is mined, they wait about 15 minutes for the L2 block finality.
-* The holder submits one transaction to L1 unlocking their tBTC tokens from the
-  bridge's smart contract. After that transaction is mined, they have their tBTC
+* The holder submits one transaction to L1 unlocking their tMEWC tokens from the
+  bridge's smart contract. After that transaction is mined, they have their tMEWC
   on L1.
 
 What is not immediately obvious is that the token received on L2 may not be the
@@ -172,10 +172,10 @@ canonical token on that L2.
 
 To fully use the capabilities of cross-ecosystem bridges and make the user
 experience seamless, we will implement a gateway contract having the authority to
-wrap bridge-specific tokens into tBTC tokens in a 1:1 ratio. This contract
-will have a minting authority for tBTC on L2. This way, no liquid market has to
+wrap bridge-specific tokens into tMEWC tokens in a 1:1 ratio. This contract
+will have a minting authority for tMEWC on L2. This way, no liquid market has to
 exist on any target chain for users to be able to cross the Wormhole bridge into
-the canonical tBTC.
+the canonical tMEWC.
 
 IMPORTANT: The requirement for a seamless user experience is that the development
 team of the given cross-ecosystem bridge has to integrate the step of wrapping the
@@ -209,7 +209,7 @@ link:https://help.safe.global/en/articles/5267779-i-sent-assets-to-a-safe-addres
 to replay the same transaction creating Gnosis Safe with the same address on the
 supported L2s and sidechains.
 
-The Governance will be able to add and remove minters to L2/sidechain tBTC
+The Governance will be able to add and remove minters to L2/sidechain tMEWC
 canonical contract.
 
 === Code organization
@@ -234,12 +234,12 @@ contracts in case a single change in one of L2 contracts is needed.
 This organization of the code will also allow us to not add subchain-specific
 dependencies to the L1 project and to deploy NPM packages separately:
 
-* `@keep-network/tbtc-v2-arbitrum`,
-* `@keep-network/tbtc-v2-polygon`,
-* `@keep-network/tbtc-v2-optimism`.
+* `@keep-network/tmewc-arbitrum`,
+* `@keep-network/tmewc-polygon`,
+* `@keep-network/tmewc-optimism`.
 
 Every chain requires its own network and compiler configuration.
-The `@keep-network/tbtc-v2` package is quite heavy and there is no
+The `@keep-network/tmewc` package is quite heavy and there is no
 straightforward way to distinguish on which chain the given contract was
 deployed if we do not separate NPM packages.
 
@@ -256,31 +256,31 @@ L2 and L2 contract addresses may require addresses of contracts from L1.
 ├── solidity
 │   ├── (...)
 │   └── l2
-│       └── L2TBTC.sol
+│       └── L2TMEWC.sol
 └── cross-chain
     ├── arbitrum
     │   ├── package.json
     │   └── solidity
     │      ├── L1ArbitrumGateway.sol 
     │      ├── L2ArbitrumGateway.sol 
-    │      └── ArbitrumTBTC.sol 
+    │      └── ArbitrumTMEWC.sol 
     ├── optimism
     │   ├── package.json
     │   └── solidity
     │      ├── L1OptimismGateway.sol 
     │      ├── L2OptimismGateway.sol 
-    │      └── OptimismTBTC.sol 
+    │      └── OptimismTMEWC.sol 
     └── polygon
         ├── package.json
         └── solidity
            ├── L1PolygonGateway.sol 
            ├── L2PolygonGateway.sol 
-           └── PolygonTBTC.sol 
+           └── PolygonTMEWC.sol 
 ```
 
-`L2TBTC.sol` is an abstract contract doing all the heavy lifting: upgradeability,
+`L2TMEWC.sol` is an abstract contract doing all the heavy lifting: upgradeability,
 authorization of minters, and minting pause. This generic contract is inherited
-by L2-specific tokens: `ArbitrumTBTC`, `OptimismTBTC`, and `PolygonTBTC`.
+by L2-specific tokens: `ArbitrumTMEWC`, `OptimismTMEWC`, and `PolygonTMEWC`.
 
 Each `cross-chain` module has its own `package.json` so it's an independent
 project with a separate NPM package deployment job and CI jobs.
@@ -295,7 +295,7 @@ up contracts together.
 
 ==== Initial implementation
 
-The initial implementation uses the Wormhole bridge to bring tBTC to Arbitrum,
+The initial implementation uses the Wormhole bridge to bring tMEWC to Arbitrum,
 Optimism, and Polygon.
 
 ```
@@ -303,7 +303,7 @@ Optimism, and Polygon.
                                          |                                Arbitrum                             |
                                          |                                                                     |
                                          |  +----------------------+  +-------------------+  +--------------+  |
-                                   +-----|--| Wormhole TokenBridge |--| L2WormholeGateway |--| ArbitrumTBTC |  |
+                                   +-----|--| Wormhole TokenBridge |--| L2WormholeGateway |--| ArbitrumTMEWC |  |
                                    |     |  +----------------------+  +-------------------+  +--------------+  |
                                    |     |                                                                     |
                                    |     +---------------------------------------------------------------------+
@@ -312,7 +312,7 @@ Optimism, and Polygon.
 |          Ethereum          |     |     |                                Polygon                              |
 |                            |     |     |                                                                     |
 |  +----------------------+  |     |     |  +----------------------+  +-------------------+  +-------------+   |
-|  | Wormhole TokenBridge |--|-----|-----|--| Wormhole TokenBridge |--| L2WormholeGateway |--| PolygonTBTC |   |
+|  | Wormhole TokenBridge |--|-----|-----|--| Wormhole TokenBridge |--| L2WormholeGateway |--| PolygonTMEWC |   |
 |  +----------------------+  |     |     |  +----------------------+  +-------------------+  +-------------+   |
 |                            |     |     |                                                                     |
 +----------------------------+     |     +---------------------------------------------------------------------+
@@ -321,7 +321,7 @@ Optimism, and Polygon.
                                    |     |                                Optimism                             |
                                    |     |                                                                     |
                                    |     |  +----------------------+  +-------------------+  +--------------+  |
-                                   +-----|--| Wormhole TokenBridge |--| L2WormholeGateway |--| OptimismTBTC |  |
+                                   +-----|--| Wormhole TokenBridge |--| L2WormholeGateway |--| OptimismTMEWC |  |
                                          |  +----------------------+  +-------------------+  +--------------+  |
                                          |                                                                     |
                                          +---------------------------------------------------------------------+
@@ -338,12 +338,12 @@ Smart contracts involved:
 * Wormhole `TokenBridge` on Optimism is the contract deployed at
   link:https://optimistic.etherscan.io/address/0x1d68124e65fafc907325e3edbf8c4d84499daa8b[`0x1d68124e65fafc907325e3edbf8c4d84499daa8b`].
 * `L2WormholeGateway` on each chain is a smart contract wrapping and unwrapping
-  Wormhole-specific tBTC representation into the canonical tBTC token on the
+  Wormhole-specific tMEWC representation into the canonical tMEWC token on the
   given chain. This contract needs to be implemented and deployed behind an
   upgradeable proxy.
-* `ArbitrumTBTC`, `PolygonTBTC`, and `OptimismTBTC` are token contracts with
+* `ArbitrumTMEWC`, `PolygonTMEWC`, and `OptimismTMEWC` are token contracts with
   a minting authority delegated to `L2WormholeGateway`. This is the canonical
-  tBTC token on the given chain. This contract needs to be implemented.
+  tMEWC token on the given chain. This contract needs to be implemented.
 
 The full list of Wormhole deployed contracts is available link:https://book.wormhole.com/reference/contracts.html[here].
 
@@ -353,7 +353,7 @@ The extended implementation adds support for native L2/sidechain bridges and
 other cross-ecosystem bridges. Each L1 and L2 gateway needs to be implemented
 separately given the specific requirements of cross-chain communication of the
 given L2/sidechain. Multiple contracts have a minting authority for
-each L2/sidechain tBTC canonical token: cross-ecosystem gateways and the native
+each L2/sidechain tMEWC canonical token: cross-ecosystem gateways and the native
 bridge gateway.
 
 ```
@@ -365,7 +365,7 @@ bridge gateway.
 |  +-------------------+     |             |  +-------------------+                                   |          |
 |                            |             |                                                          |          |
 |                            |             |  +---------------------+  +------------------+  +--------------+    |
-|                            |         +---|--| Another TokenBridge |--| L2AnotherGateway |--| ArbitrumTBTC |    |
+|                            |         +---|--| Another TokenBridge |--| L2AnotherGateway |--| ArbitrumTMEWC |    |
 |                            |         |   |  +---------------------+  +------------------+  +--------------+    |
 |                            |         |   |                                                          |          |  
 |                            |         |   |  +----------------------+  +-------------------+         |          |
@@ -381,7 +381,7 @@ bridge gateway.
 |  +------------------+      |     |   |   |  +------------------+                                    |          |
 |                            |     |   |   |                                                          |          |
 |  +---------------------+   |     |   |   |  +---------------------+   +------------------+  +-------------+    |
-|  | Another TokenBridge |---|---------+---|--| Another TokenBridge |---| L2AnotherGateway |--| PolygonTBTC |    |
+|  | Another TokenBridge |---|---------+---|--| Another TokenBridge |---| L2AnotherGateway |--| PolygonTMEWC |    |
 |  +---------------------+   |     |   |   |  +---------------------+   +------------------+  +-------------+    |
 |  +----------------------+  |     |   |   |  +----------------------+  +-------------------+         |          |
 |  | Wormhole TokenBridge |--|-----+-------|--| Wormhole TokenBridge |--| L2WormholeGateway |---------+          |
@@ -397,7 +397,7 @@ bridge gateway.
 |                            |     |      |  +---------------------+   +------------------+           |         |
 |                            |     |      |                                                           |         | 
 |                            |     |      |  +----------------------+  +-------------------+  +--------------+  |
-|                            |     +------|--| Wormhole TokenBridge |--| L2WormholeGateway |--| OptimismTBTC |  |
+|                            |     +------|--| Wormhole TokenBridge |--| L2WormholeGateway |--| OptimismTMEWC |  |
 |                            |            |  +----------------------+  +-------------------+  +--------------+  |
 |                            |            |                                                           |         |
 |  +-------------------+     |            |  +-------------------+                                    |         |
@@ -411,18 +411,18 @@ bridge gateway.
 
 === Minting on L2
 
-Canonical tBTC token implementation on each L2/sidechain will allow delegating
+Canonical tMEWC token implementation on each L2/sidechain will allow delegating
 the minting authority to new contracts. Such a contract could be an L1 vault
-implementation other than the `TBTCVault`. In this model, tBTC for the given
-Bitcoin deposit is minted on L2 directly, without minting it on L1. The L1
+implementation other than the `TMEWCVault`. In this model, tMEWC for the given
+Meowcoin deposit is minted on L2 directly, without minting it on L1. The L1
 `Bank` balance is locked under the given vault implementation.
 
-The main challenge of the native L2 minting is extending TBTC L1 minting
-authority to bridges allowing to go from L2 to L1 with tBTC tokens minted on L2.
+The main challenge of the native L2 minting is extending TMEWC L1 minting
+authority to bridges allowing to go from L2 to L1 with tMEWC tokens minted on L2.
 
 === Replacing multi-sig governance
 
 It is possible to implement a communication gateway for each L2/sidechain
 allowing the DAO from L1 to vote on changes that would be reflected on
 L2/sidechain. This is a potential mechanism to replace Threshold Council
-ownership of L2/sidechain canonical tBTC token with the Threshold DAO ownership.
+ownership of L2/sidechain canonical tMEWC token with the Threshold DAO ownership.

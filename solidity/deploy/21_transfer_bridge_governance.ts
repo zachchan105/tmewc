@@ -20,7 +20,7 @@ export default func
 func.tags = ["TransferBridgeGovernance"]
 func.dependencies = [
   "Bridge",
-  "AuthorizeTBTCVault",
+  "AuthorizeTMEWCVault",
   "AuthorizeMaintainerProxyInBridge",
   "SetDepositParameters",
   "SetWalletParameters",

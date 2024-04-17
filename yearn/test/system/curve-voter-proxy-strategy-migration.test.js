@@ -4,7 +4,7 @@ const {
   impersonateAccount,
 } = require("../helpers/contract-test-helpers.js")
 const { BigNumber } = ethers
-const { yearn, tbtc, forkBlockNumber } = require("./constants.js")
+const { yearn, tmewc, forkBlockNumber } = require("./constants.js")
 const { allocateSynthetixRewards, deployYearnVault } = require("./functions.js")
 const { curveStrategyFixture } = require("./fixtures.js")
 
@@ -13,9 +13,9 @@ const describeFn =
 
 describeFn("System -- curve voter proxy strategy migration", () => {
   let vaultGovernance
-  let tbtcCurvePoolLPToken
+  let tmewcCurvePoolLPToken
   let crvToken
-  let tbtcCurvePoolGaugeRewardToken
+  let tmewcCurvePoolGaugeRewardToken
   let vaultDepositor
   let strategyProxyGovernance
   let vault
@@ -28,7 +28,7 @@ describeFn("System -- curve voter proxy strategy migration", () => {
     // Setup roles.
     vaultGovernance = await ethers.getSigner(0)
     vaultDepositor = await impersonateAccount(
-      tbtc.curvePoolLPTokenHolderAddress,
+      tmewc.curvePoolLPTokenHolderAddress,
       vaultGovernance
     )
     strategyProxyGovernance = await impersonateAccount(
@@ -38,31 +38,31 @@ describeFn("System -- curve voter proxy strategy migration", () => {
     // Allocate Synthetix rewards to obtain additional rewards (KEEP tokens)
     // from the Curve pool's gauge.
     await allocateSynthetixRewards(
-      tbtc,
+      tmewc,
       curveStrategyFixture.synthetixRewardsAllocation
     )
 
-    // Get tBTC v2 Curve pool LP token handle.
-    tbtcCurvePoolLPToken = await ethers.getContractAt(
+    // Get tMEWC Curve pool LP token handle.
+    tmewcCurvePoolLPToken = await ethers.getContractAt(
       "IERC20",
-      tbtc.curvePoolLPTokenAddress
+      tmewc.curvePoolLPTokenAddress
     )
 
     // Get CRV token handle.
-    crvToken = await ethers.getContractAt("IERC20", tbtc.crvTokenAddress)
+    crvToken = await ethers.getContractAt("IERC20", tmewc.crvTokenAddress)
 
-    // Get tBTC curve reward token handle
-    tbtcCurvePoolGaugeRewardToken = await ethers.getContractAt(
+    // Get tMEWC curve reward token handle
+    tmewcCurvePoolGaugeRewardToken = await ethers.getContractAt(
       "IERC20",
-      tbtc.curvePoolGaugeRewardAddress
+      tmewc.curvePoolGaugeRewardAddress
     )
 
-    // Deploy a new experimental vault accepting tBTC v2 Curve pool LP tokens.
+    // Deploy a new experimental vault accepting tMEWC Curve pool LP tokens.
     vault = await deployYearnVault(
       yearn,
       curveStrategyFixture.vaultName,
       curveStrategyFixture.vaultSymbol,
-      tbtcCurvePoolLPToken,
+      tmewcCurvePoolLPToken,
       vaultGovernance,
       curveStrategyFixture.vaultDepositLimit
     )
@@ -73,17 +73,17 @@ describeFn("System -- curve voter proxy strategy migration", () => {
     )
     oldStrategy = await CurveVoterProxyStrategy.deploy(
       vault.address,
-      tbtc.curvePoolDepositorAddress,
-      tbtc.curvePoolGaugeAddress,
-      tbtc.curvePoolGaugeRewardAddress
+      tmewc.curvePoolDepositorAddress,
+      tmewc.curvePoolGaugeAddress,
+      tmewc.curvePoolGaugeRewardAddress
     )
     await oldStrategy.deployed()
 
     newStrategy = await CurveVoterProxyStrategy.deploy(
       vault.address,
-      tbtc.curvePoolDepositorAddress,
-      tbtc.curvePoolGaugeAddress,
-      tbtc.curvePoolGaugeRewardAddress
+      tmewc.curvePoolDepositorAddress,
+      tmewc.curvePoolGaugeAddress,
+      tmewc.curvePoolGaugeRewardAddress
     )
     await newStrategy.deployed()
 
@@ -95,7 +95,7 @@ describeFn("System -- curve voter proxy strategy migration", () => {
 
     await strategyProxy
       .connect(strategyProxyGovernance)
-      .approveStrategy(tbtc.curvePoolGaugeAddress, oldStrategy.address)
+      .approveStrategy(tmewc.curvePoolGaugeAddress, oldStrategy.address)
 
     // Add CurveVoterProxyStrategy to the vault.
     await vault.addStrategy(
@@ -107,7 +107,7 @@ describeFn("System -- curve voter proxy strategy migration", () => {
     )
 
     // Deposit to the vault
-    await tbtcCurvePoolLPToken
+    await tmewcCurvePoolLPToken
       .connect(vaultDepositor)
       .approve(vault.address, curveStrategyFixture.vaultDepositAmount)
     await vault
@@ -127,11 +127,11 @@ describeFn("System -- curve voter proxy strategy migration", () => {
 
     it("should return zero LP tokens and rewards for the new strategy", async () => {
       expect(
-        await tbtcCurvePoolLPToken.balanceOf(newStrategy.address)
+        await tmewcCurvePoolLPToken.balanceOf(newStrategy.address)
       ).to.be.equal(0)
       expect(await crvToken.balanceOf(newStrategy.address)).to.be.equal(0)
       expect(
-        await tbtcCurvePoolGaugeRewardToken.balanceOf(newStrategy.address)
+        await tmewcCurvePoolGaugeRewardToken.balanceOf(newStrategy.address)
       ).to.be.equal(0)
     })
 
@@ -149,23 +149,23 @@ describeFn("System -- curve voter proxy strategy migration", () => {
 
     it("should move LP tokens to the new strategy", async () => {
       expect(
-        await tbtcCurvePoolLPToken.balanceOf(oldStrategy.address)
+        await tmewcCurvePoolLPToken.balanceOf(oldStrategy.address)
       ).to.be.equal(0)
       expect(
-        await tbtcCurvePoolLPToken.balanceOf(newStrategy.address)
+        await tmewcCurvePoolLPToken.balanceOf(newStrategy.address)
       ).to.be.equal(curveStrategyFixture.vaultDepositAmount)
     })
 
     it("should move reward tokens to the new strategy", async () => {
       expect(await crvToken.balanceOf(oldStrategy.address)).to.be.equal(0)
       expect(
-        await tbtcCurvePoolGaugeRewardToken.balanceOf(oldStrategy.address)
+        await tmewcCurvePoolGaugeRewardToken.balanceOf(oldStrategy.address)
       ).to.be.equal(0)
       expect(await crvToken.balanceOf(newStrategy.address)).to.be.equal(
         BigNumber.from("7233457460951")
       )
       expect(
-        await tbtcCurvePoolGaugeRewardToken.balanceOf(newStrategy.address)
+        await tmewcCurvePoolGaugeRewardToken.balanceOf(newStrategy.address)
       ).to.be.equal(BigNumber.from("36050337891286"))
     })
 
@@ -182,11 +182,11 @@ describeFn("System -- curve voter proxy strategy migration", () => {
     let amountWithdrawn
 
     before(async () => {
-      const initialBalance = await tbtcCurvePoolLPToken.balanceOf(
+      const initialBalance = await tmewcCurvePoolLPToken.balanceOf(
         vaultDepositor.address
       )
       await vault.connect(vaultDepositor).withdraw() // withdraw all shares
-      const currentBalance = await tbtcCurvePoolLPToken.balanceOf(
+      const currentBalance = await tmewcCurvePoolLPToken.balanceOf(
         vaultDepositor.address
       )
       amountWithdrawn = currentBalance.sub(initialBalance)

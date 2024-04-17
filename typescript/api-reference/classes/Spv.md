@@ -9,7 +9,7 @@
 ### Properties
 
 - [bitcoinClient](Spv.md#bitcoinclient)
-- [tbtcContracts](Spv.md#tbtccontracts)
+- [tmewcContracts](Spv.md#tmewccontracts)
 
 ### Methods
 
@@ -20,13 +20,13 @@
 
 ### constructor
 
-• **new Spv**(`tbtcContracts`, `bitcoinClient`): [`Spv`](Spv.md)
+• **new Spv**(`tmewcContracts`, `bitcoinClient`): [`Spv`](Spv.md)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `tbtcContracts` | [`TBTCContracts`](../README.md#tbtccontracts) |
+| `tmewcContracts` | [`TMEWCContracts`](../README.md#tmewccontracts) |
 | `bitcoinClient` | [`BitcoinClient`](../interfaces/BitcoinClient.md) |
 
 #### Returns
@@ -35,7 +35,7 @@
 
 #### Defined in
 
-[src/services/maintenance/spv.ts:21](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/maintenance/spv.ts#L21)
+[src/services/maintenance/spv.ts:21](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/maintenance/spv.ts#L21)
 
 ## Properties
 
@@ -43,23 +43,23 @@
 
 • `Private` `Readonly` **bitcoinClient**: [`BitcoinClient`](../interfaces/BitcoinClient.md)
 
-Bitcoin client handle.
+Meowcoin client handle.
 
 #### Defined in
 
-[src/services/maintenance/spv.ts:19](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/maintenance/spv.ts#L19)
+[src/services/maintenance/spv.ts:19](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/maintenance/spv.ts#L19)
 
 ___
 
-### tbtcContracts
+### tmewcContracts
 
-• `Private` `Readonly` **tbtcContracts**: [`TBTCContracts`](../README.md#tbtccontracts)
+• `Private` `Readonly` **tmewcContracts**: [`TMEWCContracts`](../README.md#tmewccontracts)
 
-Handle to tBTC contracts.
+Handle to tMEWC contracts.
 
 #### Defined in
 
-[src/services/maintenance/spv.ts:15](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/maintenance/spv.ts#L15)
+[src/services/maintenance/spv.ts:15](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/maintenance/spv.ts#L15)
 
 ## Methods
 
@@ -86,7 +86,7 @@ Empty promise.
 
 #### Defined in
 
-[src/services/maintenance/spv.ts:34](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/maintenance/spv.ts#L34)
+[src/services/maintenance/spv.ts:34](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/maintenance/spv.ts#L34)
 
 ___
 
@@ -103,7 +103,7 @@ Bridge on-chain contract.
 | :------ | :------ | :------ |
 | `transactionHash` | [`BitcoinTxHash`](BitcoinTxHash.md) | Hash of the transaction being proven. |
 | `mainUtxo` | [`BitcoinUtxo`](../README.md#bitcoinutxo) | Recent main UTXO of the wallet as currently known on-chain. |
-| `walletPublicKey` | [`Hex`](Hex.md) | Bitcoin public key of the wallet. Must be in the compressed form (33 bytes long with 02 or 03 prefix). |
+| `walletPublicKey` | [`Hex`](Hex.md) | Meowcoin public key of the wallet. Must be in the compressed form (33 bytes long with 02 or 03 prefix). |
 
 #### Returns
 
@@ -113,4 +113,4 @@ Empty promise.
 
 #### Defined in
 
-[src/services/maintenance/spv.ts:67](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/maintenance/spv.ts#L67)
+[src/services/maintenance/spv.ts:67](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/maintenance/spv.ts#L67)

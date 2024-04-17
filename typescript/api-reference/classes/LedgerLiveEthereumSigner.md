@@ -1,7 +1,7 @@
 # Class: LedgerLiveEthereumSigner
 
 Ethereum signer extended from `ethers` Signer class. The main purpose of it
-is to allow the user to communicate with eth contracts through our tBTC SDK
+is to allow the user to communicate with eth contracts through our tMEWC SDK
 inside Ledger Live application, when the app is used there as a Live App.
 
 ## Hierarchy
@@ -77,7 +77,7 @@ Signer.constructor
 
 #### Defined in
 
-[src/lib/utils/ledger.ts:31](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/utils/ledger.ts#L31)
+[src/lib/utils/ledger.ts:31](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/utils/ledger.ts#L31)
 
 ## Properties
 
@@ -87,7 +87,7 @@ Signer.constructor
 
 #### Defined in
 
-[src/lib/utils/ledger.ts:29](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/utils/ledger.ts#L29)
+[src/lib/utils/ledger.ts:29](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/utils/ledger.ts#L29)
 
 ___
 
@@ -111,7 +111,7 @@ ___
 
 #### Defined in
 
-[src/lib/utils/ledger.ts:27](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/utils/ledger.ts#L27)
+[src/lib/utils/ledger.ts:27](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/utils/ledger.ts#L27)
 
 ___
 
@@ -121,7 +121,7 @@ ___
 
 #### Defined in
 
-[src/lib/utils/ledger.ts:28](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/utils/ledger.ts#L28)
+[src/lib/utils/ledger.ts:28](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/utils/ledger.ts#L28)
 
 ___
 
@@ -149,7 +149,7 @@ node_modules/@ethersproject/contracts/node_modules/@ethersproject/abstract-signe
 
 #### Defined in
 
-[src/lib/utils/ledger.ts:61](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/utils/ledger.ts#L61)
+[src/lib/utils/ledger.ts:61](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/utils/ledger.ts#L61)
 
 ## Methods
 
@@ -170,7 +170,7 @@ node_modules/@ethersproject/contracts/node_modules/@ethersproject/abstract-signe
 
 #### Defined in
 
-[src/lib/utils/ledger.ts:49](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/utils/ledger.ts#L49)
+[src/lib/utils/ledger.ts:49](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/utils/ledger.ts#L49)
 
 ___
 
@@ -184,7 +184,7 @@ ___
 
 #### Defined in
 
-[src/lib/utils/ledger.ts:38](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/utils/ledger.ts#L38)
+[src/lib/utils/ledger.ts:38](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/utils/ledger.ts#L38)
 
 ___
 
@@ -222,7 +222,7 @@ ___
 
 #### Defined in
 
-[src/lib/utils/ledger.ts:44](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/utils/ledger.ts#L44)
+[src/lib/utils/ledger.ts:44](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/utils/ledger.ts#L44)
 
 ___
 
@@ -242,7 +242,7 @@ ___
 
 #### Defined in
 
-[src/lib/utils/ledger.ts:98](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/utils/ledger.ts#L98)
+[src/lib/utils/ledger.ts:98](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/utils/ledger.ts#L98)
 
 ___
 
@@ -315,7 +315,7 @@ Signer.connect
 
 #### Defined in
 
-[src/lib/utils/ledger.ts:221](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/utils/ledger.ts#L221)
+[src/lib/utils/ledger.ts:221](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/utils/ledger.ts#L221)
 
 ___
 
@@ -353,7 +353,7 @@ ___
 
 #### Defined in
 
-[src/lib/utils/ledger.ts:88](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/utils/ledger.ts#L88)
+[src/lib/utils/ledger.ts:88](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/utils/ledger.ts#L88)
 
 ___
 
@@ -371,7 +371,7 @@ Signer.getAddress
 
 #### Defined in
 
-[src/lib/utils/ledger.ts:93](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/utils/ledger.ts#L93)
+[src/lib/utils/ledger.ts:93](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/utils/ledger.ts#L93)
 
 ___
 
@@ -517,7 +517,7 @@ ___
 
 #### Defined in
 
-[src/lib/utils/ledger.ts:69](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/utils/ledger.ts#L69)
+[src/lib/utils/ledger.ts:69](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/utils/ledger.ts#L69)
 
 ___
 
@@ -565,7 +565,7 @@ Signer.sendTransaction
 
 #### Defined in
 
-[src/lib/utils/ledger.ts:185](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/utils/ledger.ts#L185)
+[src/lib/utils/ledger.ts:185](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/utils/ledger.ts#L185)
 
 ___
 
@@ -585,7 +585,7 @@ ___
 
 #### Defined in
 
-[src/lib/utils/ledger.ts:65](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/utils/ledger.ts#L65)
+[src/lib/utils/ledger.ts:65](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/utils/ledger.ts#L65)
 
 ___
 
@@ -609,7 +609,7 @@ Signer.signMessage
 
 #### Defined in
 
-[src/lib/utils/ledger.ts:138](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/utils/ledger.ts#L138)
+[src/lib/utils/ledger.ts:138](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/utils/ledger.ts#L138)
 
 ___
 
@@ -633,7 +633,7 @@ Signer.signTransaction
 
 #### Defined in
 
-[src/lib/utils/ledger.ts:159](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/utils/ledger.ts#L159)
+[src/lib/utils/ledger.ts:159](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/utils/ledger.ts#L159)
 
 ___
 

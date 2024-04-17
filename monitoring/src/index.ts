@@ -1,4 +1,4 @@
-import { ElectrumClient } from "@keep-network/tbtc-v2.ts"
+import { ElectrumClient } from "@keep-network/tmewc.ts"
 
 import { Manager as SystemEventManager } from "./system-event"
 import { DepositMonitor } from "./deposit-monitor"
@@ -15,18 +15,18 @@ import { WalletMonitor } from "./wallet-monitor"
 import { SupplyMonitor } from "./supply-monitor"
 import { RedemptionMonitor } from "./redemption-monitor"
 
-import type { Client as BitcoinClient } from "@keep-network/tbtc-v2.ts/dist/src/bitcoin"
+import type { Client as BitcoinClient } from "@keep-network/tmewc.ts/dist/src/meowcoin"
 import type {
   Monitor as SystemEventMonitor,
   Receiver as SystemEventReceiver,
 } from "./system-event"
 
-const btcClient: BitcoinClient = ElectrumClient.fromUrl(context.electrumUrl)
+const mewcClient: BitcoinClient = ElectrumClient.fromUrl(context.electrumUrl)
 
 const monitors: SystemEventMonitor[] = [
   new DepositMonitor(contracts.bridge),
-  new MintingMonitor(contracts.bridge, contracts.tbtcVault, btcClient),
-  new SupplyMonitor(contracts.tbtcToken, new SupplyMonitorFilePersistence()),
+  new MintingMonitor(contracts.bridge, contracts.tmewcVault, mewcClient),
+  new SupplyMonitor(contracts.tmewcToken, new SupplyMonitorFilePersistence()),
   new WalletMonitor(contracts.bridge),
   new RedemptionMonitor(contracts.bridge),
 ]

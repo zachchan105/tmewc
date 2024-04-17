@@ -38,7 +38,7 @@ interface ISaddlePoolSwap {
 /// @dev This is an interface with just a few functions. For more info and
 ///      function description please see:
 ///      https://github.com/keep-network/keep-ecdsa/blob/main/solidity/contracts/LPRewards.sol
-//TODO: Make sure the LPRewards contract for tBTC v2 has the same interface
+//TODO: Make sure the LPRewards contract for tMEWC has the same interface
 interface ILPRewards {
     function stake(uint256 amount) external;
 
@@ -77,25 +77,25 @@ interface IUniswapV2Router {
 }
 
 /// @title SaddleStrategy
-/// @notice This strategy is meant to be used with the Saddle tBTC v2 pool vault.
+/// @notice This strategy is meant to be used with the Saddle tMEWC pool vault.
 ///         The vault's underlying token (a.k.a. want token) should be the LP
-///         token of the tBTC v2 Saddle pool. This strategy borrows the vault's
+///         token of the tMEWC Saddle pool. This strategy borrows the vault's
 ///         underlying token up to the debt limit configured for this strategy
 ///         in the vault. In order to make the profit, the strategy deposits
-///         the borrowed tokens into the tBTC v2 Saddle reward pool. Depositing
+///         the borrowed tokens into the tMEWC Saddle reward pool. Depositing
 ///         tokens in the reward pool generates KEEP token rewards.
 ///         The financial outcome is settled upon a call of the `harvest` method
 ///         (BaseStrategy.sol). Once that call is made, the strategy gets the
 ///         KEEP token rewards from Saddle reward pool. These reward tokens are
-///         then used to buy wBTC via a decentralized exchange. At the end, the
-///         strategy takes acquired wBTC and deposits them to the Saddle tBTC v2
+///         then used to buy wMEWC via a decentralized exchange. At the end, the
+///         strategy takes acquired wMEWC and deposits them to the Saddle tMEWC
 ///         pool. This way it obtains new LP tokens the vault is interested in,
 ///         and makes the profit in result. At this stage, the strategy may
 ///         repay some debt back to the vault, if needed. The entire cycle
 ///         repeats for the strategy lifetime, so all gains are constantly
-///         reinvested. Worth to flag that the current implementation uses wBTC
+///         reinvested. Worth to flag that the current implementation uses wMEWC
 ///         as the intermediary token because of its liquidity and ubiquity in
-///         BTC-based Curve pools.
+///         MEWC-based Curve pools.
 /// @dev Implementation is based on:
 ///      - General Yearn strategy template
 ///        https://github.com/yearn/brownie-strategy-mix
@@ -116,18 +116,18 @@ contract SaddleStrategy is BaseStrategy {
     // Address of the WETH token contract.
     address public constant wethToken =
         0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2;
-    // Address of the WBTC token contract.
-    address public constant wbtcToken =
+    // Address of the WMEWC token contract.
+    address public constant wmewcToken =
         0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599;
     // Address of the Uniswap V2 router contract.
     address public constant uniswap =
         0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D;
 
-    // Address of the tBTC v2 Saddle pool swap contract, see
+    // Address of the tMEWC Saddle pool swap contract, see
     // https://docs.saddle.finance/contracts
-    address public immutable tbtcSaddlePoolSwap;
-    // Address of the tBTC v2 Saddle LP rewards contract.
-    address public immutable tbtcSaddleLPRewards;
+    address public immutable tmewcSaddlePoolSwap;
+    // Address of the tMEWC Saddle LP rewards contract.
+    address public immutable tmewcSaddleLPRewards;
     // Determines the slippage tolerance for price-sensitive transactions.
     // If transaction's slippage is higher, transaction will be reverted.
     // Default value is 100 basis points (1%).
@@ -156,8 +156,8 @@ contract SaddleStrategy is BaseStrategy {
 
     constructor(
         address _vault,
-        address _tbtcSaddlePoolSwap,
-        address _tbtcSaddleLPRewards
+        address _tmewcSaddlePoolSwap,
+        address _tmewcSaddleLPRewards
     ) public BaseStrategy(_vault) {
         // TODO: Check what the correct values should be
         // Strategy settings.
@@ -166,10 +166,10 @@ contract SaddleStrategy is BaseStrategy {
         profitFactor = 1;
         debtThreshold = 1e24;
 
-        // tBTC-related settings.
-        tbtcSaddlePoolSwap = _tbtcSaddlePoolSwap;
-        tbtcSaddleLPRewards = _tbtcSaddleLPRewards;
-        address lpToken = ILPRewards(_tbtcSaddleLPRewards).wrappedToken();
+        // tMEWC-related settings.
+        tmewcSaddlePoolSwap = _tmewcSaddlePoolSwap;
+        tmewcSaddleLPRewards = _tmewcSaddleLPRewards;
+        address lpToken = ILPRewards(_tmewcSaddleLPRewards).wrappedToken();
         require(lpToken == address(want), "Incorrect reward pool LP token");
     }
 
@@ -220,10 +220,10 @@ contract SaddleStrategy is BaseStrategy {
         return want.balanceOf(address(this));
     }
 
-    /// @return Balance of the vault's underlying token staked into the tBTC v2
+    /// @return Balance of the vault's underlying token staked into the tMEWC
     ///         Saddle reward pool.
     function balanceOfPool() public view returns (uint256) {
-        return ILPRewards(tbtcSaddleLPRewards).balanceOf(address(this));
+        return ILPRewards(tmewcSaddleLPRewards).balanceOf(address(this));
     }
 
     /// @return Sum of balanceOfWant and balanceOfPool.
@@ -238,7 +238,7 @@ contract SaddleStrategy is BaseStrategy {
     ///         strategy after the report was made is available for reinvestment.
     ///         This strategy implements the aforementioned behavior by taking
     ///         its balance of the vault's underlying token and depositing it to
-    ///         the tBTC v2 Saddle reward pool.
+    ///         the tMEWC Saddle reward pool.
     /// @param debtOutstanding Will be 0 if the strategy is not past the
     ///        configured debt limit, otherwise its value will be how far past
     ///        the debt limit the strategy is. The strategy's debt limit is
@@ -246,8 +246,8 @@ contract SaddleStrategy is BaseStrategy {
     function adjustPosition(uint256 debtOutstanding) internal override {
         uint256 wantBalance = balanceOfWant();
         if (wantBalance > 0) {
-            want.safeIncreaseAllowance(tbtcSaddleLPRewards, wantBalance);
-            ILPRewards(tbtcSaddleLPRewards).stake(wantBalance);
+            want.safeIncreaseAllowance(tmewcSaddleLPRewards, wantBalance);
+            ILPRewards(tmewcSaddleLPRewards).stake(wantBalance);
         }
     }
 
@@ -258,7 +258,7 @@ contract SaddleStrategy is BaseStrategy {
     function withdrawSome(uint256 amount) internal returns (uint256) {
         amount = Math.min(amount, balanceOfPool());
         uint256 initialWantBalance = balanceOfWant();
-        ILPRewards(tbtcSaddleLPRewards).withdraw(amount);
+        ILPRewards(tmewcSaddleLPRewards).withdraw(amount);
         return balanceOfWant().sub(initialWantBalance);
     }
 
@@ -271,7 +271,7 @@ contract SaddleStrategy is BaseStrategy {
     ///         the difference is due to a realized loss, or if there is some
     ///         other situation at play (e.g. locked funds). This strategy
     ///         implements the aforementioned behavior by withdrawing a portion
-    ///         of the vault's underlying token (want token) from the tBTC v2
+    ///         of the vault's underlying token (want token) from the tMEWC
     ///         Saddle reward pool.
     /// @dev The invariant `liquidatedAmount + loss <= amountNeeded` should
     ///      always be maintained.
@@ -298,13 +298,13 @@ contract SaddleStrategy is BaseStrategy {
     /// @notice This method is defined in the BaseStrategy contract and is meant
     ///         to liquidate everything and return the amount that got freed.
     ///         This strategy implements the aforementioned behavior by
-    ///         withdrawing all vault's underlying tokens from the tBTC v2 Saddle
+    ///         withdrawing all vault's underlying tokens from the tMEWC Saddle
     ///         reward pool.
     /// @dev This function is used during emergency exit instead of prepareReturn
     ///      to liquidate all of the strategy's positions back to the vault.
     /// @return Total balance of want token held by this strategy.
     function liquidateAllPositions() internal override returns (uint256) {
-        ILPRewards(tbtcSaddleLPRewards).withdraw(balanceOfPool());
+        ILPRewards(tmewcSaddleLPRewards).withdraw(balanceOfPool());
 
         // Yearn docs doesn't specify clear enough what exactly should be
         // returned here. It may be either the total balance after withdraw or
@@ -320,16 +320,16 @@ contract SaddleStrategy is BaseStrategy {
     ///         such as transferring any reserve or LP tokens, CDPs, or other
     ///         tokens or stores of value. This strategy implements the
     ///         aforementioned behavior by withdrawing all vault's underlying
-    ///         tokens from the tBTC v2 Saddle reward pool.
+    ///         tokens from the tMEWC Saddle reward pool.
     /// @param newStrategy Address of the new strategy meant to replace the
     ///        current one.
     function prepareMigration(address newStrategy) internal override {
-        // Just withdraw the vault's underlying token from the tBTC v2 Saddle reward pool.
+        // Just withdraw the vault's underlying token from the tMEWC Saddle reward pool.
         // There is no need to transfer those tokens to the new strategy
         // right here as this is done in the BaseStrategy's migrate() method.
-        ILPRewards(tbtcSaddleLPRewards).withdraw(balanceOfPool());
+        ILPRewards(tmewcSaddleLPRewards).withdraw(balanceOfPool());
         // Get all the earned KEEP tokens and transfer them to the new strategy.
-        ILPRewards(tbtcSaddleLPRewards).getReward();
+        ILPRewards(tmewcSaddleLPRewards).getReward();
         IERC20(keepToken).safeTransfer(
             newStrategy,
             IERC20(keepToken).balanceOf(address(this))
@@ -373,9 +373,9 @@ contract SaddleStrategy is BaseStrategy {
         uint256 initialWantBalance = balanceOfWant();
 
         // Get KEEP rewards from the Saddle reward pool.
-        ILPRewards(tbtcSaddleLPRewards).getReward();
+        ILPRewards(tmewcSaddleLPRewards).getReward();
 
-        // Buy WBTC using obtained KEEP tokens.
+        // Buy WMEWC using obtained KEEP tokens.
         uint256 keepBalance = IERC20(keepToken).balanceOf(address(this));
         if (keepBalance > 0) {
             IERC20(keepToken).safeIncreaseAllowance(uniswap, keepBalance);
@@ -383,7 +383,7 @@ contract SaddleStrategy is BaseStrategy {
             address[] memory path = new address[](3);
             path[0] = keepToken;
             path[1] = wethToken;
-            path[2] = wbtcToken;
+            path[2] = wmewcToken;
 
             IUniswapV2Router(uniswap).swapExactTokensForTokens(
                 keepBalance,
@@ -394,21 +394,21 @@ contract SaddleStrategy is BaseStrategy {
             );
         }
 
-        // Deposit acquired WBTC to the Saddle pool to gain additional
+        // Deposit acquired WMEWC to the Saddle pool to gain additional
         // vault's underlying tokens.
-        uint256 wbtcBalance = IERC20(wbtcToken).balanceOf(address(this));
-        if (wbtcBalance > 0) {
-            IERC20(wbtcToken).safeIncreaseAllowance(
-                tbtcSaddlePoolSwap,
-                wbtcBalance
+        uint256 wmewcBalance = IERC20(wmewcToken).balanceOf(address(this));
+        if (wmewcBalance > 0) {
+            IERC20(wmewcToken).safeIncreaseAllowance(
+                tmewcSaddlePoolSwap,
+                wmewcBalance
             );
 
-            // TODO: When the new curve pool with tBTC v2 is deployed, verify
-            //       that the index of wBTC in the array is correct.
+            // TODO: When the new curve pool with tMEWC is deployed, verify
+            //       that the index of wMEWC in the array is correct.
             uint256[] memory amounts = new uint256[](4);
-            amounts[1] = wbtcBalance;
+            amounts[1] = wmewcBalance;
 
-            ISaddlePoolSwap(tbtcSaddlePoolSwap).addLiquidity(
+            ISaddlePoolSwap(tmewcSaddlePoolSwap).addLiquidity(
                 amounts,
                 minLiquidityDepositOutAmount(amounts),
                 uint256(-1),
@@ -471,7 +471,7 @@ contract SaddleStrategy is BaseStrategy {
     {
         // Get the maximum possible amount of LP tokens received in return
         // for liquidity deposit based on pool reserves.
-        uint256 amount = ISaddlePoolSwap(tbtcSaddlePoolSwap)
+        uint256 amount = ISaddlePoolSwap(tmewcSaddlePoolSwap)
         .calculateTokenAmount(address(this), amountsIn, true);
 
         // Include slippage tolerance into the maximum amount of LP tokens
@@ -511,33 +511,33 @@ contract SaddleStrategy is BaseStrategy {
     {
         address[] memory path = new address[](2);
         path[0] = wethToken;
-        path[1] = wbtcToken;
+        path[1] = wmewcToken;
 
         // As of writing this contract, there's no pool available that trades
         // an underlying token with ETH. To overcome this, the ETH amount
         // denominated in WEI should be converted into an amount denominated
-        // in one of the tokens accepted by the tBTC v2 Saddle pool swap using
-        // Uniswap. The wBTC token was chosen arbitrarily since it is already
+        // in one of the tokens accepted by the tMEWC Saddle pool swap using
+        // Uniswap. The wMEWC token was chosen arbitrarily since it is already
         // used in this contract for other operations on Uniswap.
         // amounts[0] -> ETH in wei
-        // amounts[1] -> wBTC
+        // amounts[1] -> wMEWC
         uint256[] memory amounts = IUniswapV2Router(uniswap).getAmountsOut(
             amtInWei,
             path
         );
 
-        // Use the amount denominated in wBTC to calculate the amount of LP
-        // token (vault's underlying token) that could be obtained if that wBTC
-        // amount was deposited in the Saddle pool swap that has tBTC v2 in it.
+        // Use the amount denominated in wMEWC to calculate the amount of LP
+        // token (vault's underlying token) that could be obtained if that wMEWC
+        // amount was deposited in the Saddle pool swap that has tMEWC in it.
         // This way we obtain an estimated value of the original WEI amount
         // represented in the vault's underlying token.
         //
-        // TODO: When the new saddle pool swap with tBTC v2 is deployed, verify
-        // that the index of wBTC (amounts[1]) in the array is correct.
+        // TODO: When the new saddle pool swap with tMEWC is deployed, verify
+        // that the index of wMEWC (amounts[1]) in the array is correct.
         uint256[] memory deposits = new uint256[](4);
         deposits[1] = amounts[1];
         return
-            ISaddlePoolSwap(tbtcSaddlePoolSwap).calculateTokenAmount(
+            ISaddlePoolSwap(tmewcSaddlePoolSwap).calculateTokenAmount(
                 address(this),
                 deposits,
                 true

@@ -36,7 +36,7 @@
         {
           "indexed": false,
           "internalType": "uint256",
-          "name": "tbtcAmount",
+          "name": "tmewcAmount",
           "type": "uint256"
         }
       ],
@@ -257,12 +257,12 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "_tbtcBridge",
+          "name": "_tmewcBridge",
           "type": "address"
         },
         {
           "internalType": "address",
-          "name": "_tbtcVault",
+          "name": "_tmewcVault",
           "type": "address"
         },
         {
@@ -486,7 +486,7 @@
     },
     {
       "inputs": [],
-      "name": "tbtcToken",
+      "name": "tmewcToken",
       "outputs": [
         {
           "internalType": "contract IERC20Upgradeable",
@@ -499,10 +499,10 @@
     },
     {
       "inputs": [],
-      "name": "tbtcVault",
+      "name": "tmewcVault",
       "outputs": [
         {
-          "internalType": "contract ITBTCVault",
+          "internalType": "contract ITMEWCVault",
           "name": "",
           "type": "address"
         }

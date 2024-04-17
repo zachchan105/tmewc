@@ -1,6 +1,6 @@
 import { PublicKey } from "@solana/web3.js";
 
-export const TBTC_PROGRAM_ID = new PublicKey(
+export const TMEWC_PROGRAM_ID = new PublicKey(
   "HksEtDgsXJV1BqcuhzbLRTmXp5gHgHJktieJCtQd3pG"
 );
 export const WORMHOLE_GATEWAY_PROGRAM_ID = new PublicKey(
@@ -16,7 +16,7 @@ export const TOKEN_BRIDGE_PROGRAM_ID = new PublicKey(
 
 export const ETHEREUM_TOKEN_BRIDGE_ADDRESS =
   "0x3ee18B2214AFF97000D974cf647E7C347E8fa585";
-export const ETHEREUM_TBTC_ADDRESS =
+export const ETHEREUM_TMEWC_ADDRESS =
   "0x18084fbA666a33d37592fA2633fD49a74DD93a88";
 
 export const GUARDIAN_SET_INDEX = 3;
@@ -36,10 +36,10 @@ export const CORE_FEE_COLLECTOR = new PublicKey(
 );
 
 // relevant token bridge PDAs
-export const WRAPPED_TBTC_MINT = new PublicKey(
+export const WRAPPED_TMEWC_MINT = new PublicKey(
   "25rXTx9zDZcHyTav5sRqM6YBvTGu9pPH9yv83uAEqbgG"
 );
-export const WRAPPED_TBTC_ASSET = new PublicKey(
+export const WRAPPED_TMEWC_ASSET = new PublicKey(
   "5LEUZpBxUQmoxoNGqmYmFEGAPDuhWbAY5CGt519UixLo"
 );
 export const ETHEREUM_ENDPOINT = new PublicKey(

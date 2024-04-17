@@ -2,11 +2,11 @@ const { to1e18, to1ePrecision } = require("../helpers/contract-test-helpers.js")
 const { BigNumber } = ethers
 
 module.exports.curveStrategyFixture = {
-  // Name of the vault for tBTCv2 Curve pool.
-  vaultName: "Curve tBTCv2 Pool yVault",
-  // Symbol of the vault for tBTCv2 Curve pool.
-  vaultSymbol: "yvCurve-tBTCv2",
-  // Total deposit limit of the vault for tBTCv2 Curve pool.
+  // Name of the vault for tMEWC Curve pool.
+  vaultName: "Curve tMEWC Pool yVault",
+  // Symbol of the vault for tMEWC Curve pool.
+  vaultSymbol: "yvCurve-tMEWC",
+  // Total deposit limit of the vault for tMEWC Curve pool.
   vaultDepositLimit: to1ePrecision(300, 15), // 0.3
   // Amount of the deposit made by the depositor.
   vaultDepositAmount: to1ePrecision(300, 15), // 0.3
@@ -23,11 +23,11 @@ module.exports.curveStrategyFixture = {
 }
 
 module.exports.saddleStrategyFixture = {
-  // Name of the vault for tBTCv2 Saddle pool.
-  vaultName: "Saddle tBTCv2 Pool yVault",
-  // Symbol of the vault for tBTCv2 Saddle pool.
-  vaultSymbol: "yvSaddle-tBTCv2",
-  // Total deposit limit of the vault for tBTCv2 Saddle pool.
+  // Name of the vault for tMEWC Saddle pool.
+  vaultName: "Saddle tMEWC Pool yVault",
+  // Symbol of the vault for tMEWC Saddle pool.
+  vaultSymbol: "yvSaddle-tMEWC",
+  // Total deposit limit of the vault for tMEWC Saddle pool.
   vaultDepositLimit: to1ePrecision(300, 15), // 0.3
   // Amount of the deposit made by the depositor.
   vaultDepositAmount: to1ePrecision(300, 15), // 0.3

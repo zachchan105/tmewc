@@ -29,8 +29,8 @@ import {
   ChainIdentifier,
   BitcoinRawTxVectors,
 } from "../../src"
-import { MockBitcoinClient } from "../utils/mock-bitcoin-client"
-import { MockTBTCContracts } from "../utils/mock-tbtc-contracts"
+import { MockBitcoinClient } from "../utils/mock-meowcoin-client"
+import { MockTMEWCContracts } from "../utils/mock-tmewc-contracts"
 import { txToJSON } from "../utils/helpers"
 import {
   depositRefundOfNonWitnessDepositAndWitnessRefunderAddress,
@@ -43,14 +43,14 @@ import {
   MockCrossChainExtraDataEncoder,
   MockL1BitcoinDepositor,
   MockL2BitcoinDepositor,
-  MockL2TBTCToken,
+  MockL2TMEWCToken,
 } from "../utils/mock-cross-chain"
 
 describe("Deposits", () => {
   const depositCreatedAt: number = 1640181600
   const depositRefundLocktimeDuration: number = 2592000
 
-  const depositAmount = BigNumber.from(10000) // 0.0001 BTC
+  const depositAmount = BigNumber.from(10000) // 0.0001 MEWC
 
   const depositFixture = {
     receipt: {
@@ -78,7 +78,7 @@ describe("Deposits", () => {
       ),
 
       // HEX of the expected P2WSH deposit transaction. It can be decoded with:
-      // https://live.blockcypher.com/btc-testnet/decodetx.
+      // https://live.blockcypher.com/mewc-testnet/decodetx.
       transaction: {
         transactionHex:
           "010000000001018348cdeb551134fe1f19d378a8adec9b146671cb67b945b71bf56" +
@@ -106,7 +106,7 @@ describe("Deposits", () => {
       ),
 
       // HEX of the expected P2SH deposit transaction. It can be decoded with:
-      // https://live.blockcypher.com/btc-testnet/decodetx.
+      // https://live.blockcypher.com/mewc-testnet/decodetx.
       transaction: {
         transactionHex:
           "010000000001018348cdeb551134fe1f19d378a8adec9b146671cb67b945b71bf56" +
@@ -144,7 +144,7 @@ describe("Deposits", () => {
       ),
 
       // HEX of the expected P2WSH deposit transaction. It can be decoded with:
-      // https://live.blockcypher.com/btc-testnet/decodetx.
+      // https://live.blockcypher.com/mewc-testnet/decodetx.
       transaction: {
         transactionHex:
           "010000000001018348cdeb551134fe1f19d378a8adec9b146671cb67b945b71bf56" +
@@ -172,7 +172,7 @@ describe("Deposits", () => {
       ),
 
       // HEX of the expected P2SH deposit transaction. It can be decoded with:
-      // https://live.blockcypher.com/btc-testnet/decodetx.
+      // https://live.blockcypher.com/mewc-testnet/decodetx.
       transaction: {
         transactionHex:
           "010000000001018348cdeb551134fe1f19d378a8adec9b146671cb67b945b71bf56" +
@@ -207,7 +207,7 @@ describe("Deposits", () => {
     expect(script.length).to.be.equal(fixture.expectedScript.length)
 
     // Assert the depositor identifier is encoded correctly.
-    // According the Bitcoin script format, the first byte before arbitrary
+    // According the Meowcoin script format, the first byte before arbitrary
     // data must determine the length of those data. In this case the first
     // byte is 0x14 which is 20 in decimal, and this is correct because we
     // have a 20 bytes depositor identifier as subsequent data.
@@ -216,7 +216,7 @@ describe("Deposits", () => {
       fixture.receipt.depositor.identifierHex
     )
 
-    // According to https://en.bitcoin.it/wiki/Script#Constants, the
+    // According to https://en.meowcoin.it/wiki/Script#Constants, the
     // OP_DROP opcode is 0x75.
     expect(script.substring(42, 44)).to.be.equal("75")
 
@@ -608,11 +608,11 @@ describe("Deposits", () => {
             // Change value should be equal to: inputValue - depositAmount - fee.
             expect(changeOutput.value).to.be.equal(3921680)
             // Should be OP_0 <public-key-hash>. Public key corresponds to
-            // depositor BTC address.
+            // depositor MEWC address.
             expect(changeOutput.script).to.be.equal(
               "00147ac2d9378a1c47e589dfb8095ca95ed2140d2726"
             )
-            // Should return the change to depositor BTC address.
+            // Should return the change to depositor MEWC address.
             expect(changeOutput.address).to.be.equal(testnetAddress)
           })
 
@@ -710,11 +710,11 @@ describe("Deposits", () => {
             // Change value should be equal to: inputValue - depositAmount - fee.
             expect(changeOutput.value).to.be.equal(3921790)
             // Should be OP_0 <public-key-hash>. Public key corresponds to
-            // depositor BTC address.
+            // depositor MEWC address.
             expect(changeOutput.script).to.be.equal(
               "00147ac2d9378a1c47e589dfb8095ca95ed2140d2726"
             )
-            // Should return the change to depositor BTC address.
+            // Should return the change to depositor MEWC address.
             expect(changeOutput.address).to.be.equal(testnetAddress)
           })
 
@@ -816,11 +816,11 @@ describe("Deposits", () => {
             // Change value should be equal to: inputValue - depositAmount - fee.
             expect(changeOutput.value).to.be.equal(3921680)
             // Should be OP_0 <public-key-hash>. Public key corresponds to
-            // depositor BTC address.
+            // depositor MEWC address.
             expect(changeOutput.script).to.be.equal(
               "00147ac2d9378a1c47e589dfb8095ca95ed2140d2726"
             )
-            // Should return the change to depositor BTC address.
+            // Should return the change to depositor MEWC address.
             expect(changeOutput.address).to.be.equal(testnetAddress)
           })
 
@@ -922,11 +922,11 @@ describe("Deposits", () => {
             // Change value should be equal to: inputValue - depositAmount - fee.
             expect(changeOutput.value).to.be.equal(3921790)
             // Should be OP_0 <public-key-hash>. Public key corresponds to
-            // depositor BTC address.
+            // depositor MEWC address.
             expect(changeOutput.script).to.be.equal(
               "00147ac2d9378a1c47e589dfb8095ca95ed2140d2726"
             )
-            // Should return the change to depositor BTC address.
+            // Should return the change to depositor MEWC address.
             expect(changeOutput.address).to.be.equal(testnetAddress)
           })
 
@@ -1093,7 +1093,7 @@ describe("Deposits", () => {
             it("should return proper address with prefix bc1", async () => {
               // Address is created using the script hash held by the
               // expectedP2WSHData.scriptHash property of the fixture.
-              // According to https://en.bitcoin.it/wiki/List_of_address_prefixes,
+              // According to https://en.meowcoin.it/wiki/List_of_address_prefixes,
               // the P2WSH (Bech32) address prefix for mainnet is bc1.
               expect(address).to.be.equal(
                 depositFixture.expectedP2WSHData.mainnetAddress
@@ -1112,7 +1112,7 @@ describe("Deposits", () => {
             it("should return proper address with prefix 3", async () => {
               // Address is created using the script hash held by the
               // expectedP2SHData.scriptHash property of the fixture.
-              // According to https://en.bitcoin.it/wiki/List_of_address_prefixes,
+              // According to https://en.meowcoin.it/wiki/List_of_address_prefixes,
               // the P2SH address prefix for mainnet is 3.
               expect(address).to.be.equal(
                 depositFixture.expectedP2SHData.mainnetAddress
@@ -1133,7 +1133,7 @@ describe("Deposits", () => {
             it("should return proper address with prefix tb1", async () => {
               // Address is created using the script hash held by the
               // expectedP2WSHData.scriptHash property of the fixture.
-              // According to https://en.bitcoin.it/wiki/List_of_address_prefixes,
+              // According to https://en.meowcoin.it/wiki/List_of_address_prefixes,
               // the P2WSH (Bech32) address prefix for testnet is tb1.
               expect(address).to.be.equal(
                 depositFixture.expectedP2WSHData.testnetAddress
@@ -1152,7 +1152,7 @@ describe("Deposits", () => {
             it("should return proper address with prefix 2", async () => {
               // Address is created using the script hash held by the
               // expectedP2SHData.scriptHash property of the fixture.
-              // According to https://en.bitcoin.it/wiki/List_of_address_prefixes,
+              // According to https://en.meowcoin.it/wiki/List_of_address_prefixes,
               // the P2SH address prefix for testnet is 2.
               expect(address).to.be.equal(
                 depositFixture.expectedP2SHData.testnetAddress
@@ -1175,7 +1175,7 @@ describe("Deposits", () => {
             it("should return proper address with prefix bc1", async () => {
               // Address is created using the script hash held by the
               // expectedP2WSHData.scriptHash property of the fixture.
-              // According to https://en.bitcoin.it/wiki/List_of_address_prefixes,
+              // According to https://en.meowcoin.it/wiki/List_of_address_prefixes,
               // the P2WSH (Bech32) address prefix for mainnet is bc1.
               expect(address).to.be.equal(
                 depositWithExtraDataFixture.expectedP2WSHData.mainnetAddress
@@ -1194,7 +1194,7 @@ describe("Deposits", () => {
             it("should return proper address with prefix 3", async () => {
               // Address is created using the script hash held by the
               // expectedP2SHData.scriptHash property of the fixture.
-              // According to https://en.bitcoin.it/wiki/List_of_address_prefixes,
+              // According to https://en.meowcoin.it/wiki/List_of_address_prefixes,
               // the P2SH address prefix for mainnet is 3.
               expect(address).to.be.equal(
                 depositWithExtraDataFixture.expectedP2SHData.mainnetAddress
@@ -1215,7 +1215,7 @@ describe("Deposits", () => {
             it("should return proper address with prefix tb1", async () => {
               // Address is created using the script hash held by the
               // expectedP2WSHData.scriptHash property of the fixture.
-              // According to https://en.bitcoin.it/wiki/List_of_address_prefixes,
+              // According to https://en.meowcoin.it/wiki/List_of_address_prefixes,
               // the P2WSH (Bech32) address prefix for testnet is tb1.
               expect(address).to.be.equal(
                 depositWithExtraDataFixture.expectedP2WSHData.testnetAddress
@@ -1234,7 +1234,7 @@ describe("Deposits", () => {
             it("should return proper address with prefix 2", async () => {
               // Address is created using the script hash held by the
               // expectedP2SHData.scriptHash property of the fixture.
-              // According to https://en.bitcoin.it/wiki/List_of_address_prefixes,
+              // According to https://en.meowcoin.it/wiki/List_of_address_prefixes,
               // the P2SH address prefix for testnet is 2.
               expect(address).to.be.equal(
                 depositWithExtraDataFixture.expectedP2SHData.testnetAddress
@@ -1274,11 +1274,11 @@ describe("Deposits", () => {
           beforeEach(async () => {
             const bitcoinClient = new MockBitcoinClient()
             bitcoinClient.network = network
-            const tbtcContracts = new MockTBTCContracts()
+            const tmewcContracts = new MockTMEWCContracts()
 
             const deposit = await Deposit.fromReceipt(
               fixture.receipt,
-              tbtcContracts,
+              tmewcContracts,
               bitcoinClient
             )
 
@@ -1306,23 +1306,23 @@ describe("Deposits", () => {
 
     describe("detectFunding", () => {
       let bitcoinClient: MockBitcoinClient
-      let tbtcContracts: MockTBTCContracts
+      let tmewcContracts: MockTMEWCContracts
       let deposit: Deposit
       let utxos: BitcoinUtxo[]
 
       beforeEach(async () => {
         bitcoinClient = new MockBitcoinClient()
-        tbtcContracts = new MockTBTCContracts()
+        tmewcContracts = new MockTMEWCContracts()
 
         deposit = await Deposit.fromReceipt(
           depositFixture.receipt,
-          tbtcContracts,
+          tmewcContracts,
           bitcoinClient
         )
       })
 
       context("when there are no UTXOs from funding transactions", () => {
-        context("when Bitcoin client returns undefined", () => {
+        context("when Meowcoin client returns undefined", () => {
           beforeEach(async () => {
             // Do not set any value for the address stored in the deposit
             // service so that undefined is returned.
@@ -1334,7 +1334,7 @@ describe("Deposits", () => {
           })
         })
 
-        context("when Bitcoin client returns an empty array", () => {
+        context("when Meowcoin client returns an empty array", () => {
           beforeEach(async () => {
             const unspentTransactionOutputs = new Map<string, BitcoinUtxo[]>()
             // Set an empty array for the address stored in the deposit service.
@@ -1389,12 +1389,12 @@ describe("Deposits", () => {
           let deposit: Deposit
 
           beforeEach(async () => {
-            const tbtcContracts = new MockTBTCContracts()
+            const tmewcContracts = new MockTMEWCContracts()
             const bitcoinClient = new MockBitcoinClient()
 
             deposit = await Deposit.fromReceipt(
               depositFixture.receipt,
-              tbtcContracts,
+              tmewcContracts,
               bitcoinClient
             )
           })
@@ -1423,19 +1423,19 @@ describe("Deposits", () => {
             const transaction: BitcoinRawTx = result.rawTransaction
             const depositUtxo: BitcoinUtxo = result.depositUtxo
 
-            // Initialize the mock Bridge and TBTC contracts.
+            // Initialize the mock Bridge and TMEWC contracts.
             const bitcoinClient: MockBitcoinClient = new MockBitcoinClient()
-            const tbtcContracts: MockTBTCContracts = new MockTBTCContracts()
+            const tmewcContracts: MockTMEWCContracts = new MockTMEWCContracts()
 
             // Create the deposit.
             const deposit = await Deposit.fromReceipt(
               depositFixture.receipt,
-              tbtcContracts,
+              tmewcContracts,
               bitcoinClient,
               depositorProxy
             )
 
-            // Initialize the mock Bitcoin client to return the given deposit
+            // Initialize the mock Meowcoin client to return the given deposit
             // UTXO for the depositor address.
             const unspentTransactionOutputs = new Map<string, BitcoinUtxo[]>()
             unspentTransactionOutputs.set(await deposit.getBitcoinAddress(), [
@@ -1443,7 +1443,7 @@ describe("Deposits", () => {
             ])
             bitcoinClient.unspentTransactionOutputs = unspentTransactionOutputs
 
-            // Initialize the mock Bitcoin client to return the raw transaction
+            // Initialize the mock Meowcoin client to return the raw transaction
             // data for the given deposit UTXO.
             const rawTransactions = new Map<string, BitcoinRawTx>()
             rawTransactions.set(
@@ -1456,24 +1456,24 @@ describe("Deposits", () => {
 
             return {
               transaction,
-              tbtcContracts,
+              tmewcContracts,
             }
           }
 
           context("when deposit does not use a depositor proxy", () => {
             let transaction: BitcoinRawTx
-            let tbtcContracts: MockTBTCContracts
+            let tmewcContracts: MockTMEWCContracts
 
             beforeEach(async () => {
-              ;({ transaction, tbtcContracts } = await initiateMinting())
+              ;({ transaction, tmewcContracts } = await initiateMinting())
             })
 
             it("should reveal the deposit to the Bridge", () => {
-              expect(tbtcContracts.bridge.revealDepositLog.length).to.be.equal(
+              expect(tmewcContracts.bridge.revealDepositLog.length).to.be.equal(
                 1
               )
               const revealDepositLogEntry =
-                tbtcContracts.bridge.revealDepositLog[0]
+                tmewcContracts.bridge.revealDepositLog[0]
               expect(revealDepositLogEntry.depositTx).to.be.eql(
                 extractBitcoinRawTxVectors(transaction)
               )
@@ -1486,18 +1486,18 @@ describe("Deposits", () => {
 
           context("when deposit uses a depositor proxy", () => {
             let transaction: BitcoinRawTx
-            let tbtcContracts: MockTBTCContracts
+            let tmewcContracts: MockTMEWCContracts
             let depositorProxy: MockDepositorProxy
 
             beforeEach(async () => {
               depositorProxy = new MockDepositorProxy()
-              ;({ transaction, tbtcContracts } = await initiateMinting(
+              ;({ transaction, tmewcContracts } = await initiateMinting(
                 depositorProxy
               ))
             })
 
             it("should not reveal the deposit to the Bridge", () => {
-              expect(tbtcContracts.bridge.revealDepositLog.length).to.be.equal(
+              expect(tmewcContracts.bridge.revealDepositLog.length).to.be.equal(
                 0
               )
             })
@@ -1537,7 +1537,7 @@ describe("Deposits", () => {
           const transaction: BitcoinRawTx = result.rawTransaction
           const depositUtxo: BitcoinUtxo = result.depositUtxo
 
-          // Initialize the mock Bitcoin client to return the raw transaction
+          // Initialize the mock Meowcoin client to return the raw transaction
           // data for the given deposit UTXO.
           const bitcoinClient: MockBitcoinClient = new MockBitcoinClient()
           const rawTransactions = new Map<string, BitcoinRawTx>()
@@ -1548,12 +1548,12 @@ describe("Deposits", () => {
           bitcoinClient.rawTransactions = rawTransactions
 
           // Initialize the mock Bridge.
-          const tbtcContracts: MockTBTCContracts = new MockTBTCContracts()
+          const tmewcContracts: MockTMEWCContracts = new MockTMEWCContracts()
 
           await (
             await Deposit.fromReceipt(
               depositFixture.receipt,
-              tbtcContracts,
+              tmewcContracts,
               bitcoinClient,
               depositorProxy
             )
@@ -1561,23 +1561,23 @@ describe("Deposits", () => {
 
           return {
             transaction,
-            tbtcContracts,
+            tmewcContracts,
           }
         }
 
         context("when deposit does not use a depositor proxy", () => {
           let transaction: BitcoinRawTx
-          let tbtcContracts: MockTBTCContracts
+          let tmewcContracts: MockTMEWCContracts
 
           beforeEach(async () => {
-            ;({ transaction, tbtcContracts } = await initiateMinting())
+            ;({ transaction, tmewcContracts } = await initiateMinting())
           })
 
           it("should reveal the deposit to the Bridge", () => {
-            expect(tbtcContracts.bridge.revealDepositLog.length).to.be.equal(1)
+            expect(tmewcContracts.bridge.revealDepositLog.length).to.be.equal(1)
 
             const revealDepositLogEntry =
-              tbtcContracts.bridge.revealDepositLog[0]
+              tmewcContracts.bridge.revealDepositLog[0]
             expect(revealDepositLogEntry.depositTx).to.be.eql(
               extractBitcoinRawTxVectors(transaction)
             )
@@ -1590,18 +1590,18 @@ describe("Deposits", () => {
 
         context("when deposit uses a depositor proxy", () => {
           let transaction: BitcoinRawTx
-          let tbtcContracts: MockTBTCContracts
+          let tmewcContracts: MockTMEWCContracts
           let depositorProxy: MockDepositorProxy
 
           beforeEach(async () => {
             depositorProxy = new MockDepositorProxy()
-            ;({ transaction, tbtcContracts } = await initiateMinting(
+            ;({ transaction, tmewcContracts } = await initiateMinting(
               depositorProxy
             ))
           })
 
           it("should not reveal the deposit to the Bridge", () => {
-            expect(tbtcContracts.bridge.revealDepositLog.length).to.be.equal(0)
+            expect(tmewcContracts.bridge.revealDepositLog.length).to.be.equal(0)
           })
 
           it("should reveal the deposit to the DepositorProxy", () => {
@@ -1627,12 +1627,12 @@ describe("Deposits", () => {
         "934b98637ca318a4d6e7ca6ffd1690b8e77df637"
       )
       const bitcoinClient = new MockBitcoinClient()
-      const tbtcContracts = new MockTBTCContracts()
+      const tmewcContracts = new MockTMEWCContracts()
       let depositService: DepositsService
 
       beforeEach(async () => {
         depositService = new DepositsService(
-          tbtcContracts,
+          tmewcContracts,
           bitcoinClient,
           // Mock cross-chain contracts resolver.
           (_: L2Chain) => undefined
@@ -1666,7 +1666,7 @@ describe("Deposits", () => {
 
         context("when active wallet is set", () => {
           beforeEach(async () => {
-            tbtcContracts.bridge.setActiveWalletPublicKey(
+            tmewcContracts.bridge.setActiveWalletPublicKey(
               Hex.from(
                 "03989d253b17a6a0f41838b84ff0d20e8898f9d7b1a98f2564da4cc29dcf8581d9"
               )
@@ -1680,7 +1680,7 @@ describe("Deposits", () => {
                   "2N5WZpig3vgpSdjSherS2Lv7GnPuxCvkQjT" // p2sh address
                 )
               ).to.be.rejectedWith(
-                "Bitcoin recovery address must be P2PKH or P2WPKH"
+                "Meowcoin recovery address must be P2PKH or P2WPKH"
               )
             })
           })
@@ -1812,13 +1812,13 @@ describe("Deposits", () => {
 
     describe("initiateDepositWithProxy", () => {
       const bitcoinClient = new MockBitcoinClient()
-      const tbtcContracts = new MockTBTCContracts()
+      const tmewcContracts = new MockTMEWCContracts()
       const depositorProxy = new MockDepositorProxy()
       let depositService: DepositsService
 
       beforeEach(async () => {
         depositService = new DepositsService(
-          tbtcContracts,
+          tmewcContracts,
           bitcoinClient,
           // Mock cross-chain contracts resolver.
           (_: L2Chain) => undefined
@@ -1838,7 +1838,7 @@ describe("Deposits", () => {
 
       context("when active wallet is set", () => {
         beforeEach(async () => {
-          tbtcContracts.bridge.setActiveWalletPublicKey(
+          tmewcContracts.bridge.setActiveWalletPublicKey(
             Hex.from(
               "03989d253b17a6a0f41838b84ff0d20e8898f9d7b1a98f2564da4cc29dcf8581d9"
             )
@@ -1853,7 +1853,7 @@ describe("Deposits", () => {
                 depositorProxy
               )
             ).to.be.rejectedWith(
-              "Bitcoin recovery address must be P2PKH or P2WPKH"
+              "Meowcoin recovery address must be P2PKH or P2WPKH"
             )
           })
         })
@@ -1994,13 +1994,13 @@ describe("Deposits", () => {
         "934b98637ca318a4d6e7ca6ffd1690b8e77df637"
       )
       const bitcoinClient = new MockBitcoinClient()
-      const tbtcContracts = new MockTBTCContracts()
+      const tmewcContracts = new MockTMEWCContracts()
       let depositService: DepositsService
 
       context("when cross-chain contracts are not initialized", () => {
         beforeEach(async () => {
           depositService = new DepositsService(
-            tbtcContracts,
+            tmewcContracts,
             bitcoinClient,
             // Mock cross-chain contracts resolver that always returns undefined.
             (_: L2Chain) => undefined
@@ -2041,7 +2041,7 @@ describe("Deposits", () => {
           )
 
           crossChainContracts = {
-            l2TbtcToken: new MockL2TBTCToken(),
+            l2TmewcToken: new MockL2TMEWCToken(),
             l2BitcoinDepositor: l2BitcoinDepositor,
             l1BitcoinDepositor: l1BitcoinDepositor,
           }
@@ -2055,7 +2055,7 @@ describe("Deposits", () => {
           }
 
           depositService = new DepositsService(
-            tbtcContracts,
+            tmewcContracts,
             bitcoinClient,
             crossChainContractsResolver
           )
@@ -2092,7 +2092,7 @@ describe("Deposits", () => {
 
           context("when active wallet is set", () => {
             beforeEach(async () => {
-              tbtcContracts.bridge.setActiveWalletPublicKey(
+              tmewcContracts.bridge.setActiveWalletPublicKey(
                 Hex.from(
                   "03989d253b17a6a0f41838b84ff0d20e8898f9d7b1a98f2564da4cc29dcf8581d9"
                 )
@@ -2107,7 +2107,7 @@ describe("Deposits", () => {
                     "Base"
                   )
                 ).to.be.rejectedWith(
-                  "Bitcoin recovery address must be P2PKH or P2WPKH"
+                  "Meowcoin recovery address must be P2PKH or P2WPKH"
                 )
               })
             })
@@ -2392,7 +2392,7 @@ describe("Deposits", () => {
       )
 
       crossChainContracts = {
-        l2TbtcToken: new MockL2TBTCToken(),
+        l2TmewcToken: new MockL2TMEWCToken(),
         l2BitcoinDepositor: l2BitcoinDepositor,
         l1BitcoinDepositor: l1BitcoinDepositor,
       }

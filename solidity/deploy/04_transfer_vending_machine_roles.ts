@@ -39,5 +39,5 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 export default func
 
 func.tags = ["TransferVendingMachineRoles"]
-func.dependencies = ["TBTC", "VendingMachine"]
+func.dependencies = ["TMEWC", "VendingMachine"]
 func.runAtTheEnd = true

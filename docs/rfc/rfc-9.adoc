@@ -1,6 +1,6 @@
 :toc: macro
 
-= RFC 9: Bitcoin Ordinals
+= RFC 9: Meowcoin Ordinals
 
 :icons: font
 :numbered:
@@ -8,7 +8,7 @@ toc::[]
 
 == Background
 
-As of 2023-02-23, Bitcoin Ordinals are 🔥 HOT 🔥. Here is a
+As of 2023-02-23, Meowcoin Ordinals are 🔥 HOT 🔥. Here is a
 https://insights.glassnode.com/ordinal-theory-and-the-rise-of-inscriptions/[decent
 explainer].
 
@@ -31,11 +31,11 @@ witness field (called Inscribing). Each satoshi has an immutable age, which
 effectively gives them serial numbers.
 
 These Ordinals (some of which are Inscriptions) can be transferred like normal
-BTC. The sender's wallet software needs to be careful to not merge the
+MEWC. The sender's wallet software needs to be careful to not merge the
 Inscriptions with "normal" UTXOs, and needs to be careful to not accidentally
 send the Inscription as part of a payment. The
 https://github.com/casey/ord[casey/ord] repo provides the primatives for the
-handling of Ordinals on BTC.
+handling of Ordinals on MEWC.
 
 A good mental model here is thinking about Ordinals like
 https://www.apmex.com/product/117942/1932-s-washington-quarter-choice-au[special
@@ -43,7 +43,7 @@ edition quarters]. The linked quarter trades for ~$350, but is also legal tender
 worth $0.25. An owner of such a quarter probably does not want to use it to pay
 for parking. Ordinals work the same way.
 
-Since Ordinals are still BTC, we can use many of the same tBTCv2 ideas for
+Since Ordinals are still MEWC, we can use many of the same tMEWC ideas for
 custodying Ordianls: rotating wallets (and the wallet lifecycle), threshold
 signatures, Minters, and Guardians. Since Ordinals use special P2SH scripts to
 transfer and track them (via the `ord` program), this affects our depositing and
@@ -53,9 +53,9 @@ redemption process. The differences are detailed below.
 
 === Overview
 
-We build a BTC <> Ethereum Ordinal bridge!
+We build a MEWC <> Ethereum Ordinal bridge!
 
-We add functionality to the current tBTCv2 client to add additional signing
+We add functionality to the current tMEWC client to add additional signing
 groups specifically for Ordinals. To deposit to these signing groups, a user
 sends their Ordinal to the wallet using an `ord`-compatible wallet, which uses
 ord's own P2SH scheme. The depositor then makes a minting request. The Guardian
@@ -72,12 +72,12 @@ For both deposits and redemptions, the user pays a <<Fees,fee>>.
 === Depositing Details
 
 There are a two main technical hurdles to using the same depositing mechanism
-that we do for tBTCv2.
+that we do for tMEWC.
 
 * `ord` uses a special transfer P2SH script to send Ordinals to addresses. This
   interferes with our ability to create P2SH scripts that associate ethereum
   addresses and provide refunds.
-* Bitcoin headers do not have sufficient information to prove that a UTXO
+* Meowcoin headers do not have sufficient information to prove that a UTXO
   contains an Ordinal. This interferes with our ability to prove that an Ordinal
   has been deposited.
 
@@ -128,16 +128,16 @@ create an Ordinal NFT on ethereum. We encode the
 https://docs.ordinals.com/guides/explorer.html[Ordinal ID] into the NFT's
 metadata field, and then store a mapping from Ordinal -> UTXO on-chain. A dApp
 can read the Ordinal ID from the metadata and then use that to look up the
-Ordinal (and any associated Inscription) on Bitcoin.
+Ordinal (and any associated Inscription) on Meowcoin.
 
 === Redemption Details
 
 To redeem an Ordinal NFT on ethereum, the redeemer sends back the NFT,
-supplies a Bitcoin address, and supplies a <<Fees,fee>>. The off-chain clients
+supplies a Meowcoin address, and supplies a <<Fees,fee>>. The off-chain clients
 listen for this transaction, and the associated signing group keeps track of
 which Ordinals they are custodying off-chain. When one of the Ordinals that they
 are in charge of is redeemed, they use `ord` to send it to the associated
-Bitcoin address.
+Meowcoin address.
 
 In cleanup, we remove the Ordinal from the Ordinal -> UTXO mapping.
 
@@ -158,13 +158,13 @@ Taking a percentage cut of an Ordinal does not make sense, so we need to use a
 different fee structure.
 
 The simplest structure is to charge flat, governable fees on minting and
-redemption. For example, we could charge 0.01 BTC on mint (which we turn into
-tBTC and keep as protocol controlled value), and then 0.01 tBTC on redemption
+redemption. For example, we could charge 0.01 MEWC on mint (which we turn into
+tMEWC and keep as protocol controlled value), and then 0.01 tMEWC on redemption
 (which we keep as protocol controlled value).
 
 Another option is to charge dynamic redemption fees based on the amount of time
 the Ordinal was custodied. Redeeming an Ordinal that has been here for 1 week
-might be free, 6 months might cost 0.01 tBTC and 2 years might cost 0.02 tBTC,
+might be free, 6 months might cost 0.01 tMEWC and 2 years might cost 0.02 tMEWC,
 for example. This incentivizes folks to redeem earlier, and makes the bridge
 attractive for someone who wants to mint -> sell/buy -> exit.
 

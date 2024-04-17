@@ -1,10 +1,10 @@
 # Class: BitcoinTxHash
 
-Represents a Bitcoin transaction hash (or transaction ID) as an un-prefixed hex
+Represents a Meowcoin transaction hash (or transaction ID) as an un-prefixed hex
 string. This hash is supposed to have the same byte order as used by the
-Bitcoin block explorers which is the opposite of the byte order used
-by the Bitcoin protocol internally. That means the hash must be reversed in
-the use cases that expect the Bitcoin internal byte order.
+Meowcoin block explorers which is the opposite of the byte order used
+by the Meowcoin protocol internally. That means the hash must be reversed in
+the use cases that expect the Meowcoin internal byte order.
 
 ## Hierarchy
 
@@ -53,7 +53,7 @@ the use cases that expect the Bitcoin internal byte order.
 
 #### Defined in
 
-[src/lib/utils/hex.ts:7](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/utils/hex.ts#L7)
+[src/lib/utils/hex.ts:7](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/utils/hex.ts#L7)
 
 ## Properties
 
@@ -67,7 +67,7 @@ the use cases that expect the Bitcoin internal byte order.
 
 #### Defined in
 
-[src/lib/utils/hex.ts:5](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/utils/hex.ts#L5)
+[src/lib/utils/hex.ts:5](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/utils/hex.ts#L5)
 
 ## Methods
 
@@ -95,7 +95,7 @@ True if both values are equal, false otherwise.
 
 #### Defined in
 
-[src/lib/utils/hex.ts:57](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/utils/hex.ts#L57)
+[src/lib/utils/hex.ts:57](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/utils/hex.ts#L57)
 
 ___
 
@@ -115,7 +115,7 @@ Reversed hexadecimal value.
 
 #### Defined in
 
-[src/lib/utils/hex.ts:64](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/utils/hex.ts#L64)
+[src/lib/utils/hex.ts:64](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/utils/hex.ts#L64)
 
 ___
 
@@ -135,7 +135,7 @@ Hexadecimal value as a Buffer.
 
 #### Defined in
 
-[src/lib/utils/hex.ts:32](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/utils/hex.ts#L32)
+[src/lib/utils/hex.ts:32](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/utils/hex.ts#L32)
 
 ___
 
@@ -155,7 +155,7 @@ Hexadecimal string prefixed with '0x'.
 
 #### Defined in
 
-[src/lib/utils/hex.ts:46](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/utils/hex.ts#L46)
+[src/lib/utils/hex.ts:46](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/utils/hex.ts#L46)
 
 ___
 
@@ -175,7 +175,7 @@ Unprefixed hexadecimal string.
 
 #### Defined in
 
-[src/lib/utils/hex.ts:39](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/utils/hex.ts#L39)
+[src/lib/utils/hex.ts:39](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/utils/hex.ts#L39)
 
 ___
 
@@ -199,4 +199,4 @@ ___
 
 #### Defined in
 
-[src/lib/utils/hex.ts:25](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/utils/hex.ts#L25)
+[src/lib/utils/hex.ts:25](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/utils/hex.ts#L25)

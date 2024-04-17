@@ -4,21 +4,21 @@ export * from "./chain-event"
 export * from "./chain-identifier"
 export * from "./cross-chain"
 export * from "./depositor-proxy"
-export * from "./tbtc-token"
-export * from "./tbtc-vault"
+export * from "./tmewc-token"
+export * from "./tmewc-vault"
 export * from "./wallet-registry"
 
 import { Bridge } from "./bridge"
-import { TBTCToken } from "./tbtc-token"
-import { TBTCVault } from "./tbtc-vault"
+import { TMEWCToken } from "./tmewc-token"
+import { TMEWCVault } from "./tmewc-vault"
 import { WalletRegistry } from "./wallet-registry"
 
 /**
- * Convenience type aggregating all TBTC core contracts.
+ * Convenience type aggregating all TMEWC core contracts.
  */
-export type TBTCContracts = {
+export type TMEWCContracts = {
   bridge: Bridge
-  tbtcToken: TBTCToken
-  tbtcVault: TBTCVault
+  tmewcToken: TMEWCToken
+  tmewcVault: TMEWCVault
   walletRegistry: WalletRegistry
 }

@@ -11,58 +11,58 @@ NOTE: This RFC was superseded by link:rfc-12.adoc[RFC 12]
 == Background
 
 Before generating tECDSA signature, the off-chain client software needs to agree
-in the signing group on the message being signed. In tBTC v2, the information
+in the signing group on the message being signed. In tMEWC, the information
 needed to evaluate the signed message comes from multiple sources that might not
 be ideally synced with each other. Moreover, it is not possible to establish a
 precise point in time based on which the information should be retrieved.
 
 === Current Functionality
 
-In tBTC v1, the message to be signed is calculated on-chain
-link:https://github.com/keep-network/tbtc/blob/d18ef9aec7656f0ec7d317ece3e3d5c7aca92cda/solidity/contracts/deposit/DepositRedemption.sol#L133-L160[during the redemption request]
-and link:https://github.com/keep-network/tbtc/blob/d18ef9aec7656f0ec7d317ece3e3d5c7aca92cda/solidity/contracts/deposit/DepositRedemption.sol#L291-L316[when increasing the redemption fee].
+In tMEWC v1, the message to be signed is calculated on-chain
+link:https://github.com/keep-network/tmewc/blob/d18ef9aec7656f0ec7d317ece3e3d5c7aca92cda/solidity/contracts/deposit/DepositRedemption.sol#L133-L160[during the redemption request]
+and link:https://github.com/keep-network/tmewc/blob/d18ef9aec7656f0ec7d317ece3e3d5c7aca92cda/solidity/contracts/deposit/DepositRedemption.sol#L291-L316[when increasing the redemption fee].
 Every single deposit is under a separate P2WPKH address and is confirmed with
 SPV proof. This, plus the fact the redemption can be done only one time for the
 given deposit makes it possible to generate the message to be signed on-chain
 and does not require additional coordination between signing group members. The
 signing group members do not have to worry about confirming the P2WPKH deposit
-transaction on Bitcoin because it is covered by the SPV on-chain proof submitted
+transaction on Meowcoin because it is covered by the SPV on-chain proof submitted
 to Ethereum by the depositor.
 
 This approach is easy to integrate with off-chain client software but is way
-more expensive on-chain compared to the approach taken by tBTC v2.
+more expensive on-chain compared to the approach taken by tMEWC.
 
-In tBTC v2, 51-of-100 tECDSA-backed wallets accept multiple deposits. Depositors
-send BTC to the most-recently-created-wallet using P2SH transaction and reveal
+In tMEWC, 51-of-100 tECDSA-backed wallets accept multiple deposits. Depositors
+send MEWC to the most-recently-created-wallet using P2SH transaction and reveal
 their deposit transaction to Ethereum chain. The off-chain client software must
-listen for these sorts of events and periodically check the Bitcoin network to
+listen for these sorts of events and periodically check the Meowcoin network to
 ensure P2SH deposits are sufficiently confirmed. If everything checks out, the
 off-chain client software should coordinate to produce signatures and perform
-a sweeping Bitcoin transaction that is confirmed on Ethereum with SPV proof and
+a sweeping Meowcoin transaction that is confirmed on Ethereum with SPV proof and
 updates depositors' balances in the Bridge.
 
 This approach is more cost-effective: it allows to split of the cost of SPV
 proof between multiple depositors and does not require expensive signing group
 key generation for every single deposit. Yet, it requires the off-chain client
 software to coordinate - before producing signatures - to decide which deposits
-should be swept and with what Bitcoin network fee.
+should be swept and with what Meowcoin network fee.
 
 == Proposal
 
 This document aims at describing a protocol for reaching an agreement about the
-Bitcoin sweep transaction between the signing group members.
+Meowcoin sweep transaction between the signing group members.
 
 === Goal
 
 The protocol should tolerate small differences in the state of the world, as
 seen by individual signing group members. It should be compatible with a light
 relay, and support signing retries. All transactions must be sufficiently
-confirmed and the sweep transaction must adhere to the recent Bitcoin network
+confirmed and the sweep transaction must adhere to the recent Meowcoin network
 fees.
 
 ==== Sufficiently confirmed transactions
 
-The P2SH transactions on Bitcoin must be sufficiently confirmed (at least 6
+The P2SH transactions on Meowcoin must be sufficiently confirmed (at least 6
 confirmations) before they are eligible for sweeping. The deposit reveal
 transactions on Ethereum must be sufficiently confirmed (at least 20
 confirmations) before they are eligible for sweeping.
@@ -70,27 +70,27 @@ confirmations) before they are eligible for sweeping.
 ==== No order guaranteed
 
 There is no guarantee which transaction gets a sufficient number of
-confirmations first: Bitcoin P2SH deposit transaction or Ethereum deposit reveal
+confirmations first: Meowcoin P2SH deposit transaction or Ethereum deposit reveal
 transactions. The order in which P2SH deposit transactions gets confirmed on
-Bitcoin does not need to correspond to the order in which deposit reveal
+Meowcoin does not need to correspond to the order in which deposit reveal
 transaction gets confirmed on Ethereum. There is also no guarantee that the
-Ethereum reveal transaction points to an existing Bitcoin P2SH transaction.
+Ethereum reveal transaction points to an existing Meowcoin P2SH transaction.
 
 ==== State differences
 
-Every tBTC v2 client software instance is connected to different Ethereum and
-Bitcoin clients. Ethereum clients in the network will have a slightly different
-synchronization state at any given point in time. Bitcoin clients in the network
+Every tMEWC client software instance is connected to different Ethereum and
+Meowcoin clients. Ethereum clients in the network will have a slightly different
+synchronization state at any given point in time. Meowcoin clients in the network
 will also have a slightly different synchronization state. Since the light relay
-is not submitting all Bitcoin headers to Ethereum, there is no way to reference
-from Ethereum to a fixed point in time on Bitcoin. We must accept the fact that
-all tBTC v2 client software will have a slightly different view of the world at
+is not submitting all Meowcoin headers to Ethereum, there is no way to reference
+from Ethereum to a fixed point in time on Meowcoin. We must accept the fact that
+all tMEWC client software will have a slightly different view of the world at
 any point in time.
 
 ==== Adhere to network conditions
 
-The Bitcoin sweep transaction must have a fee that allows it to be mined in a
-reasonable time. If the Bitcoin network conditions change, there must be a
+The Meowcoin sweep transaction must have a fee that allows it to be mined in a
+reasonable time. If the Meowcoin network conditions change, there must be a
 mechanism to increase the fee and replace transactions. The wallet must finish
 the current operation before attempting another one.
 
@@ -104,7 +104,7 @@ group members are offline or corrupted.
 ==== Coordinator
 
 We introduce a rotating role of Coordinator responsible for proposing a sweep
-Bitcoin transaction. The role of Coordinator rotates every 8 hours across all
+Meowcoin transaction. The role of Coordinator rotates every 8 hours across all
 operators in the group. For example, if the group consist of the following
 members: `[0xA, 0xB, 0xC, 0xC, 0xB, 0xD`] the rotation rounds are: `0xA, 0xB,
 0xC, 0xD`. The rotation schedule begins at UNIX epoch (00:00:00 UTC on 1 January
@@ -147,23 +147,23 @@ At 10:00 UTC, 15 deposits get revealed which triggers an early sweep due to
 The Coordinator chooses sufficiently confirmed deposits for the sweep. To avoid
 synchronization problems with deposits on the brink of being sufficiently
 confirmed, the Coordinator may choose deposits with more than 6 confirmations
-on Bitcoin and 20 confirmations on Ethereum. To avoid problems with proving
+on Meowcoin and 20 confirmations on Ethereum. To avoid problems with proving
 large transactions and too many signatures to be executed, the Coordinator
-should not pick more than 15 deposits. The Coordinator chooses the Bitcoin
-transaction fee reflecting the current situation in the Bitcoin network and the
+should not pick more than 15 deposits. The Coordinator chooses the Meowcoin
+transaction fee reflecting the current situation in the Meowcoin network and the
 maximum possible fee accepted by the Bridge. To leave enough time for retries,
-deposits for which Bitcoin transactions unlock for a refund earlier than two
+deposits for which Meowcoin transactions unlock for a refund earlier than two
 weeks from now are skipped (`sweeping_refund_safety_time`).
 
 The Coordinator must not propose a sweep if there is currently a pending signing
 operation being executed by the wallet or if the last transaction from the
-wallet does not have 6 Bitcoin confirmations yet.
+wallet does not have 6 Meowcoin confirmations yet.
 
 The Coordinator proposes a sweep over the wallet's broadcast channel.
 
 All signing group members must confirm that all deposits in the proposed sweep
 are sufficiently confirmed, that the maximum number of deposits is not exceeded,
-that the proposed fee reflects the current situation in the Bitcoin network
+that the proposed fee reflects the current situation in the Meowcoin network
 plus/minus some margin, that the fee does not exceed the maximum one allowed
 by the Bridge, that all deposit UTXOs can be unlocked with the wallet's public
 key, and that there is enough time to unlock UTXO before the refund.
@@ -212,8 +212,8 @@ minutes.
 
 Assuming it takes no more than 4 minutes in the happy path to sign a single
 input, it should take no more than an hour to sign 15 inputs. Given that the
-entire sweep operation - including 6 Bitcoin confirmations - should complete
-within 4 hours, it gives just enough time for a single Bitcoin miner fee bump.
+entire sweep operation - including 6 Meowcoin confirmations - should complete
+within 4 hours, it gives just enough time for a single Meowcoin miner fee bump.
 
 ==== Retries
 
@@ -262,7 +262,7 @@ next sweep window.
 ==== Increasing fee
 
 At any point in time, the current Coordinator (who is not necessarily the same
-Coordinator who proposed the batch) can propose increasing the Bitcoin fee for
+Coordinator who proposed the batch) can propose increasing the Meowcoin fee for
 the sweep transaction that is in the mempool. The signing group members sign the
 transaction if the original transaction is in the mempool for at least
 `sweeping_fee_bump_period` and the fee increase does not exceed the maximum one
@@ -293,7 +293,7 @@ signature can be used for a challenge.
   transaction.
 - `sweep_period`: The amount of time we wait between scheduled sweeps on a wallet.
   Set to 8 hours initially.
-- `sweep_max_deposits`: The number of non-dust unswept revealed bitcoin deposits
+- `sweep_max_deposits`: The number of non-dust unswept revealed meowcoin deposits
   that will trigger an early sweep on a wallet.
   Set to 15 initially.
 - `sweeping_fee_bump_period`: The amount of time we wait to see if a sweeping

@@ -6,19 +6,19 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { log } = deployments
   const { deployer } = await getNamedAccounts()
 
-  const TBTCToken = await deployments.getOrNull("TBTCToken")
+  const TMEWCToken = await deployments.getOrNull("TMEWCToken")
 
-  if (TBTCToken && helpers.address.isValid(TBTCToken.address)) {
-    log(`using external TBTCToken at ${TBTCToken.address}`)
+  if (TMEWCToken && helpers.address.isValid(TMEWCToken.address)) {
+    log(`using external TMEWCToken at ${TMEWCToken.address}`)
   } else if (
     !hre.network.tags.allowStubs ||
     (hre.network.config as HardhatNetworkConfig)?.forking?.enabled
   ) {
-    throw new Error("deployed TBTCToken contract not found")
+    throw new Error("deployed TMEWCToken contract not found")
   } else {
-    log("deploying TBTCToken stub")
+    log("deploying TMEWCToken stub")
 
-    await deployments.deploy("TBTCToken", {
+    await deployments.deploy("TMEWCToken", {
       contract: "TestERC20",
       from: deployer,
       log: true,
@@ -28,4 +28,4 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
 export default func
 
-func.tags = ["TBTCToken"]
+func.tags = ["TMEWCToken"]

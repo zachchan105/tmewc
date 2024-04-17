@@ -25,29 +25,29 @@ chai.use(chaiAsPromised)
 const BLOCKSTREAM_TESTNET_API_URL = "https://blockstream.info/testnet/api"
 
 const testnetCredentials: ElectrumCredentials[] = [
-  // FIXME: Enable all protocols test for test.tbtc.network servers once they are
+  // FIXME: Enable all protocols test for test.tmewc.network servers once they are
   // publicly exposed.
   // // electrumx tcp
   // {
-  //   host: "electrumx-server.test.tbtc.network",
+  //   host: "electrumx-server.test.tmewc.network",
   //   port: 80,
   //   protocol: "tcp",
   // },
   // electrumx ssl
   // {
-  //   host: "electrumx-server.test.tbtc.network",
+  //   host: "electrumx-server.test.tmewc.network",
   //   port: 443,
   //   protocol: "ssl",
   // },
   // electrumx ws
   // {
-  //   host: "electrumx-server.test.tbtc.network",
+  //   host: "electrumx-server.test.tmewc.network",
   //   port: 8080,
   //   protocol: "ws",
   // },
   // electrumx wss
   {
-    host: "electrumx-server.test.tbtc.network",
+    host: "electrumx-server.test.tmewc.network",
     port: 8443,
     protocol: "wss",
   },
@@ -57,7 +57,7 @@ const testnetCredentials: ElectrumCredentials[] = [
     port: 60001,
     protocol: "tcp",
   },
-  // FIXME: https://github.com/keep-network/tbtc-v2/issues/502
+  // FIXME: https://github.com/keep-network/tmewc/issues/502
   // // electrs-esplora ssl
   // {
   //   host: "electrum.blockstream.info",
@@ -70,7 +70,7 @@ const testnetCredentials: ElectrumCredentials[] = [
     port: 51001,
     protocol: "tcp",
   },
-  // FIXME: https://github.com/keep-network/tbtc-v2/issues/502
+  // FIXME: https://github.com/keep-network/tmewc/issues/502
   // fulcrum ssl
   // {
   //   host: "testnet.aranguren.org",
@@ -82,13 +82,13 @@ const testnetCredentials: ElectrumCredentials[] = [
 describe("Electrum", () => {
   /**
    * This test suite is meant to check the behavior of the Electrum-based
-   * Bitcoin client implementation. This suite requires an integration with a
+   * Meowcoin client implementation. This suite requires an integration with a
    * real testnet Electrum server. That requirement makes those tests
    * time-consuming and vulnerable to external service health fluctuations.
    * Because of that, they are skipped by default and should be run only
    * on demand. Worth noting this test suite does not provide full coverage
    * of all Electrum client functions. The `broadcast` function is not covered
-   * since it requires a proper Bitcoin transaction hex for each run which is
+   * since it requires a proper Meowcoin transaction hex for each run which is
    * out of scope of this suite. The `broadcast` function was tested manually
    * though.
    */
@@ -120,7 +120,7 @@ describe("Electrum", () => {
 
         describe("getTransactionHistory", () => {
           it("should return proper transaction history for the given address", async () => {
-            // https://live.blockcypher.com/btc-testnet/address/tb1qumuaw3exkxdhtut0u85latkqfz4ylgwstkdzsx
+            // https://live.blockcypher.com/mewc-testnet/address/tb1qumuaw3exkxdhtut0u85latkqfz4ylgwstkdzsx
             const transactions = await electrumClient.getTransactionHistory(
               "tb1qumuaw3exkxdhtut0u85latkqfz4ylgwstkdzsx",
               5
@@ -262,7 +262,7 @@ describe("Electrum", () => {
         })
 
         describe("computeElectrumScriptHash", () => {
-          it("should convert Bitcoin script to an Electrum script hash correctly", () => {
+          it("should convert Meowcoin script to an Electrum script hash correctly", () => {
             const script = Hex.from(
               "00144b47c798d12edd17dfb4ea98e5447926f664731c"
             )

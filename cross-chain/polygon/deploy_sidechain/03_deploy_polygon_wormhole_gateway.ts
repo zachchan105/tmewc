@@ -8,12 +8,12 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   // These are the fake random addresses for local development purposes only.
   const fakeTokenBridge = "0x0af5DC16568EFF2d480a43A77E6C409e497FcFb9"
-  const fakeWormholeTBTC = "0xe1F0b28a3518cCeC430d0d86Ea1725e6256b0296"
+  const fakeWormholeTMEWC = "0xe1F0b28a3518cCeC430d0d86Ea1725e6256b0296"
 
   const polygonTokenBridge = await deployments.getOrNull("PolygonTokenBridge")
-  const polygonWormholeTBTC = await deployments.getOrNull("PolygonWormholeTBTC")
+  const polygonWormholeTMEWC = await deployments.getOrNull("PolygonWormholeTMEWC")
 
-  const polygonTBTC = await deployments.get("PolygonTBTC")
+  const polygonTMEWC = await deployments.get("PolygonTMEWC")
 
   let polygonTokenBridgeAddress = polygonTokenBridge?.address
   if (!polygonTokenBridgeAddress && hre.network.name === "hardhat") {
@@ -21,19 +21,19 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     log(`fake Polygon TokenBridge address ${polygonTokenBridgeAddress}`)
   }
 
-  let polygonWormholeTBTCAddress = polygonWormholeTBTC?.address
-  if (!polygonWormholeTBTCAddress && hre.network.name === "hardhat") {
-    polygonWormholeTBTCAddress = fakeWormholeTBTC
-    log(`fake Polygon WormholeTBTC address ${polygonWormholeTBTCAddress}`)
+  let polygonWormholeTMEWCAddress = polygonWormholeTMEWC?.address
+  if (!polygonWormholeTMEWCAddress && hre.network.name === "hardhat") {
+    polygonWormholeTMEWCAddress = fakeWormholeTMEWC
+    log(`fake Polygon WormholeTMEWC address ${polygonWormholeTMEWCAddress}`)
   }
 
   await helpers.upgrades.deployProxy("PolygonWormholeGateway", {
     contractName:
-      "@keep-network/tbtc-v2/contracts/l2/L2WormholeGateway.sol:L2WormholeGateway",
+      "@keep-network/tmewc/contracts/l2/L2WormholeGateway.sol:L2WormholeGateway",
     initializerArgs: [
       polygonTokenBridgeAddress,
-      polygonWormholeTBTCAddress,
-      polygonTBTC.address,
+      polygonWormholeTMEWCAddress,
+      polygonTMEWC.address,
     ],
     factoryOpts: { signer: await ethers.getSigner(deployer) },
     proxyOpts: {
@@ -45,4 +45,4 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 export default func
 
 func.tags = ["PolygonWormholeGateway"]
-func.dependencies = ["PolygonTokenBridge", "PolygonWormholeTBTC"]
+func.dependencies = ["PolygonTokenBridge", "PolygonWormholeTMEWC"]

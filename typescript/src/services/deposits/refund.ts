@@ -10,20 +10,20 @@ import {
   BitcoinScriptUtils,
   BitcoinTxHash,
   BitcoinUtxo,
-} from "../../lib/bitcoin"
+} from "../../lib/meowcoin"
 import { validateDepositReceipt } from "../../lib/contracts"
 import { Hex } from "../../lib/utils"
 import { DepositScript } from "./"
 import {
   Signer,
   Transaction,
-  script as btcjsscript,
+  script as mewcjsscript,
   Stack,
 } from "bitcoinjs-lib"
 
 /**
- * Component allowing to craft and submit the Bitcoin refund transaction using
- * the given tBTC v2 deposit script.
+ * Component allowing to craft and submit the Meowcoin refund transaction using
+ * the given tMEWC deposit script.
  *
  * @experimental THIS IS EXPERIMENTAL CODE THAT CAN BE CHANGED OR REMOVED
  *               IN FUTURE RELEASES. IT SHOULD BE USED ONLY FOR INTERNAL
@@ -43,15 +43,15 @@ export class DepositRefund {
   }
 
   /**
-   * Submits a deposit refund by creating and broadcasting a Bitcoin P2(W)PKH
+   * Submits a deposit refund by creating and broadcasting a Meowcoin P2(W)PKH
    * deposit refund transaction.
-   * @param bitcoinClient - Bitcoin client used to interact with the network.
+   * @param bitcoinClient - Meowcoin client used to interact with the network.
    * @param fee - the value that will be subtracted from the deposit UTXO being
    *        refunded and used as the transaction fee.
    * @param utxo - UTXO that was created during depositing that needs be refunded.
-   * @param refunderAddress - Recipient Bitcoin wallet address of the refunded
+   * @param refunderAddress - Recipient Meowcoin wallet address of the refunded
    *        deposit.
-   * @param refunderPrivateKey - Bitcoin wallet private key of the refunder.
+   * @param refunderPrivateKey - Meowcoin wallet private key of the refunder.
    *        It must correspond to the `refundPublicKeyHash` of the deposit script.
    * @returns The outcome is the deposit refund transaction hash.
    * @dev This function should be called by the refunder after `refundLocktime`
@@ -95,14 +95,14 @@ export class DepositRefund {
   }
 
   /**
-   * Assembles a Bitcoin P2(W)PKH deposit refund transaction.
-   * @param bitcoinNetwork - The target Bitcoin network.
+   * Assembles a Meowcoin P2(W)PKH deposit refund transaction.
+   * @param bitcoinNetwork - The target Meowcoin network.
    * @param fee - the value that will be subtracted from the deposit UTXO being
    *        refunded and used as the transaction fee.
    * @param utxo - UTXO that was created during depositing that needs be refunded.
-   * @param refunderAddress - Recipient Bitcoin wallet address of the refunded
+   * @param refunderAddress - Recipient Meowcoin wallet address of the refunded
    *        deposit.
-   * @param refunderPrivateKey - Bitcoin wallet private key of the refunder.
+   * @param refunderPrivateKey - Meowcoin wallet private key of the refunder.
    *        It must correspond to the `refundPublicKeyHash` of the deposit script.
    * @returns The outcome consisting of:
    *          - the deposit refund transaction hash,
@@ -231,7 +231,7 @@ export class DepositRefund {
       sigHashType
     )
 
-    const signature = btcjsscript.signature.encode(
+    const signature = mewcjsscript.signature.encode(
       refunderKeyPair.sign(sigHash),
       sigHashType
     )
@@ -241,7 +241,7 @@ export class DepositRefund {
     scriptSig.push(refunderKeyPair.publicKey)
     scriptSig.push(depositScript)
 
-    transaction.ins[inputIndex].script = btcjsscript.compile(scriptSig)
+    transaction.ins[inputIndex].script = mewcjsscript.compile(scriptSig)
   }
 
   /**
@@ -270,7 +270,7 @@ export class DepositRefund {
       sigHashType
     )
 
-    const signature = btcjsscript.signature.encode(
+    const signature = mewcjsscript.signature.encode(
       refunderKeyPair.sign(sigHash),
       sigHashType
     )

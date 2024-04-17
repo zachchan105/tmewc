@@ -1,4 +1,4 @@
-import { WRAPPED_TBTC_MINT } from "./../../tests/helpers/consts"
+import { WRAPPED_TMEWC_MINT } from "./../../tests/helpers/consts"
 export const WH_ARBITRUM_CHAIN_ID = 23
 
 export const WH_OPTIMISM_CHAIN_ID = 24
@@ -39,8 +39,8 @@ export const SOLANA_GATEWAY_ADDRESS_MAINNET =
   "87MEvHZCXE3ML5rrmh5uX1FbShHmRXXS32xJDGbQ7h5t"
 
 // deriveWrappedMintKey("DZnkkTmCiFWfYTfT41X3Rd1kDgozqzxWaHqsw6W4x2oe", 2, "0x679874fbe6d4e7cc54a59e315ff1eb266686a937")
-export const WRAPPED_TBTC_MINT_TESTNET =
+export const WRAPPED_TMEWC_MINT_TESTNET =
   "FMYvcyMJJ22whB9m3T5g1oPKwM6jpLnFBXnrY6eXmCrp"
 // deriveWrappedMintKey("wormDTUJ6AWPNvk59vGQbDvGJmqbDTdgWgAqcLBCgUb", 2, "0x18084fbA666a33d37592fA2633fD49a74DD93a88")
-export const WRAPPED_TBTC_MINT_MAINNET =
+export const WRAPPED_TMEWC_MINT_MAINNET =
   "25rXTx9zDZcHyTav5sRqM6YBvTGu9pPH9yv83uAEqbgG"

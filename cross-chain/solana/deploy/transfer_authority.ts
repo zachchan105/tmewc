@@ -12,12 +12,12 @@ async function run(): Promise<void> {
   const authority = loadKey(process.env.AUTHORITY)
   const newAuthority = process.env.THRESHOLD_COUNCIL_MULTISIG
 
-  const tbtcProgram = anchor.workspace.Tbtc
+  const tmewcProgram = anchor.workspace.Tmewc
   const wormholeGatewayProgram = anchor.workspace.WormholeGateway
 
   const config = PublicKey.findProgramAddressSync(
     [Buffer.from("config")],
-    tbtcProgram.programId
+    tmewcProgram.programId
   )[0]
 
   const custodian = PublicKey.findProgramAddressSync(
@@ -25,7 +25,7 @@ async function run(): Promise<void> {
     wormholeGatewayProgram.programId
   )[0]
 
-  await tbtcProgram.methods
+  await tmewcProgram.methods
     .changeAuthority()
     .accounts({
       config,

@@ -4,7 +4,7 @@ import type { DeployFunction } from "hardhat-deploy/types"
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deployments } = hre
 
-  const proxyDeployment = await deployments.get("PolygonTBTC")
+  const proxyDeployment = await deployments.get("PolygonTMEWC")
 
   // TODO: Investigate the possibility of adding Tenderly verification for the
   // sidechain and upgradable proxy.
@@ -31,4 +31,4 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
 export default func
 
-func.tags = ["VerifyPolygonTBTC"]
+func.tags = ["VerifyPolygonTMEWC"]

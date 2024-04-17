@@ -1,6 +1,6 @@
-# Class: BaseL2TBTCToken
+# Class: BaseL2TMEWCToken
 
-Implementation of the Base L2TBTCToken handle.
+Implementation of the Base L2TMEWCToken handle.
 
 **`See`**
 
@@ -8,38 +8,38 @@ for reference.
 
 ## Hierarchy
 
-- `EthersContractHandle`\<`L2TBTCTypechain`\>
+- `EthersContractHandle`\<`L2TMEWCTypechain`\>
 
-  ↳ **`BaseL2TBTCToken`**
+  ↳ **`BaseL2TMEWCToken`**
 
 ## Implements
 
-- [`L2TBTCToken`](../interfaces/L2TBTCToken.md)
+- [`L2TMEWCToken`](../interfaces/L2TMEWCToken.md)
 
 ## Table of contents
 
 ### Constructors
 
-- [constructor](BaseL2TBTCToken.md#constructor)
+- [constructor](BaseL2TMEWCToken.md#constructor)
 
 ### Properties
 
-- [\_deployedAtBlockNumber](BaseL2TBTCToken.md#_deployedatblocknumber)
-- [\_instance](BaseL2TBTCToken.md#_instance)
-- [\_totalRetryAttempts](BaseL2TBTCToken.md#_totalretryattempts)
+- [\_deployedAtBlockNumber](BaseL2TMEWCToken.md#_deployedatblocknumber)
+- [\_instance](BaseL2TMEWCToken.md#_instance)
+- [\_totalRetryAttempts](BaseL2TMEWCToken.md#_totalretryattempts)
 
 ### Methods
 
-- [balanceOf](BaseL2TBTCToken.md#balanceof)
-- [getAddress](BaseL2TBTCToken.md#getaddress)
-- [getChainIdentifier](BaseL2TBTCToken.md#getchainidentifier)
-- [getEvents](BaseL2TBTCToken.md#getevents)
+- [balanceOf](BaseL2TMEWCToken.md#balanceof)
+- [getAddress](BaseL2TMEWCToken.md#getaddress)
+- [getChainIdentifier](BaseL2TMEWCToken.md#getchainidentifier)
+- [getEvents](BaseL2TMEWCToken.md#getevents)
 
 ## Constructors
 
 ### constructor
 
-• **new BaseL2TBTCToken**(`config`, `chainId`): [`BaseL2TBTCToken`](BaseL2TBTCToken.md)
+• **new BaseL2TMEWCToken**(`config`, `chainId`): [`BaseL2TMEWCToken`](BaseL2TMEWCToken.md)
 
 #### Parameters
 
@@ -50,15 +50,15 @@ for reference.
 
 #### Returns
 
-[`BaseL2TBTCToken`](BaseL2TBTCToken.md)
+[`BaseL2TMEWCToken`](BaseL2TMEWCToken.md)
 
 #### Overrides
 
-EthersContractHandle\&lt;L2TBTCTypechain\&gt;.constructor
+EthersContractHandle\&lt;L2TMEWCTypechain\&gt;.constructor
 
 #### Defined in
 
-[src/lib/base/l2-tbtc-token.ts:23](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/base/l2-tbtc-token.ts#L23)
+[src/lib/base/l2-tmewc-token.ts:23](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/base/l2-tmewc-token.ts#L23)
 
 ## Properties
 
@@ -76,13 +76,13 @@ EthersContractHandle.\_deployedAtBlockNumber
 
 #### Defined in
 
-[src/lib/ethereum/adapter.ts:80](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/ethereum/adapter.ts#L80)
+[src/lib/ethereum/adapter.ts:80](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/adapter.ts#L80)
 
 ___
 
 ### \_instance
 
-• `Protected` `Readonly` **\_instance**: `L2TBTC`
+• `Protected` `Readonly` **\_instance**: `L2TMEWC`
 
 Ethers instance of the deployed contract.
 
@@ -92,7 +92,7 @@ EthersContractHandle.\_instance
 
 #### Defined in
 
-[src/lib/ethereum/adapter.ts:74](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/ethereum/adapter.ts#L74)
+[src/lib/ethereum/adapter.ts:74](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/adapter.ts#L74)
 
 ___
 
@@ -108,7 +108,7 @@ EthersContractHandle.\_totalRetryAttempts
 
 #### Defined in
 
-[src/lib/ethereum/adapter.ts:84](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/ethereum/adapter.ts#L84)
+[src/lib/ethereum/adapter.ts:84](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/adapter.ts#L84)
 
 ## Methods
 
@@ -130,11 +130,11 @@ EthersContractHandle.\_totalRetryAttempts
 
 #### Implementation of
 
-[L2TBTCToken](../interfaces/L2TBTCToken.md).[balanceOf](../interfaces/L2TBTCToken.md#balanceof)
+[L2TMEWCToken](../interfaces/L2TMEWCToken.md).[balanceOf](../interfaces/L2TMEWCToken.md#balanceof)
 
 #### Defined in
 
-[src/lib/base/l2-tbtc-token.ts:53](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/base/l2-tbtc-token.ts#L53)
+[src/lib/base/l2-tmewc-token.ts:53](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/base/l2-tmewc-token.ts#L53)
 
 ___
 
@@ -156,7 +156,7 @@ EthersContractHandle.getAddress
 
 #### Defined in
 
-[src/lib/ethereum/adapter.ts:112](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/ethereum/adapter.ts#L112)
+[src/lib/ethereum/adapter.ts:112](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/adapter.ts#L112)
 
 ___
 
@@ -172,11 +172,11 @@ ___
 
 #### Implementation of
 
-[L2TBTCToken](../interfaces/L2TBTCToken.md).[getChainIdentifier](../interfaces/L2TBTCToken.md#getchainidentifier)
+[L2TMEWCToken](../interfaces/L2TMEWCToken.md).[getChainIdentifier](../interfaces/L2TMEWCToken.md#getchainidentifier)
 
 #### Defined in
 
-[src/lib/base/l2-tbtc-token.ts:45](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/base/l2-tbtc-token.ts#L45)
+[src/lib/base/l2-tmewc-token.ts:45](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/base/l2-tmewc-token.ts#L45)
 
 ___
 
@@ -210,4 +210,4 @@ EthersContractHandle.getEvents
 
 #### Defined in
 
-[src/lib/ethereum/adapter.ts:127](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/ethereum/adapter.ts#L127)
+[src/lib/ethereum/adapter.ts:127](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/adapter.ts#L127)

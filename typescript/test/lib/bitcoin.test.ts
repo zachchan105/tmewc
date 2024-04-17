@@ -22,10 +22,10 @@ import {
   BitcoinTxMerkleBranch,
 } from "../../src"
 import { BigNumber } from "ethers"
-import { btcAddresses, btcAddressFromPublicKey } from "../data/bitcoin"
+import { mewcAddresses, mewcAddressFromPublicKey } from "../data/meowcoin"
 import { depositSweepWithNoMainUtxoAndWitnessOutput } from "../data/deposit-sweep"
 import { networks } from "bitcoinjs-lib"
-import { MockBitcoinClient } from "../utils/mock-bitcoin-client"
+import { MockBitcoinClient } from "../utils/mock-meowcoin-client"
 import {
   multipleInputsProofTestData,
   ProofTestData,
@@ -36,7 +36,7 @@ import {
   TransactionProofData,
 } from "../data/proof"
 
-describe("Bitcoin", () => {
+describe("Meowcoin", () => {
   describe("BitcoinNetwork", () => {
     const testData = [
       {
@@ -60,7 +60,7 @@ describe("Bitcoin", () => {
         genesisHash: BitcoinTxHash.from(
           "000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f"
         ),
-        expectedToBitcoinJsLibResult: networks.bitcoin,
+        expectedToBitcoinJsLibResult: networks.meowcoin,
       },
     ]
 
@@ -227,7 +227,7 @@ describe("Bitcoin", () => {
     } = BitcoinAddressConverter
 
     describe("publicKeyToAddress", () => {
-      Object.entries(btcAddressFromPublicKey).forEach(
+      Object.entries(mewcAddressFromPublicKey).forEach(
         ([bitcoinNetwork, addressData]) => {
           context(`with ${bitcoinNetwork} addresses`, () => {
             Object.entries(addressData).forEach(
@@ -254,7 +254,7 @@ describe("Bitcoin", () => {
       context("when network is mainnet", () => {
         context("when witness option is true", () => {
           context("when proper public key hash is provided", () => {
-            it("should encode public key hash into bitcoin address properly", () => {
+            it("should encode public key hash into meowcoin address properly", () => {
               expect(
                 publicKeyHashToAddress(
                   publicKeyHash,
@@ -286,7 +286,7 @@ describe("Bitcoin", () => {
 
         context("when witness option is false", () => {
           context("when proper public key hash is provided", () => {
-            it("should encode public key hash into bitcoin address properly", () => {
+            it("should encode public key hash into meowcoin address properly", () => {
               expect(
                 publicKeyHashToAddress(
                   publicKeyHash,
@@ -320,7 +320,7 @@ describe("Bitcoin", () => {
       context("when network is testnet", () => {
         context("when witness option is true", () => {
           context("when proper public key hash is provided", () => {
-            it("should encode public key hash into bitcoin address properly", () => {
+            it("should encode public key hash into meowcoin address properly", () => {
               expect(
                 publicKeyHashToAddress(
                   publicKeyHash,
@@ -352,7 +352,7 @@ describe("Bitcoin", () => {
 
         context("when witness option is false", () => {
           context("when proper public key hash is provided", () => {
-            it("should encode public key hash into bitcoin address properly", () => {
+            it("should encode public key hash into meowcoin address properly", () => {
               expect(
                 publicKeyHashToAddress(
                   publicKeyHash,
@@ -539,10 +539,10 @@ describe("Bitcoin", () => {
     })
 
     describe("addressToOutputScript", () => {
-      Object.keys(btcAddresses).forEach((bitcoinNetwork) => {
+      Object.keys(mewcAddresses).forEach((bitcoinNetwork) => {
         context(`with ${bitcoinNetwork} addresses`, () => {
           Object.entries(
-            btcAddresses[bitcoinNetwork as keyof typeof btcAddresses]
+            mewcAddresses[bitcoinNetwork as keyof typeof mewcAddresses]
           ).forEach(
             ([
               addressType,
@@ -565,10 +565,10 @@ describe("Bitcoin", () => {
     })
 
     describe("outputScriptToAddress", () => {
-      Object.keys(btcAddresses).forEach((bitcoinNetwork) => {
+      Object.keys(mewcAddresses).forEach((bitcoinNetwork) => {
         context(`with ${bitcoinNetwork} addresses`, () => {
           Object.entries(
-            btcAddresses[bitcoinNetwork as keyof typeof btcAddresses]
+            mewcAddresses[bitcoinNetwork as keyof typeof mewcAddresses]
           ).forEach(([addressType, { address, scriptPubKey }]) => {
             it(`should return correct ${addressType} address`, () => {
               const result = outputScriptToAddress(
@@ -1048,7 +1048,7 @@ describe("Bitcoin", () => {
     })
 
     context("when the transaction proof is correct", () => {
-      context("when the transaction is from Bitcoin Mainnet", () => {
+      context("when the transaction is from Meowcoin Mainnet", () => {
         context(
           "when the transaction confirmations span only one epoch",
           () => {
@@ -1073,7 +1073,7 @@ describe("Bitcoin", () => {
         })
       })
 
-      context("when the transaction is from Bitcoin Testnet", () => {
+      context("when the transaction is from Meowcoin Testnet", () => {
         it("should not throw", async () => {
           await expect(runProofValidationScenario(testnetTransactionData)).not
             .to.be.rejected
@@ -1097,7 +1097,7 @@ describe("Bitcoin", () => {
           }
           await expect(
             runProofValidationScenario(corruptedProofData)
-          ).to.be.rejectedWith("Incorrect length of Bitcoin headers")
+          ).to.be.rejectedWith("Incorrect length of Meowcoin headers")
         })
       })
 
@@ -1300,7 +1300,7 @@ describe("Bitcoin", () => {
             await expect(
               runProofValidationScenario(corruptedProofData)
             ).to.be.rejectedWith(
-              "Header difficulty not at current or previous Bitcoin difficulty"
+              "Header difficulty not at current or previous Meowcoin difficulty"
             )
           })
         }

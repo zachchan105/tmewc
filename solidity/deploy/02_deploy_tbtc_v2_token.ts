@@ -6,23 +6,23 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deploy } = deployments
   const { deployer } = await getNamedAccounts()
 
-  const tbtc = await deploy("TBTC", {
+  const tmewc = await deploy("TMEWC", {
     from: deployer,
     log: true,
   })
 
   if (hre.network.tags.etherscan) {
-    await helpers.etherscan.verify(tbtc)
+    await helpers.etherscan.verify(tmewc)
   }
 
   if (hre.network.tags.tenderly) {
     await hre.tenderly.verify({
-      name: "TBTC",
-      address: tbtc.address,
+      name: "TMEWC",
+      address: tmewc.address,
     })
   }
 }
 
 export default func
 
-func.tags = ["TBTC"]
+func.tags = ["TMEWC"]

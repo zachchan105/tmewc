@@ -68,7 +68,7 @@ export interface RedemptionTestData {
   }
 
   /**
-   * Chain difficulty which was in force at the moment of Bitcoin transaction
+   * Chain difficulty which was in force at the moment of Meowcoin transaction
    * execution. It is used to mock the difficulty provided by `Relay` contract
    * with a correct value thus making proof validation possible.
    */
@@ -76,7 +76,7 @@ export interface RedemptionTestData {
 }
 
 /**
- * Container for TBTC balance change during redemption test scenario.
+ * Container for TMEWC balance change during redemption test scenario.
  */
 export interface RedemptionBalanceChange {
   beforeProof: BigNumber
@@ -130,7 +130,7 @@ export const SinglePendingRequestedRedemption: RedemptionTestData = {
     txOutputValue: 1177424,
   },
 
-  // https://live.blockcypher.com/btc-testnet/tx/70d4182e795ebb0ddd8339ed9c0213d6e48f7cb6c956ced03c49f554a93a5669
+  // https://live.blockcypher.com/mewc-testnet/tx/70d4182e795ebb0ddd8339ed9c0213d6e48f7cb6c956ced03c49f554a93a5669
   redemptionTx: {
     hash: "0x69563aa954f5493cd0ce56c9b67c8fe4d613029ced3983dd0dbb5e792e18d470",
     version: "0x01000000",
@@ -219,7 +219,7 @@ export const SingleP2PKHChange: RedemptionTestData = {
     txOutputValue: 1865981,
   },
 
-  // https://live.blockcypher.com/btc-testnet/tx/37a56c64e1c2f98f68445fc4a788e9de14f02d521b6fd2eb9bac7fd9e5c8bf3a
+  // https://live.blockcypher.com/mewc-testnet/tx/37a56c64e1c2f98f68445fc4a788e9de14f02d521b6fd2eb9bac7fd9e5c8bf3a
   redemptionTx: {
     hash: "0x3abfc8e5d97fac9bebd26f1b522df014dee988a7c45f44688ff9c2e1646ca537",
     version: "0x01000000",
@@ -301,7 +301,7 @@ export const SingleP2WPKHChange: RedemptionTestData = {
     txOutputValue: 1674207,
   },
 
-  // https://live.blockcypher.com/btc-testnet/tx/6b23f63b19510d2ea6c115757a791ccf196e36c14ae82cd1f9970293af186542
+  // https://live.blockcypher.com/mewc-testnet/tx/6b23f63b19510d2ea6c115757a791ccf196e36c14ae82cd1f9970293af186542
   redemptionTx: {
     hash: "0x426518af930297f9d12ce84ac1366e19cf1c797a7515c1a62e0d51193bf6236b",
     version: "0x01000000",
@@ -380,7 +380,7 @@ export const SingleP2SHChange: RedemptionTestData = {
     txOutputValue: 1669207,
   },
 
-  // https://live.blockcypher.com/btc-testnet/tx/588a0e5e68ec8d3cf80d1190e51a68a431737a33c3a09f16303945dd49e369cd
+  // https://live.blockcypher.com/mewc-testnet/tx/588a0e5e68ec8d3cf80d1190e51a68a431737a33c3a09f16303945dd49e369cd
   redemptionTx: {
     hash: "0xcd69e349dd453930169fa0c3337a7331a4681ae590110df83c8dec685e0e8a58",
     version: "0x01000000",
@@ -463,7 +463,7 @@ export const SingleP2WPKHChangeZeroValue: RedemptionTestData = {
     txOutputValue: 1616808,
   },
 
-  // https://live.blockcypher.com/btc-testnet/tx/b8cdeb9f25bac990f233f0c10ccfb4335ca867996a9a7e43d69fa2f730a5b10f
+  // https://live.blockcypher.com/mewc-testnet/tx/b8cdeb9f25bac990f233f0c10ccfb4335ca867996a9a7e43d69fa2f730a5b10f
   redemptionTx: {
     hash: "0x0fb1a530f7a29fd6437e9a6a9967a85c33b4cf0cc1f033f290c9ba259febcdb8",
     version: "0x01000000",
@@ -544,7 +544,7 @@ export const SingleProvablyUnspendable: RedemptionTestData = {
     txOutputValue: 1914700,
   },
 
-  // https://live.blockcypher.com/btc-testnet/tx/58a7d94d019aa658d00dfa2b5d5bb6b5d627b71afefff2bda5db501a75981fd3
+  // https://live.blockcypher.com/mewc-testnet/tx/58a7d94d019aa658d00dfa2b5d5bb6b5d627b71afefff2bda5db501a75981fd3
   redemptionTx: {
     hash: "0xd31f98751a50dba5bdf2fffe1ab727d6b5b65b5d2bfa0dd058a69a014dd9a758",
     version: "0x01000000",
@@ -665,7 +665,7 @@ export const MultiplePendingRequestedRedemptions: RedemptionTestData = {
     txOutputValue: 959845,
   },
 
-  // https://live.blockcypher.com/btc-testnet/tx/2724545276df61f43f1e92c4b9f1dd3c9109595c022dbd9dc003efbad8ded38b
+  // https://live.blockcypher.com/mewc-testnet/tx/2724545276df61f43f1e92c4b9f1dd3c9109595c022dbd9dc003efbad8ded38b
   redemptionTx: {
     hash: "0x8bd3ded8baef03c09dbd2d025c5909913cddf1b9c4921e3ff461df7652542427",
     version: "0x01000000",
@@ -792,7 +792,7 @@ export const MultiplePendingRequestedRedemptionsWithP2WPKHChange: RedemptionTest
       txOutputValue: 143565433,
     },
 
-    // https://live.blockcypher.com/btc-testnet/tx/05dabb0291c0a6aa522de5ded5cb6d14ee2159e7ff109d3ef0f21de128b56b94
+    // https://live.blockcypher.com/mewc-testnet/tx/05dabb0291c0a6aa522de5ded5cb6d14ee2159e7ff109d3ef0f21de128b56b94
     redemptionTx: {
       hash: "0x946bb528e11df2f03e9d10ffe75921ee146dcbd5dee52d52aaa6c09102bbda05",
       version: "0x01000000",
@@ -893,7 +893,7 @@ export const MultiplePendingRequestedRedemptionsWithP2SHChange: RedemptionTestDa
       txOutputValue: 1088167,
     },
 
-    // https://live.blockcypher.com/btc-testnet/tx/3ca4ae3f8ee3b48949192bc7a146c8d9862267816258c85e02a44678364551e1
+    // https://live.blockcypher.com/mewc-testnet/tx/3ca4ae3f8ee3b48949192bc7a146c8d9862267816258c85e02a44678364551e1
     redemptionTx: {
       hash: "0xe15145367846a4025ec8586281672286d9c846a1c72b194989b4e38e3faea43c",
       version: "0x01000000",
@@ -999,7 +999,7 @@ export const MultiplePendingRequestedRedemptionsWithMultipleP2WPKHChanges: Redem
       txOutputValue: 137085266,
     },
 
-    // https://live.blockcypher.com/btc-testnet/tx/44863a79ce2b8fec9792403d5048506e50ffa7338191db0e6c30d3d3358ea2f6
+    // https://live.blockcypher.com/mewc-testnet/tx/44863a79ce2b8fec9792403d5048506e50ffa7338191db0e6c30d3d3358ea2f6
     redemptionTx: {
       hash: "0xf6a28e35d3d3306c0edb918133a7ff506e5048503d409297ec8f2bce793a8644",
       version: "0x01000000",
@@ -1105,7 +1105,7 @@ export const MultiplePendingRequestedRedemptionsWithP2WPKHChangeZeroValue: Redem
       txOutputValue: 988586,
     },
 
-    // https://live.blockcypher.com/btc-testnet/tx/f65bc5029251f0042aedb37f90dbb2bfb63a2e81694beef9cae5ec62e954c22e
+    // https://live.blockcypher.com/mewc-testnet/tx/f65bc5029251f0042aedb37f90dbb2bfb63a2e81694beef9cae5ec62e954c22e
     redemptionTx: {
       hash: "0x",
       version: "0x01000000",
@@ -1228,7 +1228,7 @@ export const MultiplePendingRequestedRedemptionsWithProvablyUnspendable: Redempt
       txOutputValue: 875636,
     },
 
-    // https://live.blockcypher.com/btc-testnet/tx/4c6b33b7c0550e0e536a5d119ac7189d71e1296fcb0c258e0c115356895bc0e6
+    // https://live.blockcypher.com/mewc-testnet/tx/4c6b33b7c0550e0e536a5d119ac7189d71e1296fcb0c258e0c115356895bc0e6
     redemptionTx: {
       hash: "0xe6c05b895653110c8e250ccb6f29e1719d18c79a115d6a530e0e55c0b7336b4c",
       version: "0x01000000",
@@ -1330,7 +1330,7 @@ export const MultiplePendingRequestedRedemptionsWithMultipleInputs: RedemptionTe
       txOutputValue: 718510,
     },
 
-    // https://live.blockcypher.com/btc-testnet/tx/605edd75ae0b4fa7cfc7aae8f1399119e9d7ecc212e6253156b60d60f4925d44
+    // https://live.blockcypher.com/mewc-testnet/tx/605edd75ae0b4fa7cfc7aae8f1399119e9d7ecc212e6253156b60d60f4925d44
     redemptionTx: {
       hash: "0x445d92f4600db6563125e612c2ecd7e9199139f1e8aac7cfa74f0bae75dd5e60",
       version: "0x01000000",

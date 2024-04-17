@@ -47,7 +47,7 @@ function computeSha256(text: Hex): Hex {
 }
 
 /**
- * Utility functions allowing to deal with Bitcoin hashes.
+ * Utility functions allowing to deal with Meowcoin hashes.
  */
 export const BitcoinHashUtils = {
   computeHash160,

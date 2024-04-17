@@ -3,22 +3,22 @@ import {
   Chains,
   CrossChainContractsLoader,
   L2Chain,
-  TBTCContracts,
+  TMEWCContracts,
 } from "../contracts"
 import { providers, Signer } from "ethers"
 import { EthereumBridge } from "./bridge"
 import { EthereumWalletRegistry } from "./wallet-registry"
-import { EthereumTBTCToken } from "./tbtc-token"
-import { EthereumTBTCVault } from "./tbtc-vault"
+import { EthereumTMEWCToken } from "./tmewc-token"
+import { EthereumTMEWCVault } from "./tmewc-vault"
 import { EthereumAddress } from "./address"
-import { EthereumL1BitcoinDepositor } from "./l1-bitcoin-depositor"
+import { EthereumL1BitcoinDepositor } from "./l1-meowcoin-depositor"
 
 export * from "./address"
 export * from "./bridge"
 export * from "./depositor-proxy"
-export * from "./l1-bitcoin-depositor"
-export * from "./tbtc-token"
-export * from "./tbtc-vault"
+export * from "./l1-meowcoin-depositor"
+export * from "./tmewc-token"
+export * from "./tmewc-vault"
 export * from "./wallet-registry"
 
 // The `adapter` module should not be re-exported directly as it
@@ -71,26 +71,26 @@ export async function ethereumAddressFromSigner(
 }
 
 /**
- * Loads Ethereum implementation of tBTC core contracts for the given Ethereum
+ * Loads Ethereum implementation of tMEWC core contracts for the given Ethereum
  * chain ID and attaches the given signer there.
- * @param signer Signer that should be attached to tBTC contracts.
+ * @param signer Signer that should be attached to tMEWC contracts.
  * @param chainId Ethereum chain ID.
- * @returns Handle to tBTC core contracts.
+ * @returns Handle to tMEWC core contracts.
  * @throws Throws an error if the signer's Ethereum chain ID is other than
- *         the one used to load tBTC contracts.
+ *         the one used to load tMEWC contracts.
  */
 export async function loadEthereumCoreContracts(
   signer: EthereumSigner,
   chainId: Chains.Ethereum
-): Promise<TBTCContracts> {
+): Promise<TMEWCContracts> {
   const signerChainId = await chainIdFromSigner(signer)
   if (signerChainId !== chainId) {
     throw new Error("Signer uses different chain than Ethereum core contracts")
   }
 
   const bridge = new EthereumBridge({ signerOrProvider: signer }, chainId)
-  const tbtcToken = new EthereumTBTCToken({ signerOrProvider: signer }, chainId)
-  const tbtcVault = new EthereumTBTCVault({ signerOrProvider: signer }, chainId)
+  const tmewcToken = new EthereumTMEWCToken({ signerOrProvider: signer }, chainId)
+  const tmewcVault = new EthereumTMEWCVault({ signerOrProvider: signer }, chainId)
   const walletRegistry = new EthereumWalletRegistry(
     { signerOrProvider: signer },
     chainId
@@ -98,20 +98,20 @@ export async function loadEthereumCoreContracts(
 
   return {
     bridge,
-    tbtcToken,
-    tbtcVault,
+    tmewcToken,
+    tmewcVault,
     walletRegistry,
   }
 }
 
 /**
- * Creates the Ethereum implementation of tBTC cross-chain contracts loader.
+ * Creates the Ethereum implementation of tMEWC cross-chain contracts loader.
  * The provided signer is attached to loaded L1 contracts. The given
  * Ethereum chain ID is used to load the L1 contracts and resolve the chain
  * mapping that provides corresponding L2 chains IDs.
  * @param signer Ethereum L1 signer.
  * @param chainId Ethereum L1 chain ID.
- * @returns Loader for tBTC cross-chain contracts.
+ * @returns Loader for tMEWC cross-chain contracts.
  * @throws Throws an error if the signer's Ethereum chain ID is other than
  *         the one used to construct the loader.
  */

@@ -73,7 +73,7 @@ jobs:
           cache: "yarn"
           cache-dependency-path: solidity/yarn.lock
 
-      # We need this step because the `@keep-network/tbtc` which we update in
+      # We need this step because the `@keep-network/tmewc` which we update in
       # next step has a dependency to `@summa-tx/relay-sol@2.0.2` package, which
       # downloads one of its sub-dependencies via unathenticated `git://`
       # protocol. That protocol is no longer supported. Thanks to this step
@@ -117,7 +117,7 @@ jobs:
 
       # This step forces Git to download dependencies using `https://` protocol,
       # even if `yarn.json` refers to some package via `git://`. Using `git://`
-      # is no longer supported by GH. One of the `tbtc-v2` dependencies by
+      # is no longer supported by GH. One of the `tmewc` dependencies by
       # default uses `git://` and we needed to manually remove it every time
       # it re-appeared in the lock file. Now even if it does re-appear, the
       # `yarn install --frozen-lockfile` will not fail.
@@ -149,13 +149,13 @@ jobs:
           cache-dependency-path: solidity/yarn.lock
           registry-url: "https://registry.npmjs.org"
 
-      # We need this step because the `@keep-network/tbtc` which we update in
+      # We need this step because the `@keep-network/tmewc` which we update in
       # next steps has a dependency to `@summa-tx/relay-sol@2.0.2` package, which
       # downloads one of its sub-dependencies via unathenticated `git://`
       # protocol. That protocol is no longer supported. Thanks to this step
       # `https://` is used instead of `git://`. This step also prevents the
       # error during `yarn install --frozen-lockfile` step in case `git://` gets
-      # introduced to tbtc-v2's `yarn.lock`.
+      # introduced to tmewc's `yarn.lock`.
       - name: Configure git to don't use unauthenticated protocol
         run: git config --global url."https://".insteadOf git://
 
@@ -176,7 +176,7 @@ jobs:
           yarn upgrade \
             @keep-network/random-beacon@${{ steps.upstream-builds-query.outputs.random-beacon-contracts-version }} \
             @keep-network/ecdsa@${{ steps.upstream-builds-query.outputs.ecdsa-contracts-version }} \
-            @keep-network/tbtc@${{ github.event.inputs.environment }}
+            @keep-network/tmewc@${{ github.event.inputs.environment }}
 
       - name: Configure tenderly
         env:
@@ -208,7 +208,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.CI_GITHUB_TOKEN }}
         with:
-          module: "github.com/keep-network/tbtc-v2"
+          module: "github.com/keep-network/tmewc"
           url: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
           environment: ${{ github.event.inputs.environment }}
           upstream_builds: ${{ github.event.inputs.upstream_builds }}
@@ -247,7 +247,7 @@ jobs:
 
       # This step forces Git to download dependencies using `https://` protocol,
       # even if `yarn.json` refers to some package via `git://`. Using `git://`
-      # is no longer supported by GH. One of the `tbtc-v2` dependencies by
+      # is no longer supported by GH. One of the `tmewc` dependencies by
       # default uses `git://` and we needed to manually remove it every time
       # it re-appeared in the lock file. Now even if it does re-appear, the
       # `yarn install --frozen-lockfile` will not fail.
@@ -263,7 +263,7 @@ jobs:
         run: |
           rm -rf ./node_modules/@keep-network/random-beacon/artifacts
           rm -rf ./node_modules/@keep-network/ecdsa/artifacts
-          rm -rf ./node_modules/@keep-network/tbtc/artifacts
+          rm -rf ./node_modules/@keep-network/tmewc/artifacts
 
       - name: Verify contracts on Etherscan
         env:
@@ -295,13 +295,13 @@ jobs:
           cache-dependency-path: solidity/yarn.lock
           registry-url: "https://registry.npmjs.org"
 
-      # We need this step because the `@keep-network/tbtc` which we update in
+      # We need this step because the `@keep-network/tmewc` which we update in
       # next steps has a dependency to `@summa-tx/relay-sol@2.0.2` package, which
       # downloads one of its sub-dependencies via unathenticated `git://`
       # protocol. That protocol is no longer supported. Thanks to this step
       # `https://` is used instead of `git://`. This step also prevents the
       # error during `yarn install --frozen-lockfile` step in case `git://` gets
-      # introduced to tbtc-v2's `yarn.lock`.
+      # introduced to tmewc's `yarn.lock`.
       - name: Configure git to don't use unauthenticated protocol
         run: git config --global url."https://".insteadOf git://
 
@@ -322,7 +322,7 @@ jobs:
           yarn upgrade \
             @keep-network/random-beacon@${{ steps.upstream-builds-query.outputs.random-beacon-contracts-version }} \
             @keep-network/ecdsa@${{ steps.upstream-builds-query.outputs.ecdsa-contracts-version }} \
-            @keep-network/tbtc@${{ github.event.inputs.environment }}
+            @keep-network/tmewc@${{ github.event.inputs.environment }}
 
       - name: Deploy contracts
         env:
@@ -370,7 +370,7 @@ jobs:
           cd ..
           yarn install --frozen-lockfile
 
-      # We need this step because the `@keep-network/tbtc` which we update in
+      # We need this step because the `@keep-network/tmewc` which we update in
       # next steps has a dependency to `@summa-tx/relay-sol@2.0.2` package, which
       # downloads one of its sub-dependencies via unathenticated `git://`
       # protocol. That protocol is no longer supported. Thanks to this step
@@ -422,7 +422,7 @@ jobs:
           SLITHER_VERSION: 0.9.0
         run: pip3 install slither-analyzer==$SLITHER_VERSION
 
-      # We need this step because the `@keep-network/tbtc` which we update in
+      # We need this step because the `@keep-network/tmewc` which we update in
       # next steps has a dependency to `@summa-tx/relay-sol@2.0.2` package, which
       # downloads one of its sub-dependencies via unathenticated `git://`
       # protocol. That protocol is no longer supported. Thanks to this step

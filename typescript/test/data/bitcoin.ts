@@ -1,7 +1,7 @@
 import { BitcoinNetwork } from "../../src"
 import { Hex } from "../../src"
 
-export const btcAddresses: Record<
+export const mewcAddresses: Record<
   Exclude<BitcoinNetwork, BitcoinNetwork.Unknown>,
   {
     [addressType: string]: {
@@ -71,7 +71,7 @@ export const btcAddresses: Record<
   },
 }
 
-export const btcAddressFromPublicKey: Record<
+export const mewcAddressFromPublicKey: Record<
   Exclude<BitcoinNetwork, BitcoinNetwork.Unknown>,
   Record<string, { publicKey: Hex; address: string }>
 > = {

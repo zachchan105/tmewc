@@ -5,9 +5,9 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { ethers, getNamedAccounts, helpers } = hre
   const { deployer } = await getNamedAccounts()
 
-  await helpers.upgrades.deployProxy("PolygonTBTC", {
-    contractName: "@keep-network/tbtc-v2/contracts/l2/L2TBTC.sol:L2TBTC",
-    initializerArgs: ["Polygon tBTC v2", "tBTC"],
+  await helpers.upgrades.deployProxy("PolygonTMEWC", {
+    contractName: "@keep-network/tmewc/contracts/l2/L2TMEWC.sol:L2TMEWC",
+    initializerArgs: ["Polygon tMEWC", "tMEWC"],
     factoryOpts: { signer: await ethers.getSigner(deployer) },
     proxyOpts: {
       kind: "transparent",
@@ -17,4 +17,4 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
 export default func
 
-func.tags = ["PolygonTBTC"]
+func.tags = ["PolygonTMEWC"]

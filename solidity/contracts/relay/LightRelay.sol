@@ -17,15 +17,15 @@ pragma solidity 0.8.17;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-import {BytesLib} from "@keep-network/bitcoin-spv-sol/contracts/BytesLib.sol";
-import {BTCUtils} from "@keep-network/bitcoin-spv-sol/contracts/BTCUtils.sol";
-import {ValidateSPV} from "@keep-network/bitcoin-spv-sol/contracts/ValidateSPV.sol";
+import {BytesLib} from "@keep-network/meowcoin-spv-sol/contracts/BytesLib.sol";
+import {MEWCUtils} from "@keep-network/meowcoin-spv-sol/contracts/MEWCUtils.sol";
+import {ValidateSPV} from "@keep-network/meowcoin-spv-sol/contracts/ValidateSPV.sol";
 
 import "../bridge/IRelay.sol";
 
 struct Epoch {
     uint32 timestamp;
-    // By definition, bitcoin targets have at least 32 leading zero bits.
+    // By definition, meowcoin targets have at least 32 leading zero bits.
     // Thus we can only store the bits that aren't guaranteed to be 0.
     uint224 target;
 }
@@ -75,14 +75,14 @@ library RelayUtils {
         pure
         returns (uint32)
     {
-        return BTCUtils.reverseUint32(uint32(headers.slice4(68 + at)));
+        return MEWCUtils.reverseUint32(uint32(headers.slice4(68 + at)));
     }
 }
 
 /// @dev THE RELAY MUST NOT BE USED BEFORE GENESIS AND AT LEAST ONE RETARGET.
 contract LightRelay is Ownable, ILightRelay {
     using BytesLib for bytes;
-    using BTCUtils for bytes;
+    using MEWCUtils for bytes;
     using ValidateSPV for bytes;
     using RelayUtils for bytes;
 
@@ -156,7 +156,7 @@ contract LightRelay is Ownable, ILightRelay {
             uint224(genesisTarget)
         );
         proofLength = genesisProofLength;
-        currentEpochDifficulty = BTCUtils.calculateDifficulty(genesisTarget);
+        currentEpochDifficulty = MEWCUtils.calculateDifficulty(genesisTarget);
         ready = true;
 
         emit Genesis(genesisHeight);
@@ -272,7 +272,7 @@ contract LightRelay is Ownable, ILightRelay {
         );
 
         // Expected target is the full-length target
-        uint256 expectedTarget = BTCUtils.retargetAlgorithm(
+        uint256 expectedTarget = MEWCUtils.retargetAlgorithm(
             oldTarget,
             latest.timestamp,
             epochEndTimestamp
@@ -297,15 +297,15 @@ contract LightRelay is Ownable, ILightRelay {
                 minedTarget = _currentHeaderTarget;
                 require(
                     // Although the target is a 256-bit number, there are only 32 bits of
-                    // space in the Bitcoin header. Because of that, the version stored in
+                    // space in the Meowcoin header. Because of that, the version stored in
                     // the header is a less-precise representation of the actual target
                     // using base-256 version of scientific notation.
                     //
-                    // The 256-bit unsigned integer returned from BTCUtils.retargetAlgorithm
+                    // The 256-bit unsigned integer returned from MEWCUtils.retargetAlgorithm
                     // is the precise target value.
                     // The 256-bit unsigned integer returned from validateHeader is the less
                     // precise target value because it was read from 32 bits of space of
-                    // Bitcoin block header.
+                    // Meowcoin block header.
                     //
                     // We can't compare the precise and less precise representations together
                     // so we first mask them to obtain the less precise version:
@@ -333,7 +333,7 @@ contract LightRelay is Ownable, ILightRelay {
         );
 
         uint256 oldDifficulty = currentEpochDifficulty;
-        uint256 newDifficulty = BTCUtils.calculateDifficulty(minedTarget);
+        uint256 newDifficulty = MEWCUtils.calculateDifficulty(minedTarget);
 
         prevEpochDifficulty = oldDifficulty;
         currentEpochDifficulty = newDifficulty;
@@ -344,7 +344,7 @@ contract LightRelay is Ownable, ILightRelay {
     /// @notice Check whether a given chain of headers should be accepted as
     /// valid within the rules of the relay.
     /// If the validation fails, this function throws an exception.
-    /// @param headers A chain of 2 to 2015 bitcoin headers.
+    /// @param headers A chain of 2 to 2015 meowcoin headers.
     /// @return startingHeaderTimestamp The timestamp of the first header.
     /// @return headerCount The number of headers.
     /// @dev A chain of headers is accepted as valid if:
@@ -403,7 +403,7 @@ contract LightRelay is Ownable, ILightRelay {
         // Find the correct epoch for the given chain
         // Fastest with recent epochs, but able to handle anything after genesis
         //
-        // The rules for bitcoin timestamps are:
+        // The rules for meowcoin timestamps are:
         // - must be greater than the median of the last 11 blocks' timestamps
         // - must be less than the network-adjusted time +2 hours
         //
@@ -575,7 +575,7 @@ contract LightRelay is Ownable, ILightRelay {
             epochNumber <= currentEpoch,
             "Epoch is not proven to the relay yet"
         );
-        return BTCUtils.calculateDifficulty(epochs[epochNumber].target);
+        return MEWCUtils.calculateDifficulty(epochs[epochNumber].target);
     }
 
     /// @notice Check that the specified header forms a correct chain with the

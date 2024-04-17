@@ -6,19 +6,19 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deployer } = await getNamedAccounts()
 
   const PolygonTokenBridge = await deployments.get("PolygonTokenBridge")
-  const PolygonWormholeTBTC = await deployments.get("PolygonWormholeTBTC")
-  const PolygonTBTC = await deployments.get("PolygonTBTC")
+  const PolygonWormholeTMEWC = await deployments.get("PolygonWormholeTMEWC")
+  const PolygonTMEWC = await deployments.get("PolygonTMEWC")
 
   await helpers.upgrades.upgradeProxy(
     "PolygonWormholeGateway",
     "PolygonWormholeGateway",
     {
       contractName:
-        "@keep-network/tbtc-v2/contracts/l2/L2WormholeGateway.sol:L2WormholeGateway",
+        "@keep-network/tmewc/contracts/l2/L2WormholeGateway.sol:L2WormholeGateway",
       initializerArgs: [
         PolygonTokenBridge.address,
-        PolygonWormholeTBTC.address,
-        PolygonTBTC.address,
+        PolygonWormholeTMEWC.address,
+        PolygonTMEWC.address,
       ],
       factoryOpts: { signer: await ethers.getSigner(deployer) },
       proxyOpts: {

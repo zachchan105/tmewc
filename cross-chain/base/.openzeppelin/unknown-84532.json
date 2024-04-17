@@ -195,32 +195,32 @@
             "offset": 0,
             "slot": "354",
             "type": "t_mapping(t_address,t_bool)",
-            "contract": "L2TBTC",
-            "src": "@keep-network/tbtc-v2/contracts/l2/L2TBTC.sol:76"
+            "contract": "L2TMEWC",
+            "src": "@keep-network/tmewc/contracts/l2/L2TMEWC.sol:76"
           },
           {
             "label": "minters",
             "offset": 0,
             "slot": "355",
             "type": "t_array(t_address)dyn_storage",
-            "contract": "L2TBTC",
-            "src": "@keep-network/tbtc-v2/contracts/l2/L2TBTC.sol:77"
+            "contract": "L2TMEWC",
+            "src": "@keep-network/tmewc/contracts/l2/L2TMEWC.sol:77"
           },
           {
             "label": "isGuardian",
             "offset": 0,
             "slot": "356",
             "type": "t_mapping(t_address,t_bool)",
-            "contract": "L2TBTC",
-            "src": "@keep-network/tbtc-v2/contracts/l2/L2TBTC.sol:85"
+            "contract": "L2TMEWC",
+            "src": "@keep-network/tmewc/contracts/l2/L2TMEWC.sol:85"
           },
           {
             "label": "guardians",
             "offset": 0,
             "slot": "357",
             "type": "t_array(t_address)dyn_storage",
-            "contract": "L2TBTC",
-            "src": "@keep-network/tbtc-v2/contracts/l2/L2TBTC.sol:89"
+            "contract": "L2TMEWC",
+            "src": "@keep-network/tmewc/contracts/l2/L2TMEWC.sol:89"
           }
         ],
         "types": {
@@ -364,7 +364,7 @@
             "slot": "151",
             "type": "t_contract(IWormholeTokenBridge)518",
             "contract": "L2WormholeGateway",
-            "src": "@keep-network/tbtc-v2/contracts/l2/L2WormholeGateway.sol:122"
+            "src": "@keep-network/tmewc/contracts/l2/L2WormholeGateway.sol:122"
           },
           {
             "label": "bridgeToken",
@@ -372,15 +372,15 @@
             "slot": "152",
             "type": "t_contract(IERC20Upgradeable)2208",
             "contract": "L2WormholeGateway",
-            "src": "@keep-network/tbtc-v2/contracts/l2/L2WormholeGateway.sol:123"
+            "src": "@keep-network/tmewc/contracts/l2/L2WormholeGateway.sol:123"
           },
           {
-            "label": "tbtc",
+            "label": "tmewc",
             "offset": 0,
             "slot": "153",
-            "type": "t_contract(L2TBTC)443",
+            "type": "t_contract(L2TMEWC)443",
             "contract": "L2WormholeGateway",
-            "src": "@keep-network/tbtc-v2/contracts/l2/L2WormholeGateway.sol:124"
+            "src": "@keep-network/tmewc/contracts/l2/L2WormholeGateway.sol:124"
           },
           {
             "label": "gateways",
@@ -388,7 +388,7 @@
             "slot": "154",
             "type": "t_mapping(t_uint16,t_bytes32)",
             "contract": "L2WormholeGateway",
-            "src": "@keep-network/tbtc-v2/contracts/l2/L2WormholeGateway.sol:136"
+            "src": "@keep-network/tmewc/contracts/l2/L2WormholeGateway.sol:136"
           },
           {
             "label": "mintingLimit",
@@ -396,7 +396,7 @@
             "slot": "155",
             "type": "t_uint256",
             "contract": "L2WormholeGateway",
-            "src": "@keep-network/tbtc-v2/contracts/l2/L2WormholeGateway.sol:147"
+            "src": "@keep-network/tmewc/contracts/l2/L2WormholeGateway.sol:147"
           },
           {
             "label": "mintedAmount",
@@ -404,7 +404,7 @@
             "slot": "156",
             "type": "t_uint256",
             "contract": "L2WormholeGateway",
-            "src": "@keep-network/tbtc-v2/contracts/l2/L2WormholeGateway.sol:151"
+            "src": "@keep-network/tmewc/contracts/l2/L2WormholeGateway.sol:151"
           }
         ],
         "types": {
@@ -436,8 +436,8 @@
             "label": "contract IWormholeTokenBridge",
             "numberOfBytes": "20"
           },
-          "t_contract(L2TBTC)443": {
-            "label": "contract L2TBTC",
+          "t_contract(L2TMEWC)443": {
+            "label": "contract L2TMEWC",
             "numberOfBytes": "20"
           },
           "t_mapping(t_uint16,t_bytes32)": {
@@ -512,7 +512,7 @@
             "slot": "101",
             "type": "t_contract(IWormholeRelayer)338",
             "contract": "L2BitcoinDepositor",
-            "src": "@keep-network/tbtc-v2/contracts/l2/L2BitcoinDepositor.sol:54"
+            "src": "@keep-network/tmewc/contracts/l2/L2BitcoinDepositor.sol:54"
           },
           {
             "label": "l2WormholeGateway",
@@ -520,7 +520,7 @@
             "slot": "102",
             "type": "t_contract(IL2WormholeGateway)88",
             "contract": "L2BitcoinDepositor",
-            "src": "@keep-network/tbtc-v2/contracts/l2/L2BitcoinDepositor.sol:58"
+            "src": "@keep-network/tmewc/contracts/l2/L2BitcoinDepositor.sol:58"
           },
           {
             "label": "l1ChainId",
@@ -528,7 +528,7 @@
             "slot": "102",
             "type": "t_uint16",
             "contract": "L2BitcoinDepositor",
-            "src": "@keep-network/tbtc-v2/contracts/l2/L2BitcoinDepositor.sol:64"
+            "src": "@keep-network/tmewc/contracts/l2/L2BitcoinDepositor.sol:64"
           },
           {
             "label": "l1BitcoinDepositor",
@@ -536,7 +536,7 @@
             "slot": "103",
             "type": "t_address",
             "contract": "L2BitcoinDepositor",
-            "src": "@keep-network/tbtc-v2/contracts/l2/L2BitcoinDepositor.sol:67"
+            "src": "@keep-network/tmewc/contracts/l2/L2BitcoinDepositor.sol:67"
           }
         ],
         "types": {

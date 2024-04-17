@@ -1,4 +1,4 @@
-use crate::{error::TbtcError, state::Config};
+use crate::{error::TmewcError, state::Config};
 use anchor_lang::prelude::*;
 
 #[derive(Accounts)]
@@ -8,8 +8,8 @@ pub struct CancelAuthorityChange<'info> {
         mut,
         seeds = [Config::SEED_PREFIX],
         bump,
-        has_one = authority @ TbtcError::IsNotAuthority,
-        constraint = config.pending_authority.is_some() @ TbtcError::NoPendingAuthorityChange
+        has_one = authority @ TmewcError::IsNotAuthority,
+        constraint = config.pending_authority.is_some() @ TmewcError::NoPendingAuthorityChange
     )]
     config: Account<'info, Config>,
 

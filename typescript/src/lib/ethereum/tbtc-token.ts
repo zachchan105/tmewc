@@ -1,7 +1,7 @@
-import { TBTC as TBTCTypechain } from "../../../typechain/TBTC"
-import { ChainIdentifier, Chains, TBTCToken } from "../contracts"
+import { TMEWC as TMEWCTypechain } from "../../../typechain/TMEWC"
+import { ChainIdentifier, Chains, TMEWCToken } from "../contracts"
 import { BigNumber, ContractTransaction, utils } from "ethers"
-import { BitcoinHashUtils, BitcoinUtxo } from "../bitcoin"
+import { BitcoinHashUtils, BitcoinUtxo } from "../meowcoin"
 import { Hex } from "../utils"
 import {
   EthersContractConfig,
@@ -11,17 +11,17 @@ import {
 } from "./adapter"
 import { EthereumAddress } from "./address"
 
-import MainnetTBTCTokenDeployment from "./artifacts/mainnet/TBTC.json"
-import SepoliaTBTCTokenDeployment from "./artifacts/sepolia/TBTC.json"
-import LocalTBTCTokenDeployment from "@keep-network/tbtc-v2/artifacts/TBTC.json"
+import MainnetTMEWCTokenDeployment from "./artifacts/mainnet/TMEWC.json"
+import SepoliaTMEWCTokenDeployment from "./artifacts/sepolia/TMEWC.json"
+import LocalTMEWCTokenDeployment from "@keep-network/tmewc/artifacts/TMEWC.json"
 
 /**
- * Implementation of the Ethereum TBTC v2 token handle.
- * @see {TBTCToken} for reference.
+ * Implementation of the Ethereum TMEWC token handle.
+ * @see {TMEWCToken} for reference.
  */
-export class EthereumTBTCToken
-  extends EthersContractHandle<TBTCTypechain>
-  implements TBTCToken
+export class EthereumTMEWCToken
+  extends EthersContractHandle<TMEWCTypechain>
+  implements TMEWCToken
 {
   constructor(
     config: EthersContractConfig,
@@ -31,13 +31,13 @@ export class EthereumTBTCToken
 
     switch (chainId) {
       case Chains.Ethereum.Local:
-        deployment = LocalTBTCTokenDeployment
+        deployment = LocalTMEWCTokenDeployment
         break
       case Chains.Ethereum.Sepolia:
-        deployment = SepoliaTBTCTokenDeployment
+        deployment = SepoliaTMEWCTokenDeployment
         break
       case Chains.Ethereum.Mainnet:
-        deployment = MainnetTBTCTokenDeployment
+        deployment = MainnetTMEWCTokenDeployment
         break
       default:
         throw new Error("Unsupported deployment type")
@@ -48,7 +48,7 @@ export class EthereumTBTCToken
 
   // eslint-disable-next-line valid-jsdoc
   /**
-   * @see {TBTCToken#getChainIdentifier}
+   * @see {TMEWCToken#getChainIdentifier}
    */
   getChainIdentifier(): ChainIdentifier {
     return EthereumAddress.from(this._instance.address)
@@ -56,7 +56,7 @@ export class EthereumTBTCToken
 
   // eslint-disable-next-line valid-jsdoc
   /**
-   * @see {TBTCToken#totalSupply}
+   * @see {TMEWCToken#totalSupply}
    */
   async totalSupply(blockNumber?: number): Promise<BigNumber> {
     return this._instance.totalSupply({
@@ -66,7 +66,7 @@ export class EthereumTBTCToken
 
   // eslint-disable-next-line valid-jsdoc
   /**
-   * @see {TBTCToken#requestRedemption}
+   * @see {TMEWCToken#requestRedemption}
    */
   async requestRedemption(
     walletPublicKey: Hex,
@@ -141,7 +141,7 @@ export class EthereumTBTCToken
       BitcoinHashUtils.computeHash160(walletPublicKey).toPrefixedString()
 
     const mainUtxoParam = {
-      // The Ethereum Bridge expects this hash to be in the Bitcoin internal
+      // The Ethereum Bridge expects this hash to be in the Meowcoin internal
       // byte order.
       txHash: mainUtxo.transactionHash.reverse().toPrefixedString(),
       txOutputIndex: mainUtxo.outputIndex,

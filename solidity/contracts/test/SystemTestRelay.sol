@@ -2,14 +2,14 @@
 
 pragma solidity 0.8.17;
 
-import {BTCUtils} from "@keep-network/bitcoin-spv-sol/contracts/BTCUtils.sol";
+import {MEWCUtils} from "@keep-network/meowcoin-spv-sol/contracts/MEWCUtils.sol";
 
 import "../bridge/Bridge.sol";
 
 /// @notice Used only for system tests.
 contract SystemTestRelay is IRelay {
-    using BTCUtils for bytes;
-    using BTCUtils for uint256;
+    using MEWCUtils for bytes;
+    using MEWCUtils for uint256;
 
     uint256 private currentEpochDifficulty;
     uint256 private prevEpochDifficulty;

@@ -121,7 +121,7 @@ describe("L2BitcoinDepositor", () => {
             l2BitcoinDepositor
               .connect(governance)
               .attachL1BitcoinDepositor(l1BitcoinDepositor)
-          ).to.be.revertedWith("L1 Bitcoin Depositor already set")
+          ).to.be.revertedWith("L1 Meowcoin Depositor already set")
         })
       })
 
@@ -132,7 +132,7 @@ describe("L2BitcoinDepositor", () => {
               l2BitcoinDepositor
                 .connect(governance)
                 .attachL1BitcoinDepositor(ethers.constants.AddressZero)
-            ).to.be.revertedWith("L1 Bitcoin Depositor must not be 0x0")
+            ).to.be.revertedWith("L1 Meowcoin Depositor must not be 0x0")
           })
         })
 
@@ -290,7 +290,7 @@ describe("L2BitcoinDepositor", () => {
                   ethers.constants.HashZero
                 )
             ).to.be.revertedWith(
-              "Source address is not the expected L1 Bitcoin depositor"
+              "Source address is not the expected L1 Meowcoin depositor"
             )
           })
         })
@@ -318,7 +318,7 @@ describe("L2BitcoinDepositor", () => {
             before(async () => {
               await createSnapshot()
 
-              l2WormholeGateway.receiveTbtc.returns()
+              l2WormholeGateway.receiveTmewc.returns()
 
               await l2BitcoinDepositor
                 .connect(wormholeRelayerSigner)
@@ -332,13 +332,13 @@ describe("L2BitcoinDepositor", () => {
             })
 
             after(async () => {
-              l2WormholeGateway.receiveTbtc.reset()
+              l2WormholeGateway.receiveTmewc.reset()
 
               await restoreSnapshot()
             })
 
             it("should pass the VAA to the L2WormholeGateway", async () => {
-              expect(l2WormholeGateway.receiveTbtc).to.have.been.calledOnceWith(
+              expect(l2WormholeGateway.receiveTmewc).to.have.been.calledOnceWith(
                 "0x1234"
               )
             })

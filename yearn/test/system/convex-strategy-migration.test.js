@@ -4,7 +4,7 @@ const {
   impersonateAccount,
 } = require("../helpers/contract-test-helpers.js")
 const { BigNumber } = ethers
-const { yearn, tbtc, forkBlockNumber } = require("./constants.js")
+const { yearn, tmewc, forkBlockNumber } = require("./constants.js")
 const { allocateSynthetixRewards, deployYearnVault } = require("./functions.js")
 const { curveStrategyFixture } = require("./fixtures.js")
 
@@ -14,7 +14,7 @@ const describeFn =
 describeFn("System -- convex strategy migration", () => {
   let vaultGovernance
   let vaultDepositor
-  let tbtcCurvePoolLPToken
+  let tmewcCurvePoolLPToken
   let crvToken
   let cvxToken
   let vault
@@ -27,35 +27,35 @@ describeFn("System -- convex strategy migration", () => {
     // Setup roles.
     vaultGovernance = await ethers.getSigner(0)
     vaultDepositor = await impersonateAccount(
-      tbtc.curvePoolLPTokenHolderAddress,
+      tmewc.curvePoolLPTokenHolderAddress,
       vaultGovernance
     )
 
     // Allocate Synthetix rewards to obtain extra rewards (KEEP tokens)
     // from the Convex reward pool.
     await allocateSynthetixRewards(
-      tbtc,
+      tmewc,
       curveStrategyFixture.synthetixRewardsAllocation
     )
 
-    // Get tBTC v2 Curve pool LP token handle.
-    tbtcCurvePoolLPToken = await ethers.getContractAt(
+    // Get tMEWC Curve pool LP token handle.
+    tmewcCurvePoolLPToken = await ethers.getContractAt(
       "IERC20",
-      tbtc.curvePoolLPTokenAddress
+      tmewc.curvePoolLPTokenAddress
     )
 
     // Get CRV token handle.
-    crvToken = await ethers.getContractAt("IERC20", tbtc.crvTokenAddress)
+    crvToken = await ethers.getContractAt("IERC20", tmewc.crvTokenAddress)
 
     // Get CVX token handle.
-    cvxToken = await ethers.getContractAt("IERC20", tbtc.cvxTokenAddress)
+    cvxToken = await ethers.getContractAt("IERC20", tmewc.cvxTokenAddress)
 
-    // Deploy a new experimental vault accepting tBTC v2 Curve pool LP tokens.
+    // Deploy a new experimental vault accepting tMEWC Curve pool LP tokens.
     vault = await deployYearnVault(
       yearn,
       curveStrategyFixture.vaultName,
       curveStrategyFixture.vaultSymbol,
-      tbtcCurvePoolLPToken,
+      tmewcCurvePoolLPToken,
       vaultGovernance,
       curveStrategyFixture.vaultDepositLimit
     )
@@ -64,15 +64,15 @@ describeFn("System -- convex strategy migration", () => {
     const ConvexStrategy = await ethers.getContractFactory("ConvexStrategy")
     oldStrategy = await ConvexStrategy.deploy(
       vault.address,
-      tbtc.curvePoolDepositorAddress,
-      tbtc.convexRewardPoolId
+      tmewc.curvePoolDepositorAddress,
+      tmewc.convexRewardPoolId
     )
     await oldStrategy.deployed()
 
     newStrategy = await ConvexStrategy.deploy(
       vault.address,
-      tbtc.curvePoolDepositorAddress,
-      tbtc.convexRewardPoolId
+      tmewc.curvePoolDepositorAddress,
+      tmewc.convexRewardPoolId
     )
     await newStrategy.deployed()
 
@@ -86,7 +86,7 @@ describeFn("System -- convex strategy migration", () => {
     )
 
     // Deposit to the vault
-    await tbtcCurvePoolLPToken
+    await tmewcCurvePoolLPToken
       .connect(vaultDepositor)
       .approve(vault.address, curveStrategyFixture.vaultDepositAmount)
     await vault
@@ -106,7 +106,7 @@ describeFn("System -- convex strategy migration", () => {
 
     it("should return zero LP tokens and rewards for the new strategy", async () => {
       expect(
-        await tbtcCurvePoolLPToken.balanceOf(newStrategy.address)
+        await tmewcCurvePoolLPToken.balanceOf(newStrategy.address)
       ).to.be.equal(0)
       expect(await crvToken.balanceOf(newStrategy.address)).to.be.equal(0)
       expect(await cvxToken.balanceOf(newStrategy.address)).to.be.equal(0)
@@ -130,10 +130,10 @@ describeFn("System -- convex strategy migration", () => {
 
     it("should move LP tokens to the new strategy", async () => {
       expect(
-        await tbtcCurvePoolLPToken.balanceOf(oldStrategy.address)
+        await tmewcCurvePoolLPToken.balanceOf(oldStrategy.address)
       ).to.be.equal(0)
       expect(
-        await tbtcCurvePoolLPToken.balanceOf(newStrategy.address)
+        await tmewcCurvePoolLPToken.balanceOf(newStrategy.address)
       ).to.be.equal(curveStrategyFixture.vaultDepositAmount)
     })
 
@@ -161,11 +161,11 @@ describeFn("System -- convex strategy migration", () => {
     let amountWithdrawn
 
     before(async () => {
-      const initialBalance = await tbtcCurvePoolLPToken.balanceOf(
+      const initialBalance = await tmewcCurvePoolLPToken.balanceOf(
         vaultDepositor.address
       )
       await vault.connect(vaultDepositor).withdraw() // withdraw all shares
-      const currentBalance = await tbtcCurvePoolLPToken.balanceOf(
+      const currentBalance = await tmewcCurvePoolLPToken.balanceOf(
         vaultDepositor.address
       )
       amountWithdrawn = currentBalance.sub(initialBalance)

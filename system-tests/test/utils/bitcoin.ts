@@ -2,13 +2,13 @@
 // @ts-ignore
 import wifLib from "wif"
 import { ec as EllipticCurve } from "elliptic"
-import { assembleBitcoinSpvProof, Hex } from "@keep-network/tbtc-v2.ts"
+import { assembleBitcoinSpvProof, Hex } from "@keep-network/tmewc.ts"
 
-import type { BitcoinTxHash, BitcoinClient } from "@keep-network/tbtc-v2.ts"
+import type { BitcoinTxHash, BitcoinClient } from "@keep-network/tmewc.ts"
 import type { Contract } from "ethers"
 
 /**
- * Elliptic curve used by Bitcoin.
+ * Elliptic curve used by Meowcoin.
  */
 const secp256k1 = new EllipticCurve("secp256k1")
 /**
@@ -18,7 +18,7 @@ const secp256k1 = new EllipticCurve("secp256k1")
 const defaultTxProofDifficultyFactor = 6
 
 /**
- * Represents a Bitcoin key pair.
+ * Represents a Meowcoin key pair.
  */
 export interface KeyPair {
   /**
@@ -45,9 +45,9 @@ export interface KeyPair {
 }
 
 /**
- * Creates a Bitcoin key pair from a Bitcoin WIF.
+ * Creates a Meowcoin key pair from a Meowcoin WIF.
  * @param wif The WIF to create the key pair from.
- * @returns The Bitcoin key pair.
+ * @returns The Meowcoin key pair.
  */
 export function keyPairFromWif(wif: string): KeyPair {
   const { privateKey } = wifLib.decode(wif)
@@ -66,9 +66,9 @@ export function keyPairFromWif(wif: string): KeyPair {
 }
 
 /**
- * Waits until the given Bitcoin transaction will have the required number
+ * Waits until the given Meowcoin transaction will have the required number
  * of on-chain confirmations.
- * @param bitcoinClient Bitcoin client used to perform the check.
+ * @param bitcoinClient Meowcoin client used to perform the check.
  * @param transactionHash Hash of the checked transaction.
  * @param requiredConfirmations Required confirmations count.
  * @param sleep Check frequency in milliseconds.
@@ -117,7 +117,7 @@ export async function waitTransactionConfirmed(
  * the same as the header chain length required by SPV proof function exposed
  * by the bridge.
  * @param relay Relay contract instance.
- * @param bitcoinClient Bitcoin client used to perform the difficulty evaluation.
+ * @param bitcoinClient Meowcoin client used to perform the difficulty evaluation.
  * @param transactionHash Hash of the transaction the difficulty should be
  *        set for.
  * @param headerChainLength Length of the header chain used to determine the

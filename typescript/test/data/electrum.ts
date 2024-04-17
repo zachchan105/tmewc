@@ -9,7 +9,7 @@ import {
 import { BigNumber } from "ethers"
 
 /**
- * Bitcoin testnet address used for Electrum client tests.
+ * Meowcoin testnet address used for Electrum client tests.
  */
 export const testnetAddress: string =
   "tb1qfdru0xx39mw30ha5a2vw23reymmxgucujfnc7l"

@@ -4,7 +4,7 @@ import { expect } from "chai"
 import type { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers"
 
 import type {
-  PolygonTBTC,
+  PolygonTMEWC,
   PolygonWormholeGateway,
   PolygonWormholeGatewayUpgraded,
 } from "../typechain"
@@ -26,12 +26,12 @@ describe("PolygonWormholeGatewayUpgraded - Upgrade", async () => {
 
   describe("when a new contract is valid", () => {
     let polygonWormholeGatewayUpgraded: PolygonWormholeGatewayUpgraded
-    let PolygonTBTC: PolygonTBTC
+    let PolygonTMEWC: PolygonTMEWC
 
     before(async () => {
-      PolygonTBTC = (await helpers.contracts.getContract(
-        "PolygonTBTC"
-      )) as PolygonTBTC
+      PolygonTMEWC = (await helpers.contracts.getContract(
+        "PolygonTMEWC"
+      )) as PolygonTMEWC
 
       const [upgradedContract] = await helpers.upgrades.upgradeProxy(
         "PolygonWormholeGateway",
@@ -65,8 +65,8 @@ describe("PolygonWormholeGatewayUpgraded - Upgrade", async () => {
     })
 
     it("should not update already set variable", async () => {
-      expect(await polygonWormholeGatewayUpgraded.tbtc()).to.be.equal(
-        PolygonTBTC.address
+      expect(await polygonWormholeGatewayUpgraded.tmewc()).to.be.equal(
+        PolygonTMEWC.address
       )
     })
 

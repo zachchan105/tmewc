@@ -57,25 +57,25 @@ pub mod wormhole_gateway {
         processor::update_minting_limit(ctx, new_limit)
     }
 
-    pub fn receive_tbtc(ctx: Context<ReceiveTbtc>, message_hash: [u8; 32]) -> Result<()> {
-        processor::receive_tbtc(ctx, message_hash)
+    pub fn receive_tmewc(ctx: Context<ReceiveTmewc>, message_hash: [u8; 32]) -> Result<()> {
+        processor::receive_tmewc(ctx, message_hash)
     }
 
-    pub fn send_tbtc_gateway(
-        ctx: Context<SendTbtcGateway>,
-        args: SendTbtcGatewayArgs,
+    pub fn send_tmewc_gateway(
+        ctx: Context<SendTmewcGateway>,
+        args: SendTmewcGatewayArgs,
     ) -> Result<()> {
-        processor::send_tbtc_gateway(ctx, args)
+        processor::send_tmewc_gateway(ctx, args)
     }
 
-    pub fn send_tbtc_wrapped(
-        ctx: Context<SendTbtcWrapped>,
-        args: SendTbtcWrappedArgs,
+    pub fn send_tmewc_wrapped(
+        ctx: Context<SendTmewcWrapped>,
+        args: SendTmewcWrappedArgs,
     ) -> Result<()> {
-        processor::send_tbtc_wrapped(ctx, args)
+        processor::send_tmewc_wrapped(ctx, args)
     }
 
-    pub fn deposit_wormhole_tbtc(ctx: Context<DepositWormholeTbtc>, amount: u64) -> Result<()> {
-        processor::deposit_wormhole_tbtc(ctx, amount)
+    pub fn deposit_wormhole_tmewc(ctx: Context<DepositWormholeTmewc>, amount: u64) -> Result<()> {
+        processor::deposit_wormhole_tmewc(ctx, amount)
     }
 }

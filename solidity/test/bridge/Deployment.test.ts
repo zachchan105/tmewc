@@ -9,8 +9,8 @@ import type {
   Bridge,
   BridgeGovernance,
   Bank,
-  TBTCVault,
-  TBTC,
+  TMEWCVault,
+  TMEWC,
   MaintainerProxy,
   ReimbursementPool,
   WalletRegistry,
@@ -34,8 +34,8 @@ describe("Deployment", async () => {
   let bridgeProxy: TransparentUpgradeableProxy
   let proxyAdmin: ProxyAdmin
   let bank: Bank
-  let tbtcVault: TBTCVault
-  let tbtc: TBTC
+  let tmewcVault: TMEWCVault
+  let tmewc: TMEWC
   let maintainerProxy: MaintainerProxy
   let reimbursementPool: ReimbursementPool
   let walletRegistry: WalletRegistry
@@ -67,8 +67,8 @@ describe("Deployment", async () => {
     proxyAdmin = (await upgrades.admin.getInstance()) as ProxyAdmin
 
     bank = await helpers.contracts.getContract("Bank")
-    tbtcVault = await helpers.contracts.getContract("TBTCVault")
-    tbtc = await helpers.contracts.getContract("TBTC")
+    tmewcVault = await helpers.contracts.getContract("TMEWCVault")
+    tmewc = await helpers.contracts.getContract("TMEWC")
     maintainerProxy = await helpers.contracts.getContract("MaintainerProxy")
     reimbursementPool = await helpers.contracts.getContract("ReimbursementPool")
     walletRegistry = await helpers.contracts.getContract("WalletRegistry")
@@ -198,19 +198,19 @@ describe("Deployment", async () => {
     })
   })
 
-  describe("TBTCVault", () => {
+  describe("TMEWCVault", () => {
     it("should set Bank reference", async () => {
-      expect(await tbtcVault.bank(), "invalid Bank address").equal(bank.address)
+      expect(await tmewcVault.bank(), "invalid Bank address").equal(bank.address)
     })
 
-    it("should set TBTC reference", async () => {
-      expect(await tbtcVault.tbtcToken(), "invalid TBTC address").equal(
-        tbtc.address
+    it("should set TMEWC reference", async () => {
+      expect(await tmewcVault.tmewcToken(), "invalid TMEWC address").equal(
+        tmewc.address
       )
     })
 
-    it("should set TBTCVault owner", async () => {
-      expect(await tbtcVault.owner(), "invalid TBTCVault owner").equal(
+    it("should set TMEWCVault owner", async () => {
+      expect(await tmewcVault.owner(), "invalid TMEWCVault owner").equal(
         governance.address
       )
     })

@@ -2,7 +2,7 @@ import { ethers, waffle, helpers } from "hardhat"
 import { expect } from "chai"
 import type { BigNumber, Signer } from "ethers"
 import { constants } from "../fixtures"
-import type { TestERC20, TBTC, VendingMachine } from "../../typechain"
+import type { TestERC20, TMEWC, VendingMachine } from "../../typechain"
 
 import {
   to1e18,
@@ -16,8 +16,8 @@ const ZERO_ADDRESS = ethers.constants.AddressZero
 const { createSnapshot, restoreSnapshot } = helpers.snapshot
 
 describe("VendingMachine", () => {
-  let tbtcV1: TestERC20
-  let tbtcV2: TBTC
+  let tmewcV1: TestERC20
+  let tmewcV2: TMEWC
   let vendingMachine: VendingMachine
 
   let deployer: Signer
@@ -27,7 +27,7 @@ describe("VendingMachine", () => {
   let tokenHolder: Signer
   let thirdParty: Signer
 
-  const initialBalance = to1e18(5) // 5 TBTC v1
+  const initialBalance = to1e18(5) // 5 TMEWC v1
 
   before(async () => {
     let keepTechnicalWalletTeam: Signer
@@ -44,15 +44,15 @@ describe("VendingMachine", () => {
     ] = await helpers.signers.getUnnamedSigners()
 
     await waffle.loadFixture(bridgeFixture)
-    tbtcV1 = await helpers.contracts.getContract("TBTCToken")
-    tbtcV2 = await helpers.contracts.getContract("TBTC")
+    tmewcV1 = await helpers.contracts.getContract("TMEWCToken")
+    tmewcV2 = await helpers.contracts.getContract("TMEWC")
     vendingMachine = await helpers.contracts.getContract("VendingMachine")
 
-    // TBTC token ownership transfer is not performed in deployment scripts.
-    // Check TransferTBTCOwnership deployment step for more information.
-    await tbtcV2.connect(deployer).transferOwnership(vendingMachine.address)
+    // TMEWC token ownership transfer is not performed in deployment scripts.
+    // Check TransferTMEWCOwnership deployment step for more information.
+    await tmewcV2.connect(deployer).transferOwnership(vendingMachine.address)
 
-    await tbtcV1
+    await tmewcV1
       .connect(deployer)
       .mint(await tokenHolder.getAddress(), initialBalance)
 
@@ -67,7 +67,7 @@ describe("VendingMachine", () => {
         await vendingMachineUpgradeInitiator.getAddress()
       )
 
-    await tbtcV1
+    await tmewcV1
       .connect(tokenHolder)
       .approve(vendingMachine.address, initialBalance)
 
@@ -81,10 +81,10 @@ describe("VendingMachine", () => {
   })
 
   describe("mint", () => {
-    context("when TBTC v1 owner has not enough tokens", () => {
+    context("when TMEWC v1 owner has not enough tokens", () => {
       it("should revert", async () => {
         const amount = initialBalance.add(1)
-        await tbtcV1
+        await tmewcV1
           .connect(tokenHolder)
           .approve(vendingMachine.address, amount)
         await expect(
@@ -93,7 +93,7 @@ describe("VendingMachine", () => {
       })
     })
 
-    context("when TBTC v1 owner has enough tokens", () => {
+    context("when TMEWC v1 owner has enough tokens", () => {
       let tx
 
       context("when minting entire allowance", () => {
@@ -109,14 +109,14 @@ describe("VendingMachine", () => {
           await restoreSnapshot()
         })
 
-        it("should mint the same amount of TBTC v2", async () => {
+        it("should mint the same amount of TMEWC", async () => {
           expect(
-            await tbtcV2.balanceOf(await tokenHolder.getAddress())
+            await tmewcV2.balanceOf(await tokenHolder.getAddress())
           ).is.equal(amount)
         })
 
-        it("should transfer TBTC v1 tokens to the VendingMachine", async () => {
-          expect(await tbtcV1.balanceOf(vendingMachine.address)).is.equal(
+        it("should transfer TMEWC v1 tokens to the VendingMachine", async () => {
+          expect(await tmewcV1.balanceOf(vendingMachine.address)).is.equal(
             amount
           )
         })
@@ -141,14 +141,14 @@ describe("VendingMachine", () => {
           await restoreSnapshot()
         })
 
-        it("should mint the same amount of TBTC v2", async () => {
+        it("should mint the same amount of TMEWC", async () => {
           expect(
-            await tbtcV2.balanceOf(await tokenHolder.getAddress())
+            await tmewcV2.balanceOf(await tokenHolder.getAddress())
           ).is.equal(amount)
         })
 
-        it("should transfer TBTC v1 tokens to the VendingMachine", async () => {
-          expect(await tbtcV1.balanceOf(vendingMachine.address)).is.equal(
+        it("should transfer TMEWC v1 tokens to the VendingMachine", async () => {
+          expect(await tmewcV1.balanceOf(vendingMachine.address)).is.equal(
             amount
           )
         })
@@ -171,14 +171,14 @@ describe("VendingMachine", () => {
             .receiveApproval(
               await tokenHolder.getAddress(),
               initialBalance,
-              tbtcV1.address,
+              tmewcV1.address,
               []
             )
-        ).to.be.revertedWith("Only TBTC v1 caller allowed")
+        ).to.be.revertedWith("Only TMEWC v1 caller allowed")
       })
     })
 
-    context("when called not for TBTC v1 token", () => {
+    context("when called not for TMEWC v1 token", () => {
       it("should revert", async () => {
         await expect(
           vendingMachine
@@ -186,10 +186,10 @@ describe("VendingMachine", () => {
             .receiveApproval(
               await tokenHolder.getAddress(),
               initialBalance,
-              tbtcV2.address,
+              tmewcV2.address,
               []
             )
-        ).to.be.revertedWith("Token is not TBTC v1")
+        ).to.be.revertedWith("Token is not TMEWC v1")
       })
     })
 
@@ -200,7 +200,7 @@ describe("VendingMachine", () => {
       before(async () => {
         await createSnapshot()
 
-        tx = await tbtcV1
+        tx = await tmewcV1
           .connect(tokenHolder)
           .approveAndCall(vendingMachine.address, amount, [])
       })
@@ -209,14 +209,14 @@ describe("VendingMachine", () => {
         await restoreSnapshot()
       })
 
-      it("should mint TBTC v2 to the caller", async () => {
-        expect(await tbtcV2.balanceOf(await tokenHolder.getAddress())).is.equal(
+      it("should mint TMEWC to the caller", async () => {
+        expect(await tmewcV2.balanceOf(await tokenHolder.getAddress())).is.equal(
           amount
         )
       })
 
-      it("should transfer TBTC v1 tokens to the VendingMachine", async () => {
-        expect(await tbtcV1.balanceOf(vendingMachine.address)).is.equal(amount)
+      it("should transfer TMEWC v1 tokens to the VendingMachine", async () => {
+        expect(await tmewcV1.balanceOf(vendingMachine.address)).is.equal(amount)
       })
 
       it("should emit Minted event", async () => {
@@ -232,7 +232,7 @@ describe("VendingMachine", () => {
       await createSnapshot()
 
       await vendingMachine.connect(tokenHolder).mint(initialBalance)
-      await tbtcV2
+      await tmewcV2
         .connect(tokenHolder)
         .approve(vendingMachine.address, initialBalance)
     })
@@ -258,16 +258,16 @@ describe("VendingMachine", () => {
         await restoreSnapshot()
       })
 
-      context("when TBTC v2 owner has not enough tokens", () => {
+      context("when TMEWC owner has not enough tokens", () => {
         it("should revert", async () => {
           await expect(
             vendingMachine.connect(tokenHolder).unmint(initialBalance.add(1))
-          ).to.be.revertedWith("Amount + fee exceeds TBTC v2 balance")
+          ).to.be.revertedWith("Amount + fee exceeds TMEWC balance")
         })
       })
 
-      context("when TBTC v2 owner has enough tokens", () => {
-        context("when unminting entire TBTC v2 balance", () => {
+      context("when TMEWC owner has enough tokens", () => {
+        context("when unminting entire TMEWC balance", () => {
           const unmintAmount = initialBalance
           let v1StartBalance
           let v2StartBalance
@@ -276,10 +276,10 @@ describe("VendingMachine", () => {
           before(async () => {
             await createSnapshot()
 
-            v1StartBalance = await tbtcV1.balanceOf(
+            v1StartBalance = await tmewcV1.balanceOf(
               await tokenHolder.getAddress()
             )
-            v2StartBalance = await tbtcV2.balanceOf(
+            v2StartBalance = await tmewcV2.balanceOf(
               await tokenHolder.getAddress()
             )
             tx = await vendingMachine.connect(tokenHolder).unmint(unmintAmount)
@@ -289,22 +289,22 @@ describe("VendingMachine", () => {
             await restoreSnapshot()
           })
 
-          it("should transfer no TBTC v2 to the VendingMachine", async () => {
-            expect(await tbtcV2.balanceOf(vendingMachine.address)).to.equal(0)
+          it("should transfer no TMEWC to the VendingMachine", async () => {
+            expect(await tmewcV2.balanceOf(vendingMachine.address)).to.equal(0)
           })
 
-          it("should burn unminted TBTC v2 tokens", async () => {
+          it("should burn unminted TMEWC tokens", async () => {
             expect(
-              await tbtcV2.balanceOf(await tokenHolder.getAddress())
+              await tmewcV2.balanceOf(await tokenHolder.getAddress())
             ).to.equal(v2StartBalance.sub(unmintAmount))
-            expect(await tbtcV2.totalSupply()).to.equal(
+            expect(await tmewcV2.totalSupply()).to.equal(
               v2StartBalance.sub(unmintAmount)
             )
           })
 
-          it("should transfer unminted TBTC v1 tokens back to the owner", async () => {
+          it("should transfer unminted TMEWC v1 tokens back to the owner", async () => {
             expect(
-              await tbtcV1.balanceOf(await tokenHolder.getAddress())
+              await tmewcV1.balanceOf(await tokenHolder.getAddress())
             ).to.equal(v1StartBalance.add(unmintAmount))
           })
 
@@ -315,7 +315,7 @@ describe("VendingMachine", () => {
           })
         })
 
-        context("when unminting part of TBTC v2 balance", () => {
+        context("when unminting part of TMEWC balance", () => {
           const unmintAmount = to1e18(1)
           let v1StartBalance
           let v2StartBalance
@@ -324,10 +324,10 @@ describe("VendingMachine", () => {
           before(async () => {
             await createSnapshot()
 
-            v1StartBalance = await tbtcV1.balanceOf(
+            v1StartBalance = await tmewcV1.balanceOf(
               await tokenHolder.getAddress()
             )
-            v2StartBalance = await tbtcV2.balanceOf(
+            v2StartBalance = await tmewcV2.balanceOf(
               await tokenHolder.getAddress()
             )
             tx = await vendingMachine.connect(tokenHolder).unmint(unmintAmount)
@@ -337,22 +337,22 @@ describe("VendingMachine", () => {
             await restoreSnapshot()
           })
 
-          it("should transfer no TBTC v2 to the VendingMachine", async () => {
-            expect(await tbtcV2.balanceOf(vendingMachine.address)).to.equal(0)
+          it("should transfer no TMEWC to the VendingMachine", async () => {
+            expect(await tmewcV2.balanceOf(vendingMachine.address)).to.equal(0)
           })
 
-          it("should burn unminted TBTC v2 tokens", async () => {
+          it("should burn unminted TMEWC tokens", async () => {
             expect(
-              await tbtcV2.balanceOf(await tokenHolder.getAddress())
+              await tmewcV2.balanceOf(await tokenHolder.getAddress())
             ).to.equal(v2StartBalance.sub(unmintAmount))
-            expect(await tbtcV2.totalSupply()).to.equal(
+            expect(await tmewcV2.totalSupply()).to.equal(
               v2StartBalance.sub(unmintAmount)
             )
           })
 
-          it("should transfer unminted TBTC v1 tokens back to the owner", async () => {
+          it("should transfer unminted TMEWC v1 tokens back to the owner", async () => {
             expect(
-              await tbtcV1.balanceOf(await tokenHolder.getAddress())
+              await tmewcV1.balanceOf(await tokenHolder.getAddress())
             ).to.equal(v1StartBalance.add(unmintAmount))
           })
 
@@ -366,16 +366,16 @@ describe("VendingMachine", () => {
     })
 
     context("when unmint fee is non-zero", () => {
-      context("when TBTC v2 owner has not enough tokens", () => {
+      context("when TMEWC owner has not enough tokens", () => {
         it("should revert", async () => {
           await expect(
             vendingMachine.connect(tokenHolder).unmint(initialBalance.add(1))
-          ).to.be.revertedWith("Amount + fee exceeds TBTC v2 balance")
+          ).to.be.revertedWith("Amount + fee exceeds TMEWC balance")
         })
       })
 
-      context("when TBTC v2 owner has enough tokens", () => {
-        context("when unminting entire TBTC v2 balance", () => {
+      context("when TMEWC owner has enough tokens", () => {
+        context("when unminting entire TMEWC balance", () => {
           // 1e18 * balance / (1e18 + unmintFee)
           const unmintAmount = initialBalance
             .mul(to1e18(1))
@@ -389,10 +389,10 @@ describe("VendingMachine", () => {
           before(async () => {
             await createSnapshot()
 
-            v1StartBalance = await tbtcV1.balanceOf(
+            v1StartBalance = await tmewcV1.balanceOf(
               await tokenHolder.getAddress()
             )
-            v2StartBalance = await tbtcV2.balanceOf(
+            v2StartBalance = await tmewcV2.balanceOf(
               await tokenHolder.getAddress()
             )
             fee = await vendingMachine.unmintFeeFor(unmintAmount)
@@ -403,22 +403,22 @@ describe("VendingMachine", () => {
             await restoreSnapshot()
           })
 
-          it("should transfer TBTC v2 fee to the VendingMachine", async () => {
-            expect(await tbtcV2.balanceOf(vendingMachine.address)).to.equal(fee)
+          it("should transfer TMEWC fee to the VendingMachine", async () => {
+            expect(await tmewcV2.balanceOf(vendingMachine.address)).to.equal(fee)
           })
 
-          it("should burn unminted TBTC v2 tokens", async () => {
+          it("should burn unminted TMEWC tokens", async () => {
             expect(
-              await tbtcV2.balanceOf(await tokenHolder.getAddress())
+              await tmewcV2.balanceOf(await tokenHolder.getAddress())
             ).to.equal(v2StartBalance.sub(unmintAmount).sub(fee))
-            expect(await tbtcV2.totalSupply()).to.equal(
+            expect(await tmewcV2.totalSupply()).to.equal(
               v2StartBalance.sub(unmintAmount)
             )
           })
 
-          it("should transfer unminted TBTC v1 tokens back to the owner", async () => {
+          it("should transfer unminted TMEWC v1 tokens back to the owner", async () => {
             expect(
-              await tbtcV1.balanceOf(await tokenHolder.getAddress())
+              await tmewcV1.balanceOf(await tokenHolder.getAddress())
             ).to.equal(v1StartBalance.add(unmintAmount))
           })
 
@@ -429,7 +429,7 @@ describe("VendingMachine", () => {
           })
         })
 
-        context("when unminting part of TBTC v2 balance", () => {
+        context("when unminting part of TMEWC balance", () => {
           const unmintAmount = to1e18(1)
 
           let fee
@@ -440,10 +440,10 @@ describe("VendingMachine", () => {
           before(async () => {
             await createSnapshot()
 
-            v1StartBalance = await tbtcV1.balanceOf(
+            v1StartBalance = await tmewcV1.balanceOf(
               await tokenHolder.getAddress()
             )
-            v2StartBalance = await tbtcV2.balanceOf(
+            v2StartBalance = await tmewcV2.balanceOf(
               await tokenHolder.getAddress()
             )
             fee = await vendingMachine.unmintFeeFor(unmintAmount)
@@ -454,22 +454,22 @@ describe("VendingMachine", () => {
             await restoreSnapshot()
           })
 
-          it("should transfer TBTC v2 fee to the VendingMachine", async () => {
-            expect(await tbtcV2.balanceOf(vendingMachine.address)).to.equal(fee)
+          it("should transfer TMEWC fee to the VendingMachine", async () => {
+            expect(await tmewcV2.balanceOf(vendingMachine.address)).to.equal(fee)
           })
 
-          it("should burn unminted TBTC v2 tokens", async () => {
+          it("should burn unminted TMEWC tokens", async () => {
             expect(
-              await tbtcV2.balanceOf(await tokenHolder.getAddress())
+              await tmewcV2.balanceOf(await tokenHolder.getAddress())
             ).to.equal(v2StartBalance.sub(unmintAmount).sub(fee))
-            expect(await tbtcV2.totalSupply()).to.equal(
+            expect(await tmewcV2.totalSupply()).to.equal(
               v2StartBalance.sub(unmintAmount)
             )
           })
 
-          it("should transfer unminted TBTC v1 tokens back to the owner", async () => {
+          it("should transfer unminted TMEWC v1 tokens back to the owner", async () => {
             expect(
-              await tbtcV1.balanceOf(await tokenHolder.getAddress())
+              await tmewcV1.balanceOf(await tokenHolder.getAddress())
             ).to.equal(v1StartBalance.add(unmintAmount))
           })
 
@@ -491,7 +491,7 @@ describe("VendingMachine", () => {
       await createSnapshot()
 
       await vendingMachine.connect(tokenHolder).mint(initialBalance)
-      await tbtcV2
+      await tmewcV2
         .connect(tokenHolder)
         .approve(vendingMachine.address, initialBalance)
       unmintFee = await vendingMachine.unmintFeeFor(unmintAmount)
@@ -530,13 +530,13 @@ describe("VendingMachine", () => {
       })
 
       it("should withdraw the provided amount of fees", async () => {
-        expect(await tbtcV2.balanceOf(await thirdParty.getAddress())).is.equal(
+        expect(await tmewcV2.balanceOf(await thirdParty.getAddress())).is.equal(
           withdrawnFee
         )
       })
 
       it("should leave the rest of fees in VendingMachine", async () => {
-        expect(await tbtcV2.balanceOf(vendingMachine.address)).is.equal(
+        expect(await tmewcV2.balanceOf(vendingMachine.address)).is.equal(
           unmintFee.sub(withdrawnFee)
         )
       })
@@ -733,8 +733,8 @@ describe("VendingMachine", () => {
 
       const VendingMachine = await ethers.getContractFactory("VendingMachine")
       newVendingMachine = await VendingMachine.deploy(
-        tbtcV1.address,
-        tbtcV2.address,
+        tmewcV1.address,
+        tmewcV2.address,
         constants.unmintFee
       )
       await newVendingMachine.deployed()
@@ -791,7 +791,7 @@ describe("VendingMachine", () => {
         })
 
         it("should not transfer token ownership", async () => {
-          expect(await tbtcV2.owner()).is.equal(vendingMachine.address)
+          expect(await tmewcV2.owner()).is.equal(vendingMachine.address)
         })
 
         it("should start the upgrade initiation time", async () => {
@@ -865,7 +865,7 @@ describe("VendingMachine", () => {
       })
 
       context("when upgrade process is initialized", () => {
-        const tbtcV1Amount = to1e18(3)
+        const tmewcV1Amount = to1e18(3)
         let newVendingMachine
 
         before(async () => {
@@ -875,16 +875,16 @@ describe("VendingMachine", () => {
             "VendingMachine"
           )
           newVendingMachine = await VendingMachine.deploy(
-            tbtcV1.address,
-            tbtcV2.address,
+            tmewcV1.address,
+            tmewcV2.address,
             constants.unmintFee
           )
           await newVendingMachine.deployed()
 
-          await tbtcV1
+          await tmewcV1
             .connect(tokenHolder)
-            .approve(vendingMachine.address, tbtcV1Amount)
-          await vendingMachine.connect(tokenHolder).mint(tbtcV1Amount)
+            .approve(vendingMachine.address, tmewcV1Amount)
+          await vendingMachine.connect(tokenHolder).mint(tmewcV1Amount)
 
           await vendingMachine
             .connect(vendingMachineUpgradeInitiator)
@@ -923,12 +923,12 @@ describe("VendingMachine", () => {
           })
 
           it("should transfer token ownership to the new VendingMachine", async () => {
-            expect(await tbtcV2.owner()).to.equal(newVendingMachine.address)
+            expect(await tmewcV2.owner()).to.equal(newVendingMachine.address)
           })
 
-          it("should transfer all TBTC v1 to the new VendingMachine", async () => {
-            expect(await tbtcV1.balanceOf(newVendingMachine.address)).to.equal(
-              tbtcV1Amount
+          it("should transfer all TMEWC v1 to the new VendingMachine", async () => {
+            expect(await tmewcV1.balanceOf(newVendingMachine.address)).to.equal(
+              tmewcV1Amount
             )
           })
 

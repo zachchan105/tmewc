@@ -1,6 +1,6 @@
 import {
   ChainIdentifier,
-  L2TBTCToken,
+  L2TMEWCToken,
   L1BitcoinDepositor,
   L2BitcoinDepositor,
   CrossChainExtraDataEncoder,
@@ -10,7 +10,7 @@ import {
 } from "../../src"
 import { BigNumber } from "ethers"
 
-export class MockL2TBTCToken implements L2TBTCToken {
+export class MockL2TMEWCToken implements L2TMEWCToken {
   balanceOf(identifier: ChainIdentifier): Promise<BigNumber> {
     throw new Error("Not supported")
   }

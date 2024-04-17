@@ -1,58 +1,58 @@
 :toc: macro
 
-= TBTC v2
+= TMEWC
 
-https://github.com/keep-network/tbtc-v2/actions/workflows/contracts.yml[image:https://img.shields.io/github/actions/workflow/status/keep-network/tbtc-v2/contracts.yml?branch=main&event=push&label=Core%20contracts%20build[Core contracts build status]]
-https://github.com/keep-network/tbtc-v2/actions/workflows/typescript.yml[image:https://img.shields.io/github/actions/workflow/status/keep-network/tbtc-v2/typescript.yml?branch=main&event=push&label=SDK%20build[SDK build status]]
-https://github.com/keep-network/tbtc-v2/actions/workflows/yearn.yml[image:https://img.shields.io/github/actions/workflow/status/keep-network/tbtc-v2/yearn.yml?branch=main&vent=push&label=Yearn%20contracts%20build[Yearn contracts build status]]
-https://github.com/keep-network/tbtc-v2/actions/workflows/system-tests.yml[image:https://img.shields.io/github/actions/workflow/status/keep-network/tbtc-v2/system-tests.yml?branch=main&event=schedule&label=System%20tests[System tests status]]
-https://github.com/keep-network/tbtc-v2/actions/workflows/monitoring.yml[image:https://img.shields.io/github/actions/workflow/status/keep-network/tbtc-v2/monitoring.yml?branch=main&event=push&label=Monitoring%20build[Monitoring build status]]
+https://github.com/keep-network/tmewc/actions/workflows/contracts.yml[image:https://img.shields.io/github/actions/workflow/status/keep-network/tmewc/contracts.yml?branch=main&event=push&label=Core%20contracts%20build[Core contracts build status]]
+https://github.com/keep-network/tmewc/actions/workflows/typescript.yml[image:https://img.shields.io/github/actions/workflow/status/keep-network/tmewc/typescript.yml?branch=main&event=push&label=SDK%20build[SDK build status]]
+https://github.com/keep-network/tmewc/actions/workflows/yearn.yml[image:https://img.shields.io/github/actions/workflow/status/keep-network/tmewc/yearn.yml?branch=main&vent=push&label=Yearn%20contracts%20build[Yearn contracts build status]]
+https://github.com/keep-network/tmewc/actions/workflows/system-tests.yml[image:https://img.shields.io/github/actions/workflow/status/keep-network/tmewc/system-tests.yml?branch=main&event=schedule&label=System%20tests[System tests status]]
+https://github.com/keep-network/tmewc/actions/workflows/monitoring.yml[image:https://img.shields.io/github/actions/workflow/status/keep-network/tmewc/monitoring.yml?branch=main&event=push&label=Monitoring%20build[Monitoring build status]]
 
-https://docs.threshold.network/fundamentals/tbtc-v2[image:https://img.shields.io/badge/docs-website-green.svg[Docs]]
+https://docs.threshold.network/fundamentals/tmewc[image:https://img.shields.io/badge/docs-website-green.svg[Docs]]
 https://discord.gg/threshold[image:https://img.shields.io/badge/chat-Discord-5865f2.svg[Chat with us on Discord]]
 
-For many Bitcoin holders, one question remains: how can I move my assets across
-blockchains to make them more useful while maintaining Bitcoin's core values?
+For many Meowcoin holders, one question remains: how can I move my assets across
+blockchains to make them more useful while maintaining Meowcoin's core values?
 
-Existing solutions that bridge Bitcoin to Ethereum require users to send their
-Bitcoin to an intermediary in exchange for an Ethereum token that represents the
+Existing solutions that bridge Meowcoin to Ethereum require users to send their
+Meowcoin to an intermediary in exchange for an Ethereum token that represents the
 original asset. This centralized model requires you to trust a third party and
-is prone to censorship, threatening Bitcoin's promise of secure, permissionless
+is prone to censorship, threatening Meowcoin's promise of secure, permissionless
 decentralization.
 
-Threshold aims to solve this problem with TBTC v2.
+Threshold aims to solve this problem with TMEWC.
 
-The second generation of TBTC is a truly decentralized bridge between Bitcoin
-and Ethereum. It provides Bitcoin holders permissionless access to DeFi and the
+The second generation of TMEWC is a truly decentralized bridge between Meowcoin
+and Ethereum. It provides Meowcoin holders permissionless access to DeFi and the
 expanding web3 universe.
 
-TBTC v2 replaces centralized intermediaries with a randomly selected group of
+TMEWC replaces centralized intermediaries with a randomly selected group of
 node operators on the Threshold Network. This group of independent operators
-works together to secure your deposited Bitcoin through threshold cryptography.
-That means TBTC v2 requires a majority threshold agreement before operators
-perform any action with your Bitcoin. By rotating the selection of operators,
-TBTC v2 protects against any malicious individual or group of operators seizing
-control. Unlike other solutions on the market, users on TBTC v2 are reliant on
-math, not hardware or people. Additionally, TBTC v2 is open and accessible to
+works together to secure your deposited Meowcoin through threshold cryptography.
+That means TMEWC requires a majority threshold agreement before operators
+perform any action with your Meowcoin. By rotating the selection of operators,
+TMEWC protects against any malicious individual or group of operators seizing
+control. Unlike other solutions on the market, users on TMEWC are reliant on
+math, not hardware or people. Additionally, TMEWC is open and accessible to
 anyone.
   
-TBTC v2 allows anyone to use Bitcoin in the expanding DeFi and Web3 universe
+TMEWC allows anyone to use Meowcoin in the expanding DeFi and Web3 universe
 without a third-party intermediary.
 
 toc::[]
 
 == Overview
-tBTCv2 uses the
+tMEWC uses the
 link:https://github.com/keep-network/keep-core/tree/main/solidity/random-beacon[Random
 Beacon] and link:https://github.com/keep-network/sortition-pools[Sortition Pool]
 to generate governable-sized (starting at 51-of-100)
 link:https://eprint.iacr.org/2019/114.pdf[threshold ECDSA]
-Bitcoin wallets at a governable frequency (starting weekly). The youngest
+Meowcoin wallets at a governable frequency (starting weekly). The youngest
 wallet accepts new deposits, and the oldest wallet serves redemptions.
 
-Depositing Bitcoin into the tBTCv2 bridge grants a transferable Bank balance, which
-can be used to mint a supply-pegged ERC-20: TBTC. For an in-depth explanation
-about the design, see link:docs/rfc/rfc-1.adoc[RFC 1: tBTCv2 Design].
+Depositing Meowcoin into the tMEWC bridge grants a transferable Bank balance, which
+can be used to mint a supply-pegged ERC-20: TMEWC. For an in-depth explanation
+about the design, see link:docs/rfc/rfc-1.adoc[RFC 1: tMEWC Design].
 
 == Repository structure
 
@@ -78,4 +78,4 @@ learn more.
 == Security
 
 Please see link:SECURITY.adoc[SECURITY.adoc] to learn more about
-tBTC v2 security policy.
+tMEWC security policy.

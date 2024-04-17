@@ -8,9 +8,9 @@ pub struct Custodian {
     pub authority: Pubkey,
     pub pending_authority: Option<Pubkey>,
 
-    pub tbtc_mint: Pubkey,
-    pub wrapped_tbtc_mint: Pubkey,
-    pub wrapped_tbtc_token: Pubkey,
+    pub tmewc_mint: Pubkey,
+    pub wrapped_tmewc_mint: Pubkey,
+    pub wrapped_tmewc_token: Pubkey,
     pub token_bridge_sender: Pubkey,
     pub token_bridge_sender_bump: u8,
     pub minting_limit: u64,

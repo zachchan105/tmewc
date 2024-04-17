@@ -1,7 +1,7 @@
 # Interface: CrossChainContractsLoader
 
-Interface for loading TBTC cross-chain contracts for a specific L2 chain.
-It should be implemented for each supported L1 chain tBTC ledger is deployed
+Interface for loading TMEWC cross-chain contracts for a specific L2 chain.
+It should be implemented for each supported L1 chain tMEWC ledger is deployed
 on.
 
 ## Table of contents
@@ -29,7 +29,7 @@ Loads the chain mapping based on underlying L1 chain.
 
 #### Defined in
 
-[src/lib/contracts/cross-chain.ts:38](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/cross-chain.ts#L38)
+[src/lib/contracts/cross-chain.ts:38](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/cross-chain.ts#L38)
 
 ___
 
@@ -41,7 +41,7 @@ ___
 
 ▸ (`l2ChainName`): `Promise`\<[`L1CrossChainContracts`](../README.md#l1crosschaincontracts)\>
 
-Loads L1-specific TBTC cross-chain contracts for the given L2 chain.
+Loads L1-specific TMEWC cross-chain contracts for the given L2 chain.
 
 ##### Parameters
 
@@ -55,4 +55,4 @@ Loads L1-specific TBTC cross-chain contracts for the given L2 chain.
 
 #### Defined in
 
-[src/lib/contracts/cross-chain.ts:43](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/cross-chain.ts#L43)
+[src/lib/contracts/cross-chain.ts:43](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/cross-chain.ts#L43)

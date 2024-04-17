@@ -15,13 +15,13 @@ import {
   CORE_BRIDGE_DATA,
   CORE_BRIDGE_PROGRAM_ID,
   ETHEREUM_ENDPOINT,
-  TBTC_PROGRAM_ID,
+  TMEWC_PROGRAM_ID,
   TOKEN_BRIDGE_PROGRAM_ID,
   WORMHOLE_GATEWAY_PROGRAM_ID,
-  WRAPPED_TBTC_ASSET,
-  WRAPPED_TBTC_MINT,
+  WRAPPED_TMEWC_ASSET,
+  WRAPPED_TMEWC_MINT,
 } from "./consts";
-import * as tbtc from "./tbtc";
+import * as tmewc from "./tmewc";
 import { getTokenBridgeCoreEmitter, getTokenBridgeSequence } from "./utils";
 
 export function getCustodianPDA(): PublicKey {
@@ -49,7 +49,7 @@ export function getGatewayInfoPDA(targetChain: number): PublicKey {
   )[0];
 }
 
-export function getWrappedTbtcTokenPDA(): PublicKey {
+export function getWrappedTmewcTokenPDA(): PublicKey {
   return PublicKey.findProgramAddressSync(
     [Buffer.from("wrapped-token")],
     WORMHOLE_GATEWAY_PROGRAM_ID
@@ -241,108 +241,108 @@ export async function updateGatewayAddress(
     .instruction();
 }
 
-type DepositWormholeTbtcContext = {
+type DepositWormholeTmewcContext = {
   custodian?: PublicKey;
-  wrappedTbtcToken?: PublicKey;
-  wrappedTbtcMint?: PublicKey;
-  tbtcMint?: PublicKey;
+  wrappedTmewcToken?: PublicKey;
+  wrappedTmewcMint?: PublicKey;
+  tmewcMint?: PublicKey;
   recipientWrappedToken: PublicKey;
   recipientToken: PublicKey;
   recipient: PublicKey;
-  tbtcConfig?: PublicKey;
-  tbtcMinterInfo?: PublicKey;
-  tbtcProgram?: PublicKey;
+  tmewcConfig?: PublicKey;
+  tmewcMinterInfo?: PublicKey;
+  tmewcProgram?: PublicKey;
 };
 
-export async function depositWormholeTbtcIx(
-  accounts: DepositWormholeTbtcContext,
+export async function depositWormholeTmewcIx(
+  accounts: DepositWormholeTmewcContext,
   amount: bigint
 ): Promise<TransactionInstruction> {
   const program = workspace.WormholeGateway as Program<WormholeGateway>;
   let {
     custodian,
-    wrappedTbtcToken,
-    wrappedTbtcMint,
-    tbtcMint,
+    wrappedTmewcToken,
+    wrappedTmewcMint,
+    tmewcMint,
     recipientWrappedToken,
     recipientToken,
     recipient,
-    tbtcConfig,
-    tbtcMinterInfo,
-    tbtcProgram,
+    tmewcConfig,
+    tmewcMinterInfo,
+    tmewcProgram,
   } = accounts;
 
   if (custodian === undefined) {
     custodian = getCustodianPDA();
   }
 
-  if (wrappedTbtcToken === undefined) {
-    wrappedTbtcToken = getWrappedTbtcTokenPDA();
+  if (wrappedTmewcToken === undefined) {
+    wrappedTmewcToken = getWrappedTmewcTokenPDA();
   }
 
-  if (wrappedTbtcMint === undefined) {
-    wrappedTbtcMint = WRAPPED_TBTC_MINT;
+  if (wrappedTmewcMint === undefined) {
+    wrappedTmewcMint = WRAPPED_TMEWC_MINT;
   }
 
-  if (tbtcMint === undefined) {
-    tbtcMint = tbtc.getMintPDA();
+  if (tmewcMint === undefined) {
+    tmewcMint = tmewc.getMintPDA();
   }
 
-  if (tbtcConfig === undefined) {
-    tbtcConfig = tbtc.getConfigPDA();
+  if (tmewcConfig === undefined) {
+    tmewcConfig = tmewc.getConfigPDA();
   }
 
-  if (tbtcMinterInfo === undefined) {
-    tbtcMinterInfo = tbtc.getMinterInfoPDA(custodian);
+  if (tmewcMinterInfo === undefined) {
+    tmewcMinterInfo = tmewc.getMinterInfoPDA(custodian);
   }
 
-  if (tbtcProgram === undefined) {
-    tbtcProgram = TBTC_PROGRAM_ID;
+  if (tmewcProgram === undefined) {
+    tmewcProgram = TMEWC_PROGRAM_ID;
   }
 
   return program.methods
-    .depositWormholeTbtc(new BN(amount.toString()))
+    .depositWormholeTmewc(new BN(amount.toString()))
     .accounts({
       custodian,
-      wrappedTbtcToken,
-      wrappedTbtcMint,
-      tbtcMint,
+      wrappedTmewcToken,
+      wrappedTmewcMint,
+      tmewcMint,
       recipientWrappedToken,
       recipientToken,
       recipient,
-      tbtcConfig,
-      tbtcMinterInfo,
-      tbtcProgram,
+      tmewcConfig,
+      tmewcMinterInfo,
+      tmewcProgram,
     })
     .instruction();
 }
 
-type ReceiveTbtcContext = {
+type ReceiveTmewcContext = {
   payer: PublicKey;
   custodian?: PublicKey;
   postedVaa?: PublicKey;
   tokenBridgeClaim?: PublicKey;
-  wrappedTbtcToken?: PublicKey;
-  wrappedTbtcMint?: PublicKey;
-  tbtcMint?: PublicKey;
+  wrappedTmewcToken?: PublicKey;
+  wrappedTmewcMint?: PublicKey;
+  tmewcMint?: PublicKey;
   recipientToken: PublicKey;
   recipient: PublicKey;
   recipientWrappedToken?: PublicKey;
-  tbtcConfig?: PublicKey;
-  tbtcMinterInfo?: PublicKey;
+  tmewcConfig?: PublicKey;
+  tmewcMinterInfo?: PublicKey;
   tokenBridgeConfig?: PublicKey;
   tokenBridgeRegisteredEmitter?: PublicKey;
   //tokenBridgeRedeemer?: PublicKey;
   tokenBridgeWrappedAsset?: PublicKey;
   tokenBridgeMintAuthority?: PublicKey;
   rent?: PublicKey;
-  tbtcProgram?: PublicKey;
+  tmewcProgram?: PublicKey;
   tokenBridgeProgram?: PublicKey;
   coreBridgeProgram?: PublicKey;
 };
 
-export async function receiveTbtcIx(
-  accounts: ReceiveTbtcContext,
+export async function receiveTmewcIx(
+  accounts: ReceiveTmewcContext,
   signedVaa: Buffer
 ): Promise<TransactionInstruction> {
   const parsed = parseVaa(signedVaa);
@@ -353,21 +353,21 @@ export async function receiveTbtcIx(
     custodian,
     postedVaa,
     tokenBridgeClaim,
-    wrappedTbtcToken,
-    wrappedTbtcMint,
-    tbtcMint,
+    wrappedTmewcToken,
+    wrappedTmewcMint,
+    tmewcMint,
     recipientToken,
     recipient,
     recipientWrappedToken,
-    tbtcConfig,
-    tbtcMinterInfo,
+    tmewcConfig,
+    tmewcMinterInfo,
     tokenBridgeConfig,
     tokenBridgeRegisteredEmitter,
     //tokenBridgeRedeemer,
     tokenBridgeWrappedAsset,
     tokenBridgeMintAuthority,
     rent,
-    tbtcProgram,
+    tmewcProgram,
     tokenBridgeProgram,
     coreBridgeProgram,
   } = accounts;
@@ -392,31 +392,31 @@ export async function receiveTbtcIx(
     );
   }
 
-  if (wrappedTbtcToken === undefined) {
-    wrappedTbtcToken = getWrappedTbtcTokenPDA();
+  if (wrappedTmewcToken === undefined) {
+    wrappedTmewcToken = getWrappedTmewcTokenPDA();
   }
 
-  if (wrappedTbtcMint === undefined) {
-    wrappedTbtcMint = WRAPPED_TBTC_MINT;
+  if (wrappedTmewcMint === undefined) {
+    wrappedTmewcMint = WRAPPED_TMEWC_MINT;
   }
 
-  if (tbtcMint === undefined) {
-    tbtcMint = tbtc.getMintPDA();
+  if (tmewcMint === undefined) {
+    tmewcMint = tmewc.getMintPDA();
   }
 
   if (recipientWrappedToken == undefined) {
     recipientWrappedToken = getAssociatedTokenAddressSync(
-      wrappedTbtcMint,
+      wrappedTmewcMint,
       recipient
     );
   }
 
-  if (tbtcConfig === undefined) {
-    tbtcConfig = tbtc.getConfigPDA();
+  if (tmewcConfig === undefined) {
+    tmewcConfig = tmewc.getConfigPDA();
   }
 
-  if (tbtcMinterInfo === undefined) {
-    tbtcMinterInfo = tbtc.getMinterInfoPDA(custodian);
+  if (tmewcMinterInfo === undefined) {
+    tmewcMinterInfo = tmewc.getMinterInfoPDA(custodian);
   }
 
   if (tokenBridgeConfig === undefined) {
@@ -436,7 +436,7 @@ export async function receiveTbtcIx(
   // }
 
   if (tokenBridgeWrappedAsset === undefined) {
-    tokenBridgeWrappedAsset = WRAPPED_TBTC_ASSET;
+    tokenBridgeWrappedAsset = WRAPPED_TMEWC_ASSET;
   }
 
   if (tokenBridgeMintAuthority === undefined) {
@@ -449,8 +449,8 @@ export async function receiveTbtcIx(
     rent = SYSVAR_RENT_PUBKEY;
   }
 
-  if (tbtcProgram === undefined) {
-    tbtcProgram = TBTC_PROGRAM_ID;
+  if (tmewcProgram === undefined) {
+    tmewcProgram = TMEWC_PROGRAM_ID;
   }
 
   if (tokenBridgeProgram === undefined) {
@@ -462,39 +462,39 @@ export async function receiveTbtcIx(
   }
 
   return program.methods
-    .receiveTbtc(Array.from(parsed.hash))
+    .receiveTmewc(Array.from(parsed.hash))
     .accounts({
       payer,
       custodian,
       postedVaa,
       tokenBridgeClaim,
-      wrappedTbtcToken,
-      tbtcMint,
+      wrappedTmewcToken,
+      tmewcMint,
       recipientToken,
       recipient,
       recipientWrappedToken,
-      tbtcConfig,
-      tbtcMinterInfo,
-      wrappedTbtcMint,
+      tmewcConfig,
+      tmewcMinterInfo,
+      wrappedTmewcMint,
       tokenBridgeConfig,
       tokenBridgeRegisteredEmitter,
       //tokenBridgeRedeemer,
       tokenBridgeWrappedAsset,
       tokenBridgeMintAuthority,
       rent,
-      tbtcProgram,
+      tmewcProgram,
       tokenBridgeProgram,
       coreBridgeProgram,
     })
     .instruction();
 }
 
-type SendTbtcGatewayContext = {
+type SendTmewcGatewayContext = {
   custodian?: PublicKey;
   gatewayInfo?: PublicKey;
-  wrappedTbtcToken?: PublicKey;
-  wrappedTbtcMint?: PublicKey;
-  tbtcMint?: PublicKey;
+  wrappedTmewcToken?: PublicKey;
+  wrappedTmewcMint?: PublicKey;
+  tmewcMint?: PublicKey;
   senderToken: PublicKey;
   sender: PublicKey;
   tokenBridgeConfig?: PublicKey;
@@ -512,24 +512,24 @@ type SendTbtcGatewayContext = {
   coreBridgeProgram?: PublicKey;
 };
 
-type SendTbtcGatewayArgs = {
+type SendTmewcGatewayArgs = {
   amount: BN;
   recipientChain: number;
   recipient: number[];
   nonce: number;
 };
 
-export async function sendTbtcGatewayIx(
-  accounts: SendTbtcGatewayContext,
-  args: SendTbtcGatewayArgs
+export async function sendTmewcGatewayIx(
+  accounts: SendTmewcGatewayContext,
+  args: SendTmewcGatewayArgs
 ): Promise<TransactionInstruction> {
   const program = workspace.WormholeGateway as Program<WormholeGateway>;
   let {
     custodian,
     gatewayInfo,
-    wrappedTbtcToken,
-    wrappedTbtcMint,
-    tbtcMint,
+    wrappedTmewcToken,
+    wrappedTmewcMint,
+    tmewcMint,
     senderToken,
     sender,
     tokenBridgeConfig,
@@ -555,16 +555,16 @@ export async function sendTbtcGatewayIx(
     gatewayInfo = getGatewayInfoPDA(args.recipientChain);
   }
 
-  if (wrappedTbtcToken === undefined) {
-    wrappedTbtcToken = getWrappedTbtcTokenPDA();
+  if (wrappedTmewcToken === undefined) {
+    wrappedTmewcToken = getWrappedTmewcTokenPDA();
   }
 
-  if (wrappedTbtcMint === undefined) {
-    wrappedTbtcMint = WRAPPED_TBTC_MINT;
+  if (wrappedTmewcMint === undefined) {
+    wrappedTmewcMint = WRAPPED_TMEWC_MINT;
   }
 
-  if (tbtcMint === undefined) {
-    tbtcMint = tbtc.getMintPDA();
+  if (tmewcMint === undefined) {
+    tmewcMint = tmewc.getMintPDA();
   }
 
   if (tokenBridgeConfig === undefined) {
@@ -574,7 +574,7 @@ export async function sendTbtcGatewayIx(
   }
 
   if (tokenBridgeWrappedAsset === undefined) {
-    tokenBridgeWrappedAsset = WRAPPED_TBTC_ASSET;
+    tokenBridgeWrappedAsset = WRAPPED_TMEWC_ASSET;
   }
 
   if (tokenBridgeTransferAuthority === undefined) {
@@ -630,13 +630,13 @@ export async function sendTbtcGatewayIx(
   }
 
   return program.methods
-    .sendTbtcGateway(args)
+    .sendTmewcGateway(args)
     .accounts({
       custodian,
       gatewayInfo,
-      wrappedTbtcToken,
-      wrappedTbtcMint,
-      tbtcMint,
+      wrappedTmewcToken,
+      wrappedTmewcMint,
+      tmewcMint,
       senderToken,
       sender,
       tokenBridgeConfig,
@@ -656,11 +656,11 @@ export async function sendTbtcGatewayIx(
     .instruction();
 }
 
-type SendTbtcWrappedContext = {
+type SendTmewcWrappedContext = {
   custodian?: PublicKey;
-  wrappedTbtcToken?: PublicKey;
-  wrappedTbtcMint?: PublicKey;
-  tbtcMint?: PublicKey;
+  wrappedTmewcToken?: PublicKey;
+  wrappedTmewcMint?: PublicKey;
+  tmewcMint?: PublicKey;
   senderToken: PublicKey;
   sender: PublicKey;
   tokenBridgeConfig?: PublicKey;
@@ -677,7 +677,7 @@ type SendTbtcWrappedContext = {
   coreBridgeProgram?: PublicKey;
 };
 
-type SendTbtcWrappedArgs = {
+type SendTmewcWrappedArgs = {
   amount: BN;
   recipientChain: number;
   recipient: number[];
@@ -685,16 +685,16 @@ type SendTbtcWrappedArgs = {
   nonce: number;
 };
 
-export async function sendTbtcWrappedIx(
-  accounts: SendTbtcWrappedContext,
-  args: SendTbtcWrappedArgs
+export async function sendTmewcWrappedIx(
+  accounts: SendTmewcWrappedContext,
+  args: SendTmewcWrappedArgs
 ): Promise<TransactionInstruction> {
   const program = workspace.WormholeGateway as Program<WormholeGateway>;
   let {
     custodian,
-    wrappedTbtcToken,
-    wrappedTbtcMint,
-    tbtcMint,
+    wrappedTmewcToken,
+    wrappedTmewcMint,
+    tmewcMint,
     senderToken,
     sender,
     tokenBridgeConfig,
@@ -715,16 +715,16 @@ export async function sendTbtcWrappedIx(
     custodian = getCustodianPDA();
   }
 
-  if (wrappedTbtcToken === undefined) {
-    wrappedTbtcToken = getWrappedTbtcTokenPDA();
+  if (wrappedTmewcToken === undefined) {
+    wrappedTmewcToken = getWrappedTmewcTokenPDA();
   }
 
-  if (wrappedTbtcMint === undefined) {
-    wrappedTbtcMint = WRAPPED_TBTC_MINT;
+  if (wrappedTmewcMint === undefined) {
+    wrappedTmewcMint = WRAPPED_TMEWC_MINT;
   }
 
-  if (tbtcMint === undefined) {
-    tbtcMint = tbtc.getMintPDA();
+  if (tmewcMint === undefined) {
+    tmewcMint = tmewc.getMintPDA();
   }
 
   if (tokenBridgeConfig === undefined) {
@@ -734,7 +734,7 @@ export async function sendTbtcWrappedIx(
   }
 
   if (tokenBridgeWrappedAsset === undefined) {
-    tokenBridgeWrappedAsset = WRAPPED_TBTC_ASSET;
+    tokenBridgeWrappedAsset = WRAPPED_TMEWC_ASSET;
   }
 
   if (tokenBridgeTransferAuthority === undefined) {
@@ -784,12 +784,12 @@ export async function sendTbtcWrappedIx(
   }
 
   return program.methods
-    .sendTbtcWrapped(args)
+    .sendTmewcWrapped(args)
     .accounts({
       custodian,
-      wrappedTbtcToken,
-      wrappedTbtcMint,
-      tbtcMint,
+      wrappedTmewcToken,
+      wrappedTmewcMint,
+      tmewcMint,
       senderToken,
       sender,
       tokenBridgeConfig,

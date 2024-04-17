@@ -15,9 +15,9 @@
 
 pragma solidity 0.8.17;
 
-import {BytesLib} from "@keep-network/bitcoin-spv-sol/contracts/BytesLib.sol";
-import {BTCUtils} from "@keep-network/bitcoin-spv-sol/contracts/BTCUtils.sol";
-import {CheckBitcoinSigs} from "@keep-network/bitcoin-spv-sol/contracts/CheckBitcoinSigs.sol";
+import {BytesLib} from "@keep-network/meowcoin-spv-sol/contracts/BytesLib.sol";
+import {MEWCUtils} from "@keep-network/meowcoin-spv-sol/contracts/MEWCUtils.sol";
+import {CheckBitcoinSigs} from "@keep-network/meowcoin-spv-sol/contracts/CheckBitcoinSigs.sol";
 
 import "./BitcoinTx.sol";
 import "./EcdsaLib.sol";
@@ -55,8 +55,8 @@ library Fraud {
     using Wallets for BridgeState.Storage;
 
     using BytesLib for bytes;
-    using BTCUtils for bytes;
-    using BTCUtils for uint32;
+    using MEWCUtils for bytes;
+    using MEWCUtils for uint32;
     using EcdsaLib for bytes;
 
     struct FraudChallenge {
@@ -89,7 +89,7 @@ library Fraud {
 
     event FraudChallengeDefeatTimedOut(
         bytes20 indexed walletPubKeyHash,
-        // Sighash calculated as a Bitcoin's hash256 (double sha2) of:
+        // Sighash calculated as a Meowcoin's hash256 (double sha2) of:
         // - a preimage of a transaction spending UTXO according to the protocol
         //   rules OR
         // - a valid heartbeat message produced by the wallet off-chain.
@@ -121,7 +121,7 @@ library Fraud {
     ///        in `sighash`.  The path from `preimage` to `sighash` looks like
     ///        this:
     ///        preimage -> (SHA-256) -> preimageSha256 -> (SHA-256) -> sighash.
-    /// @param signature Bitcoin signature in the R/S/V format
+    /// @param signature Meowcoin signature in the R/S/V format
     /// @dev Requirements:
     ///      - Wallet behind `walletPublicKey` must be in Live or MovingFunds
     ///        or Closing state,
@@ -460,13 +460,13 @@ library Fraud {
         // - transaction locktime (4 bytes)
         // - sighash type (4 bytes)
 
-        // See Bitcoin's BIP-143 for reference:
-        // https://github.com/bitcoin/bips/blob/master/bip-0143.mediawiki.
+        // See Meowcoin's BIP-143 for reference:
+        // https://github.com/meowcoin/bips/blob/master/bip-0143.mediawiki.
 
         // The outpoint (hash and index) is located at the constant offset of
         // 68 (4 + 32 + 32).
         bytes32 outpointTxHash = preimage.extractInputTxIdLeAt(68);
-        uint32 outpointIndex = BTCUtils.reverseUint32(
+        uint32 outpointIndex = MEWCUtils.reverseUint32(
             uint32(preimage.extractTxIndexLeAt(68))
         );
 
@@ -504,7 +504,7 @@ library Fraud {
         // - sighash type (4 bytes)
 
         // See example for reference:
-        // https://en.bitcoin.it/wiki/OP_CHECKSIG#Code_samples_and_raw_dumps.
+        // https://en.meowcoin.it/wiki/OP_CHECKSIG#Code_samples_and_raw_dumps.
 
         // The input data begins at the constant offset of 4 (the first 4 bytes
         // are for the transaction version).
@@ -517,15 +517,15 @@ library Fraud {
         // `BtcUtils.parseVarInt` does not include compactSize uint tag in the
         // returned length.
         //
-        // For >= 0 && <= 252, `BTCUtils.determineVarIntDataLengthAt`
+        // For >= 0 && <= 252, `MEWCUtils.determineVarIntDataLengthAt`
         // returns `0`, so we jump over one byte of compactSize uint.
         //
         // For >= 253 && <= 0xffff there is `0xfd` tag,
-        // `BTCUtils.determineVarIntDataLengthAt` returns `2` (no
+        // `MEWCUtils.determineVarIntDataLengthAt` returns `2` (no
         // tag byte included) so we need to jump over 1+2 bytes of
         // compactSize uint.
         //
-        // Please refer `BTCUtils` library and compactSize uint
+        // Please refer `MEWCUtils` library and compactSize uint
         // docs in `BitcoinTx` library for more details.
         uint256 inputStartingIndex = 4 + 1 + inputsCompactSizeUintLength;
 
@@ -545,7 +545,7 @@ library Fraud {
                 bytes32 outpointTxHash = preimage.extractInputTxIdLeAt(
                     inputStartingIndex
                 );
-                uint32 outpointIndex = BTCUtils.reverseUint32(
+                uint32 outpointIndex = MEWCUtils.reverseUint32(
                     uint32(preimage.extractTxIndexLeAt(inputStartingIndex))
                 );
 

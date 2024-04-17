@@ -11,7 +11,7 @@ const OPERATOR_COUNT = 2000
 const OPERATOR_QUIT_CHANCE = 0.005
 const WALLET_CREATION_PERIOD = 7 // days
 const WALLET_MAX_AGE = 30 * 6 // days
-const WALLET_MIN_BTC = 1
+const WALLET_MIN_MEWC = 1
 const WALLET_SIZE = 100
 const WALLET_TRANSFER_MAX = 200
 
@@ -229,7 +229,7 @@ function registerNewOperators() {
 }
 
 // Create a new wallet every WALLET_CREATION_PERIOD days
-// FIXME: The actual wallet creation conditions are more complicated (min btc
+// FIXME: The actual wallet creation conditions are more complicated (min mewc
 // and whatnot), so that's something to implement in the future.
 function createNewWalletEvent(day) {
   if (day % WALLET_CREATION_PERIOD == 0) {
@@ -261,7 +261,7 @@ function randomTransferWithoutCap(wallet) {
   let liveWallets = []
   for (let i = 0; i < walletIndex; i++) {
     if (
-      walletBalances[i] > WALLET_MIN_BTC &&
+      walletBalances[i] > WALLET_MIN_MEWC &&
       Object.keys(walletStakingOperators[i]).length >= HEARTBEAT &&
       i != wallet
     ) {
@@ -274,7 +274,7 @@ function randomTransferWithoutCap(wallet) {
     1,
     "Transferring " +
       walletBalances[wallet] +
-      " btc from Wallet#" +
+      " mewc from Wallet#" +
       wallet +
       " to Wallet#" +
       randomIndex
@@ -293,7 +293,7 @@ function randomTransfer(wallet) {
   let liveWallets = []
   for (let i = 0; i < walletIndex; i++) {
     if (
-      walletBalances[i] > WALLET_MIN_BTC &&
+      walletBalances[i] > WALLET_MIN_MEWC &&
       Object.keys(walletStakingOperators[i]).length >= HEARTBEAT &&
       i != wallet
     ) {
@@ -312,7 +312,7 @@ function randomTransfer(wallet) {
       1,
       "Transferring " +
         transferAmount +
-        " btc from Wallet#" +
+        " mewc from Wallet#" +
         wallet +
         " to Wallet#" +
         randomWallet
@@ -331,7 +331,7 @@ function transferToActive(wallet) {
     1,
     "Transferring " +
       walletBalances[wallet] +
-      " btc from Wallet#" +
+      " mewc from Wallet#" +
       wallet +
       " to Wallet#" +
       (walletIndex - 1)
@@ -375,21 +375,21 @@ function closeWallet(wallet, reason) {
   }
 }
 
-// Withdraws a poisson random amount of bitcoin (capped by the amount we have
+// Withdraws a poisson random amount of meowcoin (capped by the amount we have
 // remaining) starting from the oldest wallet. Might end up closing multiple
 // wallets to fulfill the withdraw.
 function dailyWithdraw() {
   let remaining = randomNewWithdraw()
-  if (remaining > btcInSystem) {
+  if (remaining > mewcInSystem) {
     log(
       1,
       "Tried to withdraw " +
         remaining +
-        " btc but the system only had " +
-        btcInSystem +
+        " mewc but the system only had " +
+        mewcInSystem +
         " so withdrawing that instead"
     )
-    remaining = btcInSystem
+    remaining = mewcInSystem
   }
   let wallet = 0
   while (remaining > 0) {
@@ -408,12 +408,12 @@ function dailyWithdraw() {
 
 function dailyDeposit() {
   const amount = randomNewDeposit()
-  log(1, "Depositing " + amount + " btc into Wallet#" + (walletIndex - 1))
+  log(1, "Depositing " + amount + " mewc into Wallet#" + (walletIndex - 1))
   walletBalances[walletIndex - 1] += amount
   if (walletBalances[walletIndex - 1] > biggestWalletBalance) {
     biggestWalletBalance = walletBalances[walletIndex - 1]
   }
-  btcInSystem += amount
+  mewcInSystem += amount
 }
 
 function withdraw(wallet, amount) {
@@ -422,21 +422,21 @@ function withdraw(wallet, amount) {
     1,
     "Withdrawing " +
       amount +
-      " btc from Wallet#" +
+      " mewc from Wallet#" +
       wallet +
       ". Remaining balance: " +
       remainingBalance
   )
   walletBalances[wallet] -= amount
-  btcInSystem -= amount
-  if (remainingBalance <= WALLET_MIN_BTC) {
+  mewcInSystem -= amount
+  if (remainingBalance <= WALLET_MIN_MEWC) {
     closeWallet(wallet, "below dust")
   }
 }
 
 // Used to track how different protocol decisions impact wallet risk
 let biggestWalletBalance = 0
-let btcInSystem = 0
+let mewcInSystem = 0
 let lastWalletCreationDay = -1 * WALLET_CREATION_PERIOD
 // Cache of {operatorId => bool}. Used query which operators are still live
 // with O(1).
@@ -476,7 +476,7 @@ let walletStakingOperators = {}
 
 for (let iteration = 0; iteration < NUM_ITERATIONS; iteration++) {
   biggestWalletBalance = 0
-  btcInSystem = 0
+  mewcInSystem = 0
   lastWalletCreationDay = -1 * WALLET_CREATION_PERIOD
   liveOperators = {}
   operatorIndex = 0

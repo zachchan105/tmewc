@@ -165,7 +165,7 @@ describe("Bridge - Moving funds", () => {
 
                   context("when passed wallet main UTXO is valid", () => {
                     context("when wallet balance is greater than zero", () => {
-                      // Just an arbitrary main UTXO with value of 26 BTC.
+                      // Just an arbitrary main UTXO with value of 26 MEWC.
                       const mainUtxo = {
                         txHash:
                           "0xc9e58780c6c289c25ae1fe293f85a4db4d0af4f305172f2a1868ddd917458bdf",
@@ -221,8 +221,8 @@ describe("Bridge - Moving funds", () => {
                           context(
                             "when the submitted target wallets count is same as the expected",
                             () => {
-                              // The source wallet has a main UTXO with value of 26 BTC,
-                              // the max BTC transfer is 10 BTC by default (see
+                              // The source wallet has a main UTXO with value of 26 MEWC,
+                              // the max MEWC transfer is 10 MEWC by default (see
                               // `constants.walletMaxBtcTransfer`) and the count of
                               // live wallets is `5`. We compute the expected target
                               // wallets count as:
@@ -468,12 +468,12 @@ describe("Bridge - Moving funds", () => {
                           // The last parameter doesn't matter in this scenario.
                           bridge.connect(caller).submitMovingFundsCommitment(
                             ecdsaWalletTestData.pubKeyHash160,
-                            NO_MAIN_UTXO, // That makes the balance to be 0 BTC.
+                            NO_MAIN_UTXO, // That makes the balance to be 0 MEWC.
                             walletMembersIDs,
                             walletMemberIndex,
                             []
                           )
-                        ).to.be.revertedWith("Wallet BTC balance is zero")
+                        ).to.be.revertedWith("Wallet MEWC balance is zero")
                       })
                     })
                   })
@@ -483,7 +483,7 @@ describe("Bridge - Moving funds", () => {
                       txHash:
                         "0xc9e58780c6c289c25ae1fe293f85a4db4d0af4f305172f2a1868ddd917458bdf",
                       txOutputIndex: 0,
-                      txOutputValue: to1ePrecision(26, 8), // 26 BTC
+                      txOutputValue: to1ePrecision(26, 8), // 26 MEWC
                     }
 
                     before(async () => {
@@ -1634,7 +1634,7 @@ describe("Bridge - Moving funds", () => {
 
                   // Corrupt the wallet's main UTXO that is injected to
                   // the Bridge state by the test runner in order to make it
-                  // different than the input used by the actual Bitcoin
+                  // different than the input used by the actual Meowcoin
                   // transaction thus make the tested scenario happen. The
                   // proper value of `txOutputIndex` is `1` so any other value
                   // will do the trick.
@@ -1934,7 +1934,7 @@ describe("Bridge - Moving funds", () => {
         })
 
         it("should revert", async () => {
-          // Corrupt the bitcoin headers length in the moving funds proof. The
+          // Corrupt the meowcoin headers length in the moving funds proof. The
           // proper value is length divisible by 80 so any length violating
           // this rule will cause failure. In this case, we just remove the
           // last byte from proper headers chain.
@@ -1964,7 +1964,7 @@ describe("Bridge - Moving funds", () => {
         })
 
         it("should revert", async () => {
-          // Bitcoin headers must form a chain to pass the proof validation.
+          // Meowcoin headers must form a chain to pass the proof validation.
           // That means the `previous block hash` encoded in the given block
           // header must match the actual previous header's hash. To test
           // that scenario, we corrupt the `previous block hash` of the
@@ -2414,7 +2414,7 @@ describe("Bridge - Moving funds", () => {
                 mainUtxo
               )
             ).to.be.revertedWith(
-              "Wallet BTC balance must be below the moving funds dust threshold"
+              "Wallet MEWC balance must be below the moving funds dust threshold"
             )
           })
         })
@@ -2581,7 +2581,7 @@ describe("Bridge - Moving funds", () => {
 
                                 it("should set the transaction output as new sweeping wallet main UTXO", async () => {
                                   // Amount can be checked by opening the sweep tx
-                                  // in a Bitcoin testnet explorer. In this case,
+                                  // in a Meowcoin testnet explorer. In this case,
                                   // the output  value is 16500.
                                   const expectedMainUtxoHash =
                                     ethers.utils.solidityKeccak256(
@@ -2841,7 +2841,7 @@ describe("Bridge - Moving funds", () => {
 
                                 it("should set the transaction output as new sweeping wallet main UTXO", async () => {
                                   // Amount can be checked by opening the sweep tx
-                                  // in a Bitcoin testnet explorer. In this case,
+                                  // in a Meowcoin testnet explorer. In this case,
                                   // the output  value is 2612530.
                                   const expectedMainUtxoHash =
                                     ethers.utils.solidityKeccak256(
@@ -3533,7 +3533,7 @@ describe("Bridge - Moving funds", () => {
         })
 
         it("should revert", async () => {
-          // Corrupt the bitcoin headers length in the moving funds proof. The
+          // Corrupt the meowcoin headers length in the moving funds proof. The
           // proper value is length divisible by 80 so any length violating
           // this rule will cause failure. In this case, we just remove the
           // last byte from proper headers chain.
@@ -3563,7 +3563,7 @@ describe("Bridge - Moving funds", () => {
         })
 
         it("should revert", async () => {
-          // Bitcoin headers must form a chain to pass the proof validation.
+          // Meowcoin headers must form a chain to pass the proof validation.
           // That means the `previous block hash` encoded in the given block
           // header must match the actual previous header's hash. To test
           // that scenario, we corrupt the `previous block hash` of the

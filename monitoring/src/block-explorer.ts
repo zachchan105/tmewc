@@ -1,6 +1,6 @@
 import { context, Environment } from "./context"
 
-import type { BitcoinTransactionHash, Hex } from "@keep-network/tbtc-v2.ts"
+import type { BitcoinTransactionHash, Hex } from "@keep-network/tmewc.ts"
 
 const ethTxUrlPrefixMapping = {
   [Environment.Mainnet]: "https://etherscan.io/tx",
@@ -13,11 +13,11 @@ export function createEthTxUrl(txHash: Hex) {
   }/${txHash.toPrefixedString()}`
 }
 
-const btcTxUrlPrefixMapping = {
+const mewcTxUrlPrefixMapping = {
   [Environment.Mainnet]: "https://mempool.space/tx",
   [Environment.Testnet]: "https://mempool.space/testnet/tx",
 }
 
 export function createBtcTxUrl(txHash: BitcoinTransactionHash) {
-  return `${btcTxUrlPrefixMapping[context.environment]}/${txHash.toString()}`
+  return `${mewcTxUrlPrefixMapping[context.environment]}/${txHash.toString()}`
 }

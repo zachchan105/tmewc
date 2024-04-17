@@ -98,7 +98,7 @@ const config: HardhatUserConfig = {
       gasPrice: 200000000000, // 200 gwei
       // Ignore contract size on deployment to hardhat network, to be able to
       // deploy stub contracts in tests.
-      allowUnlimitedContractSize: process.env.TEST_USE_STUBS_TBTC === "true",
+      allowUnlimitedContractSize: process.env.TEST_USE_STUBS_TMEWC === "true",
     },
     system_tests: {
       url: "http://127.0.0.1:8545",
@@ -140,7 +140,7 @@ const config: HardhatUserConfig = {
       process.env.USE_EXTERNAL_DEPLOY === "true"
         ? [
             {
-              artifacts: "node_modules/@keep-network/tbtc/artifacts",
+              artifacts: "node_modules/@keep-network/tmewc/artifacts",
             },
             {
               artifacts:
@@ -168,7 +168,7 @@ const config: HardhatUserConfig = {
         "node_modules/@keep-network/ecdsa/deployments/development",
       ],
       sepolia: [
-        "node_modules/@keep-network/tbtc/artifacts",
+        "node_modules/@keep-network/tmewc/artifacts",
         "node_modules/@keep-network/random-beacon/artifacts",
         "node_modules/@keep-network/ecdsa/artifacts",
       ],
@@ -190,7 +190,7 @@ const config: HardhatUserConfig = {
     chaosnetOwner: {
       default: 3,
       sepolia: 0,
-      // Not used for mainnet deployment scripts of `@keepn-network/tbtc-v2`.
+      // Not used for mainnet deployment scripts of `@keepn-network/tmewc`.
       // Used by `@keep-network/random-beacon` and `@keep-network/ecdsa`
       // when deploying `SortitionPool`s.
     },

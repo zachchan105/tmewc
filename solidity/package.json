@@ -1,5 +1,5 @@
 {
-  "name": "@keep-network/tbtc-v2",
+  "name": "@keep-network/tmewc",
   "version": "1.7.0-dev",
   "license": "GPL-3.0-only",
   "files": [
@@ -15,7 +15,7 @@
     "clean": "hardhat clean && rm -rf cache/ export/ external/npm export.json",
     "build": "hardhat compile",
     "deploy": "hardhat deploy --export export.json",
-    "deploy:test": "USE_EXTERNAL_DEPLOY=true TEST_USE_STUBS_TBTC=true hardhat deploy",
+    "deploy:test": "USE_EXTERNAL_DEPLOY=true TEST_USE_STUBS_TMEWC=true hardhat deploy",
     "format": "npm run lint && prettier --check .",
     "format:fix": "npm run lint:fix && prettier --write .",
     "lint": "npm run lint:eslint && npm run lint:sol",
@@ -24,16 +24,16 @@
     "lint:fix:eslint": "eslint . --fix",
     "lint:sol": "solhint 'contracts/**/*.sol'",
     "lint:fix:sol": "solhint 'contracts/**/*.sol' --fix",
-    "test": "USE_EXTERNAL_DEPLOY=true TEST_USE_STUBS_TBTC=true hardhat test",
-    "test:integration": "NODE_ENV=integration-test USE_EXTERNAL_DEPLOY=true TEST_USE_STUBS_TBTC=true hardhat test ./test/integration/*.test.ts",
+    "test": "USE_EXTERNAL_DEPLOY=true TEST_USE_STUBS_TMEWC=true hardhat test",
+    "test:integration": "NODE_ENV=integration-test USE_EXTERNAL_DEPLOY=true TEST_USE_STUBS_TMEWC=true hardhat test ./test/integration/*.test.ts",
     "prepack": "tsc -p tsconfig.export.json && hardhat export-artifacts export/artifacts",
     "prepublishOnly": "./scripts/prepare-artifacts.sh --network $npm_config_network"
   },
   "dependencies": {
-    "@keep-network/bitcoin-spv-sol": "3.4.0-solc-0.8",
+    "@keep-network/meowcoin-spv-sol": "3.4.0-solc-0.8",
     "@keep-network/ecdsa": "development",
     "@keep-network/random-beacon": "development",
-    "@keep-network/tbtc": "development",
+    "@keep-network/tmewc": "development",
     "@openzeppelin/contracts": "^4.8.1",
     "@openzeppelin/contracts-upgradeable": "^4.8.1",
     "@thesis/solidity-contracts": "github:thesis/solidity-contracts#4985bcf"

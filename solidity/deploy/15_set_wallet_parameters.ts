@@ -8,7 +8,7 @@ const func: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
 
   deployments.log("setting initial wallet parameters")
 
-  // We set the wallet creation period to two weeks and the min BTC balance to
+  // We set the wallet creation period to two weeks and the min MEWC balance to
   // zero. It will allow creating new wallets every two weeks even though they
   // are not sweeping so from the Bridge's perspective their balance is zero.
   //

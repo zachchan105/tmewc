@@ -65,13 +65,13 @@ The operators should check the outcome off-chain
 and form the resulting group and perform DKG.
 
 After DKG has been performed,
-a member of the formed group can call `submitDkgResult()` on tBTC.
+a member of the formed group can call `submitDkgResult()` on tMEWC.
 If the DKG result has been signed by at least `threshold + 1` members,
 the contract will accept the DKG result submission.
 This begins a challenge period of 100 blocks,
 during which anyone can report a discrepancy in the wallet members.
 If someone reports a discrepancy,
-tBTC can check the actual sortition outcome from the sortition pool.
+tMEWC can check the actual sortition outcome from the sortition pool.
 If the discrepancy is real,
 all operators who signed the incorrect group member list will be penalised
 and the fraudulent wallet is destroyed.

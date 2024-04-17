@@ -14,7 +14,7 @@ import {
   WalletState,
   WalletTx,
 } from "../../src"
-import { MockBitcoinClient } from "../utils/mock-bitcoin-client"
+import { MockBitcoinClient } from "../utils/mock-meowcoin-client"
 import {
   findWalletForRedemptionData,
   multipleRedemptionsWithWitnessChange,
@@ -27,7 +27,7 @@ import * as chai from "chai"
 import { expect } from "chai"
 import chaiAsPromised from "chai-as-promised"
 import { BigNumber, BigNumberish } from "ethers"
-import { MockTBTCContracts } from "../utils/mock-tbtc-contracts"
+import { MockTMEWCContracts } from "../utils/mock-tmewc-contracts"
 
 chai.use(chaiAsPromised)
 
@@ -43,33 +43,33 @@ describe("Redemptions", () => {
       }
       const redeemerOutputScript =
         data.pendingRedemptions[0].pendingRedemption.redeemerOutputScript
-      // Use amount in TBTC token precision (1e18)
+      // Use amount in TMEWC token precision (1e18)
       const amount =
         data.pendingRedemptions[0].pendingRedemption.requestedAmount.mul(1e10)
 
-      let tbtcContracts: MockTBTCContracts
+      let tmewcContracts: MockTMEWCContracts
       let bitcoinClient: MockBitcoinClient
 
       beforeEach(async () => {
-        tbtcContracts = new MockTBTCContracts()
+        tmewcContracts = new MockTMEWCContracts()
         bitcoinClient = new MockBitcoinClient()
 
         const walletPublicKeyHash =
           BitcoinHashUtils.computeHash160(walletPublicKey)
 
         // Prepare NewWalletRegisteredEvent history. Set only relevant fields.
-        tbtcContracts.bridge.newWalletRegisteredEvents = [
+        tmewcContracts.bridge.newWalletRegisteredEvents = [
           {
             walletPublicKeyHash,
           } as NewWalletRegisteredEvent,
         ]
 
         // Prepare wallet data in the Bridge. Set only relevant fields.
-        tbtcContracts.bridge.setWallet(walletPublicKeyHash.toPrefixedString(), {
+        tmewcContracts.bridge.setWallet(walletPublicKeyHash.toPrefixedString(), {
           state: WalletState.Live,
           walletPublicKey,
           pendingRedemptionsValue: BigNumber.from(0),
-          mainUtxoHash: tbtcContracts.bridge.buildUtxoHash(mainUtxo),
+          mainUtxoHash: tmewcContracts.bridge.buildUtxoHash(mainUtxo),
         } as Wallet)
 
         const walletAddress = BitcoinAddressConverter.publicKeyHashToAddress(
@@ -109,7 +109,7 @@ describe("Redemptions", () => {
         bitcoinClient.transactionHashes = walletTransactionHashes
 
         const redemptionsService = new RedemptionsService(
-          tbtcContracts,
+          tmewcContracts,
           bitcoinClient
         )
 
@@ -123,7 +123,7 @@ describe("Redemptions", () => {
       })
 
       it("should submit redemption request with correct arguments", () => {
-        const tokenLog = tbtcContracts.tbtcToken.requestRedemptionLog
+        const tokenLog = tmewcContracts.tmewcToken.requestRedemptionLog
 
         expect(tokenLog.length).to.equal(1)
         expect(tokenLog[0]).to.deep.equal({
@@ -140,21 +140,21 @@ describe("Redemptions", () => {
         const { redemptionKey, pendingRedemption: redemptionRequest } =
           multipleRedemptionsWithWitnessChange.pendingRedemptions[0]
 
-        let tbtcContracts: MockTBTCContracts
+        let tmewcContracts: MockTMEWCContracts
         let bitcoinClient: MockBitcoinClient
         let redemptionsService: RedemptionsService
 
         beforeEach(async () => {
-          tbtcContracts = new MockTBTCContracts()
+          tmewcContracts = new MockTMEWCContracts()
           bitcoinClient = new MockBitcoinClient()
 
           const pendingRedemptions = new Map<BigNumberish, RedemptionRequest>()
           pendingRedemptions.set(redemptionKey, redemptionRequest)
 
-          tbtcContracts.bridge.setPendingRedemptions(pendingRedemptions)
+          tmewcContracts.bridge.setPendingRedemptions(pendingRedemptions)
 
           redemptionsService = new RedemptionsService(
-            tbtcContracts,
+            tmewcContracts,
             bitcoinClient
           )
         })
@@ -178,21 +178,21 @@ describe("Redemptions", () => {
         const { redemptionKey, pendingRedemption: redemptionRequest } =
           multipleRedemptionsWithWitnessChange.pendingRedemptions[0]
 
-        let tbtcContracts: MockTBTCContracts
+        let tmewcContracts: MockTMEWCContracts
         let bitcoinClient: MockBitcoinClient
         let redemptionsService: RedemptionsService
 
         beforeEach(async () => {
-          tbtcContracts = new MockTBTCContracts()
+          tmewcContracts = new MockTMEWCContracts()
           bitcoinClient = new MockBitcoinClient()
 
           const timedOutRedemptions = new Map<BigNumberish, RedemptionRequest>()
           timedOutRedemptions.set(redemptionKey, redemptionRequest)
 
-          tbtcContracts.bridge.setTimedOutRedemptions(timedOutRedemptions)
+          tmewcContracts.bridge.setTimedOutRedemptions(timedOutRedemptions)
 
           redemptionsService = new RedemptionsService(
-            tbtcContracts,
+            tmewcContracts,
             bitcoinClient
           )
         })
@@ -226,7 +226,7 @@ describe("Redemptions", () => {
         }
       }
 
-      let tbtcContracts: MockTBTCContracts
+      let tmewcContracts: MockTMEWCContracts
       let bitcoinClient: MockBitcoinClient
       let redemptionsService: TestRedemptionsService
       // script for testnet P2WSH address
@@ -238,13 +238,13 @@ describe("Redemptions", () => {
       context(
         "when there are no wallets in the network that can handle redemption",
         () => {
-          const amount: BigNumber = BigNumber.from("1000000") // 0.01 BTC
+          const amount: BigNumber = BigNumber.from("1000000") // 0.01 MEWC
           beforeEach(() => {
             bitcoinClient = new MockBitcoinClient()
-            tbtcContracts = new MockTBTCContracts()
-            tbtcContracts.bridge.newWalletRegisteredEvents = []
+            tmewcContracts = new MockTMEWCContracts()
+            tmewcContracts.bridge.newWalletRegisteredEvents = []
             redemptionsService = new TestRedemptionsService(
-              tbtcContracts,
+              tmewcContracts,
               bitcoinClient
             )
           })
@@ -273,9 +273,9 @@ describe("Redemptions", () => {
 
         beforeEach(async () => {
           bitcoinClient = new MockBitcoinClient()
-          tbtcContracts = new MockTBTCContracts()
+          tmewcContracts = new MockTMEWCContracts()
 
-          tbtcContracts.bridge.newWalletRegisteredEvents = walletsOrder.map(
+          tmewcContracts.bridge.newWalletRegisteredEvents = walletsOrder.map(
             (wallet) => wallet.event
           )
 
@@ -300,7 +300,7 @@ describe("Redemptions", () => {
               transactions.map((tx) => tx.transactionHash)
             )
 
-            tbtcContracts.bridge.setWallet(
+            tmewcContracts.bridge.setWallet(
               wallet.event.walletPublicKeyHash.toPrefixedString(),
               {
                 state,
@@ -315,7 +315,7 @@ describe("Redemptions", () => {
           bitcoinClient.transactionHashes = walletTransactionHashes
 
           redemptionsService = new TestRedemptionsService(
-            tbtcContracts,
+            tmewcContracts,
             bitcoinClient
           )
         })
@@ -323,7 +323,7 @@ describe("Redemptions", () => {
         context(
           "when there is a wallet that can handle the redemption request",
           () => {
-            const amount: BigNumber = BigNumber.from("1000000") // 0.01 BTC
+            const amount: BigNumber = BigNumber.from("1000000") // 0.01 MEWC
             beforeEach(async () => {
               result = await redemptionsService.findWalletForRedemption(
                 redeemerOutputScript,
@@ -333,7 +333,7 @@ describe("Redemptions", () => {
 
             it("should get all registered wallets", () => {
               const bridgeQueryEventsLog =
-                tbtcContracts.bridge.newWalletRegisteredEventsLog
+                tmewcContracts.bridge.newWalletRegisteredEventsLog
 
               expect(bridgeQueryEventsLog.length).to.equal(1)
               expect(bridgeQueryEventsLog[0]).to.deep.equal({
@@ -357,7 +357,7 @@ describe("Redemptions", () => {
         context(
           "when the redemption request amount is too large and no wallet can handle the request",
           () => {
-            const amount = BigNumber.from("10000000000") // 1 000 BTC
+            const amount = BigNumber.from("10000000000") // 1 000 MEWC
             const expectedMaxAmount = walletsOrder
               .map((wallet) => wallet.data)
               .map((wallet) => wallet.mainUtxo)
@@ -384,7 +384,7 @@ describe("Redemptions", () => {
               const redeemerOutputScript =
                 findWalletForRedemptionData.pendingRedemption
                   .redeemerOutputScript
-              const amount: BigNumber = BigNumber.from("1000000") // 0.01 BTC
+              const amount: BigNumber = BigNumber.from("1000000") // 0.01 MEWC
 
               const walletPublicKeyHash =
                 findWalletForRedemptionData.walletWithPendingRedemption.event
@@ -404,7 +404,7 @@ describe("Redemptions", () => {
                 key,
                 findWalletForRedemptionData.pendingRedemption
               )
-              tbtcContracts.bridge.setPendingRedemptions(pendingRedemptions)
+              tmewcContracts.bridge.setPendingRedemptions(pendingRedemptions)
 
               result = await redemptionsService.findWalletForRedemption(
                 redeemerOutputScript,
@@ -414,7 +414,7 @@ describe("Redemptions", () => {
 
             it("should get all registered wallets", () => {
               const bridgeQueryEventsLog =
-                tbtcContracts.bridge.newWalletRegisteredEventsLog
+                tmewcContracts.bridge.newWalletRegisteredEventsLog
 
               expect(bridgeQueryEventsLog.length).to.equal(1)
               expect(bridgeQueryEventsLog[0]).to.deep.equal({
@@ -441,11 +441,11 @@ describe("Redemptions", () => {
             beforeEach(async () => {
               const wallet =
                 findWalletForRedemptionData.walletWithPendingRedemption
-              const walletBTCBalance = wallet.data.mainUtxo.value
+              const walletMEWCBalance = wallet.data.mainUtxo.value
 
-              const amount: BigNumber = walletBTCBalance
+              const amount: BigNumber = walletMEWCBalance
                 .sub(wallet.data.pendingRedemptionsValue)
-                .add(BigNumber.from(500000)) // 0.005 BTC
+                .add(BigNumber.from(500000)) // 0.005 MEWC
 
               console.log("amount", amount.toString())
 
@@ -468,9 +468,9 @@ describe("Redemptions", () => {
         )
 
         context(
-          "when all active wallets has pending redemption for a given Bitcoin address",
+          "when all active wallets has pending redemption for a given Meowcoin address",
           () => {
-            const amount: BigNumber = BigNumber.from("1000000") // 0.01 BTC
+            const amount: BigNumber = BigNumber.from("1000000") // 0.01 MEWC
             const redeemerOutputScript =
               findWalletForRedemptionData.pendingRedemption.redeemerOutputScript
 
@@ -504,7 +504,7 @@ describe("Redemptions", () => {
                 pendingRedemption2,
                 findWalletForRedemptionData.pendingRedemption
               )
-              tbtcContracts.bridge.setPendingRedemptions(pendingRedemptions)
+              tmewcContracts.bridge.setPendingRedemptions(pendingRedemptions)
             })
 
             it("should throw an error", async () => {
@@ -514,7 +514,7 @@ describe("Redemptions", () => {
                   amount
                 )
               ).to.be.rejectedWith(
-                "All live wallets in the network have the pending redemption for a given Bitcoin address. Please use another Bitcoin address."
+                "All live wallets in the network have the pending redemption for a given Meowcoin address. Please use another Meowcoin address."
               )
             })
           }
@@ -660,23 +660,23 @@ describe("Redemptions", () => {
         ),
       ]
 
-      let tbtcContracts: MockTBTCContracts
+      let tmewcContracts: MockTMEWCContracts
       let bitcoinClient: MockBitcoinClient
       let bitcoinNetwork: BitcoinNetwork
       let redemptionsService: TestRedemptionsService
 
       beforeEach(async () => {
-        tbtcContracts = new MockTBTCContracts()
+        tmewcContracts = new MockTMEWCContracts()
         bitcoinClient = new MockBitcoinClient()
         redemptionsService = new TestRedemptionsService(
-          tbtcContracts,
+          tmewcContracts,
           bitcoinClient
         )
       })
 
       context("when wallet main UTXO is not set in the Bridge", () => {
         beforeEach(async () => {
-          tbtcContracts.bridge.setWallet(
+          tmewcContracts.bridge.setWallet(
             walletPublicKeyHash.toPrefixedString(),
             {
               mainUtxoHash: Hex.from(
@@ -703,7 +703,7 @@ describe("Redemptions", () => {
             // This scenario should never happen. It could only happen due to some
             // serious error.
             beforeEach(async () => {
-              tbtcContracts.bridge.setWallet(
+              tmewcContracts.bridge.setWallet(
                 walletPublicKeyHash.toPrefixedString(),
                 {
                   // Set main UTXO hash to some non-zero-filled hash.
@@ -779,11 +779,11 @@ describe("Redemptions", () => {
               context(`with main UTXO coming from ${testName}`, () => {
                 const networkTests = [
                   {
-                    networkTestName: "bitcoin testnet",
+                    networkTestName: "meowcoin testnet",
                     network: BitcoinNetwork.Testnet,
                   },
                   {
-                    networkTestName: "bitcoin mainnet",
+                    networkTestName: "meowcoin mainnet",
                     network: BitcoinNetwork.Mainnet,
                   },
                 ]
@@ -810,11 +810,11 @@ describe("Redemptions", () => {
                       )
                       bitcoinClient.transactionHashes = transactionHashes
 
-                      tbtcContracts.bridge.setWallet(
+                      tmewcContracts.bridge.setWallet(
                         walletPublicKeyHash.toPrefixedString(),
                         {
                           mainUtxoHash:
-                            tbtcContracts.bridge.buildUtxoHash(mainUtxo),
+                            tmewcContracts.bridge.buildUtxoHash(mainUtxo),
                         } as Wallet
                       )
                     })
@@ -842,7 +842,7 @@ describe("Redemptions", () => {
 export async function runRedemptionScenario(
   walletPrivKey: string,
   bitcoinClient: MockBitcoinClient,
-  tbtcContracts: MockTBTCContracts,
+  tmewcContracts: MockTMEWCContracts,
   data: RedemptionTestData
 ): Promise<{
   transactionHash: BitcoinTxHash
@@ -854,7 +854,7 @@ export async function runRedemptionScenario(
   })
   bitcoinClient.rawTransactions = rawTransactions
 
-  tbtcContracts.bridge.setPendingRedemptions(
+  tmewcContracts.bridge.setPendingRedemptions(
     new Map<BigNumberish, RedemptionRequest>(
       data.pendingRedemptions.map((redemption) => [
         redemption.redemptionKey,
@@ -867,7 +867,7 @@ export async function runRedemptionScenario(
     (redemption) => redemption.pendingRedemption.redeemerOutputScript
   )
 
-  const walletTx = new WalletTx(tbtcContracts, bitcoinClient, data.witness)
+  const walletTx = new WalletTx(tmewcContracts, bitcoinClient, data.witness)
 
   return walletTx.redemption.submitTransaction(
     walletPrivKey,

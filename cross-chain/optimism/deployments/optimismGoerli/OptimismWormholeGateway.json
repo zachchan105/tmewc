@@ -81,7 +81,7 @@
           "type": "uint256"
         }
       ],
-      "name": "WormholeTbtcDeposited",
+      "name": "WormholeTmewcDeposited",
       "type": "event"
     },
     {
@@ -100,7 +100,7 @@
           "type": "uint256"
         }
       ],
-      "name": "WormholeTbtcReceived",
+      "name": "WormholeTmewcReceived",
       "type": "event"
     },
     {
@@ -143,7 +143,7 @@
           "type": "uint32"
         }
       ],
-      "name": "WormholeTbtcSent",
+      "name": "WormholeTmewcSent",
       "type": "event"
     },
     {
@@ -180,7 +180,7 @@
           "type": "uint256"
         }
       ],
-      "name": "depositWormholeTbtc",
+      "name": "depositWormholeTmewc",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -236,8 +236,8 @@
           "type": "address"
         },
         {
-          "internalType": "contract L2TBTC",
-          "name": "_tbtc",
+          "internalType": "contract L2TMEWC",
+          "name": "_tmewc",
           "type": "address"
         }
       ],
@@ -293,7 +293,7 @@
           "type": "bytes"
         }
       ],
-      "name": "receiveTbtc",
+      "name": "receiveTmewc",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -333,7 +333,7 @@
           "type": "uint32"
         }
       ],
-      "name": "sendTbtc",
+      "name": "sendTmewc",
       "outputs": [
         {
           "internalType": "uint64",
@@ -346,10 +346,10 @@
     },
     {
       "inputs": [],
-      "name": "tbtc",
+      "name": "tmewc",
       "outputs": [
         {
-          "internalType": "contract L2TBTC",
+          "internalType": "contract L2TMEWC",
           "name": "",
           "type": "address"
         }

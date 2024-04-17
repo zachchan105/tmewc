@@ -44,14 +44,14 @@ submitting relay entry transaction for the random beacon.
 Transactions that can be submitted by anyone, usually submitted often and
 mostly belonging to a happy path. This type of transaction should never lead
 to slashing. For example, <<maintainer-incentives,submit sweep proof or submit
-redemption proof transaction>> for tBTC v2. 
+redemption proof transaction>> for tMEWC. 
 
 ==== Misbehavior notifier transactions
 
 Transactions that can be submitted by anyone, submitted rarely or never, and
 usually leading to slashing. For example, <<challenge-dkg-result, challenge
 DKG result>> for ECDSA wallet or <<report-fraud, report fraud>> transaction for
-tBTC v2.
+tMEWC.
 
 ==== Submission Order
 
@@ -63,7 +63,7 @@ ETH costs, and no additional reward will be allocated.
 
 The responsibility of executing the second group of transactions should be
 delegated to willing maintainers. Given that the preparation of the input data
-in some cases is complicated and may require access to the Bitcoin chain, the
+in some cases is complicated and may require access to the Meowcoin chain, the
 maintainer functionality should be built-in into the client and activated in the
 configuration. Eventually, we may decide to use networks like Gelato but given
 that the ECSDSA wallet could be slashed on the redemption proof timeout, such

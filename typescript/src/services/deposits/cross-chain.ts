@@ -5,23 +5,23 @@ import {
   DepositorProxy,
   DepositReceipt,
 } from "../../lib/contracts"
-import { BitcoinRawTxVectors } from "../../lib/bitcoin"
+import { BitcoinRawTxVectors } from "../../lib/meowcoin"
 import { Hex } from "../../lib/utils"
 
 /**
  * Mode of operation for the cross-chain depositor proxy:
  * - [L2Transaction]: The proxy will reveal the deposit using a transaction on
- *   the L2 chain. The tBTC system is responsible for relaying the deposit to
- *   the tBTC L1 chain.
+ *   the L2 chain. The tMEWC system is responsible for relaying the deposit to
+ *   the tMEWC L1 chain.
  * - [L1Transaction]: The proxy will directly reveal the deposit using a
- *   transaction on the tBTC L1 chain.
+ *   transaction on the tMEWC L1 chain.
  */
 export type CrossChainDepositorMode = "L2Transaction" | "L1Transaction"
 
 /**
  * Implementation of the cross chain depositor proxy. This component is used to
  * reveal cross-chain deposits whose target chain is not the same as the L1
- * chain the tBTC system is deployed on.
+ * chain the tMEWC system is deployed on.
  * @see {DepositorProxy} for reference.
  */
 export class CrossChainDepositor implements DepositorProxy {
@@ -42,7 +42,7 @@ export class CrossChainDepositor implements DepositorProxy {
    *          In this case, the depositor must be the L1BitcoinDepositor contract
    *          corresponding to the given L2 chain the deposit is targeting.
    *          This is because the L1BitcoinDepositor contract reveals the deposit to
-   *          the Bridge contract (on L1) and transfers minted TBTC token to the
+   *          the Bridge contract (on L1) and transfers minted TMEWC token to the
    *          target L2 chain once the deposit is processed.
    * @see {DepositorProxy#getChainIdentifier}
    */

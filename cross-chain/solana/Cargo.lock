@@ -1877,7 +1877,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "tbtc"
+name = "tmewc"
 version = "0.1.0"
 dependencies = [
  "anchor-lang",
@@ -2219,7 +2219,7 @@ dependencies = [
  "anchor-lang",
  "anchor-spl",
  "solana-program",
- "tbtc",
+ "tmewc",
  "wormhole-anchor-sdk",
 ]
 

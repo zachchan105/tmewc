@@ -15,8 +15,8 @@
 
 pragma solidity 0.8.17;
 
-import {BTCUtils} from "@keep-network/bitcoin-spv-sol/contracts/BTCUtils.sol";
-import {BytesLib} from "@keep-network/bitcoin-spv-sol/contracts/BytesLib.sol";
+import {MEWCUtils} from "@keep-network/meowcoin-spv-sol/contracts/MEWCUtils.sol";
+import {BytesLib} from "@keep-network/meowcoin-spv-sol/contracts/BytesLib.sol";
 
 import "./BitcoinTx.sol";
 import "./BridgeState.sol";
@@ -37,7 +37,7 @@ interface IRedemptionWatchtower {
     /// @param redeemer The address that requested the redemption and will be
     ///        able to claim Bank balance if anything goes wrong during the
     ///        redemption. In the most basic case, when someone redeems their
-    ///        Bitcoin balance from the Bank, `balanceOwner` is the same
+    ///        Meowcoin balance from the Bank, `balanceOwner` is the same
     ///        as `redeemer`. However, when a Vault is redeeming part of its
     ///        balance for some redeemer address (for example, someone who has
     ///        earlier deposited into that Vault), `balanceOwner` is the Vault,
@@ -66,18 +66,18 @@ interface IRedemptionWatchtower {
 /// @notice Aggregates functions common to the redemption transaction proof
 ///         validation and to the moving funds transaction proof validation.
 library OutboundTx {
-    using BTCUtils for bytes;
+    using MEWCUtils for bytes;
 
-    /// @notice Checks whether an outbound Bitcoin transaction performed from
+    /// @notice Checks whether an outbound Meowcoin transaction performed from
     ///         the given wallet has an input vector that contains a single
     ///         input referring to the wallet's main UTXO. Marks that main UTXO
     ///         as correctly spent if the validation succeeds. Reverts otherwise.
     ///         There are two outbound transactions from a wallet possible: a
     ///         redemption transaction or a moving funds to another wallet
     ///         transaction.
-    /// @param walletOutboundTxInputVector Bitcoin outbound transaction's input
+    /// @param walletOutboundTxInputVector Meowcoin outbound transaction's input
     ///        vector. This function assumes vector's structure is valid so it
-    ///        must be validated using e.g. `BTCUtils.validateVin` function
+    ///        must be validated using e.g. `MEWCUtils.validateVin` function
     ///        before it is passed here.
     /// @param mainUtxo Data of the wallet's main UTXO, as currently known on
     ///        the Ethereum chain.
@@ -108,28 +108,28 @@ library OutboundTx {
         ] = true;
     }
 
-    /// @notice Parses the input vector of an outbound Bitcoin transaction
+    /// @notice Parses the input vector of an outbound Meowcoin transaction
     ///         performed from the given wallet. It extracts the single input
     ///         then the transaction hash and output index from its outpoint.
     ///         There are two outbound transactions from a wallet possible: a
     ///         redemption transaction or a moving funds to another wallet
     ///         transaction.
-    /// @param walletOutboundTxInputVector Bitcoin outbound transaction input
+    /// @param walletOutboundTxInputVector Meowcoin outbound transaction input
     ///        vector. This function assumes vector's structure is valid so it
-    ///        must be validated using e.g. `BTCUtils.validateVin` function
+    ///        must be validated using e.g. `MEWCUtils.validateVin` function
     ///        before it is passed here.
-    /// @return outpointTxHash 32-byte hash of the Bitcoin transaction which is
+    /// @return outpointTxHash 32-byte hash of the Meowcoin transaction which is
     ///         pointed in the input's outpoint.
-    /// @return outpointIndex 4-byte index of the Bitcoin transaction output
+    /// @return outpointIndex 4-byte index of the Meowcoin transaction output
     ///         which is pointed in the input's outpoint.
     function parseWalletOutboundTxInput(
         bytes memory walletOutboundTxInputVector
     ) internal pure returns (bytes32 outpointTxHash, uint32 outpointIndex) {
-        // To determine the total number of Bitcoin transaction inputs,
+        // To determine the total number of Meowcoin transaction inputs,
         // we need to parse the compactSize uint (VarInt) the input vector is
         // prepended by. That compactSize uint encodes the number of vector
         // elements using the format presented in:
-        // https://developer.bitcoin.org/reference/transactions.html#compactsize-unsigned-integers
+        // https://developer.meowcoin.org/reference/transactions.html#compactsize-unsigned-integers
         // We don't need asserting the compactSize uint is parseable since it
         // was already checked during `validateVin` validation.
         // See `BitcoinTx.inputVector` docs for more details.
@@ -143,7 +143,7 @@ library OutboundTx {
 
         outpointTxHash = input.extractInputTxIdLE();
 
-        outpointIndex = BTCUtils.reverseUint32(
+        outpointIndex = MEWCUtils.reverseUint32(
             uint32(input.extractTxIndexLE())
         );
 
@@ -157,11 +157,11 @@ library OutboundTx {
 }
 
 /// @title Bridge redemption
-/// @notice The library handles the logic for redeeming Bitcoin balances from
+/// @notice The library handles the logic for redeeming Meowcoin balances from
 ///         the Bridge.
 /// @dev To initiate a redemption, a user with a Bank balance supplies
-///      a Bitcoin address. Then, the system calculates the redemption fee, and
-///      releases balance to the provided Bitcoin address. Just like in case of
+///      a Meowcoin address. Then, the system calculates the redemption fee, and
+///      releases balance to the provided Meowcoin address. Just like in case of
 ///      sweeps of revealed deposits, redemption requests are processed in
 ///      batches and require SPV proof to be submitted to the Bridge.
 library Redemption {
@@ -169,18 +169,18 @@ library Redemption {
     using Wallets for BridgeState.Storage;
     using BitcoinTx for BridgeState.Storage;
 
-    using BTCUtils for bytes;
+    using MEWCUtils for bytes;
     using BytesLib for bytes;
 
     /// @notice Represents a redemption request.
     struct RedemptionRequest {
         // ETH address of the redeemer who created the request.
         address redeemer;
-        // Requested TBTC amount in satoshi.
+        // Requested TMEWC amount in satoshi.
         uint64 requestedAmount;
-        // Treasury TBTC fee in satoshi at the moment of request creation.
+        // Treasury TMEWC fee in satoshi at the moment of request creation.
         uint64 treasuryFee;
-        // Transaction maximum BTC fee in satoshi at the moment of request
+        // Transaction maximum MEWC fee in satoshi at the moment of request
         // creation.
         uint64 txMaxFee;
         // UNIX timestamp the request was created at.
@@ -191,17 +191,17 @@ library Redemption {
         // not contiguous with other values.
     }
 
-    /// @notice Represents an outcome of the redemption Bitcoin transaction
+    /// @notice Represents an outcome of the redemption Meowcoin transaction
     ///         outputs processing.
     struct RedemptionTxOutputsInfo {
         // Sum of all outputs values i.e. all redemptions and change value,
         // if present.
         uint256 outputsTotalValue;
-        // Total TBTC value in satoshi that should be burned by the Bridge.
-        // It includes the total amount of all BTC redeemed in the transaction
-        // and the fee paid to BTC miners for the redemption transaction.
+        // Total TMEWC value in satoshi that should be burned by the Bridge.
+        // It includes the total amount of all MEWC redeemed in the transaction
+        // and the fee paid to MEWC miners for the redemption transaction.
         uint64 totalBurnableValue;
-        // Total TBTC value in satoshi that should be transferred to
+        // Total TMEWC value in satoshi that should be transferred to
         // the treasury. It is a sum of all treasury fees paid by all
         // redeemers included in the redemption transaction.
         uint64 totalTreasuryFee;
@@ -215,7 +215,7 @@ library Redemption {
     }
 
     /// @notice Represents temporary information needed during the processing of
-    ///         the redemption Bitcoin transaction outputs. This structure is an
+    ///         the redemption Meowcoin transaction outputs. This structure is an
     ///         internal one and should not be exported outside of the redemption
     ///         transaction processing code.
     /// @dev Allows to mitigate "stack too deep" errors on EVM.
@@ -252,11 +252,11 @@ library Redemption {
     );
 
     /// @notice Requests redemption of the given amount from the specified
-    ///         wallet to the redeemer Bitcoin output script.
+    ///         wallet to the redeemer Meowcoin output script.
     ///         This function handles the simplest case, where balance owner is
     ///         the redeemer.
     /// @param walletPubKeyHash The 20-byte wallet public key hash (computed
-    ///        using Bitcoin HASH160 over the compressed ECDSA public key).
+    ///        using Meowcoin HASH160 over the compressed ECDSA public key).
     /// @param mainUtxo Data of the wallet's main UTXO, as currently known on
     ///        the Ethereum chain.
     /// @param balanceOwner The address of the Bank balance owner whose balance
@@ -265,12 +265,12 @@ library Redemption {
     ///        balance if anything goes wrong during the redemption.
     /// @param redeemerOutputScript The redeemer's length-prefixed output
     ///        script (P2PKH, P2WPKH, P2SH or P2WSH) that will be used to lock
-    ///        redeemed BTC.
+    ///        redeemed MEWC.
     /// @param amount Requested amount in satoshi. This is also the Bank balance
     ///        that is taken from the `balanceOwner` upon request.
-    ///        Once the request is handled, the actual amount of BTC locked
+    ///        Once the request is handled, the actual amount of MEWC locked
     ///        on the redeemer output script will be always lower than this value
-    ///        since the treasury and Bitcoin transaction fees must be incurred.
+    ///        since the treasury and Meowcoin transaction fees must be incurred.
     ///        The minimal amount satisfying the request can be computed as:
     ///        `amount - (amount / redemptionTreasuryFeeDivisor) - redemptionTxMaxFee`.
     ///        Fees values are taken at the moment of request creation.
@@ -278,12 +278,12 @@ library Redemption {
     ///      - Wallet behind `walletPubKeyHash` must be live,
     ///      - `mainUtxo` components must point to the recent main UTXO
     ///        of the given wallet, as currently known on the Ethereum chain,
-    ///      - `redeemerOutputScript` must be a proper Bitcoin script,
+    ///      - `redeemerOutputScript` must be a proper Meowcoin script,
     ///      - `redeemerOutputScript` cannot have wallet PKH as payload,
     ///      - `amount` must be above or equal the `redemptionDustThreshold`,
     ///      - Given `walletPubKeyHash` and `redeemerOutputScript` pair can be
     ///        used for only one pending request at the same time,
-    ///      - Wallet must have enough Bitcoin balance to proceed the request,
+    ///      - Wallet must have enough Meowcoin balance to proceed the request,
     ///      - Balance owner must make an allowance in the Bank that the Bridge
     ///        contract can spend the given `amount`.
     function requestRedemption(
@@ -306,16 +306,16 @@ library Redemption {
     }
 
     /// @notice Requests redemption of the given amount from the specified
-    ///         wallet to the redeemer Bitcoin output script. Used by
+    ///         wallet to the redeemer Meowcoin output script. Used by
     ///         `Bridge.receiveBalanceApproval`. Can handle more complex cases
     ///         where balance owner may be someone else than the redeemer.
     /// @param balanceOwner The address of the Bank balance owner whose balance
     ///        is getting redeemed.
     /// @param amount Requested amount in satoshi. This is also the Bank balance
     ///        that is taken from the `balanceOwner` upon request.
-    ///        Once the request is handled, the actual amount of BTC locked
+    ///        Once the request is handled, the actual amount of MEWC locked
     ///        on the redeemer output script will be always lower than this value
-    ///        since the treasury and Bitcoin transaction fees must be incurred.
+    ///        since the treasury and Meowcoin transaction fees must be incurred.
     ///        The minimal amount satisfying the request can be computed as:
     ///        `amount - (amount / redemptionTreasuryFeeDivisor) - redemptionTxMaxFee`.
     ///        Fees values are taken at the moment of request creation.
@@ -331,14 +331,14 @@ library Redemption {
     ///
     ///        - redeemer: The Ethereum address of the redeemer who will be able
     ///        to claim Bank balance if anything goes wrong during the redemption.
-    ///        In the most basic case, when someone redeems their Bitcoin
+    ///        In the most basic case, when someone redeems their Meowcoin
     ///        balance from the Bank, `balanceOwner` is the same as `redeemer`.
     ///        However, when a Vault is redeeming part of its balance for some
     ///        redeemer address (for example, someone who has earlier deposited
     ///        into that Vault), `balanceOwner` is the Vault, and `redeemer` is
     ///        the address for which the vault is redeeming its balance to,
     ///        - walletPubKeyHash: The 20-byte wallet public key hash (computed
-    ///        using Bitcoin HASH160 over the compressed ECDSA public key),
+    ///        using Meowcoin HASH160 over the compressed ECDSA public key),
     ///        - mainUtxoTxHash: Data of the wallet's main UTXO TX hash, as
     ///        currently known on the Ethereum chain,
     ///        - mainUtxoTxOutputIndex: Data of the wallet's main UTXO output
@@ -347,17 +347,17 @@ library Redemption {
     ///        value, as currently known on Ethereum chain,
     ///        - redeemerOutputScript The redeemer's length-prefixed output
     ///        script (P2PKH, P2WPKH, P2SH or P2WSH) that will be used to lock
-    ///        redeemed BTC.
+    ///        redeemed MEWC.
     /// @dev Requirements:
     ///      - Wallet behind `walletPubKeyHash` must be live,
     ///      - `mainUtxo*` components must point to the recent main UTXO
     ///        of the given wallet, as currently known on the Ethereum chain,
-    ///      - `redeemerOutputScript` must be a proper Bitcoin script,
+    ///      - `redeemerOutputScript` must be a proper Meowcoin script,
     ///      - `redeemerOutputScript` cannot have wallet PKH as payload,
     ///      - `amount` must be above or equal the `redemptionDustThreshold`,
     ///      - Given `walletPubKeyHash` and `redeemerOutputScript` pair can be
     ///        used for only one pending request at the same time,
-    ///      - Wallet must have enough Bitcoin balance to proceed the request,
+    ///      - Wallet must have enough Meowcoin balance to proceed the request,
     ///      - Balance owner must make an allowance in the Bank that the Bridge
     ///        contract can spend the given `amount`.
     function requestRedemption(
@@ -394,16 +394,16 @@ library Redemption {
     }
 
     /// @notice Requests redemption of the given amount from the specified
-    ///         wallet to the redeemer Bitcoin output script.
+    ///         wallet to the redeemer Meowcoin output script.
     /// @param walletPubKeyHash The 20-byte wallet public key hash (computed
-    ///        using Bitcoin HASH160 over the compressed ECDSA public key).
+    ///        using Meowcoin HASH160 over the compressed ECDSA public key).
     /// @param mainUtxo Data of the wallet's main UTXO, as currently known on
     ///        the Ethereum chain.
     /// @param balanceOwner The address of the Bank balance owner whose balance
     ///        is getting redeemed.
     /// @param redeemer The Ethereum address of the redeemer who will be able to
     ///        claim Bank balance if anything goes wrong during the redemption.
-    ///        In the most basic case, when someone redeems their Bitcoin
+    ///        In the most basic case, when someone redeems their Meowcoin
     ///        balance from the Bank, `balanceOwner` is the same as `redeemer`.
     ///        However, when a Vault is redeeming part of its balance for some
     ///        redeemer address (for example, someone who has earlier deposited
@@ -411,12 +411,12 @@ library Redemption {
     ///        the address for which the vault is redeeming its balance to.
     /// @param redeemerOutputScript The redeemer's length-prefixed output
     ///        script (P2PKH, P2WPKH, P2SH or P2WSH) that will be used to lock
-    ///        redeemed BTC.
+    ///        redeemed MEWC.
     /// @param amount Requested amount in satoshi. This is also the Bank balance
     ///        that is taken from the `balanceOwner` upon request.
-    ///        Once the request is handled, the actual amount of BTC locked
+    ///        Once the request is handled, the actual amount of MEWC locked
     ///        on the redeemer output script will be always lower than this value
-    ///        since the treasury and Bitcoin transaction fees must be incurred.
+    ///        since the treasury and Meowcoin transaction fees must be incurred.
     ///        The minimal amount satisfying the request can be computed as:
     ///        `amount - (amount / redemptionTreasuryFeeDivisor) - redemptionTxMaxFee`.
     ///        Fees values are taken at the moment of request creation.
@@ -426,12 +426,12 @@ library Redemption {
     ///      - Wallet behind `walletPubKeyHash` must be live,
     ///      - `mainUtxo` components must point to the recent main UTXO
     ///        of the given wallet, as currently known on the Ethereum chain,
-    ///      - `redeemerOutputScript` must be a proper Bitcoin script,
+    ///      - `redeemerOutputScript` must be a proper Meowcoin script,
     ///      - `redeemerOutputScript` cannot have wallet PKH as payload,
     ///      - `amount` must be above or equal the `redemptionDustThreshold`,
     ///      - Given `walletPubKeyHash` and `redeemerOutputScript` pair can be
     ///        used for only one pending request at the same time,
-    ///      - Wallet must have enough Bitcoin balance to proceed the request,
+    ///      - Wallet must have enough Meowcoin balance to proceed the request,
     ///      - Balance owner must make an allowance in the Bank that the Bridge
     ///        contract can spend the given `amount`.
     function requestRedemption(
@@ -483,10 +483,10 @@ library Redemption {
 
         // Validate if redeemer output script is a correct standard type
         // (P2PKH, P2WPKH, P2SH or P2WSH). This is done by using
-        // `BTCUtils.extractHashAt` on it. Such a function extracts the payload
+        // `MEWCUtils.extractHashAt` on it. Such a function extracts the payload
         // properly only from standard outputs so if it succeeds, we have a
         // guarantee the redeemer output script is proper. The underlying way
-        // of validation is the same as in tBTC v1.
+        // of validation is the same as in tMEWC v1.
         bytes memory redeemerOutputScriptPayload = redeemerOutputScript
             .extractHashAt(0, redeemerOutputScript.length);
 
@@ -510,7 +510,7 @@ library Redemption {
         // The redemption key is built on top of the wallet public key hash
         // and redeemer output script pair. That means there can be only one
         // request asking for redemption from the given wallet to the given
-        // BTC script at the same time.
+        // MEWC script at the same time.
         uint256 redemptionKey = getRedemptionKey(
             walletPubKeyHash,
             redeemerOutputScript
@@ -567,35 +567,35 @@ library Redemption {
         self.bank.transferBalanceFrom(balanceOwner, address(this), amount);
     }
 
-    /// @notice Used by the wallet to prove the BTC redemption transaction
+    /// @notice Used by the wallet to prove the MEWC redemption transaction
     ///         and to make the necessary bookkeeping. Redemption is only
     ///         accepted if it satisfies SPV proof.
     ///
     ///         The function is performing Bank balance updates by burning
-    ///         the total redeemed Bitcoin amount from Bridge balance and
+    ///         the total redeemed Meowcoin amount from Bridge balance and
     ///         transferring the treasury fee sum to the treasury address.
     ///
     ///         It is possible to prove the given redemption only one time.
-    /// @param redemptionTx Bitcoin redemption transaction data.
-    /// @param redemptionProof Bitcoin redemption proof data.
+    /// @param redemptionTx Meowcoin redemption transaction data.
+    /// @param redemptionProof Meowcoin redemption proof data.
     /// @param mainUtxo Data of the wallet's main UTXO, as currently known on
     ///        the Ethereum chain.
-    /// @param walletPubKeyHash 20-byte public key hash (computed using Bitcoin
+    /// @param walletPubKeyHash 20-byte public key hash (computed using Meowcoin
     ///        HASH160 over the compressed ECDSA public key) of the wallet which
     ///        performed the redemption transaction.
     /// @dev Requirements:
     ///      - `redemptionTx` components must match the expected structure. See
     ///        `BitcoinTx.Info` docs for reference. Their values must exactly
-    ///        correspond to appropriate Bitcoin transaction fields to produce
+    ///        correspond to appropriate Meowcoin transaction fields to produce
     ///        a provable transaction hash,
-    ///      - The `redemptionTx` should represent a Bitcoin transaction with
+    ///      - The `redemptionTx` should represent a Meowcoin transaction with
     ///        exactly 1 input that refers to the wallet's main UTXO. That
     ///        transaction should have 1..n outputs handling existing pending
     ///        redemption requests or pointing to reported timed out requests.
     ///        There can be also 1 optional output representing the
     ///        change and pointing back to the 20-byte wallet public key hash.
     ///        The change should be always present if the redeemed value sum
-    ///        is lower than the total wallet's BTC balance,
+    ///        is lower than the total wallet's MEWC balance,
     ///      - `redemptionProof` components must match the expected structure.
     ///        See `BitcoinTx.Proof` docs for reference. The `bitcoinHeaders`
     ///        field must contain a valid number of block headers, not less
@@ -622,7 +622,7 @@ library Redemption {
         // function.
 
         // The actual transaction proof is performed here. After that point, we
-        // can assume the transaction happened on Bitcoin chain and has
+        // can assume the transaction happened on Meowcoin chain and has
         // a sufficient number of confirmations as determined by
         // `txProofDifficultyFactor` constant.
         bytes32 redemptionTxHash = self.validateProof(
@@ -693,7 +693,7 @@ library Redemption {
     ///         key hash. Validates the wallet state and current main UTXO, as
     ///         currently known on the Ethereum chain.
     /// @param walletPubKeyHash public key hash of the wallet proving the sweep
-    ///        Bitcoin transaction.
+    ///        Meowcoin transaction.
     /// @param mainUtxo Data of the wallet's main UTXO, as currently known on
     ///        the Ethereum chain.
     /// @return wallet Data of the sweeping wallet.
@@ -733,17 +733,17 @@ library Redemption {
         );
     }
 
-    /// @notice Processes the Bitcoin redemption transaction output vector.
+    /// @notice Processes the Meowcoin redemption transaction output vector.
     ///         It extracts each output and tries to identify it as a pending
     ///         redemption request, reported timed out request, or change.
     ///         Reverts if one of the outputs cannot be recognized properly.
     ///         This function also marks each request as processed by removing
     ///         them from `pendingRedemptions` mapping.
-    /// @param redemptionTxOutputVector Bitcoin redemption transaction output
+    /// @param redemptionTxOutputVector Meowcoin redemption transaction output
     ///        vector. This function assumes vector's structure is valid so it
-    ///        must be validated using e.g. `BTCUtils.validateVout` function
+    ///        must be validated using e.g. `MEWCUtils.validateVout` function
     ///        before it is passed here.
-    /// @param walletPubKeyHash 20-byte public key hash (computed using Bitcoin
+    /// @param walletPubKeyHash 20-byte public key hash (computed using Meowcoin
     ///        HASH160 over the compressed ECDSA public key) of the wallet which
     ///        performed the redemption transaction.
     /// @return info Outcomes of the processing.
@@ -765,24 +765,24 @@ library Redemption {
         // must be added because `BtcUtils.parseVarInt` does not include
         // compactSize uint tag in the returned length.
         //
-        // For >= 0 && <= 252, `BTCUtils.determineVarIntDataLengthAt`
+        // For >= 0 && <= 252, `MEWCUtils.determineVarIntDataLengthAt`
         // returns `0`, so we jump over one byte of compactSize uint.
         //
         // For >= 253 && <= 0xffff there is `0xfd` tag,
-        // `BTCUtils.determineVarIntDataLengthAt` returns `2` (no
+        // `MEWCUtils.determineVarIntDataLengthAt` returns `2` (no
         // tag byte included) so we need to jump over 1+2 bytes of
         // compactSize uint.
         //
-        // Please refer `BTCUtils` library and compactSize uint
+        // Please refer `MEWCUtils` library and compactSize uint
         // docs in `BitcoinTx` library for more details.
         uint256 outputStartingIndex = 1 + outputsCompactSizeUintLength;
 
         // Calculate the keccak256 for two possible wallet's P2PKH or P2WPKH
         // scripts that can be used to lock the change. This is done upfront to
-        // save on gas. Both scripts have a strict format defined by Bitcoin.
+        // save on gas. Both scripts have a strict format defined by Meowcoin.
         //
         // The P2PKH script has the byte format: <0x1976a914> <20-byte PKH> <0x88ac>.
-        // According to https://en.bitcoin.it/wiki/Script#Opcodes this translates to:
+        // According to https://en.meowcoin.it/wiki/Script#Opcodes this translates to:
         // - 0x19: Byte length of the entire script
         // - 0x76: OP_DUP
         // - 0xa9: OP_HASH160
@@ -790,17 +790,17 @@ library Redemption {
         // - 0x88: OP_EQUALVERIFY
         // - 0xac: OP_CHECKSIG
         // which matches the P2PKH structure as per:
-        // https://en.bitcoin.it/wiki/Transaction#Pay-to-PubkeyHash
+        // https://en.meowcoin.it/wiki/Transaction#Pay-to-PubkeyHash
         bytes32 walletP2PKHScriptKeccak = keccak256(
             abi.encodePacked(BitcoinTx.makeP2PKHScript(walletPubKeyHash))
         );
         // The P2WPKH script has the byte format: <0x160014> <20-byte PKH>.
-        // According to https://en.bitcoin.it/wiki/Script#Opcodes this translates to:
+        // According to https://en.meowcoin.it/wiki/Script#Opcodes this translates to:
         // - 0x16: Byte length of the entire script
         // - 0x00: OP_0
         // - 0x14: Byte length of the public key hash
         // which matches the P2WPKH structure as per:
-        // https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki#P2WPKH
+        // https://github.com/meowcoin/bips/blob/master/bip-0141.mediawiki#P2WPKH
         bytes32 walletP2WPKHScriptKeccak = keccak256(
             abi.encodePacked(BitcoinTx.makeP2WPKHScript(walletPubKeyHash))
         );
@@ -824,11 +824,11 @@ library Redemption {
     ///         or reported redemption. Reverts if one of the outputs cannot be
     ///         recognized properly. Marks each request as processed by removing
     ///         them from `pendingRedemptions` mapping.
-    /// @param redemptionTxOutputVector Bitcoin redemption transaction output
+    /// @param redemptionTxOutputVector Meowcoin redemption transaction output
     ///        vector. This function assumes vector's structure is valid so it
-    ///        must be validated using e.g. `BTCUtils.validateVout` function
+    ///        must be validated using e.g. `MEWCUtils.validateVout` function
     ///        before it is passed here.
-    /// @param walletPubKeyHash 20-byte public key hash (computed using Bitcoin
+    /// @param walletPubKeyHash 20-byte public key hash (computed using Meowcoin
     ///        HASH160 over the compressed ECDSA public key) of the wallet which
     ///        performed the redemption transaction.
     /// @param processInfo RedemptionTxOutputsProcessingInfo identifying output

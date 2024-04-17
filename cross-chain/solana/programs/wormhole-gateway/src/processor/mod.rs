@@ -1,11 +1,11 @@
 mod admin;
 pub use admin::*;
 
-mod deposit_wormhole_tbtc;
-pub use deposit_wormhole_tbtc::*;
+mod deposit_wormhole_tmewc;
+pub use deposit_wormhole_tmewc::*;
 
-mod receive_tbtc;
-pub use receive_tbtc::*;
+mod receive_tmewc;
+pub use receive_tmewc::*;
 
-mod send_tbtc;
-pub use send_tbtc::*;
+mod send_tmewc;
+pub use send_tmewc::*;

@@ -1,6 +1,6 @@
-# Class: EthereumTBTCToken
+# Class: EthereumTMEWCToken
 
-Implementation of the Ethereum TBTC v2 token handle.
+Implementation of the Ethereum TMEWC token handle.
 
 **`See`**
 
@@ -8,41 +8,41 @@ for reference.
 
 ## Hierarchy
 
-- `EthersContractHandle`\<`TBTCTypechain`\>
+- `EthersContractHandle`\<`TMEWCTypechain`\>
 
-  ↳ **`EthereumTBTCToken`**
+  ↳ **`EthereumTMEWCToken`**
 
 ## Implements
 
-- [`TBTCToken`](../interfaces/TBTCToken.md)
+- [`TMEWCToken`](../interfaces/TMEWCToken.md)
 
 ## Table of contents
 
 ### Constructors
 
-- [constructor](EthereumTBTCToken.md#constructor)
+- [constructor](EthereumTMEWCToken.md#constructor)
 
 ### Properties
 
-- [\_deployedAtBlockNumber](EthereumTBTCToken.md#_deployedatblocknumber)
-- [\_instance](EthereumTBTCToken.md#_instance)
-- [\_totalRetryAttempts](EthereumTBTCToken.md#_totalretryattempts)
+- [\_deployedAtBlockNumber](EthereumTMEWCToken.md#_deployedatblocknumber)
+- [\_instance](EthereumTMEWCToken.md#_instance)
+- [\_totalRetryAttempts](EthereumTMEWCToken.md#_totalretryattempts)
 
 ### Methods
 
-- [buildBridgeRequestRedemptionData](EthereumTBTCToken.md#buildbridgerequestredemptiondata)
-- [buildRequestRedemptionData](EthereumTBTCToken.md#buildrequestredemptiondata)
-- [getAddress](EthereumTBTCToken.md#getaddress)
-- [getChainIdentifier](EthereumTBTCToken.md#getchainidentifier)
-- [getEvents](EthereumTBTCToken.md#getevents)
-- [requestRedemption](EthereumTBTCToken.md#requestredemption)
-- [totalSupply](EthereumTBTCToken.md#totalsupply)
+- [buildBridgeRequestRedemptionData](EthereumTMEWCToken.md#buildbridgerequestredemptiondata)
+- [buildRequestRedemptionData](EthereumTMEWCToken.md#buildrequestredemptiondata)
+- [getAddress](EthereumTMEWCToken.md#getaddress)
+- [getChainIdentifier](EthereumTMEWCToken.md#getchainidentifier)
+- [getEvents](EthereumTMEWCToken.md#getevents)
+- [requestRedemption](EthereumTMEWCToken.md#requestredemption)
+- [totalSupply](EthereumTMEWCToken.md#totalsupply)
 
 ## Constructors
 
 ### constructor
 
-• **new EthereumTBTCToken**(`config`, `chainId?`): [`EthereumTBTCToken`](EthereumTBTCToken.md)
+• **new EthereumTMEWCToken**(`config`, `chainId?`): [`EthereumTMEWCToken`](EthereumTMEWCToken.md)
 
 #### Parameters
 
@@ -53,15 +53,15 @@ for reference.
 
 #### Returns
 
-[`EthereumTBTCToken`](EthereumTBTCToken.md)
+[`EthereumTMEWCToken`](EthereumTMEWCToken.md)
 
 #### Overrides
 
-EthersContractHandle\&lt;TBTCTypechain\&gt;.constructor
+EthersContractHandle\&lt;TMEWCTypechain\&gt;.constructor
 
 #### Defined in
 
-[src/lib/ethereum/tbtc-token.ts:26](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/ethereum/tbtc-token.ts#L26)
+[src/lib/ethereum/tmewc-token.ts:26](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/tmewc-token.ts#L26)
 
 ## Properties
 
@@ -79,13 +79,13 @@ EthersContractHandle.\_deployedAtBlockNumber
 
 #### Defined in
 
-[src/lib/ethereum/adapter.ts:80](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/ethereum/adapter.ts#L80)
+[src/lib/ethereum/adapter.ts:80](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/adapter.ts#L80)
 
 ___
 
 ### \_instance
 
-• `Protected` `Readonly` **\_instance**: `TBTC`
+• `Protected` `Readonly` **\_instance**: `TMEWC`
 
 Ethers instance of the deployed contract.
 
@@ -95,7 +95,7 @@ EthersContractHandle.\_instance
 
 #### Defined in
 
-[src/lib/ethereum/adapter.ts:74](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/ethereum/adapter.ts#L74)
+[src/lib/ethereum/adapter.ts:74](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/adapter.ts#L74)
 
 ___
 
@@ -111,7 +111,7 @@ EthersContractHandle.\_totalRetryAttempts
 
 #### Defined in
 
-[src/lib/ethereum/adapter.ts:84](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/ethereum/adapter.ts#L84)
+[src/lib/ethereum/adapter.ts:84](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/adapter.ts#L84)
 
 ## Methods
 
@@ -142,7 +142,7 @@ EthersContractHandle.\_totalRetryAttempts
 
 #### Defined in
 
-[src/lib/ethereum/tbtc-token.ts:135](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/ethereum/tbtc-token.ts#L135)
+[src/lib/ethereum/tmewc-token.ts:135](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/tmewc-token.ts#L135)
 
 ___
 
@@ -165,7 +165,7 @@ ___
 
 #### Defined in
 
-[src/lib/ethereum/tbtc-token.ts:104](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/ethereum/tbtc-token.ts#L104)
+[src/lib/ethereum/tmewc-token.ts:104](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/tmewc-token.ts#L104)
 
 ___
 
@@ -187,7 +187,7 @@ EthersContractHandle.getAddress
 
 #### Defined in
 
-[src/lib/ethereum/adapter.ts:112](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/ethereum/adapter.ts#L112)
+[src/lib/ethereum/adapter.ts:112](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/adapter.ts#L112)
 
 ___
 
@@ -203,11 +203,11 @@ ___
 
 #### Implementation of
 
-[TBTCToken](../interfaces/TBTCToken.md).[getChainIdentifier](../interfaces/TBTCToken.md#getchainidentifier)
+[TMEWCToken](../interfaces/TMEWCToken.md).[getChainIdentifier](../interfaces/TMEWCToken.md#getchainidentifier)
 
 #### Defined in
 
-[src/lib/ethereum/tbtc-token.ts:53](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/ethereum/tbtc-token.ts#L53)
+[src/lib/ethereum/tmewc-token.ts:53](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/tmewc-token.ts#L53)
 
 ___
 
@@ -241,7 +241,7 @@ EthersContractHandle.getEvents
 
 #### Defined in
 
-[src/lib/ethereum/adapter.ts:127](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/ethereum/adapter.ts#L127)
+[src/lib/ethereum/adapter.ts:127](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/adapter.ts#L127)
 
 ___
 
@@ -266,11 +266,11 @@ ___
 
 #### Implementation of
 
-[TBTCToken](../interfaces/TBTCToken.md).[requestRedemption](../interfaces/TBTCToken.md#requestredemption)
+[TMEWCToken](../interfaces/TMEWCToken.md).[requestRedemption](../interfaces/TMEWCToken.md#requestredemption)
 
 #### Defined in
 
-[src/lib/ethereum/tbtc-token.ts:71](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/ethereum/tbtc-token.ts#L71)
+[src/lib/ethereum/tmewc-token.ts:71](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/tmewc-token.ts#L71)
 
 ___
 
@@ -292,8 +292,8 @@ ___
 
 #### Implementation of
 
-[TBTCToken](../interfaces/TBTCToken.md).[totalSupply](../interfaces/TBTCToken.md#totalsupply)
+[TMEWCToken](../interfaces/TMEWCToken.md).[totalSupply](../interfaces/TMEWCToken.md#totalsupply)
 
 #### Defined in
 
-[src/lib/ethereum/tbtc-token.ts:61](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/ethereum/tbtc-token.ts#L61)
+[src/lib/ethereum/tmewc-token.ts:61](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/tmewc-token.ts#L61)

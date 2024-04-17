@@ -3,33 +3,33 @@ import {
   EthersContractDeployment,
   EthersContractHandle,
 } from "../ethereum/adapter"
-import { L2TBTC as L2TBTCTypechain } from "../../../typechain/L2TBTC"
-import { ChainIdentifier, Chains, L2TBTCToken } from "../contracts"
+import { L2TMEWC as L2TMEWCTypechain } from "../../../typechain/L2TMEWC"
+import { ChainIdentifier, Chains, L2TMEWCToken } from "../contracts"
 import { BigNumber } from "ethers"
 import { EthereumAddress } from "../ethereum"
 
 // TODO: Uncomment once Base native minting is available on Base mainnet.
-// import BaseL2TBTCTokenDeployment from "./artifacts/base/BaseTBTC.json"
-import BaseSepoliaL2TBTCTokenDeployment from "./artifacts/baseSepolia/BaseTBTC.json"
+// import BaseL2TMEWCTokenDeployment from "./artifacts/base/BaseTMEWC.json"
+import BaseSepoliaL2TMEWCTokenDeployment from "./artifacts/baseSepolia/BaseTMEWC.json"
 
 /**
- * Implementation of the Base L2TBTCToken handle.
- * @see {L2TBTCToken} for reference.
+ * Implementation of the Base L2TMEWCToken handle.
+ * @see {L2TMEWCToken} for reference.
  */
-export class BaseL2TBTCToken
-  extends EthersContractHandle<L2TBTCTypechain>
-  implements L2TBTCToken
+export class BaseL2TMEWCToken
+  extends EthersContractHandle<L2TMEWCTypechain>
+  implements L2TMEWCToken
 {
   constructor(config: EthersContractConfig, chainId: Chains.Base) {
     let deployment: EthersContractDeployment
 
     switch (chainId) {
       case Chains.Base.BaseSepolia:
-        deployment = BaseSepoliaL2TBTCTokenDeployment
+        deployment = BaseSepoliaL2TMEWCTokenDeployment
         break
       // TODO: Uncomment once Base native minting is available on Base mainnet.
       // case Chains.Base.Base:
-      //   deployment = BaseL2TBTCTokenDeployment
+      //   deployment = BaseL2TMEWCTokenDeployment
       //   break
       default:
         throw new Error("Unsupported deployment type")
@@ -40,7 +40,7 @@ export class BaseL2TBTCToken
 
   // eslint-disable-next-line valid-jsdoc
   /**
-   * @see {L2TBTCToken#getChainIdentifier}
+   * @see {L2TMEWCToken#getChainIdentifier}
    */
   getChainIdentifier(): ChainIdentifier {
     return EthereumAddress.from(this._instance.address)
@@ -48,7 +48,7 @@ export class BaseL2TBTCToken
 
   // eslint-disable-next-line valid-jsdoc
   /**
-   * @see {L2TBTCToken#balanceOf}
+   * @see {L2TMEWCToken#balanceOf}
    */
   balanceOf(identifier: ChainIdentifier): Promise<BigNumber> {
     return this._instance.balanceOf(`0x${identifier.identifierHex}`)

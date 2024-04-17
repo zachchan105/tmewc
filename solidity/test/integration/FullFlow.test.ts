@@ -7,10 +7,10 @@ import { utils } from "ethers"
 import type { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers"
 import { expect } from "chai"
 import type {
-  TBTC,
+  TMEWC,
   Bridge,
   Bank,
-  TBTCVault,
+  TMEWCVault,
   IRelay,
   IRandomBeacon,
   WalletRegistry,
@@ -40,11 +40,11 @@ const describeFn =
   process.env.NODE_ENV === "integration-test" ? describe : describe.skip
 
 describeFn("Integration Test - Full flow", async () => {
-  let tbtc: TBTC
+  let tmewc: TMEWC
   let bridge: Bridge
   let bridgeGovernance: BridgeGovernance
   let bank: Bank
-  let tbtcVault: TBTCVault
+  let tmewcVault: TMEWCVault
   let walletRegistry: WalletRegistry
   let randomBeacon: FakeContract<IRandomBeacon>
   let relay: FakeContract<IRelay>
@@ -59,10 +59,10 @@ describeFn("Integration Test - Full flow", async () => {
       deployer,
       governance,
       spvMaintainer,
-      tbtc,
+      tmewc,
       bridge,
       bank,
-      tbtcVault,
+      tmewcVault,
       walletRegistry,
       relay,
       randomBeacon,
@@ -119,16 +119,16 @@ describeFn("Integration Test - Full flow", async () => {
 
       describe("when a deposit is revealed", async () => {
         before(async () => {
-          revealDepositData.reveal.vault = tbtcVault.address
+          revealDepositData.reveal.vault = tmewcVault.address
 
-          // We use a deposit funding bitcoin transaction with a very low amount,
+          // We use a deposit funding meowcoin transaction with a very low amount,
           // so we need to update the dust and redemption thresholds to be below it.
           // TX max fees need to be adjusted as well given that they need to
           // be lower than dust thresholds.
 
-          // 0.001 BTC, 0.0001 BTC
+          // 0.001 MEWC, 0.0001 MEWC
           await updateDepositDustThresholdAndTxMaxFee(100_000, 10_000)
-          // 0.0005 BTC, 0.0001 BTC
+          // 0.0005 MEWC, 0.0001 MEWC
           await updateRedemptionParameters(50_000, 10_000, 5_000)
 
           const depositor = await impersonateAccount(
@@ -179,14 +179,14 @@ describeFn("Integration Test - Full flow", async () => {
               depositSweepData.sweepTx,
               depositSweepData.sweepProof,
               depositSweepData.mainUtxo,
-              tbtcVault.address
+              tmewcVault.address
             )
         })
 
-        it("should mint TBTC tokens for the depositor", async () => {
-          // Expect the depositor TBTC balance to be:
+        it("should mint TMEWC tokens for the depositor", async () => {
+          // Expect the depositor TMEWC balance to be:
           // deposited amount - tx fee - treasury fee = 100000 - 1600 - 50
-          expect(await tbtc.balanceOf(revealDepositData.depositor)).to.be.equal(
+          expect(await tmewc.balanceOf(revealDepositData.depositor)).to.be.equal(
             98350 * constants.satoshiMultiplier
           )
         })
@@ -194,7 +194,7 @@ describeFn("Integration Test - Full flow", async () => {
         it("should increase the balance of vault in the bank", async () => {
           // Expect the vault balance in the bank to be:
           // deposited amount - tx fee - treasury fee = 100000 - 1600 - 50
-          expect(await bank.balanceOf(tbtcVault.address)).to.be.equal(98350)
+          expect(await bank.balanceOf(tmewcVault.address)).to.be.equal(98350)
         })
 
         it("should update the main UTXO of the wallet", async () => {
@@ -227,11 +227,11 @@ describeFn("Integration Test - Full flow", async () => {
             txOutputValue: 98400,
           }
 
-          // Request redemption via TBTC Vault.
-          await tbtc
+          // Request redemption via TMEWC Vault.
+          await tmewc
             .connect(redeemer)
             .approveAndCall(
-              tbtcVault.address,
+              tmewcVault.address,
               redemptionAmount,
               ethers.utils.defaultAbiCoder.encode(
                 ["address", "bytes20", "bytes32", "uint32", "uint64", "bytes"],

@@ -1,4 +1,4 @@
-# @keep-network/tbtc-v2.ts
+# @keep-network/tmewc.ts
 
 ## Table of contents
 
@@ -17,7 +17,7 @@
 ### Classes
 
 - [BaseL2BitcoinDepositor](classes/BaseL2BitcoinDepositor.md)
-- [BaseL2TBTCToken](classes/BaseL2TBTCToken.md)
+- [BaseL2TMEWCToken](classes/BaseL2TMEWCToken.md)
 - [BitcoinTxHash](classes/BitcoinTxHash.md)
 - [CrossChainDepositor](classes/CrossChainDepositor.md)
 - [Deposit](classes/Deposit.md)
@@ -31,8 +31,8 @@
 - [EthereumCrossChainExtraDataEncoder](classes/EthereumCrossChainExtraDataEncoder.md)
 - [EthereumDepositorProxy](classes/EthereumDepositorProxy.md)
 - [EthereumL1BitcoinDepositor](classes/EthereumL1BitcoinDepositor.md)
-- [EthereumTBTCToken](classes/EthereumTBTCToken.md)
-- [EthereumTBTCVault](classes/EthereumTBTCVault.md)
+- [EthereumTMEWCToken](classes/EthereumTMEWCToken.md)
+- [EthereumTMEWCVault](classes/EthereumTMEWCVault.md)
 - [EthereumWalletRegistry](classes/EthereumWalletRegistry.md)
 - [Hex](classes/Hex.md)
 - [LedgerLiveEthereumSigner](classes/LedgerLiveEthereumSigner.md)
@@ -40,7 +40,7 @@
 - [OptimisticMinting](classes/OptimisticMinting.md)
 - [RedemptionsService](classes/RedemptionsService.md)
 - [Spv](classes/Spv.md)
-- [TBTC](classes/TBTC.md)
+- [TMEWC](classes/TMEWC.md)
 - [WalletTx](classes/WalletTx.md)
 
 ### Interfaces
@@ -66,10 +66,10 @@
 - [EthereumContractConfig](interfaces/EthereumContractConfig.md)
 - [L1BitcoinDepositor](interfaces/L1BitcoinDepositor.md)
 - [L2BitcoinDepositor](interfaces/L2BitcoinDepositor.md)
-- [L2TBTCToken](interfaces/L2TBTCToken.md)
+- [L2TMEWCToken](interfaces/L2TMEWCToken.md)
 - [RedemptionRequest](interfaces/RedemptionRequest.md)
-- [TBTCToken](interfaces/TBTCToken.md)
-- [TBTCVault](interfaces/TBTCVault.md)
+- [TMEWCToken](interfaces/TMEWCToken.md)
+- [TMEWCVault](interfaces/TMEWCVault.md)
 - [Wallet](interfaces/Wallet.md)
 - [WalletRegistry](interfaces/WalletRegistry.md)
 
@@ -98,7 +98,7 @@
 - [OptimisticMintingRequestedEvent](README.md#optimisticmintingrequestedevent)
 - [RedemptionRequestedEvent](README.md#redemptionrequestedevent)
 - [RetrierFn](README.md#retrierfn)
-- [TBTCContracts](README.md#tbtccontracts)
+- [TMEWCContracts](README.md#tmewccontracts)
 
 ### Variables
 
@@ -138,11 +138,11 @@
 
 Ƭ **BitcoinTxInput**: [`BitcoinTxOutpoint`](interfaces/BitcoinTxOutpoint.md) & \{ `scriptSig`: [`Hex`](classes/Hex.md)  }
 
-Data about a Bitcoin transaction input.
+Data about a Meowcoin transaction input.
 
 #### Defined in
 
-[src/lib/bitcoin/tx.ts:63](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/bitcoin/tx.ts#L63)
+[src/lib/meowcoin/tx.ts:63](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/meowcoin/tx.ts#L63)
 
 ___
 
@@ -150,11 +150,11 @@ ___
 
 Ƭ **BitcoinUtxo**: [`BitcoinTxOutpoint`](interfaces/BitcoinTxOutpoint.md) & \{ `value`: `BigNumber`  }
 
-Data about a Bitcoin unspent transaction output.
+Data about a Meowcoin unspent transaction output.
 
 #### Defined in
 
-[src/lib/bitcoin/tx.ts:93](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/bitcoin/tx.ts#L93)
+[src/lib/meowcoin/tx.ts:93](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/meowcoin/tx.ts#L93)
 
 ___
 
@@ -173,7 +173,7 @@ Type representing a mapping between specific L1 and L2 chains.
 
 #### Defined in
 
-[src/lib/contracts/chain.ts:26](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/chain.ts#L26)
+[src/lib/contracts/chain.ts:26](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/chain.ts#L26)
 
 ___
 
@@ -181,12 +181,12 @@ ___
 
 Ƭ **CrossChainContracts**: [`L2CrossChainContracts`](README.md#l2crosschaincontracts) & [`L1CrossChainContracts`](README.md#l1crosschaincontracts)
 
-Convenience type aggregating TBTC cross-chain contracts forming a connector
-between TBTC L1 ledger chain and a specific supported L2/side-chain.
+Convenience type aggregating TMEWC cross-chain contracts forming a connector
+between TMEWC L1 ledger chain and a specific supported L2/side-chain.
 
 #### Defined in
 
-[src/lib/contracts/cross-chain.ts:12](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/cross-chain.ts#L12)
+[src/lib/contracts/cross-chain.ts:12](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/cross-chain.ts#L12)
 
 ___
 
@@ -196,14 +196,14 @@ ___
 
 Mode of operation for the cross-chain depositor proxy:
 - [L2Transaction]: The proxy will reveal the deposit using a transaction on
-  the L2 chain. The tBTC system is responsible for relaying the deposit to
-  the tBTC L1 chain.
+  the L2 chain. The tMEWC system is responsible for relaying the deposit to
+  the tMEWC L1 chain.
 - [L1Transaction]: The proxy will directly reveal the deposit using a
-  transaction on the tBTC L1 chain.
+  transaction on the tMEWC L1 chain.
 
 #### Defined in
 
-[src/services/deposits/cross-chain.ts:19](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/deposits/cross-chain.ts#L19)
+[src/services/deposits/cross-chain.ts:19](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/deposits/cross-chain.ts#L19)
 
 ___
 
@@ -215,7 +215,7 @@ Represents an event emitted on deposit reveal to the on-chain bridge.
 
 #### Defined in
 
-[src/lib/contracts/bridge.ts:293](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/bridge.ts#L293)
+[src/lib/contracts/bridge.ts:293](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/bridge.ts#L293)
 
 ___
 
@@ -228,7 +228,7 @@ wallet registry.
 
 #### Defined in
 
-[src/lib/contracts/wallet-registry.ts:64](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/wallet-registry.ts#L64)
+[src/lib/contracts/wallet-registry.ts:64](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/wallet-registry.ts#L64)
 
 ___
 
@@ -241,7 +241,7 @@ wallet registry.
 
 #### Defined in
 
-[src/lib/contracts/wallet-registry.ts:79](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/wallet-registry.ts#L79)
+[src/lib/contracts/wallet-registry.ts:79](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/wallet-registry.ts#L79)
 
 ___
 
@@ -254,7 +254,7 @@ wallet registry.
 
 #### Defined in
 
-[src/lib/contracts/wallet-registry.ts:45](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/wallet-registry.ts#L45)
+[src/lib/contracts/wallet-registry.ts:45](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/wallet-registry.ts#L45)
 
 ___
 
@@ -266,7 +266,7 @@ Additional options used by the Electrum server.
 
 #### Defined in
 
-[src/lib/electrum/client.ts:49](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/electrum/client.ts#L49)
+[src/lib/electrum/client.ts:49](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/electrum/client.ts#L49)
 
 ___
 
@@ -292,7 +292,7 @@ True if the error matches, false otherwise.
 
 #### Defined in
 
-[src/lib/utils/backoff.ts:42](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/utils/backoff.ts#L42)
+[src/lib/utils/backoff.ts:42](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/utils/backoff.ts#L42)
 
 ___
 
@@ -306,7 +306,7 @@ or a Provider that works only in the read-only mode.
 
 #### Defined in
 
-[src/lib/ethereum/index.ts:34](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/ethereum/index.ts#L34)
+[src/lib/ethereum/index.ts:34](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/index.ts#L34)
 
 ___
 
@@ -332,7 +332,7 @@ A function that is called with execution status messages.
 
 #### Defined in
 
-[src/lib/utils/backoff.ts:56](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/utils/backoff.ts#L56)
+[src/lib/utils/backoff.ts:56](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/utils/backoff.ts#L56)
 
 ___
 
@@ -340,7 +340,7 @@ ___
 
 Ƭ **L1CrossChainContracts**: `Object`
 
-Aggregates L1-specific TBTC cross-chain contracts.
+Aggregates L1-specific TMEWC cross-chain contracts.
 
 #### Type declaration
 
@@ -350,7 +350,7 @@ Aggregates L1-specific TBTC cross-chain contracts.
 
 #### Defined in
 
-[src/lib/contracts/cross-chain.ts:25](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/cross-chain.ts#L25)
+[src/lib/contracts/cross-chain.ts:25](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/cross-chain.ts#L25)
 
 ___
 
@@ -358,11 +358,11 @@ ___
 
 Ƭ **L2Chain**: `Exclude`\<keyof typeof [`Chains`](modules/Chains.md), ``"Ethereum"``\>
 
-Layer 2 chains supported by tBTC v2 contracts.
+Layer 2 chains supported by tMEWC contracts.
 
 #### Defined in
 
-[src/lib/contracts/chain.ts:21](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/chain.ts#L21)
+[src/lib/contracts/chain.ts:21](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/chain.ts#L21)
 
 ___
 
@@ -370,18 +370,18 @@ ___
 
 Ƭ **L2CrossChainContracts**: `Object`
 
-Aggregates L2-specific TBTC cross-chain contracts.
+Aggregates L2-specific TMEWC cross-chain contracts.
 
 #### Type declaration
 
 | Name | Type |
 | :------ | :------ |
 | `l2BitcoinDepositor` | [`L2BitcoinDepositor`](interfaces/L2BitcoinDepositor.md) |
-| `l2TbtcToken` | [`L2TBTCToken`](interfaces/L2TBTCToken.md) |
+| `l2TmewcToken` | [`L2TMEWCToken`](interfaces/L2TMEWCToken.md) |
 
 #### Defined in
 
-[src/lib/contracts/cross-chain.ts:17](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/cross-chain.ts#L17)
+[src/lib/contracts/cross-chain.ts:17](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/cross-chain.ts#L17)
 
 ___
 
@@ -393,7 +393,7 @@ Represents an event emitted when new wallet is registered on the on-chain bridge
 
 #### Defined in
 
-[src/lib/contracts/bridge.ts:455](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/bridge.ts#L455)
+[src/lib/contracts/bridge.ts:455](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/bridge.ts#L455)
 
 ___
 
@@ -406,7 +406,7 @@ is cancelled on chain.
 
 #### Defined in
 
-[src/lib/contracts/tbtc-vault.ts:170](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/tbtc-vault.ts#L170)
+[src/lib/contracts/tmewc-vault.ts:170](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/tmewc-vault.ts#L170)
 
 ___
 
@@ -419,7 +419,7 @@ is finalized on chain.
 
 #### Defined in
 
-[src/lib/contracts/tbtc-vault.ts:186](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/tbtc-vault.ts#L186)
+[src/lib/contracts/tmewc-vault.ts:186](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/tmewc-vault.ts#L186)
 
 ___
 
@@ -439,7 +439,7 @@ Bridge.
 
 #### Defined in
 
-[src/lib/contracts/tbtc-vault.ts:120](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/tbtc-vault.ts#L120)
+[src/lib/contracts/tmewc-vault.ts:120](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/tmewc-vault.ts#L120)
 
 ___
 
@@ -452,7 +452,7 @@ on chain.
 
 #### Defined in
 
-[src/lib/contracts/tbtc-vault.ts:136](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/tbtc-vault.ts#L136)
+[src/lib/contracts/tmewc-vault.ts:136](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/tmewc-vault.ts#L136)
 
 ___
 
@@ -464,7 +464,7 @@ Represents an event emitted on redemption request.
 
 #### Defined in
 
-[src/lib/contracts/bridge.ts:344](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/bridge.ts#L344)
+[src/lib/contracts/bridge.ts:344](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/bridge.ts#L344)
 
 ___
 
@@ -494,28 +494,28 @@ ___
 
 #### Defined in
 
-[src/lib/utils/backoff.ts:51](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/utils/backoff.ts#L51)
+[src/lib/utils/backoff.ts:51](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/utils/backoff.ts#L51)
 
 ___
 
-### TBTCContracts
+### TMEWCContracts
 
-Ƭ **TBTCContracts**: `Object`
+Ƭ **TMEWCContracts**: `Object`
 
-Convenience type aggregating all TBTC core contracts.
+Convenience type aggregating all TMEWC core contracts.
 
 #### Type declaration
 
 | Name | Type |
 | :------ | :------ |
 | `bridge` | [`Bridge`](interfaces/Bridge.md) |
-| `tbtcToken` | [`TBTCToken`](interfaces/TBTCToken.md) |
-| `tbtcVault` | [`TBTCVault`](interfaces/TBTCVault.md) |
+| `tmewcToken` | [`TMEWCToken`](interfaces/TMEWCToken.md) |
+| `tmewcVault` | [`TMEWCVault`](interfaces/TMEWCVault.md) |
 | `walletRegistry` | [`WalletRegistry`](interfaces/WalletRegistry.md) |
 
 #### Defined in
 
-[src/lib/contracts/index.ts:19](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/index.ts#L19)
+[src/lib/contracts/index.ts:19](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/index.ts#L19)
 
 ## Variables
 
@@ -523,7 +523,7 @@ Convenience type aggregating all TBTC core contracts.
 
 • `Const` **BitcoinAddressConverter**: `Object`
 
-Utility functions allowing to perform Bitcoin address conversions.
+Utility functions allowing to perform Meowcoin address conversions.
 
 #### Type declaration
 
@@ -537,7 +537,7 @@ Utility functions allowing to perform Bitcoin address conversions.
 
 #### Defined in
 
-[src/lib/bitcoin/address.ts:112](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/bitcoin/address.ts#L112)
+[src/lib/meowcoin/address.ts:112](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/meowcoin/address.ts#L112)
 
 ___
 
@@ -545,7 +545,7 @@ ___
 
 • `Const` **BitcoinCompactSizeUint**: `Object`
 
-Utility functions allowing to deal with Bitcoin compact size uints.
+Utility functions allowing to deal with Meowcoin compact size uints.
 
 #### Type declaration
 
@@ -555,7 +555,7 @@ Utility functions allowing to deal with Bitcoin compact size uints.
 
 #### Defined in
 
-[src/lib/bitcoin/csuint.ts:50](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/bitcoin/csuint.ts#L50)
+[src/lib/meowcoin/csuint.ts:50](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/meowcoin/csuint.ts#L50)
 
 ___
 
@@ -563,7 +563,7 @@ ___
 
 • `Const` **BitcoinHashUtils**: `Object`
 
-Utility functions allowing to deal with Bitcoin hashes.
+Utility functions allowing to deal with Meowcoin hashes.
 
 #### Type declaration
 
@@ -576,7 +576,7 @@ Utility functions allowing to deal with Bitcoin hashes.
 
 #### Defined in
 
-[src/lib/bitcoin/hash.ts:52](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/bitcoin/hash.ts#L52)
+[src/lib/meowcoin/hash.ts:52](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/meowcoin/hash.ts#L52)
 
 ___
 
@@ -584,7 +584,7 @@ ___
 
 • `Const` **BitcoinHeaderSerializer**: `Object`
 
-Utility functions allowing to serialize and deserialize Bitcoin block headers.
+Utility functions allowing to serialize and deserialize Meowcoin block headers.
 
 #### Type declaration
 
@@ -596,7 +596,7 @@ Utility functions allowing to serialize and deserialize Bitcoin block headers.
 
 #### Defined in
 
-[src/lib/bitcoin/header.ts:109](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/bitcoin/header.ts#L109)
+[src/lib/meowcoin/header.ts:109](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/meowcoin/header.ts#L109)
 
 ___
 
@@ -604,7 +604,7 @@ ___
 
 • `Const` **BitcoinLocktimeUtils**: `Object`
 
-Utility functions allowing to deal with Bitcoin locktime.
+Utility functions allowing to deal with Meowcoin locktime.
 
 #### Type declaration
 
@@ -615,7 +615,7 @@ Utility functions allowing to deal with Bitcoin locktime.
 
 #### Defined in
 
-[src/lib/bitcoin/tx.ts:234](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/bitcoin/tx.ts#L234)
+[src/lib/meowcoin/tx.ts:234](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/meowcoin/tx.ts#L234)
 
 ___
 
@@ -623,7 +623,7 @@ ___
 
 • `Const` **BitcoinPrivateKeyUtils**: `Object`
 
-Utility functions allowing to perform operations on Bitcoin ECDSA private keys.
+Utility functions allowing to perform operations on Meowcoin ECDSA private keys.
 
 #### Type declaration
 
@@ -633,7 +633,7 @@ Utility functions allowing to perform operations on Bitcoin ECDSA private keys.
 
 #### Defined in
 
-[src/lib/bitcoin/ecdsa-key.ts:77](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/bitcoin/ecdsa-key.ts#L77)
+[src/lib/meowcoin/ecdsa-key.ts:77](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/meowcoin/ecdsa-key.ts#L77)
 
 ___
 
@@ -641,7 +641,7 @@ ___
 
 • `Const` **BitcoinPublicKeyUtils**: `Object`
 
-Utility functions allowing to perform operations on Bitcoin ECDSA public keys.
+Utility functions allowing to perform operations on Meowcoin ECDSA public keys.
 
 #### Type declaration
 
@@ -652,7 +652,7 @@ Utility functions allowing to perform operations on Bitcoin ECDSA public keys.
 
 #### Defined in
 
-[src/lib/bitcoin/ecdsa-key.ts:51](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/bitcoin/ecdsa-key.ts#L51)
+[src/lib/meowcoin/ecdsa-key.ts:51](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/meowcoin/ecdsa-key.ts#L51)
 
 ___
 
@@ -660,7 +660,7 @@ ___
 
 • `Const` **BitcoinScriptUtils**: `Object`
 
-Utility functions allowing to deal with Bitcoin scripts.
+Utility functions allowing to deal with Meowcoin scripts.
 
 #### Type declaration
 
@@ -673,7 +673,7 @@ Utility functions allowing to deal with Bitcoin scripts.
 
 #### Defined in
 
-[src/lib/bitcoin/script.ts:63](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/bitcoin/script.ts#L63)
+[src/lib/meowcoin/script.ts:63](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/meowcoin/script.ts#L63)
 
 ___
 
@@ -681,7 +681,7 @@ ___
 
 • `Const` **BitcoinTargetConverter**: `Object`
 
-Utility functions allowing to perform Bitcoin target conversions.
+Utility functions allowing to perform Meowcoin target conversions.
 
 #### Type declaration
 
@@ -692,7 +692,7 @@ Utility functions allowing to perform Bitcoin target conversions.
 
 #### Defined in
 
-[src/lib/bitcoin/header.ts:268](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/bitcoin/header.ts#L268)
+[src/lib/meowcoin/header.ts:268](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/meowcoin/header.ts#L268)
 
 ___
 
@@ -700,11 +700,11 @@ ___
 
 • `Const` **ChainMappings**: [`ChainMapping`](README.md#chainmapping)[]
 
-List of chain mappings supported by tBTC v2 contracts.
+List of chain mappings supported by tMEWC contracts.
 
 #### Defined in
 
-[src/lib/contracts/chain.ts:40](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/chain.ts#L40)
+[src/lib/contracts/chain.ts:40](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/chain.ts#L40)
 
 ## Functions
 
@@ -721,17 +721,17 @@ has accumulated the required number of confirmations.
 | :------ | :------ | :------ |
 | `transactionHash` | [`BitcoinTxHash`](classes/BitcoinTxHash.md) | Hash of the transaction being proven. |
 | `requiredConfirmations` | `number` | Required number of confirmations. |
-| `bitcoinClient` | [`BitcoinClient`](interfaces/BitcoinClient.md) | Bitcoin client used to interact with the network. |
+| `bitcoinClient` | [`BitcoinClient`](interfaces/BitcoinClient.md) | Meowcoin client used to interact with the network. |
 
 #### Returns
 
 `Promise`\<[`BitcoinTx`](interfaces/BitcoinTx.md) & [`BitcoinSpvProof`](interfaces/BitcoinSpvProof.md)\>
 
-Bitcoin transaction along with the inclusion proof.
+Meowcoin transaction along with the inclusion proof.
 
 #### Defined in
 
-[src/lib/bitcoin/spv.ts:75](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/bitcoin/spv.ts#L75)
+[src/lib/meowcoin/spv.ts:75](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/meowcoin/spv.ts#L75)
 
 ___
 
@@ -781,7 +781,7 @@ A function that can retry any function.
 
 #### Defined in
 
-[src/lib/utils/backoff.ts:89](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/utils/backoff.ts#L89)
+[src/lib/utils/backoff.ts:89](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/utils/backoff.ts#L89)
 
 ___
 
@@ -805,7 +805,7 @@ Chain ID as a string.
 
 #### Defined in
 
-[src/lib/ethereum/index.ts:41](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/ethereum/index.ts#L41)
+[src/lib/ethereum/index.ts:41](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/index.ts#L41)
 
 ___
 
@@ -813,14 +813,14 @@ ___
 
 ▸ **computeElectrumScriptHash**(`script`): `string`
 
-Converts a Bitcoin script to an Electrum script hash. See
+Converts a Meowcoin script to an Electrum script hash. See
 [Electrum protocol][https://electrumx.readthedocs.io/en/stable/protocol-basics.html#script-hashes](https://electrumx.readthedocs.io/en/stable/protocol-basics.html#script-hashes)
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `script` | [`Hex`](classes/Hex.md) | Bitcoin script as hex string |
+| `script` | [`Hex`](classes/Hex.md) | Meowcoin script as hex string |
 
 #### Returns
 
@@ -830,7 +830,7 @@ Electrum script hash as a hex string.
 
 #### Defined in
 
-[src/lib/electrum/client.ts:668](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/electrum/client.ts#L668)
+[src/lib/electrum/client.ts:668](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/electrum/client.ts#L668)
 
 ___
 
@@ -860,7 +860,7 @@ Throws an error if the address of the signer is not a proper
 
 #### Defined in
 
-[src/lib/ethereum/index.ts:63](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/ethereum/index.ts#L63)
+[src/lib/ethereum/index.ts:63](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/index.ts#L63)
 
 ___
 
@@ -868,7 +868,7 @@ ___
 
 ▸ **ethereumCrossChainContractsLoader**(`signer`, `chainId`): `Promise`\<[`CrossChainContractsLoader`](interfaces/CrossChainContractsLoader.md)\>
 
-Creates the Ethereum implementation of tBTC cross-chain contracts loader.
+Creates the Ethereum implementation of tMEWC cross-chain contracts loader.
 The provided signer is attached to loaded L1 contracts. The given
 Ethereum chain ID is used to load the L1 contracts and resolve the chain
 mapping that provides corresponding L2 chains IDs.
@@ -884,7 +884,7 @@ mapping that provides corresponding L2 chains IDs.
 
 `Promise`\<[`CrossChainContractsLoader`](interfaces/CrossChainContractsLoader.md)\>
 
-Loader for tBTC cross-chain contracts.
+Loader for tMEWC cross-chain contracts.
 
 **`Throws`**
 
@@ -893,7 +893,7 @@ Throws an error if the signer's Ethereum chain ID is other than
 
 #### Defined in
 
-[src/lib/ethereum/index.ts:118](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/ethereum/index.ts#L118)
+[src/lib/ethereum/index.ts:118](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/index.ts#L118)
 
 ___
 
@@ -918,7 +918,7 @@ Transaction data with fields represented as un-prefixed hex strings.
 
 #### Defined in
 
-[src/lib/bitcoin/tx.ts:133](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/bitcoin/tx.ts#L133)
+[src/lib/meowcoin/tx.ts:133](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/meowcoin/tx.ts#L133)
 
 ___
 
@@ -926,7 +926,7 @@ ___
 
 ▸ **loadBaseCrossChainContracts**(`signer`, `chainId`): `Promise`\<[`L2CrossChainContracts`](README.md#l2crosschaincontracts)\>
 
-Loads Base implementation of tBTC cross-chain contracts for the given Base
+Loads Base implementation of tMEWC cross-chain contracts for the given Base
 chain ID and attaches the given signer there.
 
 #### Parameters
@@ -949,38 +949,38 @@ Throws an error if the signer's Base chain ID is other than
 
 #### Defined in
 
-[src/lib/base/index.ts:22](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/base/index.ts#L22)
+[src/lib/base/index.ts:22](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/base/index.ts#L22)
 
 ___
 
 ### loadEthereumCoreContracts
 
-▸ **loadEthereumCoreContracts**(`signer`, `chainId`): `Promise`\<[`TBTCContracts`](README.md#tbtccontracts)\>
+▸ **loadEthereumCoreContracts**(`signer`, `chainId`): `Promise`\<[`TMEWCContracts`](README.md#tmewccontracts)\>
 
-Loads Ethereum implementation of tBTC core contracts for the given Ethereum
+Loads Ethereum implementation of tMEWC core contracts for the given Ethereum
 chain ID and attaches the given signer there.
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `signer` | [`EthereumSigner`](README.md#ethereumsigner) | Signer that should be attached to tBTC contracts. |
+| `signer` | [`EthereumSigner`](README.md#ethereumsigner) | Signer that should be attached to tMEWC contracts. |
 | `chainId` | [`Ethereum`](enums/Chains.Ethereum.md) | Ethereum chain ID. |
 
 #### Returns
 
-`Promise`\<[`TBTCContracts`](README.md#tbtccontracts)\>
+`Promise`\<[`TMEWCContracts`](README.md#tmewccontracts)\>
 
-Handle to tBTC core contracts.
+Handle to tMEWC core contracts.
 
 **`Throws`**
 
 Throws an error if the signer's Ethereum chain ID is other than
-        the one used to load tBTC contracts.
+        the one used to load tMEWC contracts.
 
 #### Defined in
 
-[src/lib/ethereum/index.ts:82](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/ethereum/index.ts#L82)
+[src/lib/ethereum/index.ts:82](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/index.ts#L82)
 
 ___
 
@@ -1024,7 +1024,7 @@ Packed parameters.
 
 #### Defined in
 
-[src/lib/ethereum/bridge.ts:688](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/ethereum/bridge.ts#L688)
+[src/lib/ethereum/bridge.ts:688](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/ethereum/bridge.ts#L688)
 
 ___
 
@@ -1049,7 +1049,7 @@ Always returns true.
 
 #### Defined in
 
-[src/lib/utils/backoff.ts:9](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/utils/backoff.ts#L9)
+[src/lib/utils/backoff.ts:9](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/utils/backoff.ts#L9)
 
 ___
 
@@ -1075,7 +1075,7 @@ Matcher function that returns false if error matches one of the patterns.
 
 #### Defined in
 
-[src/lib/utils/backoff.ts:20](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/utils/backoff.ts#L20)
+[src/lib/utils/backoff.ts:20](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/utils/backoff.ts#L20)
 
 ___
 
@@ -1090,7 +1090,7 @@ by the `bitcoinjs-lib` library.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `bitcoinNetwork` | [`BitcoinNetwork`](enums/BitcoinNetwork-1.md) | Specified Bitcoin network. |
+| `bitcoinNetwork` | [`BitcoinNetwork`](enums/BitcoinNetwork-1.md) | Specified Meowcoin network. |
 
 #### Returns
 
@@ -1104,7 +1104,7 @@ An error if the network is not supported by `bitcoinjs-lib`.
 
 #### Defined in
 
-[src/lib/bitcoin/network.ts:55](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/bitcoin/network.ts#L55)
+[src/lib/meowcoin/network.ts:55](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/meowcoin/network.ts#L55)
 
 ___
 
@@ -1114,15 +1114,15 @@ ___
 
 Validates a chain of consecutive block headers by checking each header's
 difficulty, hash, and continuity with the previous header. This function can
-be used to validate a series of Bitcoin block headers for their validity.
+be used to validate a series of Meowcoin block headers for their validity.
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `headers` | [`BitcoinHeader`](interfaces/BitcoinHeader.md)[] | An array of block headers that form the chain to be validated. |
-| `previousEpochDifficulty` | `BigNumber` | The difficulty of the previous Bitcoin epoch. |
-| `currentEpochDifficulty` | `BigNumber` | The difficulty of the current Bitcoin epoch. |
+| `previousEpochDifficulty` | `BigNumber` | The difficulty of the previous Meowcoin epoch. |
+| `currentEpochDifficulty` | `BigNumber` | The difficulty of the current Meowcoin epoch. |
 
 #### Returns
 
@@ -1132,11 +1132,11 @@ An empty return value.
 
 **`Dev`**
 
-The block headers must come from Bitcoin epochs with difficulties marked
-     by the previous and current difficulties. If a Bitcoin difficulty relay
+The block headers must come from Meowcoin epochs with difficulties marked
+     by the previous and current difficulties. If a Meowcoin difficulty relay
      is used to provide these values and the relay is up-to-date, only the
      recent block headers will pass validation. Block headers older than the
-     current and previous Bitcoin epochs will fail.
+     current and previous Meowcoin epochs will fail.
 
 **`Throws`**
 
@@ -1145,7 +1145,7 @@ If any of the block headers are invalid, or if the block
 
 #### Defined in
 
-[src/lib/bitcoin/header.ts:132](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/bitcoin/header.ts#L132)
+[src/lib/meowcoin/header.ts:132](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/meowcoin/header.ts#L132)
 
 ___
 
@@ -1153,7 +1153,7 @@ ___
 
 ▸ **validateBitcoinSpvProof**(`transactionHash`, `requiredConfirmations`, `previousDifficulty`, `currentDifficulty`, `bitcoinClient`): `Promise`\<`void`\>
 
-Proves that a transaction with the given hash is included in the Bitcoin
+Proves that a transaction with the given hash is included in the Meowcoin
 blockchain by validating the transaction's inclusion in the Merkle tree and
 verifying that the block containing the transaction has enough confirmations.
 
@@ -1163,9 +1163,9 @@ verifying that the block containing the transaction has enough confirmations.
 | :------ | :------ | :------ |
 | `transactionHash` | [`BitcoinTxHash`](classes/BitcoinTxHash.md) | The hash of the transaction to be validated. |
 | `requiredConfirmations` | `number` | The number of confirmations required for the transaction to be considered valid. The transaction has 1 confirmation when it is in the block at the current blockchain tip. Every subsequent block added to the blockchain is one additional confirmation. |
-| `previousDifficulty` | `BigNumber` | The difficulty of the previous Bitcoin epoch. |
-| `currentDifficulty` | `BigNumber` | The difficulty of the current Bitcoin epoch. |
-| `bitcoinClient` | [`BitcoinClient`](interfaces/BitcoinClient.md) | The client for interacting with the Bitcoin blockchain. |
+| `previousDifficulty` | `BigNumber` | The difficulty of the previous Meowcoin epoch. |
+| `currentDifficulty` | `BigNumber` | The difficulty of the current Meowcoin epoch. |
+| `bitcoinClient` | [`BitcoinClient`](interfaces/BitcoinClient.md) | The client for interacting with the Meowcoin blockchain. |
 
 #### Returns
 
@@ -1175,7 +1175,7 @@ An empty return value.
 
 **`Throws`**
 
-If the transaction is not included in the Bitcoin blockchain
+If the transaction is not included in the Meowcoin blockchain
        or if the block containing the transaction does not have enough
        confirmations.
 
@@ -1185,7 +1185,7 @@ The function should be used within a try-catch block.
 
 #### Defined in
 
-[src/lib/bitcoin/spv.ts:180](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/bitcoin/spv.ts#L180)
+[src/lib/meowcoin/spv.ts:180](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/meowcoin/spv.ts#L180)
 
 ___
 
@@ -1212,4 +1212,4 @@ This function does not validate the depositor's identifier as its
 
 #### Defined in
 
-[src/lib/contracts/bridge.ts:233](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/bridge.ts#L233)
+[src/lib/contracts/bridge.ts:233](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/bridge.ts#L233)

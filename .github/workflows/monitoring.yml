@@ -109,7 +109,7 @@ jobs:
           context: ./monitoring
           push: ${{ github.event.inputs.environment != 'local' }}
           tags: |
-            ${{ env.GCR_REGISTRY_URL || 'local' }}/${{ env.GOOGLE_PROJECT_ID || 'local' }}/tbtc-v2-monitoring
+            ${{ env.GCR_REGISTRY_URL || 'local' }}/${{ env.GOOGLE_PROJECT_ID || 'local' }}/tmewc-monitoring
 
       # Temporary workaround - move cache instead of copying. See:
       # - https://github.com/docker/build-push-action/issues/252

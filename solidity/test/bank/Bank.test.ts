@@ -1403,20 +1403,20 @@ describe("Bank", () => {
     const totalDepositedAmount = toSatoshis(30) // 19 + 11
 
     let vault
-    let tbtc
+    let tmewc
 
     before(async () => {
       await createSnapshot()
 
-      const TBTC = await ethers.getContractFactory("TBTC")
-      tbtc = await TBTC.deploy()
-      await tbtc.deployed()
+      const TMEWC = await ethers.getContractFactory("TMEWC")
+      tmewc = await TMEWC.deploy()
+      await tmewc.deployed()
 
-      const Vault = await ethers.getContractFactory("TBTCVault")
-      vault = await Vault.deploy(bank.address, tbtc.address, bridge.address)
+      const Vault = await ethers.getContractFactory("TMEWCVault")
+      vault = await Vault.deploy(bank.address, tmewc.address, bridge.address)
       await vault.deployed()
 
-      await tbtc.connect(deployer).transferOwnership(vault.address)
+      await tmewc.connect(deployer).transferOwnership(vault.address)
     })
 
     after(async () => {
@@ -1503,9 +1503,9 @@ describe("Bank", () => {
       })
 
       it("should call the vault", async () => {
-        expect(await tbtc.balanceOf(depositor1)).to.equal(to1e18(19))
-        expect(await tbtc.balanceOf(depositor2)).to.equal(to1e18(11))
-        expect(await tbtc.totalSupply()).to.equal(to1e18(30)) // 19 + 11
+        expect(await tmewc.balanceOf(depositor1)).to.equal(to1e18(19))
+        expect(await tmewc.balanceOf(depositor2)).to.equal(to1e18(11))
+        expect(await tmewc.totalSupply()).to.equal(to1e18(30)) // 19 + 11
       })
     })
   })
@@ -1558,7 +1558,7 @@ describe("Bank", () => {
                 "EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"
               )
             ),
-            keccak256(toUtf8Bytes("TBTC Bank")),
+            keccak256(toUtf8Bytes("TMEWC Bank")),
             keccak256(toUtf8Bytes("1")),
             hardhatNetworkId,
             bank.address,

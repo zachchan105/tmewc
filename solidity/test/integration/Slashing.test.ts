@@ -13,9 +13,9 @@ import type {
 import type { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers"
 
 import type {
-  TBTC,
+  TMEWC,
   Bridge,
-  TBTCVault,
+  TMEWCVault,
   IRelay,
   IRandomBeacon,
   WalletRegistry,
@@ -49,10 +49,10 @@ const describeFn =
   process.env.NODE_ENV === "integration-test" ? describe : describe.skip
 
 describeFn("Integration Test - Slashing", async () => {
-  let tbtc: TBTC
+  let tmewc: TMEWC
   let bridge: Bridge
   let bridgeGovernance: BridgeGovernance
-  let tbtcVault: TBTCVault
+  let tmewcVault: TMEWCVault
   let staking: Contract
   let walletRegistry: WalletRegistry
   let randomBeacon: FakeContract<IRandomBeacon>
@@ -69,9 +69,9 @@ describeFn("Integration Test - Slashing", async () => {
       deployer,
       governance,
       spvMaintainer,
-      tbtc,
+      tmewc,
       bridge,
-      tbtcVault,
+      tmewcVault,
       staking,
       walletRegistry,
       relay,
@@ -239,18 +239,18 @@ describeFn("Integration Test - Slashing", async () => {
         ))
 
         const { fundingTx, depositor, reveal } = SingleP2SHDeposit.deposits[0]
-        reveal.vault = tbtcVault.address
+        reveal.vault = tmewcVault.address
 
-        // We use a deposit funding bitcoin transaction with a very low amount,
+        // We use a deposit funding meowcoin transaction with a very low amount,
         // so we need to update the dust and redemption thresholds to be below it.
         // TX max fees need to be adjusted as well given that they need to
         // be lower than dust thresholds.
-        await updateDepositDustThresholdAndTxMaxFee(10_000, 2_000) // 0.0001 BTC, 0.00002 BTC
+        await updateDepositDustThresholdAndTxMaxFee(10_000, 2_000) // 0.0001 MEWC, 0.00002 MEWC
         await updateRedemptionDustThresholdAndTxMaxFeeAndMovingFundsDustThreshold(
           2_000,
           200,
           100
-        ) // 0.00002 BTC, 0.000002 BTC
+        ) // 0.00002 MEWC, 0.000002 MEWC
 
         const depositorSigner = await impersonateAccount(depositor, {
           from: governance,
@@ -272,7 +272,7 @@ describeFn("Integration Test - Slashing", async () => {
             SingleP2SHDeposit.sweepTx,
             SingleP2SHDeposit.sweepProof,
             SingleP2SHDeposit.mainUtxo,
-            tbtcVault.address
+            tmewcVault.address
           )
 
         const newMainUtxo: UTXOStruct = {
@@ -289,11 +289,11 @@ describeFn("Integration Test - Slashing", async () => {
         const redemptionAmount = 3_000 * constants.satoshiMultiplier
         redeemerOutputScript =
           "0x17a91486884e6be1525dab5ae0b451bd2c72cee67dcf4187"
-        // Request redemption via TBTC Vault.
-        await tbtc
+        // Request redemption via TMEWC Vault.
+        await tmewc
           .connect(redeemer)
           .approveAndCall(
-            tbtcVault.address,
+            tmewcVault.address,
             redemptionAmount,
             ethers.utils.defaultAbiCoder.encode(
               ["address", "bytes20", "bytes32", "uint32", "uint64", "bytes"],
@@ -403,13 +403,13 @@ describeFn("Integration Test - Slashing", async () => {
         ))
 
         const { fundingTx, depositor, reveal } = SingleP2SHDeposit.deposits[0]
-        reveal.vault = tbtcVault.address
+        reveal.vault = tmewcVault.address
 
-        // We use a deposit funding bitcoin transaction with a very low amount,
+        // We use a deposit funding meowcoin transaction with a very low amount,
         // so we need to update the dust threshold to be below it.
         // TX max fee needs to be updated as well given it has to be lower
         // than the dust threshold.
-        await updateDepositDustThresholdAndTxMaxFee(10_000, 2_000) // 0.0001 BTC, 0.00002 BTC
+        await updateDepositDustThresholdAndTxMaxFee(10_000, 2_000) // 0.0001 MEWC, 0.00002 MEWC
 
         const depositorSigner = await impersonateAccount(depositor, {
           from: governance,
@@ -432,7 +432,7 @@ describeFn("Integration Test - Slashing", async () => {
             SingleP2SHDeposit.sweepTx,
             SingleP2SHDeposit.sweepProof,
             SingleP2SHDeposit.mainUtxo,
-            tbtcVault.address
+            tmewcVault.address
           )
 
         // Switch the wallet to moving funds state by reporting wallet members

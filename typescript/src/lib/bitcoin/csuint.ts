@@ -19,7 +19,7 @@ function read(varLenData: Hex): {
   }
 
   // The varLenData is prefixed with the compact size uint. According to the docs
-  // (https://developer.bitcoin.org/reference/transactions.html#compactsize-unsigned-integers)
+  // (https://developer.meowcoin.org/reference/transactions.html#compactsize-unsigned-integers)
   // a compact size uint can be 1, 3, 5 or 9 bytes. To determine the exact length,
   // we need to look at the discriminant byte which is always the first byte of
   // the compact size uint.
@@ -45,7 +45,7 @@ function read(varLenData: Hex): {
 }
 
 /**
- * Utility functions allowing to deal with Bitcoin compact size uints.
+ * Utility functions allowing to deal with Meowcoin compact size uints.
  */
 export const BitcoinCompactSizeUint = {
   read,

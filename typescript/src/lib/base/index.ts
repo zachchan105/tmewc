@@ -3,15 +3,15 @@ import {
   ethereumAddressFromSigner,
   EthereumSigner,
 } from "../ethereum"
-import { BaseL2BitcoinDepositor } from "./l2-bitcoin-depositor"
-import { BaseL2TBTCToken } from "./l2-tbtc-token"
+import { BaseL2BitcoinDepositor } from "./l2-meowcoin-depositor"
+import { BaseL2TMEWCToken } from "./l2-tmewc-token"
 import { Chains, L2CrossChainContracts } from "../contracts"
 
-export * from "./l2-bitcoin-depositor"
-export * from "./l2-tbtc-token"
+export * from "./l2-meowcoin-depositor"
+export * from "./l2-tmewc-token"
 
 /**
- * Loads Base implementation of tBTC cross-chain contracts for the given Base
+ * Loads Base implementation of tMEWC cross-chain contracts for the given Base
  * chain ID and attaches the given signer there.
  * @param signer Signer that should be attached to the contracts.
  * @param chainId Base chain ID.
@@ -36,10 +36,10 @@ export async function loadBaseCrossChainContracts(
   )
   l2BitcoinDepositor.setDepositOwner(await ethereumAddressFromSigner(signer))
 
-  const l2TbtcToken = new BaseL2TBTCToken({ signerOrProvider: signer }, chainId)
+  const l2TmewcToken = new BaseL2TMEWCToken({ signerOrProvider: signer }, chainId)
 
   return {
     l2BitcoinDepositor,
-    l2TbtcToken,
+    l2TmewcToken,
   }
 }

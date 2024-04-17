@@ -77,12 +77,12 @@ interface IERC20Metadata {
 }
 
 /// @title CurveVoterProxyStrategy
-/// @notice This strategy is meant to be used with the Curve tBTC v2 pool vault.
+/// @notice This strategy is meant to be used with the Curve tMEWC pool vault.
 ///         The vault's underlying token (a.k.a. want token) should be the LP
-///         token of the Curve tBTC v2 pool. This strategy borrows the vault's
+///         token of the Curve tMEWC pool. This strategy borrows the vault's
 ///         underlying token up to the debt limit configured for this strategy
 ///         in the vault. In order to make the profit, the strategy deposits
-///         the borrowed tokens into the gauge contract of the Curve tBTC v2 pool.
+///         the borrowed tokens into the gauge contract of the Curve tMEWC pool.
 ///         Depositing tokens in the gauge generates regular CRV rewards and
 ///         can provide additional rewards (denominated in another token)
 ///         if the gauge stakes its deposits into the Synthetix staking
@@ -92,24 +92,24 @@ interface IERC20Metadata {
 ///         it takes a small portion (defined by keepCRV param) and locks it
 ///         into the Curve vote escrow (via CurveYCRVVoter contract) to gain CRV
 ///         boost and increase future gains. The rest of CRV tokens is used to
-///         buy wBTC via a decentralized exchange. If the pool's gauge supports
+///         buy wMEWC via a decentralized exchange. If the pool's gauge supports
 ///         additional rewards from Synthetix staking, the strategy claims
-///         that reward too and uses obtained reward tokens to buy more wBTC.
-///         At the end, the strategy takes acquired wBTC and deposits them
-///         to the Curve tBTC v2 pool. This way it obtains new LP tokens
+///         that reward too and uses obtained reward tokens to buy more wMEWC.
+///         At the end, the strategy takes acquired wMEWC and deposits them
+///         to the Curve tMEWC pool. This way it obtains new LP tokens
 ///         the vault is interested for, and makes the profit in result.
 ///         At this stage, the strategy may repay some debt back to the vault,
 ///         if needed. The entire cycle repeats for the strategy lifetime so
 ///         all gains are constantly reinvested. Worth to flag that current
-///         implementation uses wBTC as the intermediary token because
-///         of its liquidity and ubiquity in BTC-based Curve pools.
+///         implementation uses wMEWC as the intermediary token because
+///         of its liquidity and ubiquity in MEWC-based Curve pools.
 /// @dev Implementation is based on:
 ///      - General Yearn strategy template
 ///        https://github.com/yearn/brownie-strategy-mix
 ///      - Curve voter proxy strategy template
 ///        https://github.com/orbxball/curve-voter-proxy
-///      - Curve voter proxy implementation for tBTC v1 vault
-///        https://github.com/orbxball/btc-curve-voter-proxy
+///      - Curve voter proxy implementation for tMEWC v1 vault
+///        https://github.com/orbxball/mewc-curve-voter-proxy
 contract CurveVoterProxyStrategy is BaseStrategy {
     using SafeERC20 for IERC20;
     using Address for address;
@@ -135,23 +135,23 @@ contract CurveVoterProxyStrategy is BaseStrategy {
     // Address of the WETH token contract.
     address public constant wethToken =
         address(0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2);
-    // Address of the WBTC token contract.
-    address public constant wbtcToken =
+    // Address of the WMEWC token contract.
+    address public constant wmewcToken =
         address(0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599);
     // Address of the Uniswap V2 router contract.
     address public constant uniswap =
         address(0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D);
 
-    // Address of the depositor contract for the tBTC v2 Curve pool.
-    address public immutable tbtcCurvePoolDepositor;
-    // Address of the gauge contract for the tBTC v2 Curve pool.
-    address public immutable tbtcCurvePoolGauge;
+    // Address of the depositor contract for the tMEWC Curve pool.
+    address public immutable tmewcCurvePoolDepositor;
+    // Address of the gauge contract for the tMEWC Curve pool.
+    address public immutable tmewcCurvePoolGauge;
     // Address of the additional reward token distributed by the gauge contract
-    // of the tBTC v2 Curve pool. This is applicable only in case when the gauge
+    // of the tMEWC Curve pool. This is applicable only in case when the gauge
     // stakes LP tokens into the Synthetix staking rewards contract
     // (i.e. the gauge is an instance of LiquidityGaugeReward contract).
     // Can be unset if additional rewards are not supported by the gauge.
-    address public immutable tbtcCurvePoolGaugeReward;
+    address public immutable tmewcCurvePoolGaugeReward;
     // Address of the DEX used to swap reward tokens back to the vault's
     // underlying token. This can be Uniswap or other Uni-like DEX.
     address public immutable dex;
@@ -200,9 +200,9 @@ contract CurveVoterProxyStrategy is BaseStrategy {
 
     constructor(
         address _vault,
-        address _tbtcCurvePoolDepositor,
-        address _tbtcCurvePoolGauge,
-        address _tbtcCurvePoolGaugeReward // optional, zero is valid value
+        address _tmewcCurvePoolDepositor,
+        address _tmewcCurvePoolGauge,
+        address _tmewcCurvePoolGaugeReward // optional, zero is valid value
     ) public BaseStrategy(_vault) {
         // Strategy settings.
         minReportDelay = 6 hours;
@@ -212,10 +212,10 @@ contract CurveVoterProxyStrategy is BaseStrategy {
         dex = uniswap;
         keepCRV = 1000;
 
-        // tBTC-related settings.
-        tbtcCurvePoolDepositor = _tbtcCurvePoolDepositor;
-        tbtcCurvePoolGauge = _tbtcCurvePoolGauge;
-        tbtcCurvePoolGaugeReward = _tbtcCurvePoolGaugeReward;
+        // tMEWC-related settings.
+        tmewcCurvePoolDepositor = _tmewcCurvePoolDepositor;
+        tmewcCurvePoolGauge = _tmewcCurvePoolGauge;
+        tmewcCurvePoolGaugeReward = _tmewcCurvePoolGaugeReward;
     }
 
     /// @notice Begins the update of the strategy proxy contract address.
@@ -323,7 +323,7 @@ contract CurveVoterProxyStrategy is BaseStrategy {
     /// @return Balance of the vault's underlying token deposited into the Curve
     ///         pool's gauge.
     function balanceOfPool() public view returns (uint256) {
-        return IStrategyProxy(strategyProxy).balanceOf(tbtcCurvePoolGauge);
+        return IStrategyProxy(strategyProxy).balanceOf(tmewcCurvePoolGauge);
     }
 
     /// @return Sum of balanceOfWant and balanceOfPool.
@@ -348,7 +348,7 @@ contract CurveVoterProxyStrategy is BaseStrategy {
         if (wantBalance > 0) {
             want.safeTransfer(strategyProxy, wantBalance);
             IStrategyProxy(strategyProxy).deposit(
-                tbtcCurvePoolGauge,
+                tmewcCurvePoolGauge,
                 address(want)
             );
         }
@@ -362,7 +362,7 @@ contract CurveVoterProxyStrategy is BaseStrategy {
         amount = Math.min(amount, balanceOfPool());
         return
             IStrategyProxy(strategyProxy).withdraw(
-                tbtcCurvePoolGauge,
+                tmewcCurvePoolGauge,
                 address(want),
                 amount
             );
@@ -410,7 +410,7 @@ contract CurveVoterProxyStrategy is BaseStrategy {
     /// @return Total balance of want tokens held by this strategy.
     function liquidateAllPositions() internal override returns (uint256) {
         IStrategyProxy(strategyProxy).withdrawAll(
-            tbtcCurvePoolGauge,
+            tmewcCurvePoolGauge,
             address(want)
         );
 
@@ -436,12 +436,12 @@ contract CurveVoterProxyStrategy is BaseStrategy {
         // There is no need to transfer those tokens to the new strategy
         // right here as this is done in the BaseStrategy's migrate() method.
         IStrategyProxy(strategyProxy).withdrawAll(
-            tbtcCurvePoolGauge,
+            tmewcCurvePoolGauge,
             address(want)
         );
         // Harvest the CRV rewards from the Curve pool's gauge and transfer
         // them to the new strategy
-        IStrategyProxy(strategyProxy).harvest(tbtcCurvePoolGauge);
+        IStrategyProxy(strategyProxy).harvest(tmewcCurvePoolGauge);
         IERC20(crvToken).safeTransfer(
             newStrategy,
             IERC20(crvToken).balanceOf(address(this))
@@ -449,14 +449,14 @@ contract CurveVoterProxyStrategy is BaseStrategy {
 
         // Claim additional reward tokens from the gauge if applicable and
         // transfer them to the new strategy
-        if (tbtcCurvePoolGaugeReward != address(0)) {
+        if (tmewcCurvePoolGaugeReward != address(0)) {
             IStrategyProxy(strategyProxy).claimRewards(
-                tbtcCurvePoolGauge,
-                tbtcCurvePoolGaugeReward
+                tmewcCurvePoolGauge,
+                tmewcCurvePoolGaugeReward
             );
-            IERC20(tbtcCurvePoolGaugeReward).safeTransfer(
+            IERC20(tmewcCurvePoolGaugeReward).safeTransfer(
                 newStrategy,
-                IERC20(tbtcCurvePoolGaugeReward).balanceOf(address(this))
+                IERC20(tmewcCurvePoolGaugeReward).balanceOf(address(this))
             );
         }
     }
@@ -514,9 +514,9 @@ contract CurveVoterProxyStrategy is BaseStrategy {
         uint256 initialWantBalance = want.balanceOf(address(this));
 
         // Harvest the CRV rewards from the Curve pool's gauge.
-        IStrategyProxy(strategyProxy).harvest(tbtcCurvePoolGauge);
+        IStrategyProxy(strategyProxy).harvest(tmewcCurvePoolGauge);
 
-        // Buy WBTC using harvested CRV tokens.
+        // Buy WMEWC using harvested CRV tokens.
         uint256 crvBalance = IERC20(crvToken).balanceOf(address(this));
         if (crvBalance > 0) {
             // Deposit a portion of CRV to the voter to gain CRV boost.
@@ -527,7 +527,7 @@ contract CurveVoterProxyStrategy is BaseStrategy {
             address[] memory path = new address[](3);
             path[0] = crvToken;
             path[1] = wethToken;
-            path[2] = wbtcToken;
+            path[2] = wmewcToken;
 
             IUniswapV2Router(dex).swapExactTokensForTokens(
                 crvBalance,
@@ -539,25 +539,25 @@ contract CurveVoterProxyStrategy is BaseStrategy {
         }
 
         // Claim additional reward tokens from the gauge if applicable.
-        if (tbtcCurvePoolGaugeReward != address(0)) {
+        if (tmewcCurvePoolGaugeReward != address(0)) {
             IStrategyProxy(strategyProxy).claimRewards(
-                tbtcCurvePoolGauge,
-                tbtcCurvePoolGaugeReward
+                tmewcCurvePoolGauge,
+                tmewcCurvePoolGaugeReward
             );
 
-            uint256 rewardBalance = IERC20(tbtcCurvePoolGaugeReward).balanceOf(
+            uint256 rewardBalance = IERC20(tmewcCurvePoolGaugeReward).balanceOf(
                 address(this)
             );
             if (rewardBalance > 0) {
-                IERC20(tbtcCurvePoolGaugeReward).safeIncreaseAllowance(
+                IERC20(tmewcCurvePoolGaugeReward).safeIncreaseAllowance(
                     dex,
                     rewardBalance
                 );
 
                 address[] memory path = new address[](3);
-                path[0] = tbtcCurvePoolGaugeReward;
+                path[0] = tmewcCurvePoolGaugeReward;
                 path[1] = wethToken;
-                path[2] = wbtcToken;
+                path[2] = wmewcToken;
 
                 IUniswapV2Router(dex).swapExactTokensForTokens(
                     rewardBalance,
@@ -569,20 +569,20 @@ contract CurveVoterProxyStrategy is BaseStrategy {
             }
         }
 
-        // Deposit acquired WBTC to the Curve pool to gain additional
+        // Deposit acquired WMEWC to the Curve pool to gain additional
         // vault's underlying tokens.
-        uint256 wbtcBalance = IERC20(wbtcToken).balanceOf(address(this));
-        if (wbtcBalance > 0) {
-            IERC20(wbtcToken).safeIncreaseAllowance(
-                tbtcCurvePoolDepositor,
-                wbtcBalance
+        uint256 wmewcBalance = IERC20(wmewcToken).balanceOf(address(this));
+        if (wmewcBalance > 0) {
+            IERC20(wmewcToken).safeIncreaseAllowance(
+                tmewcCurvePoolDepositor,
+                wmewcBalance
             );
 
-            // TODO: When the new curve pool with tBTC v2 is deployed, verify
-            //       that the index of wBTC in the array is correct.
-            uint256[4] memory amounts = [0, 0, wbtcBalance, 0];
+            // TODO: When the new curve pool with tMEWC is deployed, verify
+            //       that the index of wMEWC in the array is correct.
+            uint256[4] memory amounts = [0, 0, wmewcBalance, 0];
 
-            ICurvePool(tbtcCurvePoolDepositor).add_liquidity(
+            ICurvePool(tmewcCurvePoolDepositor).add_liquidity(
                 amounts,
                 minLiquidityDepositOutAmount(amounts)
             );
@@ -642,7 +642,7 @@ contract CurveVoterProxyStrategy is BaseStrategy {
     {
         // Get the maximum possible amount of LP tokens received in return
         // for liquidity deposit based on pool reserves.
-        uint256 amount = ICurvePool(tbtcCurvePoolDepositor).calc_token_amount(
+        uint256 amount = ICurvePool(tmewcCurvePoolDepositor).calc_token_amount(
             amountsIn,
             true
         );
@@ -664,10 +664,10 @@ contract CurveVoterProxyStrategy is BaseStrategy {
         override
         returns (address[] memory)
     {
-        if (tbtcCurvePoolGaugeReward != address(0)) {
+        if (tmewcCurvePoolGaugeReward != address(0)) {
             address[] memory protected = new address[](2);
             protected[0] = crvToken;
-            protected[1] = tbtcCurvePoolGaugeReward;
+            protected[1] = tmewcCurvePoolGaugeReward;
             return protected;
         }
 
@@ -690,31 +690,31 @@ contract CurveVoterProxyStrategy is BaseStrategy {
     {
         address[] memory path = new address[](2);
         path[0] = wethToken;
-        path[1] = wbtcToken;
+        path[1] = wmewcToken;
 
         // As of writing this contract, there's no pool available that trades
         // an underlying token with ETH. To overcome this, the ETH amount
         // denominated in WEI should be converted into an amount denominated
-        // in one of the tokens accepted by the tBTC v2 Curve pool using Uniswap.
-        // The wBTC token was chosen arbitrarily since it is already used in this
+        // in one of the tokens accepted by the tMEWC Curve pool using Uniswap.
+        // The wMEWC token was chosen arbitrarily since it is already used in this
         // contract for other operations on Uniswap.
         // amounts[0] -> ETH in wei
-        // amounts[1] -> wBTC
+        // amounts[1] -> wMEWC
         uint256[] memory amounts = IUniswapV2Router(dex).getAmountsOut(
             amtInWei,
             path
         );
 
-        // Use the amount denominated in wBTC to calculate the amount of LP token
-        // (vault's underlying token) that could be obtained if that wBTC amount
-        // was deposited in the Curve pool that has tBTC v2 in it. This way we
+        // Use the amount denominated in wMEWC to calculate the amount of LP token
+        // (vault's underlying token) that could be obtained if that wMEWC amount
+        // was deposited in the Curve pool that has tMEWC in it. This way we
         // obtain an estimated value of the original WEI amount represented in
         // the vault's underlying token.
         //
-        // TODO: When the new curve pool with tBTC v2 is deployed, verify that
-        // the index of wBTC (amounts[1]) in the array is correct.
+        // TODO: When the new curve pool with tMEWC is deployed, verify that
+        // the index of wMEWC (amounts[1]) in the array is correct.
         return
-            ICurvePool(tbtcCurvePoolDepositor).calc_token_amount(
+            ICurvePool(tmewcCurvePoolDepositor).calc_token_amount(
                 [0, 0, amounts[1], 0],
                 true
             );

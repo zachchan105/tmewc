@@ -108,9 +108,9 @@ interface IERC20Metadata {
 }
 
 /// @title ConvexStrategy
-/// @notice This strategy is meant to be used with the Curve tBTC v2 pool vault.
+/// @notice This strategy is meant to be used with the Curve tMEWC pool vault.
 ///         The vault's underlying token (a.k.a. want token) should be the LP
-///         token of the Curve tBTC v2 pool. This strategy borrows the vault's
+///         token of the Curve tMEWC pool. This strategy borrows the vault's
 ///         underlying token up to the debt limit configured for this strategy
 ///         in the vault. In order to make the profit, the strategy deposits
 ///         the borrowed tokens into the Convex reward pool via the Convex
@@ -125,20 +125,20 @@ interface IERC20Metadata {
 ///         a small portion of CRV (defined by keepCRV param) and locks it
 ///         into the Curve vote escrow (via CurveYCRVVoter contract) to gain
 ///         CRV boost and increase future gains. Remaining CRV, CVX, and
-///         optional extra reward tokens are used to buy wBTC via a
-///         decentralized exchange. At the end, the strategy takes acquired wBTC
-///         and deposits them to the Curve tBTC v2 pool. This way it obtains new
+///         optional extra reward tokens are used to buy wMEWC via a
+///         decentralized exchange. At the end, the strategy takes acquired wMEWC
+///         and deposits them to the Curve tMEWC pool. This way it obtains new
 ///         LP tokens the vault is interested for, and makes the profit in
 ///         result. At this stage, the strategy may repay some debt back to the
 ///         vault, if needed. The entire cycle repeats for the strategy lifetime
 ///         so all gains are constantly reinvested. Worth to flag that current
-///         implementation uses wBTC as the intermediary token because
-///         of its liquidity and ubiquity in BTC-based Curve pools.
+///         implementation uses wMEWC as the intermediary token because
+///         of its liquidity and ubiquity in MEWC-based Curve pools.
 /// @dev Implementation is based on:
 ///      - General Yearn strategy template
 ///        https://github.com/yearn/brownie-strategy-mix
-///      - Convex implementation for tBTC v1 vault
-///        https://github.com/orbxball/btc-curve-convex
+///      - Convex implementation for tMEWC v1 vault
+///        https://github.com/orbxball/mewc-curve-convex
 contract ConvexStrategy is BaseStrategy {
     using SafeERC20 for IERC20;
     using Address for address;
@@ -165,8 +165,8 @@ contract ConvexStrategy is BaseStrategy {
     // Address of the WETH token contract.
     address public constant wethToken =
         address(0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2);
-    // Address of the WBTC token contract.
-    address public constant wbtcToken =
+    // Address of the WMEWC token contract.
+    address public constant wmewcToken =
         address(0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599);
     // Address of the Uniswap V2 router contract.
     address public constant uniswap =
@@ -175,21 +175,21 @@ contract ConvexStrategy is BaseStrategy {
     address public constant sushiswap =
         address(0xd9e1cE17f2641f24aE83637ab66a2cca9C378B9F);
 
-    // Address of the depositor contract for the tBTC v2 Curve pool.
-    address public immutable tbtcCurvePoolDepositor;
-    // ID of the Convex reward pool paired with the tBTC v2 Curve pool.
-    uint256 public immutable tbtcConvexRewardPoolId;
+    // Address of the depositor contract for the tMEWC Curve pool.
+    address public immutable tmewcCurvePoolDepositor;
+    // ID of the Convex reward pool paired with the tMEWC Curve pool.
+    uint256 public immutable tmewcConvexRewardPoolId;
     // Address of the Convex reward pool contract paired with the
-    // tBTC v2 Curve pool.
-    address public immutable tbtcConvexRewardPool;
+    // tMEWC Curve pool.
+    address public immutable tmewcConvexRewardPool;
     // Address of the extra reward token distributed by the Convex reward pool
-    // paired with the tBTC v2 Curve pool. This is applicable only in case when
+    // paired with the tMEWC Curve pool. This is applicable only in case when
     // the Curve pool's gauge stakes LP tokens into the Synthetix staking
     // rewards contract (i.e. the gauge is an instance of LiquidityGaugeReward
     // contract). In such a case, the Convex reward pool wraps the gauge's
     // additional rewards as Convex extra rewards. This address can be unset if
     // extra rewards are not distributed by the Convex reward pool.
-    address public tbtcConvexExtraReward;
+    address public tmewcConvexExtraReward;
     // Determines the portion of CRV tokens which should be locked in the
     // Curve vote escrow to gain a CRV boost. This is the counter of a fraction
     // denominated by the DENOMINATOR constant. For example, if the value
@@ -244,8 +244,8 @@ contract ConvexStrategy is BaseStrategy {
 
     constructor(
         address _vault,
-        address _tbtcCurvePoolDepositor,
-        uint256 _tbtcConvexRewardPoolId
+        address _tmewcCurvePoolDepositor,
+        uint256 _tmewcConvexRewardPoolId
     ) public BaseStrategy(_vault) {
         // Strategy settings.
         minReportDelay = 12 hours;
@@ -254,9 +254,9 @@ contract ConvexStrategy is BaseStrategy {
         debtThreshold = 1e21;
         keepCRV = 1000;
 
-        // tBTC-related settings.
-        tbtcCurvePoolDepositor = _tbtcCurvePoolDepositor;
-        tbtcConvexRewardPoolId = _tbtcConvexRewardPoolId;
+        // tMEWC-related settings.
+        tmewcCurvePoolDepositor = _tmewcCurvePoolDepositor;
+        tmewcConvexRewardPoolId = _tmewcConvexRewardPoolId;
         (
             address lpToken,
             ,
@@ -264,9 +264,9 @@ contract ConvexStrategy is BaseStrategy {
             address rewardPool,
             address extraRewardStash,
 
-        ) = IConvexBooster(booster).poolInfo(_tbtcConvexRewardPoolId);
+        ) = IConvexBooster(booster).poolInfo(_tmewcConvexRewardPoolId);
         require(lpToken == address(want), "Incorrect reward pool LP token");
-        tbtcConvexRewardPool = rewardPool;
+        tmewcConvexRewardPool = rewardPool;
 
         if (extraRewardStash != address(0)) {
             (address extraRewardToken, , ) = IConvexExtraRewardStash(
@@ -274,7 +274,7 @@ contract ConvexStrategy is BaseStrategy {
             ).tokenInfo();
 
             if (extraRewardToken != address(0)) {
-                tbtcConvexExtraReward = extraRewardToken;
+                tmewcConvexExtraReward = extraRewardToken;
             }
         }
     }
@@ -384,7 +384,7 @@ contract ConvexStrategy is BaseStrategy {
     /// @return Balance of the vault's underlying token staked into the Convex
     ///         reward pool.
     function balanceOfPool() public view returns (uint256) {
-        return IConvexRewardPool(tbtcConvexRewardPool).balanceOf(address(this));
+        return IConvexRewardPool(tmewcConvexRewardPool).balanceOf(address(this));
     }
 
     /// @return Sum of balanceOfWant and balanceOfPool.
@@ -410,7 +410,7 @@ contract ConvexStrategy is BaseStrategy {
             want.safeIncreaseAllowance(booster, wantBalance);
 
             IConvexBooster(booster).deposit(
-                tbtcConvexRewardPoolId,
+                tmewcConvexRewardPoolId,
                 wantBalance,
                 true
             );
@@ -426,7 +426,7 @@ contract ConvexStrategy is BaseStrategy {
         uint256 initialWantBalance = balanceOfWant();
         // Withdraw some vault's underlying tokens but do not claim the rewards
         // accumulated so far.
-        IConvexRewardPool(tbtcConvexRewardPool).withdrawAndUnwrap(
+        IConvexRewardPool(tmewcConvexRewardPool).withdrawAndUnwrap(
             amount,
             false
         );
@@ -478,7 +478,7 @@ contract ConvexStrategy is BaseStrategy {
         // However, do not claim the rewards accumulated so far because this is
         // an emergency action and we just focus on recovering all principle
         // funds, without trying to realize potential gains.
-        IConvexRewardPool(tbtcConvexRewardPool).withdrawAllAndUnwrap(false);
+        IConvexRewardPool(tmewcConvexRewardPool).withdrawAllAndUnwrap(false);
 
         // Yearn docs doesn't specify clear enough what exactly should be
         // returned here. It may be either the total balance after
@@ -506,7 +506,7 @@ contract ConvexStrategy is BaseStrategy {
         // right here as this is done in the BaseStrategy's migrate() method.
         // This call also claims the rewards accumulated so far but they
         // must be transferred to the new strategy manually.
-        IConvexRewardPool(tbtcConvexRewardPool).withdrawAllAndUnwrap(true);
+        IConvexRewardPool(tmewcConvexRewardPool).withdrawAllAndUnwrap(true);
 
         // Transfer all claimed rewards to the new strategy manually.
         IERC20(crvToken).safeTransfer(
@@ -517,10 +517,10 @@ contract ConvexStrategy is BaseStrategy {
             newStrategy,
             IERC20(cvxToken).balanceOf(address(this))
         );
-        if (tbtcConvexExtraReward != address(0)) {
-            IERC20(tbtcConvexExtraReward).safeTransfer(
+        if (tmewcConvexExtraReward != address(0)) {
+            IERC20(tmewcConvexExtraReward).safeTransfer(
                 newStrategy,
-                IERC20(tbtcConvexExtraReward).balanceOf(address(this))
+                IERC20(tmewcConvexExtraReward).balanceOf(address(this))
             );
         }
     }
@@ -577,9 +577,9 @@ contract ConvexStrategy is BaseStrategy {
 
         // Get CRV and CVX rewards from the Convex reward pool. Also, claim
         // extra rewards if such rewards are distributed by the pool.
-        IConvexRewardPool(tbtcConvexRewardPool).getReward(address(this), true);
+        IConvexRewardPool(tmewcConvexRewardPool).getReward(address(this), true);
 
-        // Buy WBTC using obtained CRV tokens.
+        // Buy WMEWC using obtained CRV tokens.
         uint256 crvBalance = IERC20(crvToken).balanceOf(address(this));
         if (crvBalance > 0) {
             // Deposit a portion of CRV to the voter to gain CRV boost.
@@ -590,7 +590,7 @@ contract ConvexStrategy is BaseStrategy {
             address[] memory path = new address[](3);
             path[0] = crvToken;
             path[1] = wethToken;
-            path[2] = wbtcToken;
+            path[2] = wmewcToken;
 
             IUniswapV2Router(uniswap).swapExactTokensForTokens(
                 crvBalance,
@@ -601,7 +601,7 @@ contract ConvexStrategy is BaseStrategy {
             );
         }
 
-        // Buy WBTC using obtained CVX tokens. Use SushiSwap as CVX is not
+        // Buy WMEWC using obtained CVX tokens. Use SushiSwap as CVX is not
         // supported by UniSwap.
         uint256 cvxBalance = IERC20(cvxToken).balanceOf(address(this));
         if (cvxBalance > 0) {
@@ -610,7 +610,7 @@ contract ConvexStrategy is BaseStrategy {
             address[] memory path = new address[](3);
             path[0] = cvxToken;
             path[1] = wethToken;
-            path[2] = wbtcToken;
+            path[2] = wmewcToken;
 
             IUniswapV2Router(sushiswap).swapExactTokensForTokens(
                 cvxBalance,
@@ -621,20 +621,20 @@ contract ConvexStrategy is BaseStrategy {
             );
         }
 
-        // Buy WBTC using obtained extra reward tokens, if applicable.
-        if (tbtcConvexExtraReward != address(0)) {
-            uint256 extraRewardBalance = IERC20(tbtcConvexExtraReward)
+        // Buy WMEWC using obtained extra reward tokens, if applicable.
+        if (tmewcConvexExtraReward != address(0)) {
+            uint256 extraRewardBalance = IERC20(tmewcConvexExtraReward)
             .balanceOf(address(this));
             if (extraRewardBalance > extraRewardSwapThreshold) {
-                IERC20(tbtcConvexExtraReward).safeIncreaseAllowance(
+                IERC20(tmewcConvexExtraReward).safeIncreaseAllowance(
                     uniswap,
                     extraRewardBalance
                 );
 
                 address[] memory path = new address[](3);
-                path[0] = tbtcConvexExtraReward;
+                path[0] = tmewcConvexExtraReward;
                 path[1] = wethToken;
-                path[2] = wbtcToken;
+                path[2] = wmewcToken;
 
                 IUniswapV2Router(uniswap).swapExactTokensForTokens(
                     extraRewardBalance,
@@ -646,20 +646,20 @@ contract ConvexStrategy is BaseStrategy {
             }
         }
 
-        // Deposit acquired WBTC to the Curve pool to gain additional
+        // Deposit acquired WMEWC to the Curve pool to gain additional
         // vault's underlying tokens.
-        uint256 wbtcBalance = IERC20(wbtcToken).balanceOf(address(this));
-        if (wbtcBalance > 0) {
-            IERC20(wbtcToken).safeIncreaseAllowance(
-                tbtcCurvePoolDepositor,
-                wbtcBalance
+        uint256 wmewcBalance = IERC20(wmewcToken).balanceOf(address(this));
+        if (wmewcBalance > 0) {
+            IERC20(wmewcToken).safeIncreaseAllowance(
+                tmewcCurvePoolDepositor,
+                wmewcBalance
             );
 
-            // TODO: When the new curve pool with tBTC v2 is deployed, verify
-            //       that the index of wBTC in the array is correct.
-            uint256[4] memory amounts = [0, 0, wbtcBalance, 0];
+            // TODO: When the new curve pool with tMEWC is deployed, verify
+            //       that the index of wMEWC in the array is correct.
+            uint256[4] memory amounts = [0, 0, wmewcBalance, 0];
 
-            ICurvePool(tbtcCurvePoolDepositor).add_liquidity(
+            ICurvePool(tmewcCurvePoolDepositor).add_liquidity(
                 amounts,
                 minLiquidityDepositOutAmount(amounts)
             );
@@ -720,7 +720,7 @@ contract ConvexStrategy is BaseStrategy {
     {
         // Get the maximum possible amount of LP tokens received in return
         // for liquidity deposit based on pool reserves.
-        uint256 amount = ICurvePool(tbtcCurvePoolDepositor).calc_token_amount(
+        uint256 amount = ICurvePool(tmewcCurvePoolDepositor).calc_token_amount(
             amountsIn,
             true
         );
@@ -742,11 +742,11 @@ contract ConvexStrategy is BaseStrategy {
         override
         returns (address[] memory)
     {
-        if (tbtcConvexExtraReward != address(0)) {
+        if (tmewcConvexExtraReward != address(0)) {
             address[] memory protected = new address[](3);
             protected[0] = crvToken;
             protected[1] = cvxToken;
-            protected[2] = tbtcConvexExtraReward;
+            protected[2] = tmewcConvexExtraReward;
             return protected;
         }
 
@@ -770,31 +770,31 @@ contract ConvexStrategy is BaseStrategy {
     {
         address[] memory path = new address[](2);
         path[0] = wethToken;
-        path[1] = wbtcToken;
+        path[1] = wmewcToken;
 
         // As of writing this contract, there's no pool available that trades
         // an underlying token with ETH. To overcome this, the ETH amount
         // denominated in WEI should be converted into an amount denominated
-        // in one of the tokens accepted by the tBTC v2 Curve pool using Uniswap.
-        // The wBTC token was chosen arbitrarily since it is already used in this
+        // in one of the tokens accepted by the tMEWC Curve pool using Uniswap.
+        // The wMEWC token was chosen arbitrarily since it is already used in this
         // contract for other operations on Uniswap.
         // amounts[0] -> ETH in wei
-        // amounts[1] -> wBTC
+        // amounts[1] -> wMEWC
         uint256[] memory amounts = IUniswapV2Router(uniswap).getAmountsOut(
             amtInWei,
             path
         );
 
-        // Use the amount denominated in wBTC to calculate the amount of LP token
-        // (vault's underlying token) that could be obtained if that wBTC amount
-        // was deposited in the Curve pool that has tBTC v2 in it. This way we
+        // Use the amount denominated in wMEWC to calculate the amount of LP token
+        // (vault's underlying token) that could be obtained if that wMEWC amount
+        // was deposited in the Curve pool that has tMEWC in it. This way we
         // obtain an estimated value of the original WEI amount represented in
         // the vault's underlying token.
         //
-        // TODO: When the new curve pool with tBTC v2 is deployed, verify that
-        // the index of wBTC (amounts[1]) in the array is correct.
+        // TODO: When the new curve pool with tMEWC is deployed, verify that
+        // the index of wMEWC (amounts[1]) in the array is correct.
         return
-            ICurvePool(tbtcCurvePoolDepositor).calc_token_amount(
+            ICurvePool(tmewcCurvePoolDepositor).calc_token_amount(
                 [0, 0, amounts[1], 0],
                 true
             );

@@ -1,7 +1,7 @@
 # Class: MaintenanceService
 
 Service exposing features relevant to authorized maintainers and
-operators of the tBTC v2 system.
+operators of the tMEWC system.
 
 ## Table of contents
 
@@ -18,13 +18,13 @@ operators of the tBTC v2 system.
 
 ### constructor
 
-• **new MaintenanceService**(`tbtcContracts`, `bitcoinClient`): [`MaintenanceService`](MaintenanceService.md)
+• **new MaintenanceService**(`tmewcContracts`, `bitcoinClient`): [`MaintenanceService`](MaintenanceService.md)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `tbtcContracts` | [`TBTCContracts`](../README.md#tbtccontracts) |
+| `tmewcContracts` | [`TMEWCContracts`](../README.md#tmewccontracts) |
 | `bitcoinClient` | [`BitcoinClient`](../interfaces/BitcoinClient.md) |
 
 #### Returns
@@ -33,7 +33,7 @@ operators of the tBTC v2 system.
 
 #### Defined in
 
-[src/services/maintenance/maintenance-service.ts:20](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/maintenance/maintenance-service.ts#L20)
+[src/services/maintenance/maintenance-service.ts:20](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/maintenance/maintenance-service.ts#L20)
 
 ## Properties
 
@@ -45,7 +45,7 @@ Features for optimistic minting maintainers.
 
 #### Defined in
 
-[src/services/maintenance/maintenance-service.ts:14](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/maintenance/maintenance-service.ts#L14)
+[src/services/maintenance/maintenance-service.ts:14](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/maintenance/maintenance-service.ts#L14)
 
 ___
 
@@ -57,4 +57,4 @@ Features for SPV proof maintainers.
 
 #### Defined in
 
-[src/services/maintenance/maintenance-service.ts:18](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/maintenance/maintenance-service.ts#L18)
+[src/services/maintenance/maintenance-service.ts:18](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/maintenance/maintenance-service.ts#L18)

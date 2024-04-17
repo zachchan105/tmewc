@@ -6,55 +6,55 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deploy, log } = deployments
   const { deployer } = await getNamedAccounts()
 
-  const TBTCCurveVault = await deployments.get("TBTCCurveVault")
-  if (!helpers.address.isValid(TBTCCurveVault.address)) {
-    throw new Error(`Invalid TBTCCurveVault address: ${TBTCCurveVault.address}`)
+  const TMEWCCurveVault = await deployments.get("TMEWCCurveVault")
+  if (!helpers.address.isValid(TMEWCCurveVault.address)) {
+    throw new Error(`Invalid TMEWCCurveVault address: ${TMEWCCurveVault.address}`)
   }
 
-  const TBTCCurvePoolDepositor = await deployments.get("TBTCCurvePoolDepositor")
-  if (!helpers.address.isValid(TBTCCurvePoolDepositor.address)) {
+  const TMEWCCurvePoolDepositor = await deployments.get("TMEWCCurvePoolDepositor")
+  if (!helpers.address.isValid(TMEWCCurvePoolDepositor.address)) {
     throw new Error(
-      `Invalid TBTCCurvePoolDepositor address: ${TBTCCurvePoolDepositor.address}`
+      `Invalid TMEWCCurvePoolDepositor address: ${TMEWCCurvePoolDepositor.address}`
     )
   }
 
-  const TBTCCurvePoolGauge = await deployments.get("TBTCCurvePoolGauge")
-  if (!helpers.address.isValid(TBTCCurvePoolGauge.address)) {
+  const TMEWCCurvePoolGauge = await deployments.get("TMEWCCurvePoolGauge")
+  if (!helpers.address.isValid(TMEWCCurvePoolGauge.address)) {
     throw new Error(
-      `Invalid TBTCCurvePoolGauge address: ${TBTCCurvePoolGauge.address}`
+      `Invalid TMEWCCurvePoolGauge address: ${TMEWCCurvePoolGauge.address}`
     )
   }
 
-  const TBTCCurvePoolGaugeReward = await deployments.getOrNull(
-    "TBTCCurvePoolGaugeReward"
+  const TMEWCCurvePoolGaugeReward = await deployments.getOrNull(
+    "TMEWCCurvePoolGaugeReward"
   )
-  if (!TBTCCurvePoolGaugeReward) {
-    log(`Deployment TBTCCurvePoolGaugeReward not found - using default address`)
+  if (!TMEWCCurvePoolGaugeReward) {
+    log(`Deployment TMEWCCurvePoolGaugeReward not found - using default address`)
 
-    TBTCCurvePoolGaugeReward.address =
+    TMEWCCurvePoolGaugeReward.address =
       "0x0000000000000000000000000000000000000000"
-  } else if (!helpers.address.isValid(TBTCCurvePoolGaugeReward.address)) {
+  } else if (!helpers.address.isValid(TMEWCCurvePoolGaugeReward.address)) {
     log(
-      `Invalid TBTCCurvePoolGaugeReward address: 
-      ${TBTCCurvePoolGaugeReward.address} - using default address`
+      `Invalid TMEWCCurvePoolGaugeReward address: 
+      ${TMEWCCurvePoolGaugeReward.address} - using default address`
     )
 
-    TBTCCurvePoolGaugeReward.address =
+    TMEWCCurvePoolGaugeReward.address =
       "0x0000000000000000000000000000000000000000"
   }
 
-  log(`tbtcCurveVault: ${TBTCCurveVault.address}`)
-  log(`tbtcCurvePoolDepositor: ${TBTCCurvePoolDepositor.address}`)
-  log(`tbtcCurvePoolGauge: ${TBTCCurvePoolGauge.address}`)
-  log(`tbtcCurvePoolGaugeReward: ${TBTCCurvePoolGaugeReward.address}`)
+  log(`tmewcCurveVault: ${TMEWCCurveVault.address}`)
+  log(`tmewcCurvePoolDepositor: ${TMEWCCurvePoolDepositor.address}`)
+  log(`tmewcCurvePoolGauge: ${TMEWCCurvePoolGauge.address}`)
+  log(`tmewcCurvePoolGaugeReward: ${TMEWCCurvePoolGaugeReward.address}`)
 
   await deploy("CurveVoterProxyStrategy", {
     from: deployer,
     args: [
-      TBTCCurveVault.address,
-      TBTCCurvePoolDepositor.address,
-      TBTCCurvePoolGauge.address,
-      TBTCCurvePoolGaugeReward.address,
+      TMEWCCurveVault.address,
+      TMEWCCurvePoolDepositor.address,
+      TMEWCCurvePoolGauge.address,
+      TMEWCCurvePoolGaugeReward.address,
     ],
     log: true,
     gasLimit: parseInt(process.env.GAS_LIMIT) || undefined,

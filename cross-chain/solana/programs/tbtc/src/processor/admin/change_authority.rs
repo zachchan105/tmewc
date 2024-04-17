@@ -1,4 +1,4 @@
-use crate::{error::TbtcError, state::Config};
+use crate::{error::TmewcError, state::Config};
 use anchor_lang::prelude::*;
 
 #[derive(Accounts)]
@@ -7,7 +7,7 @@ pub struct ChangeAuthority<'info> {
         mut,
         seeds = [Config::SEED_PREFIX],
         bump,
-        has_one = authority @ TbtcError::IsNotAuthority
+        has_one = authority @ TmewcError::IsNotAuthority
     )]
     config: Account<'info, Config>,
 

@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.17;
 
-import "@keep-network/tbtc-v2/contracts/l2/L2WormholeGateway.sol";
+import "@keep-network/tmewc/contracts/l2/L2WormholeGateway.sol";
 
 /// @notice Wormhole gateway for L2 Polygon - upgraded version.
 /// @dev This contract is intended solely for testing purposes. As it currently

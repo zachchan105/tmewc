@@ -195,7 +195,7 @@ describe("Bridge - Fraud", () => {
         )
 
         context("when incorrect wallet public key is used", () => {
-          // Unrelated Bitcoin public key
+          // Unrelated Meowcoin public key
           const incorrectWalletPublicKey =
             "0xffc045ade19f8a5d464299146ce069049cdcc2390a9b44d9abcd83f11d8cce4" +
             "01ea6800e307b87aadebdcd2f7293cc60f0526afaff1a7b1abddfd787e6c5871e"
@@ -549,12 +549,12 @@ describe("Bridge - Fraud", () => {
       // This approach is better long-term. In case the format of the heartbeat
       // message changes or in case we want to add more unit tests, we can simply
       // call appropriate function to compute another signature. Also, we do not
-      // use any BTC-specific data for this set of unit tests.
+      // use any MEWC-specific data for this set of unit tests.
       const wallet = ethers.Wallet.createRandom()
       // We use `ethers.utils.SigningKey` for a `Wallet` instead of
       // `Signer.signMessage` to do not add '\x19Ethereum Signed Message:\n'
       // prefix to the signed message. The format of the heartbeat message is
-      // the same no matter on which host chain TBTC is deployed.
+      // the same no matter on which host chain TMEWC is deployed.
       heartbeatWalletSigningKey = new ethers.utils.SigningKey(wallet.privateKey)
       // Public key obtained as `wallet.publicKey` is an uncompressed key,
       // prefixed with `0x04`. To compute raw ECDSA key, we need to drop `0x04`.

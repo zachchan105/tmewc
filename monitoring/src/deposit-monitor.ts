@@ -5,26 +5,26 @@ import { context } from "./context"
 import { createBtcTxUrl, createEthTxUrl } from "./block-explorer"
 
 import type { SystemEvent, Monitor as SystemEventMonitor } from "./system-event"
-import type { DepositRevealedEvent as DepositRevealedChainEvent } from "@keep-network/tbtc-v2.ts/dist/src/deposit"
-import type { Bridge } from "@keep-network/tbtc-v2.ts/dist/src/chain"
+import type { DepositRevealedEvent as DepositRevealedChainEvent } from "@keep-network/tmewc.ts/dist/src/deposit"
+import type { Bridge } from "@keep-network/tmewc.ts/dist/src/chain"
 
-export const satsToRoundedBTC = (sats: BigNumber): string =>
+export const satsToRoundedMEWC = (sats: BigNumber): string =>
   (sats.div(BigNumber.from(1e6)).toNumber() / 100).toFixed(2)
 
 const DepositRevealed = (
   chainEvent: DepositRevealedChainEvent
 ): SystemEvent => {
-  const btcFundingTxHashURL = createBtcTxUrl(chainEvent.fundingTxHash)
+  const mewcFundingTxHashURL = createBtcTxUrl(chainEvent.fundingTxHash)
   const ethRevealTxHashURL = createEthTxUrl(chainEvent.transactionHash)
 
   return {
     title: "Deposit revealed",
     type: SystemEventType.Informational,
     data: {
-      btcFundingTxHash: chainEvent.fundingTxHash.toString(),
-      btcFundingTxHashURL,
-      btcFundingOutputIndex: chainEvent.fundingOutputIndex.toString(),
-      amountBTC: satsToRoundedBTC(chainEvent.amount),
+      mewcFundingTxHash: chainEvent.fundingTxHash.toString(),
+      mewcFundingTxHashURL,
+      mewcFundingOutputIndex: chainEvent.fundingOutputIndex.toString(),
+      amountMEWC: satsToRoundedMEWC(chainEvent.amount),
       ethRevealTxHash: chainEvent.transactionHash.toPrefixedString(),
       ethRevealTxHashURL,
     },
@@ -35,17 +35,17 @@ const DepositRevealed = (
 const LargeDepositRevealed = (
   chainEvent: DepositRevealedChainEvent
 ): SystemEvent => {
-  const btcFundingTxHashURL = createBtcTxUrl(chainEvent.fundingTxHash)
+  const mewcFundingTxHashURL = createBtcTxUrl(chainEvent.fundingTxHash)
   const ethRevealTxHashURL = createEthTxUrl(chainEvent.transactionHash)
 
   return {
     title: "Large deposit revealed",
     type: SystemEventType.Warning,
     data: {
-      btcFundingTxHash: chainEvent.fundingTxHash.toString(),
-      btcFundingTxHashURL,
-      btcFundingOutputIndex: chainEvent.fundingOutputIndex.toString(),
-      amountBTC: satsToRoundedBTC(chainEvent.amount),
+      mewcFundingTxHash: chainEvent.fundingTxHash.toString(),
+      mewcFundingTxHashURL,
+      mewcFundingOutputIndex: chainEvent.fundingOutputIndex.toString(),
+      amountMEWC: satsToRoundedMEWC(chainEvent.amount),
       ethRevealTxHash: chainEvent.transactionHash.toPrefixedString(),
       ethRevealTxHashURL,
     },

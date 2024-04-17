@@ -1,15 +1,15 @@
-import { address as btcjsaddress, payments } from "bitcoinjs-lib"
+import { address as mewcjsaddress, payments } from "bitcoinjs-lib"
 import { Hex } from "../utils"
 import { BitcoinNetwork, toBitcoinJsLibNetwork } from "./network"
 
 /**
- * Creates the Bitcoin address from the public key. Supports SegWit (P2WPKH) and
+ * Creates the Meowcoin address from the public key. Supports SegWit (P2WPKH) and
  * Legacy (P2PKH) formats.
- * @param publicKey Compressed public key used to derive the Bitcoin address.
- * @param bitcoinNetwork Target Bitcoin network.
+ * @param publicKey Compressed public key used to derive the Meowcoin address.
+ * @param bitcoinNetwork Target Meowcoin network.
  * @param witness Flag to determine address format: true for SegWit (P2WPKH)
  *        and false for Legacy (P2PKH). Default is true.
- * @returns The derived Bitcoin address.
+ * @returns The derived Meowcoin address.
  */
 function publicKeyToAddress(
   publicKey: Hex,
@@ -77,8 +77,8 @@ function addressToPublicKeyHash(
 
 /**
  * Converts an address to the respective output script.
- * @param address BTC address.
- * @param bitcoinNetwork Bitcoin network corresponding to the address.
+ * @param address MEWC address.
+ * @param bitcoinNetwork Meowcoin network corresponding to the address.
  * @returns The output script not prepended with length.
  */
 function addressToOutputScript(
@@ -86,28 +86,28 @@ function addressToOutputScript(
   bitcoinNetwork: BitcoinNetwork
 ): Hex {
   return Hex.from(
-    btcjsaddress.toOutputScript(address, toBitcoinJsLibNetwork(bitcoinNetwork))
+    mewcjsaddress.toOutputScript(address, toBitcoinJsLibNetwork(bitcoinNetwork))
   )
 }
 
 /**
  * Converts an output script to the respective network-specific address.
  * @param script The output script not prepended with length.
- * @param bitcoinNetwork Bitcoin network the address should be produced for.
- * @returns The Bitcoin address.
+ * @param bitcoinNetwork Meowcoin network the address should be produced for.
+ * @returns The Meowcoin address.
  */
 function outputScriptToAddress(
   script: Hex,
   bitcoinNetwork: BitcoinNetwork = BitcoinNetwork.Mainnet
 ): string {
-  return btcjsaddress.fromOutputScript(
+  return mewcjsaddress.fromOutputScript(
     script.toBuffer(),
     toBitcoinJsLibNetwork(bitcoinNetwork)
   )
 }
 
 /**
- * Utility functions allowing to perform Bitcoin address conversions.
+ * Utility functions allowing to perform Meowcoin address conversions.
  */
 export const BitcoinAddressConverter = {
   publicKeyToAddress,

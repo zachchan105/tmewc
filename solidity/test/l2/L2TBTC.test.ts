@@ -5,18 +5,18 @@ import { expect } from "chai"
 import { ContractTransaction, Wallet } from "ethers"
 import { to1e18 } from "../helpers/contract-test-helpers"
 
-import type { L2TBTC, TestERC20, TestERC721 } from "../../typechain"
+import type { L2TMEWC, TestERC20, TestERC721 } from "../../typechain"
 
 const { createSnapshot, restoreSnapshot } = helpers.snapshot
 
 const ZERO_ADDRESS = ethers.constants.AddressZero
 
-// Only the functions defined in L2TBTC are fully covered with tests.
-// L2TBTC contract inherits from OpenZeppelin contracts and we do not want
+// Only the functions defined in L2TMEWC are fully covered with tests.
+// L2TMEWC contract inherits from OpenZeppelin contracts and we do not want
 // to test the framework. The basic tests for functions defined in the
 // OpenZeppelin contracts ensure all expected OpenZeppelin extensions are
-// inherited in L2TBTC contract and that they are properly initialized.
-describe("L2TBTC", () => {
+// inherited in L2TMEWC contract and that they are properly initialized.
+describe("L2TMEWC", () => {
   const fixture = async () => {
     const { deployer, governance } = await helpers.signers.getNamedSigners()
 
@@ -30,17 +30,17 @@ describe("L2TBTC", () => {
       // Hacky workaround allowing to deploy proxy contract any number of times
       // without clearing `deployments/hardhat` directory.
       // See: https://github.com/keep-network/hardhat-helpers/issues/38
-      `L2TBTC_${randomBytes(8).toString("hex")}`,
+      `L2TMEWC_${randomBytes(8).toString("hex")}`,
       {
-        contractName: "L2TBTC",
-        initializerArgs: ["Arbitrum TBTC", "ArbTBTC"],
+        contractName: "L2TMEWC",
+        initializerArgs: ["Arbitrum TMEWC", "ArbTMEWC"],
         factoryOpts: { signer: deployer },
         proxyOpts: {
           kind: "transparent",
         },
       }
     )
-    token = deployment[0] as L2TBTC
+    token = deployment[0] as L2TMEWC
 
     await token.connect(deployer).transferOwnership(governance.address)
 
@@ -57,7 +57,7 @@ describe("L2TBTC", () => {
   // default Hardhat's networks blockchain, see https://hardhat.org/config/
   const hardhatNetworkId = 31337
 
-  let token: L2TBTC
+  let token: L2TMEWC
 
   let governance: SignerWithAddress
   let minter: SignerWithAddress
@@ -778,18 +778,18 @@ describe("L2TBTC", () => {
 
   //
   // The tests below are just very basic tests for ERC20 functionality.
-  // L2TBTC contract inherits from OpenZeppelin contracts and we do not want
+  // L2TMEWC contract inherits from OpenZeppelin contracts and we do not want
   // to test the framework. The basic tests ensure all expected OpenZeppelin
-  // extensions are inherited in L2TBTC contract and that they are properly
+  // extensions are inherited in L2TMEWC contract and that they are properly
   // initialized.
   //
 
   it("should have a name", async () => {
-    expect(await token.name()).to.equal("Arbitrum TBTC")
+    expect(await token.name()).to.equal("Arbitrum TMEWC")
   })
 
   it("should have a symbol", async () => {
-    expect(await token.symbol()).to.equal("ArbTBTC")
+    expect(await token.symbol()).to.equal("ArbTMEWC")
   })
 
   it("should have 18 decimals", async () => {
@@ -829,7 +829,7 @@ describe("L2TBTC", () => {
                 "EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"
               )
             ),
-            keccak256(toUtf8Bytes("Arbitrum TBTC")),
+            keccak256(toUtf8Bytes("Arbitrum TMEWC")),
             keccak256(toUtf8Bytes("1")),
             hardhatNetworkId,
             token.address,

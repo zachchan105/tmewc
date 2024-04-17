@@ -4,16 +4,16 @@ import { BigNumber } from "ethers"
 import { Hex } from "../utils"
 
 /**
- * Represents a Bitcoin transaction hash (or transaction ID) as an un-prefixed hex
+ * Represents a Meowcoin transaction hash (or transaction ID) as an un-prefixed hex
  * string. This hash is supposed to have the same byte order as used by the
- * Bitcoin block explorers which is the opposite of the byte order used
- * by the Bitcoin protocol internally. That means the hash must be reversed in
- * the use cases that expect the Bitcoin internal byte order.
+ * Meowcoin block explorers which is the opposite of the byte order used
+ * by the Meowcoin protocol internally. That means the hash must be reversed in
+ * the use cases that expect the Meowcoin internal byte order.
  */
 export class BitcoinTxHash extends Hex {}
 
 /**
- * Represents a raw Bitcoin transaction.
+ * Represents a raw Meowcoin transaction.
  */
 export interface BitcoinRawTx {
   /**
@@ -23,7 +23,7 @@ export interface BitcoinRawTx {
 }
 
 /**
- * Data about a Bitcoin transaction.
+ * Data about a Meowcoin transaction.
  */
 export interface BitcoinTx {
   /**
@@ -43,7 +43,7 @@ export interface BitcoinTx {
 }
 
 /**
- * Data about a Bitcoin transaction outpoint.
+ * Data about a Meowcoin transaction outpoint.
  */
 export interface BitcoinTxOutpoint {
   /**
@@ -58,7 +58,7 @@ export interface BitcoinTxOutpoint {
 }
 
 /**
- * Data about a Bitcoin transaction input.
+ * Data about a Meowcoin transaction input.
  */
 export type BitcoinTxInput = BitcoinTxOutpoint & {
   /**
@@ -68,7 +68,7 @@ export type BitcoinTxInput = BitcoinTxOutpoint & {
 }
 
 /**
- * Data about a Bitcoin transaction output.
+ * Data about a Meowcoin transaction output.
  */
 export interface BitcoinTxOutput {
   /**
@@ -88,7 +88,7 @@ export interface BitcoinTxOutput {
 }
 
 /**
- * Data about a Bitcoin unspent transaction output.
+ * Data about a Meowcoin unspent transaction output.
  */
 export type BitcoinUtxo = BitcoinTxOutpoint & {
   /**
@@ -98,7 +98,7 @@ export type BitcoinUtxo = BitcoinTxOutpoint & {
 }
 
 /**
- * Represents a raw Bitcoin transaction decomposed into specific vectors.
+ * Represents a raw Meowcoin transaction decomposed into specific vectors.
  */
 export interface BitcoinRawTxVectors {
   /**
@@ -184,13 +184,13 @@ export function extractBitcoinRawTxVectors(
 }
 
 /**
- * Converts Bitcoin specific locktime value to a number. The number represents
+ * Converts Meowcoin specific locktime value to a number. The number represents
  * either a block height or a Unix timestamp, depending on the value.
  *
  * If the number is less than 500 000 000 it is a block height.
  * If the number is greater or equal 500 000 000 it is a Unix timestamp.
  *
- * @see {@link https://developer.bitcoin.org/devguide/transactions.html#locktime-and-sequence-number Documentation}
+ * @see {@link https://developer.meowcoin.org/devguide/transactions.html#locktime-and-sequence-number Documentation}
  *
  * @param locktimeLE A 4-byte little-endian locktime as an un-prefixed
  *                   hex string {@link: Deposit#refundLocktime}.
@@ -223,13 +223,13 @@ function calculateLocktime(
     throw new Error("Locktime must be a 4 bytes number")
   }
 
-  // Bitcoin locktime is interpreted as little-endian integer, so we must
+  // Meowcoin locktime is interpreted as little-endian integer, so we must
   // adhere to that convention by converting the locktime accordingly.
   return locktimeHex.reverse()
 }
 
 /**
- * Utility functions allowing to deal with Bitcoin locktime.
+ * Utility functions allowing to deal with Meowcoin locktime.
  */
 export const BitcoinLocktimeUtils = {
   locktimeToNumber,

@@ -15,7 +15,7 @@ const config: HardhatUserConfig = {
     },
   },
 
-  // Indices for named accounts should match the ones defined in `@keep-network/tbtc-v2`.
+  // Indices for named accounts should match the ones defined in `@keep-network/tmewc`.
   namedAccounts: {
     deployer: {
       default: 1,

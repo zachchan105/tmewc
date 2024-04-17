@@ -5,24 +5,24 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { helpers, deployments } = hre
   const { log } = deployments
 
-  const OptimismWormholeTBTC = await deployments.getOrNull(
-    "OptimismWormholeTBTC"
+  const OptimismWormholeTMEWC = await deployments.getOrNull(
+    "OptimismWormholeTMEWC"
   )
 
   if (
-    OptimismWormholeTBTC &&
-    helpers.address.isValid(OptimismWormholeTBTC.address)
+    OptimismWormholeTMEWC &&
+    helpers.address.isValid(OptimismWormholeTMEWC.address)
   ) {
     log(
-      `using existing Optimism WormholeTBTC at ${OptimismWormholeTBTC.address}`
+      `using existing Optimism WormholeTMEWC at ${OptimismWormholeTMEWC.address}`
     )
   } else if (hre.network.name === "hardhat") {
-    log("using fake Optimism WormholeTBTC for hardhat network")
+    log("using fake Optimism WormholeTMEWC for hardhat network")
   } else {
-    throw new Error("deployed Optimism WormholeTBTC contract not found")
+    throw new Error("deployed Optimism WormholeTMEWC contract not found")
   }
 }
 
 export default func
 
-func.tags = ["OptimismWormholeTBTC"]
+func.tags = ["OptimismWormholeTMEWC"]

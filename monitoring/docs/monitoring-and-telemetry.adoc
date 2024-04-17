@@ -14,18 +14,18 @@ flowchart TD
     A[Threshold Dashboard] -->|Deposit data| B(Second track deposit verifier)
     B --> |Status| A
     A --> |Telemetry| C(Sentry)
-    D[TBTCv2 minters and guardians] --> |Telemetry| C
+    D[TMEWC minters and guardians] --> |Telemetry| C
     C -->|Alerts| E(PagerDuty)
     C --> |Alerts| F(Discord)
-    G[TBTCv2 monitoring] --> |Alerts| C
+    G[TMEWC monitoring] --> |Alerts| C
     G --> |Notifications| F
 ....
 
 There are several sources of monitoring and telemetry data:
 
 * https://github.com/threshold-network/token-dashboard[Threshold dashboard] + https://github.com/keep-network/v2-end-to-end[second track deposit verifier]
-* https://github.com/keep-network/optimistic-minting[TBTCv2 minters and guardians]
-* https://github.com/keep-network/tbtc-v2/tree/main/monitoring[TBTCv2 monitoring]
+* https://github.com/keep-network/optimistic-minting[TMEWC minters and guardians]
+* https://github.com/keep-network/tmewc/tree/main/monitoring[TMEWC monitoring]
 
 Monitoring and telemetry data are gathered by Sentry hub. Collected data are used to produce and send alerts to:
 
@@ -50,7 +50,7 @@ directly to Sentry hub:
 Each time a new deposit address is generated, the dashboard collects the
 following data:
 
-* BTC address of the deposit
+* MEWC address of the deposit
 * JSON recovery file content
 * Second track deposit verification result
 
@@ -67,7 +67,7 @@ proper and will not lead to fund loss.
 The second track deposit verifier is actually a Google Cloud Function named
 https://console.cloud.google.com/functions/details/us-central1/verify-deposit-address?env=gen1&authuser=1&project=keep-prd-210b[`verify-deposit-address`]
 living in the `keep-prd` GCP project. That function accepts some deposit data
-and return a deposit BTC address computed using their own algorithm,
+and return a deposit MEWC address computed using their own algorithm,
 independent from the one used by the dashboard. See an https://us-central1-keep-prd-210b.cloudfunctions.net/verify-deposit-address/json/mainnet/latest/1fb2d377340f4b776ed2516b2293bd65fd205858/abb75eb77b3eb032/5efe583da177c3a421578a9a5ee4ad4837991474/390e4165[example call].
 ====
 
@@ -77,7 +77,7 @@ Apart from deposit data, all unhandled errors thrown by the dashboard are also
 captured by the telemetry system. This allows to identify bugs encountered by
 users in an automatic way.
 
-=== TBTCv2 minters and guardians
+=== TMEWC minters and guardians
 
 The minters and guardians instances collect the following telemetry data that
 are sent directly to Sentry hub:
@@ -100,9 +100,9 @@ errors are:
 Apart from handled errors collected explicitly, all unhandled errors thrown by
 the minters and guardians are also captured by the telemetry system.
 
-=== TBTCv2 monitoring
+=== TMEWC monitoring
 
-The monitoring component inspects the tBTC v2 system on-chain contracts and
+The monitoring component inspects the tMEWC system on-chain contracts and
 produce different kind of system events that are sent to Sentry and Discord
 based on their type. A general rule of thumb is that notifications
 (*i.e. informational sytem events*) are sent directly to Discord `pass:[*]-notifications`
@@ -121,12 +121,12 @@ events produced by the monitoring component are:
 * stale redemption,
 * optimistic minting canceled,
 * optimistic minting requested too early,
-* optimistic minting requested for undetermined Bitcoin transaction,
+* optimistic minting requested for undetermined Meowcoin transaction,
 * optimistic minting not requested by designated minter,
 * optimistic minting not finalized by designated minter,
 * optimistic minting not requested by any minter,
 * optimistic minting not finalized by any minter,
-* high TBTC token total supply change.
+* high TMEWC token total supply change.
 
 ==== Deposit revealed
 
@@ -200,18 +200,18 @@ evicted from the system.
 ==== Optimistic minting requested too early
 
 A *critical system event* indicating that an optimistic minting request was
-issued too early regarding their BTC funding transaction confirmation state.
+issued too early regarding their MEWC funding transaction confirmation state.
 This event is sent to Sentry hub and requires an immediate team’s action.
 The default action is checking the reason of the early request as that event
 may indicate a malicious minter that should be evicted from the system.
 
-==== Optimistic minting requested for undetermined Bitcoin transaction
+==== Optimistic minting requested for undetermined Meowcoin transaction
 
 A *critical system event* indicating that an optimistic minting request was
-done for an undetermined Bitcoin transaction. This event is sent to Sentry
+done for an undetermined Meowcoin transaction. This event is sent to Sentry
 hub and requires an immediate team’s action. The default action is checking
-why the Bitcoin transaction cannot be determined as that event may indicate
-problems with the underlying Bitcoin client used by the monitoring component
+why the Meowcoin transaction cannot be determined as that event may indicate
+problems with the underlying Meowcoin client used by the monitoring component
 or flag a malicious minter that should be evicted from the system.
 
 ==== Optimistic minting not requested by designated minter
@@ -248,10 +248,10 @@ attention. The default action is investigating the cause of the minters idleness
 as the underlying deposit may be invalid, minters may be unhealthy/malicious or
 there may be a bug in the minters bot code.
 
-==== High TBTC token total supply change
+==== High TMEWC token total supply change
 
 A *critical system event* indicating that a high change (i.e. >=10%) of the
-total TBTC v2 token supply took place in the last 12 hours. This event is sent
+total TMEWC token supply took place in the last 12 hours. This event is sent
 to Sentry hub and requires an immediate team’s action. The default action is
 checking the root cause of the supply change and making sure its source is
 actually a proper deposit/redemption and there are no signs of any malicious
@@ -280,19 +280,19 @@ well as from production previews
 that collects telemetry from the test (Sepolia) Threshold dashboard as well as
 from test previews
 
-** https://keep-ko.sentry.io/projects/prod-tbtc-v2-minters-guardians/?project=4504690017042432[prod-tbtc-v2-minters-guardians]
-that collects telemetry from production (mainnet) TBTCv2 minters and guardians instances
+** https://keep-ko.sentry.io/projects/prod-tmewc-minters-guardians/?project=4504690017042432[prod-tmewc-minters-guardians]
+that collects telemetry from production (mainnet) TMEWC minters and guardians instances
 
-** https://keep-ko.sentry.io/projects/test-tbtc-v2-minters-guardians/?project=4504576597032960[test-tbtc-v2-minters-guardians]
-that collects telemetry from test (Sepolia) TBTCv2 minters and guardians instances
+** https://keep-ko.sentry.io/projects/test-tmewc-minters-guardians/?project=4504576597032960[test-tmewc-minters-guardians]
+that collects telemetry from test (Sepolia) TMEWC minters and guardians instances
 
-** https://keep-ko.sentry.io/projects/prod-tbtc-v2-monitoring/?project=4504684945342464[prod-tbtc-v2-monitoring]
+** https://keep-ko.sentry.io/projects/prod-tmewc-monitoring/?project=4504684945342464[prod-tmewc-monitoring]
 that collects alerts (i.e. warning/critical system events) from the production
-(mainnet) TBTCv2 monitoring instance
+(mainnet) TMEWC monitoring instance
 
-** https://keep-ko.sentry.io/projects/test-tbtc-v2-monitoring/?project=4504672363806720[test-tbtc-v2-monitoring]
+** https://keep-ko.sentry.io/projects/test-tmewc-monitoring/?project=4504672363806720[test-tmewc-monitoring]
 that collects alerts (i.e. warning/critical system events) from the test
-(Sepolia) TBTCv2 monitoring instance
+(Sepolia) TMEWC monitoring instance
 
 === Alerts
 
@@ -304,12 +304,12 @@ Here is the exact summary of configured alert rules:
 |===
 |Alert name |Project |Firing conditions |Notified entities
 
-|https://keep-ko.sentry.io/alerts/rules/prod-threshold-dashboard/13626376/details[Mainnet deposit second track verification failure] |https://keep-ko.sentry.io/projects/prod-threshold-dashboard/?project=4504566725607424[prod-threshold-dashboard] |When deposit address returned by the second track deposit verifier is different from the address generated by the dashboard |PagerDuty and Discord `tbtc-alerts` channel
+|https://keep-ko.sentry.io/alerts/rules/prod-threshold-dashboard/13626376/details[Mainnet deposit second track verification failure] |https://keep-ko.sentry.io/projects/prod-threshold-dashboard/?project=4504566725607424[prod-threshold-dashboard] |When deposit address returned by the second track deposit verifier is different from the address generated by the dashboard |PagerDuty and Discord `tmewc-alerts` channel
 
-|https://keep-ko.sentry.io/alerts/rules/test-threshold-dashboard/13626401/details[Testnet deposit second track verification failure] |https://keep-ko.sentry.io/projects/test-threshold-dashboard/?project=4504564892827648[test-threshold-dashboard] |When deposit address returned by the second track deposit verifier is different from the address generated by the dashboard |Discord `tbtc-testnet-notifications` channel
+|https://keep-ko.sentry.io/alerts/rules/test-threshold-dashboard/13626401/details[Testnet deposit second track verification failure] |https://keep-ko.sentry.io/projects/test-threshold-dashboard/?project=4504564892827648[test-threshold-dashboard] |When deposit address returned by the second track deposit verifier is different from the address generated by the dashboard |Discord `tmewc-testnet-notifications` channel
 
-|https://keep-ko.sentry.io/alerts/rules/prod-tbtc-v2-monitoring/13795336/details[Mainnet monitoring alerts Discord router] |https://keep-ko.sentry.io/projects/prod-tbtc-v2-monitoring/?project=4504684945342464[prod-tbtc-v2-monitoring] |When a new alert (i.e. warning/critical system event) is received from the TBTCv2 monitoring component |Discord `tbtc-alerts` channel
+|https://keep-ko.sentry.io/alerts/rules/prod-tmewc-monitoring/13795336/details[Mainnet monitoring alerts Discord router] |https://keep-ko.sentry.io/projects/prod-tmewc-monitoring/?project=4504684945342464[prod-tmewc-monitoring] |When a new alert (i.e. warning/critical system event) is received from the TMEWC monitoring component |Discord `tmewc-alerts` channel
 
-|https://keep-ko.sentry.io/alerts/rules/prod-tbtc-v2-monitoring/13795667/details[Mainnet monitoring alerts PagerDuty router] |https://keep-ko.sentry.io/projects/prod-tbtc-v2-monitoring/?project=4504684945342464[prod-tbtc-v2-monitoring] |When a new critical alert (i.e. critical system event) is received from the TBTCv2 monitoring component |PagerDuty
+|https://keep-ko.sentry.io/alerts/rules/prod-tmewc-monitoring/13795667/details[Mainnet monitoring alerts PagerDuty router] |https://keep-ko.sentry.io/projects/prod-tmewc-monitoring/?project=4504684945342464[prod-tmewc-monitoring] |When a new critical alert (i.e. critical system event) is received from the TMEWC monitoring component |PagerDuty
 
-|https://keep-ko.sentry.io/alerts/rules/test-tbtc-v2-monitoring/13795270/details[Testnet monitoring alerts Discord router] |https://keep-ko.sentry.io/projects/test-tbtc-v2-monitoring/?project=4504672363806720[test-tbtc-v2-monitoring] |When a new alert (i.e. warning/critical system event) is received from the TBTCv2 monitoring component |Discord `tbtc-testnet-notifications` channel
+|https://keep-ko.sentry.io/alerts/rules/test-tmewc-monitoring/13795270/details[Testnet monitoring alerts Discord router] |https://keep-ko.sentry.io/projects/test-tmewc-monitoring/?project=4504672363806720[test-tmewc-monitoring] |When a new alert (i.e. warning/critical system event) is received from the TMEWC monitoring component |Discord `tmewc-testnet-notifications` channel

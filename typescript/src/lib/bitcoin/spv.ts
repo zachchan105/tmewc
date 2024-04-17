@@ -11,7 +11,7 @@ import { BitcoinHashUtils } from "./hash"
 
 /**
  * Data required to perform a proof that a given transaction was included in
- * the Bitcoin blockchain.
+ * the Meowcoin blockchain.
  */
 export interface BitcoinSpvProof {
   /**
@@ -69,8 +69,8 @@ export interface BitcoinTxMerkleBranch {
  * has accumulated the required number of confirmations.
  * @param transactionHash - Hash of the transaction being proven.
  * @param requiredConfirmations - Required number of confirmations.
- * @param bitcoinClient - Bitcoin client used to interact with the network.
- * @returns Bitcoin transaction along with the inclusion proof.
+ * @param bitcoinClient - Meowcoin client used to interact with the network.
+ * @returns Meowcoin transaction along with the inclusion proof.
  */
 export async function assembleBitcoinSpvProof(
   transactionHash: BitcoinTxHash,
@@ -160,7 +160,7 @@ function createMerkleProof(txMerkleBranch: BitcoinTxMerkleBranch): Hex {
 }
 
 /**
- * Proves that a transaction with the given hash is included in the Bitcoin
+ * Proves that a transaction with the given hash is included in the Meowcoin
  * blockchain by validating the transaction's inclusion in the Merkle tree and
  * verifying that the block containing the transaction has enough confirmations.
  * @param transactionHash The hash of the transaction to be validated.
@@ -168,10 +168,10 @@ function createMerkleProof(txMerkleBranch: BitcoinTxMerkleBranch): Hex {
  *        transaction to be considered valid. The transaction has 1 confirmation
  *        when it is in the block at the current blockchain tip. Every subsequent
  *        block added to the blockchain is one additional confirmation.
- * @param previousDifficulty The difficulty of the previous Bitcoin epoch.
- * @param currentDifficulty The difficulty of the current Bitcoin epoch.
- * @param bitcoinClient The client for interacting with the Bitcoin blockchain.
- * @throws {Error} If the transaction is not included in the Bitcoin blockchain
+ * @param previousDifficulty The difficulty of the previous Meowcoin epoch.
+ * @param currentDifficulty The difficulty of the current Meowcoin epoch.
+ * @param bitcoinClient The client for interacting with the Meowcoin blockchain.
+ * @throws {Error} If the transaction is not included in the Meowcoin blockchain
  *        or if the block containing the transaction does not have enough
  *        confirmations.
  * @dev The function should be used within a try-catch block.

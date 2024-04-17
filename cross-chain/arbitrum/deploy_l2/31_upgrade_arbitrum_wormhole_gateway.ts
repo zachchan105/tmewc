@@ -6,19 +6,19 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deployer } = await getNamedAccounts()
 
   const ArbitrumTokenBridge = await deployments.get("ArbitrumTokenBridge")
-  const ArbitrumWormholeTBTC = await deployments.get("ArbitrumWormholeTBTC")
-  const ArbitrumTBTC = await deployments.get("ArbitrumTBTC")
+  const ArbitrumWormholeTMEWC = await deployments.get("ArbitrumWormholeTMEWC")
+  const ArbitrumTMEWC = await deployments.get("ArbitrumTMEWC")
 
   const [, proxyDeployment] = await helpers.upgrades.upgradeProxy(
     "ArbitrumWormholeGateway",
     "ArbitrumWormholeGateway",
     {
       contractName:
-        "@keep-network/tbtc-v2/contracts/l2/L2WormholeGateway.sol:L2WormholeGateway",
+        "@keep-network/tmewc/contracts/l2/L2WormholeGateway.sol:L2WormholeGateway",
       initializerArgs: [
         ArbitrumTokenBridge.address,
-        ArbitrumWormholeTBTC.address,
-        ArbitrumTBTC.address,
+        ArbitrumWormholeTMEWC.address,
+        ArbitrumTMEWC.address,
       ],
       factoryOpts: { signer: await ethers.getSigner(deployer) },
       proxyOpts: {

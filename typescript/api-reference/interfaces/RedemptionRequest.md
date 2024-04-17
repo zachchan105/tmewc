@@ -23,7 +23,7 @@ On-chain identifier of the redeemer.
 
 #### Defined in
 
-[src/lib/contracts/bridge.ts:306](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/bridge.ts#L306)
+[src/lib/contracts/bridge.ts:306](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/bridge.ts#L306)
 
 ___
 
@@ -31,12 +31,12 @@ ___
 
 • **redeemerOutputScript**: [`Hex`](../classes/Hex.md)
 
-The output script the redeemed Bitcoin funds are locked to. It is not
+The output script the redeemed Meowcoin funds are locked to. It is not
 prepended with length.
 
 #### Defined in
 
-[src/lib/contracts/bridge.ts:312](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/bridge.ts#L312)
+[src/lib/contracts/bridge.ts:312](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/bridge.ts#L312)
 
 ___
 
@@ -45,12 +45,12 @@ ___
 • **requestedAmount**: `BigNumber`
 
 The amount of Bitcoins in satoshis that is requested to be redeemed.
-The actual value of the output in the Bitcoin transaction will be decreased
+The actual value of the output in the Meowcoin transaction will be decreased
 by the sum of the fee share and the treasury fee for this particular output.
 
 #### Defined in
 
-[src/lib/contracts/bridge.ts:319](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/bridge.ts#L319)
+[src/lib/contracts/bridge.ts:319](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/bridge.ts#L319)
 
 ___
 
@@ -62,7 +62,7 @@ UNIX timestamp the request was created at.
 
 #### Defined in
 
-[src/lib/contracts/bridge.ts:338](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/bridge.ts#L338)
+[src/lib/contracts/bridge.ts:338](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/bridge.ts#L338)
 
 ___
 
@@ -77,7 +77,7 @@ on-chain contract at the time the redemption request was made.
 
 #### Defined in
 
-[src/lib/contracts/bridge.ts:327](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/bridge.ts#L327)
+[src/lib/contracts/bridge.ts:327](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/bridge.ts#L327)
 
 ___
 
@@ -90,4 +90,4 @@ redemption's `requestedAmount` to pay the transaction network fee.
 
 #### Defined in
 
-[src/lib/contracts/bridge.ts:333](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/bridge.ts#L333)
+[src/lib/contracts/bridge.ts:333](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/bridge.ts#L333)

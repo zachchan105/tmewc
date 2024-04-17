@@ -1,5 +1,5 @@
 use crate::{
-    error::TbtcError,
+    error::TmewcError,
     state::{Config, GuardianInfo},
 };
 use anchor_lang::prelude::*;
@@ -25,7 +25,7 @@ pub struct Pause<'info> {
 
 impl<'info> Pause<'info> {
     fn constraints(ctx: &Context<Self>) -> Result<()> {
-        require!(!ctx.accounts.config.paused, TbtcError::IsPaused);
+        require!(!ctx.accounts.config.paused, TmewcError::IsPaused);
 
         Ok(())
     }

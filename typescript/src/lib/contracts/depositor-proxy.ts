@@ -1,15 +1,15 @@
 import { ChainIdentifier } from "./chain-identifier"
 import { Hex } from "../utils"
-import { BitcoinRawTxVectors } from "../bitcoin"
+import { BitcoinRawTxVectors } from "../meowcoin"
 import { DepositReceipt } from "./bridge"
 
 /**
  * Interface representing a depositor proxy contract. A depositor proxy
  * is used to reveal deposits to the Bridge, on behalf of the user
- * (i.e. original depositor). It receives minted TBTC tokens and can provide
- * additional services to the user, such as routing the minted TBTC tokens to
+ * (i.e. original depositor). It receives minted TMEWC tokens and can provide
+ * additional services to the user, such as routing the minted TMEWC tokens to
  * another protocols, in an automated way. Depositor proxy is responsible for
- * attributing the deposit and minted TBTC tokens to the user (e.g. using the
+ * attributing the deposit and minted TMEWC tokens to the user (e.g. using the
  * optional 32-byte extra data field of the deposit script).
  */
 export interface DepositorProxy {

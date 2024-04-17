@@ -2,8 +2,8 @@
 
 = Threshold cross-chain - Optimism
 
-This package brings Bitcoin to Ethereum L2 Optimism. For more details please
-see link:https://github.com/keep-network/tbtc-v2/blob/main/docs/rfc/rfc-8.adoc[RFC 8: Cross-chain Tokenized Threshold BTC]
+This package brings Meowcoin to Ethereum L2 Optimism. For more details please
+see link:https://github.com/keep-network/tmewc/blob/main/docs/rfc/rfc-8.adoc[RFC 8: Cross-chain Tokenized Threshold MEWC]
 
 == How it works?
 
@@ -12,20 +12,20 @@ see link:https://github.com/keep-network/tbtc-v2/blob/main/docs/rfc/rfc-8.adoc[R
 |          Ethereum          |         |                                Optimism                                   |
 |                            |         |                                                                           |
 |  +----------------------+  |         |  +----------------------+  +-------------------------+  +--------------+  |
-|  | Wormhole TokenBridge |--|---------|--| Wormhole TokenBridge |--| OptimismWormholeGateway |--| OptimismTBTC |  |
+|  | Wormhole TokenBridge |--|---------|--| Wormhole TokenBridge |--| OptimismWormholeGateway |--| OptimismTMEWC |  |
 |  +----------------------+  |         |  +----------------------+  +-------------------------+  +--------------+  |
 |                            |         |                                                                           |
 +----------------------------+         +---------------------------------------------------------------------------+
 ```
 
-- `OptimismTBTC` canonical tBTC token on Optimism with a minting authority
+- `OptimismTMEWC` canonical tMEWC token on Optimism with a minting authority
 delegated to `OptimismWormholeGateway`.
 - `OptimismWormholeGateway` is a smart contract wrapping and unwrapping 
-Wormhole-specific tBTC representation into the canonical `OptimismTBTC` token.
+Wormhole-specific tMEWC representation into the canonical `OptimismTMEWC` token.
 
 === Updating Wormhole Gateway mapping
 
-The deployment scripts are responsible for managing updates of the tBTC gateway
+The deployment scripts are responsible for managing updates of the tMEWC gateway
 addresses across various chains. These addresses are stored in the `external/`
 directory for a specific network, such as `optimismSepolia/ArbitrumWormholeGateway.json.` 
 It is important to note that these addresses should remain constant for the 

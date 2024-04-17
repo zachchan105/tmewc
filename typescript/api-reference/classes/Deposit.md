@@ -1,7 +1,7 @@
 # Class: Deposit
 
-Component representing an instance of the tBTC v2 deposit process.
-Depositing is a complex process spanning both the Bitcoin and the target chain.
+Component representing an instance of the tMEWC deposit process.
+Depositing is a complex process spanning both the Meowcoin and the target chain.
 This component tries to abstract away that complexity.
 
 ## Table of contents
@@ -16,7 +16,7 @@ This component tries to abstract away that complexity.
 - [bitcoinNetwork](Deposit.md#bitcoinnetwork)
 - [depositorProxy](Deposit.md#depositorproxy)
 - [script](Deposit.md#script)
-- [tbtcContracts](Deposit.md#tbtccontracts)
+- [tmewcContracts](Deposit.md#tmewccontracts)
 
 ### Methods
 
@@ -30,14 +30,14 @@ This component tries to abstract away that complexity.
 
 ### constructor
 
-• **new Deposit**(`receipt`, `tbtcContracts`, `bitcoinClient`, `bitcoinNetwork`, `depositorProxy?`): [`Deposit`](Deposit.md)
+• **new Deposit**(`receipt`, `tmewcContracts`, `bitcoinClient`, `bitcoinNetwork`, `depositorProxy?`): [`Deposit`](Deposit.md)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `receipt` | [`DepositReceipt`](../interfaces/DepositReceipt.md) |
-| `tbtcContracts` | [`TBTCContracts`](../README.md#tbtccontracts) |
+| `tmewcContracts` | [`TMEWCContracts`](../README.md#tmewccontracts) |
 | `bitcoinClient` | [`BitcoinClient`](../interfaces/BitcoinClient.md) |
 | `bitcoinNetwork` | [`BitcoinNetwork`](../enums/BitcoinNetwork-1.md) |
 | `depositorProxy?` | [`DepositorProxy`](../interfaces/DepositorProxy.md) |
@@ -48,7 +48,7 @@ This component tries to abstract away that complexity.
 
 #### Defined in
 
-[src/services/deposits/deposit.ts:47](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/deposits/deposit.ts#L47)
+[src/services/deposits/deposit.ts:47](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/deposits/deposit.ts#L47)
 
 ## Properties
 
@@ -56,11 +56,11 @@ This component tries to abstract away that complexity.
 
 • `Private` `Readonly` **bitcoinClient**: [`BitcoinClient`](../interfaces/BitcoinClient.md)
 
-Bitcoin client handle.
+Meowcoin client handle.
 
 #### Defined in
 
-[src/services/deposits/deposit.ts:36](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/deposits/deposit.ts#L36)
+[src/services/deposits/deposit.ts:36](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/deposits/deposit.ts#L36)
 
 ___
 
@@ -68,12 +68,12 @@ ___
 
 • `Readonly` **bitcoinNetwork**: [`BitcoinNetwork`](../enums/BitcoinNetwork-1.md)
 
-Bitcoin network the deposit is relevant for. Has an impact on the
+Meowcoin network the deposit is relevant for. Has an impact on the
 generated deposit address.
 
 #### Defined in
 
-[src/services/deposits/deposit.ts:45](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/deposits/deposit.ts#L45)
+[src/services/deposits/deposit.ts:45](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/deposits/deposit.ts#L45)
 
 ___
 
@@ -85,7 +85,7 @@ Optional depositor proxy used to initiate minting.
 
 #### Defined in
 
-[src/services/deposits/deposit.ts:40](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/deposits/deposit.ts#L40)
+[src/services/deposits/deposit.ts:40](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/deposits/deposit.ts#L40)
 
 ___
 
@@ -93,23 +93,23 @@ ___
 
 • `Private` `Readonly` **script**: [`DepositScript`](DepositScript.md)
 
-Bitcoin script corresponding to this deposit.
+Meowcoin script corresponding to this deposit.
 
 #### Defined in
 
-[src/services/deposits/deposit.ts:28](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/deposits/deposit.ts#L28)
+[src/services/deposits/deposit.ts:28](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/deposits/deposit.ts#L28)
 
 ___
 
-### tbtcContracts
+### tmewcContracts
 
-• `Private` `Readonly` **tbtcContracts**: [`TBTCContracts`](../README.md#tbtccontracts)
+• `Private` `Readonly` **tmewcContracts**: [`TMEWCContracts`](../README.md#tmewccontracts)
 
-Handle to tBTC contracts.
+Handle to tMEWC contracts.
 
 #### Defined in
 
-[src/services/deposits/deposit.ts:32](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/deposits/deposit.ts#L32)
+[src/services/deposits/deposit.ts:32](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/deposits/deposit.ts#L32)
 
 ## Methods
 
@@ -117,7 +117,7 @@ Handle to tBTC contracts.
 
 ▸ **detectFunding**(): `Promise`\<[`BitcoinUtxo`](../README.md#bitcoinutxo)[]\>
 
-Detects Bitcoin funding transactions transferring BTC to this deposit.
+Detects Meowcoin funding transactions transferring MEWC to this deposit.
 The list includes UTXOs from both the blockchain and the mempool, sorted by
 age with the newest ones first. Mempool UTXOs are listed at the beginning.
 
@@ -130,7 +130,7 @@ Specific UTXOs targeting this deposit. Empty array in case
 
 #### Defined in
 
-[src/services/deposits/deposit.ts:99](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/deposits/deposit.ts#L99)
+[src/services/deposits/deposit.ts:99](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/deposits/deposit.ts#L99)
 
 ___
 
@@ -142,11 +142,11 @@ ___
 
 `Promise`\<`string`\>
 
-Bitcoin address corresponding to this deposit.
+Meowcoin address corresponding to this deposit.
 
 #### Defined in
 
-[src/services/deposits/deposit.ts:88](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/deposits/deposit.ts#L88)
+[src/services/deposits/deposit.ts:88](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/deposits/deposit.ts#L88)
 
 ___
 
@@ -162,7 +162,7 @@ Receipt corresponding to this deposit.
 
 #### Defined in
 
-[src/services/deposits/deposit.ts:81](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/deposits/deposit.ts#L81)
+[src/services/deposits/deposit.ts:81](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/deposits/deposit.ts#L81)
 
 ___
 
@@ -170,9 +170,9 @@ ___
 
 ▸ **initiateMinting**(`fundingOutpoint?`): `Promise`\<[`Hex`](Hex.md)\>
 
-Initiates minting of the TBTC token, based on the Bitcoin funding
+Initiates minting of the TMEWC token, based on the Meowcoin funding
 transaction outpoint targeting this deposit. By default, it detects and
-uses the outpoint of the recent Bitcoin funding transaction and throws if
+uses the outpoint of the recent Meowcoin funding transaction and throws if
 such a transaction does not exist. This behavior can be changed by pointing
 a funding transaction explicitly, using the fundingOutpoint parameter.
 
@@ -206,20 +206,20 @@ Throws an error if the funding outpoint was already used to
 
 #### Defined in
 
-[src/services/deposits/deposit.ts:128](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/deposits/deposit.ts#L128)
+[src/services/deposits/deposit.ts:128](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/deposits/deposit.ts#L128)
 
 ___
 
 ### fromReceipt
 
-▸ **fromReceipt**(`receipt`, `tbtcContracts`, `bitcoinClient`, `depositorProxy?`): `Promise`\<[`Deposit`](Deposit.md)\>
+▸ **fromReceipt**(`receipt`, `tmewcContracts`, `bitcoinClient`, `depositorProxy?`): `Promise`\<[`Deposit`](Deposit.md)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `receipt` | [`DepositReceipt`](../interfaces/DepositReceipt.md) |
-| `tbtcContracts` | [`TBTCContracts`](../README.md#tbtccontracts) |
+| `tmewcContracts` | [`TMEWCContracts`](../README.md#tmewccontracts) |
 | `bitcoinClient` | [`BitcoinClient`](../interfaces/BitcoinClient.md) |
 | `depositorProxy?` | [`DepositorProxy`](../interfaces/DepositorProxy.md) |
 
@@ -229,4 +229,4 @@ ___
 
 #### Defined in
 
-[src/services/deposits/deposit.ts:61](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/deposits/deposit.ts#L61)
+[src/services/deposits/deposit.ts:61](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/deposits/deposit.ts#L61)

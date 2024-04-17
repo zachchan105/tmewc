@@ -1,5 +1,5 @@
 {
-  "name": "@keep-network/tbtc-v2-system-tests",
+  "name": "@keep-network/tmewc-system-tests",
   "version": "1.0.0-dev",
   "license": "MIT",
   "scripts": {
@@ -18,7 +18,7 @@
     "test/**/*"
   ],
   "dependencies": {
-    "@keep-network/tbtc-v2.ts": "^2.3.0",
+    "@keep-network/tmewc.ts": "^2.3.0",
     "elliptic": "^6.5.4",
     "wif": "^2.0.6"
   },

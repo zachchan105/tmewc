@@ -1,7 +1,7 @@
-import { TBTCVault as TBTCVaultTypechain } from "../../../typechain/TBTCVault"
+import { TMEWCVault as TMEWCVaultTypechain } from "../../../typechain/TMEWCVault"
 import {
   GetChainEvents,
-  TBTCVault,
+  TMEWCVault,
   OptimisticMintingCancelledEvent,
   OptimisticMintingFinalizedEvent,
   OptimisticMintingRequest,
@@ -10,7 +10,7 @@ import {
   Chains,
 } from "../contracts"
 import { BigNumber, ContractTransaction } from "ethers"
-import { BitcoinTxHash } from "../bitcoin"
+import { BitcoinTxHash } from "../meowcoin"
 import { backoffRetrier, Hex } from "../utils"
 import {
   EthersContractConfig,
@@ -21,9 +21,9 @@ import {
 import { EthereumAddress } from "./address"
 import { EthereumBridge } from "./bridge"
 
-import MainnetTBTCVaultDeployment from "./artifacts/mainnet/TBTCVault.json"
-import SepoliaTBTCVaultDeployment from "./artifacts/sepolia/TBTCVault.json"
-import LocalTBTCVaultDeployment from "@keep-network/tbtc-v2/artifacts/TBTCVault.json"
+import MainnetTMEWCVaultDeployment from "./artifacts/mainnet/TMEWCVault.json"
+import SepoliaTMEWCVaultDeployment from "./artifacts/sepolia/TMEWCVault.json"
+import LocalTMEWCVaultDeployment from "@keep-network/tmewc/artifacts/TMEWCVault.json"
 
 type ContractOptimisticMintingRequest = {
   requestedAt: BigNumber
@@ -31,12 +31,12 @@ type ContractOptimisticMintingRequest = {
 }
 
 /**
- * Implementation of the Ethereum TBTCVault handle.
- * @see {TBTCVault} for reference.
+ * Implementation of the Ethereum TMEWCVault handle.
+ * @see {TMEWCVault} for reference.
  */
-export class EthereumTBTCVault
-  extends EthersContractHandle<TBTCVaultTypechain>
-  implements TBTCVault
+export class EthereumTMEWCVault
+  extends EthersContractHandle<TMEWCVaultTypechain>
+  implements TMEWCVault
 {
   constructor(
     config: EthersContractConfig,
@@ -46,13 +46,13 @@ export class EthereumTBTCVault
 
     switch (chainId) {
       case Chains.Ethereum.Local:
-        deployment = LocalTBTCVaultDeployment
+        deployment = LocalTMEWCVaultDeployment
         break
       case Chains.Ethereum.Sepolia:
-        deployment = SepoliaTBTCVaultDeployment
+        deployment = SepoliaTMEWCVaultDeployment
         break
       case Chains.Ethereum.Mainnet:
-        deployment = MainnetTBTCVaultDeployment
+        deployment = MainnetTMEWCVaultDeployment
         break
       default:
         throw new Error("Unsupported deployment type")
@@ -63,7 +63,7 @@ export class EthereumTBTCVault
 
   // eslint-disable-next-line valid-jsdoc
   /**
-   * @see {TBTCVault#getChainIdentifier}
+   * @see {TMEWCVault#getChainIdentifier}
    */
   getChainIdentifier(): ChainIdentifier {
     return EthereumAddress.from(this._instance.address)
@@ -71,7 +71,7 @@ export class EthereumTBTCVault
 
   // eslint-disable-next-line valid-jsdoc
   /**
-   * @see {TBTCVault#optimisticMintingDelay}
+   * @see {TMEWCVault#optimisticMintingDelay}
    */
   async optimisticMintingDelay(): Promise<number> {
     const delaySeconds = await backoffRetrier<number>(this._totalRetryAttempts)(
@@ -85,7 +85,7 @@ export class EthereumTBTCVault
 
   // eslint-disable-next-line valid-jsdoc
   /**
-   * @see {TBTCVault#getMinters}
+   * @see {TMEWCVault#getMinters}
    */
   async getMinters(): Promise<EthereumAddress[]> {
     const minters: string[] = await backoffRetrier<string[]>(
@@ -99,7 +99,7 @@ export class EthereumTBTCVault
 
   // eslint-disable-next-line valid-jsdoc
   /**
-   * @see {TBTCVault#isMinter}
+   * @see {TMEWCVault#isMinter}
    */
   async isMinter(address: EthereumAddress): Promise<boolean> {
     return await backoffRetrier<boolean>(this._totalRetryAttempts)(async () => {
@@ -109,7 +109,7 @@ export class EthereumTBTCVault
 
   // eslint-disable-next-line valid-jsdoc
   /**
-   * @see {TBTCVault#isGuardian}
+   * @see {TMEWCVault#isGuardian}
    */
   async isGuardian(address: EthereumAddress): Promise<boolean> {
     return await backoffRetrier<boolean>(this._totalRetryAttempts)(async () => {
@@ -119,7 +119,7 @@ export class EthereumTBTCVault
 
   // eslint-disable-next-line valid-jsdoc
   /**
-   * @see {TBTCVault#requestOptimisticMint}
+   * @see {TMEWCVault#requestOptimisticMint}
    */
   async requestOptimisticMint(
     depositTxHash: BitcoinTxHash,
@@ -145,7 +145,7 @@ export class EthereumTBTCVault
 
   // eslint-disable-next-line valid-jsdoc
   /**
-   * @see {TBTCVault#cancelOptimisticMint}
+   * @see {TMEWCVault#cancelOptimisticMint}
    */
   async cancelOptimisticMint(
     depositTxHash: BitcoinTxHash,
@@ -168,7 +168,7 @@ export class EthereumTBTCVault
 
   // eslint-disable-next-line valid-jsdoc
   /**
-   * @see {TBTCVault#finalizeOptimisticMint}
+   * @see {TMEWCVault#finalizeOptimisticMint}
    */
   async finalizeOptimisticMint(
     depositTxHash: BitcoinTxHash,
@@ -194,7 +194,7 @@ export class EthereumTBTCVault
 
   // eslint-disable-next-line valid-jsdoc
   /**
-   * @see {TBTCVault#optimisticMintingRequests}
+   * @see {TMEWCVault#optimisticMintingRequests}
    */
   async optimisticMintingRequests(
     depositTxHash: BitcoinTxHash,

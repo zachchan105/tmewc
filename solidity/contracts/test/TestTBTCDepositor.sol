@@ -2,15 +2,15 @@
 
 pragma solidity ^0.8.0;
 
-import {BTCUtils} from "@keep-network/bitcoin-spv-sol/contracts/BTCUtils.sol";
+import {MEWCUtils} from "@keep-network/meowcoin-spv-sol/contracts/MEWCUtils.sol";
 
-import "../integrator/AbstractTBTCDepositor.sol";
+import "../integrator/AbstractTMEWCDepositor.sol";
 import "../integrator/IBridge.sol";
-import "../integrator/ITBTCVault.sol";
+import "../integrator/ITMEWCVault.sol";
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-contract TestTBTCDepositor is AbstractTBTCDepositor {
+contract TestTMEWCDepositor is AbstractTMEWCDepositor {
     event InitializeDepositReturned(
         uint256 depositKey,
         uint256 initialDepositAmount
@@ -18,12 +18,12 @@ contract TestTBTCDepositor is AbstractTBTCDepositor {
 
     event FinalizeDepositReturned(
         uint256 initialDepositAmount,
-        uint256 tbtcAmount,
+        uint256 tmewcAmount,
         bytes32 extraData
     );
 
-    function initialize(address _bridge, address _tbtcVault) external {
-        __AbstractTBTCDepositor_initialize(_bridge, _tbtcVault);
+    function initialize(address _bridge, address _tmewcVault) external {
+        __AbstractTMEWCDepositor_initialize(_bridge, _tmewcVault);
     }
 
     function initializeDepositPublic(
@@ -42,21 +42,21 @@ contract TestTBTCDepositor is AbstractTBTCDepositor {
     function finalizeDepositPublic(uint256 depositKey) external {
         (
             uint256 initialDepositAmount,
-            uint256 tbtcAmount,
+            uint256 tmewcAmount,
             bytes32 extraData
         ) = _finalizeDeposit(depositKey);
         emit FinalizeDepositReturned(
             initialDepositAmount,
-            tbtcAmount,
+            tmewcAmount,
             extraData
         );
     }
 
-    function calculateTbtcAmountPublic(
+    function calculateTmewcAmountPublic(
         uint64 depositAmountSat,
         uint64 depositTreasuryFeeSat
     ) external view returns (uint256) {
-        return _calculateTbtcAmount(depositAmountSat, depositTreasuryFeeSat);
+        return _calculateTmewcAmount(depositAmountSat, depositTreasuryFeeSat);
     }
 
     function minDepositAmountPublic() external view returns (uint256) {
@@ -65,13 +65,13 @@ contract TestTBTCDepositor is AbstractTBTCDepositor {
 }
 
 contract MockBridge is IBridge {
-    using BTCUtils for bytes;
+    using MEWCUtils for bytes;
 
     mapping(uint256 => IBridgeTypes.DepositRequest) internal _deposits;
 
-    uint64 internal _depositDustThreshold = 1000000; // 1000000 satoshi = 0.01 BTC
+    uint64 internal _depositDustThreshold = 1000000; // 1000000 satoshi = 0.01 MEWC
     uint64 internal _depositTreasuryFeeDivisor = 50; // 1/50 == 100 bps == 2% == 0.02
-    uint64 internal _depositTxMaxFee = 1000; // 1000 satoshi = 0.00001 BTC
+    uint64 internal _depositTxMaxFee = 1000; // 1000 satoshi = 0.00001 MEWC
 
     event DepositRevealed(uint256 depositKey);
 
@@ -168,7 +168,7 @@ contract MockBridge is IBridge {
     }
 }
 
-contract MockTBTCVault is ITBTCVault {
+contract MockTMEWCVault is ITMEWCVault {
     struct Request {
         uint64 requestedAt;
         uint64 finalizedAt;
@@ -187,7 +187,7 @@ contract MockTBTCVault is ITBTCVault {
     }
 
     /// @dev The function is virtual to allow other projects using this mock
-    ///      for AbtractTBTCDepositor-based contract tests to add any custom
+    ///      for AbtractTMEWCDepositor-based contract tests to add any custom
     ///      logic needed.
     function createOptimisticMintingRequest(uint256 depositKey) public virtual {
         require(
@@ -199,7 +199,7 @@ contract MockTBTCVault is ITBTCVault {
     }
 
     /// @dev The function is virtual to allow other projects using this mock
-    ///      for AbtractTBTCDepositor-based contract tests to add any custom
+    ///      for AbtractTMEWCDepositor-based contract tests to add any custom
     ///      logic needed.
     function finalizeOptimisticMintingRequest(uint256 depositKey)
         public
@@ -221,7 +221,7 @@ contract MockTBTCVault is ITBTCVault {
         optimisticMintingFeeDivisor = value;
     }
 
-    function tbtcToken() external view returns (address) {
+    function tmewcToken() external view returns (address) {
         revert("Not implemented");
     }
 }

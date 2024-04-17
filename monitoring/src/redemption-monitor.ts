@@ -1,15 +1,15 @@
 import { BigNumber } from "ethers"
-import { Hex } from "@keep-network/tbtc-v2.ts"
+import { Hex } from "@keep-network/tmewc.ts"
 
 import { context } from "./context"
 import { SystemEventType } from "./system-event"
-import { satsToRoundedBTC } from "./deposit-monitor"
+import { satsToRoundedMEWC } from "./deposit-monitor"
 import { createEthTxUrl } from "./block-explorer"
 import { contracts } from "./contracts"
 
 import type { Monitor as SystemEventMonitor, SystemEvent } from "./system-event"
-import type { RedemptionRequestedEvent as RedemptionRequestedChainEvent } from "@keep-network/tbtc-v2.ts/dist/src/redemption"
-import type { Bridge } from "@keep-network/tbtc-v2.ts/dist/src/chain"
+import type { RedemptionRequestedEvent as RedemptionRequestedChainEvent } from "@keep-network/tmewc.ts/dist/src/redemption"
+import type { Bridge } from "@keep-network/tmewc.ts/dist/src/chain"
 
 // The time after which a pending redemption request is considered stale.
 // Typically, a redemption request processing time should not exceed 5 hours.
@@ -28,7 +28,7 @@ const RedemptionRequested = (
     data: {
       walletPublicKeyHash: chainEvent.walletPublicKeyHash,
       redeemerOutputScript: chainEvent.redeemerOutputScript,
-      requestedAmountBTC: satsToRoundedBTC(chainEvent.requestedAmount),
+      requestedAmountMEWC: satsToRoundedMEWC(chainEvent.requestedAmount),
       ethRequestTxHash: chainEvent.transactionHash.toPrefixedString(),
       ethRequestTxHashURL,
     },
@@ -47,7 +47,7 @@ const LargeRedemptionRequested = (
     data: {
       walletPublicKeyHash: chainEvent.walletPublicKeyHash,
       redeemerOutputScript: chainEvent.redeemerOutputScript,
-      requestedAmountBTC: satsToRoundedBTC(chainEvent.requestedAmount),
+      requestedAmountMEWC: satsToRoundedMEWC(chainEvent.requestedAmount),
       ethRequestTxHash: chainEvent.transactionHash.toPrefixedString(),
       ethRequestTxHashURL,
     },
@@ -66,7 +66,7 @@ const StaleRedemption = (
     data: {
       walletPublicKeyHash: chainEvent.walletPublicKeyHash,
       redeemerOutputScript: chainEvent.redeemerOutputScript,
-      requestedAmountBTC: satsToRoundedBTC(chainEvent.requestedAmount),
+      requestedAmountMEWC: satsToRoundedMEWC(chainEvent.requestedAmount),
       ethRequestTxHash: chainEvent.transactionHash.toPrefixedString(),
       ethRequestTxHashURL,
     },

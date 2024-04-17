@@ -6,37 +6,37 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deploy, log } = deployments
   const { deployer } = await getNamedAccounts()
 
-  const TBTCSaddleVault = await deployments.get("TBTCSaddleVault")
-  if (!helpers.address.isValid(TBTCSaddleVault.address)) {
+  const TMEWCSaddleVault = await deployments.get("TMEWCSaddleVault")
+  if (!helpers.address.isValid(TMEWCSaddleVault.address)) {
     throw new Error(
-      `Invalid TBTCSaddleVault address: ${TBTCSaddleVault.address}`
+      `Invalid TMEWCSaddleVault address: ${TMEWCSaddleVault.address}`
     )
   }
 
-  const TBTCSaddlePoolSwap = await deployments.get("TBTCSaddlePoolSwap")
-  if (!helpers.address.isValid(TBTCSaddlePoolSwap.address)) {
+  const TMEWCSaddlePoolSwap = await deployments.get("TMEWCSaddlePoolSwap")
+  if (!helpers.address.isValid(TMEWCSaddlePoolSwap.address)) {
     throw new Error(
-      `Invalid TBTCSaddlePoolSwap address: ${TBTCSaddlePoolSwap.address}`
+      `Invalid TMEWCSaddlePoolSwap address: ${TMEWCSaddlePoolSwap.address}`
     )
   }
 
-  const TBTCSaddleLPRewards = await deployments.get("TBTCSaddleLPRewards")
-  if (!helpers.address.isValid(TBTCSaddleLPRewards.address)) {
+  const TMEWCSaddleLPRewards = await deployments.get("TMEWCSaddleLPRewards")
+  if (!helpers.address.isValid(TMEWCSaddleLPRewards.address)) {
     throw new Error(
-      `Invalid TBTCSaddleLPRewards address: ${TBTCSaddleLPRewards.address}`
+      `Invalid TMEWCSaddleLPRewards address: ${TMEWCSaddleLPRewards.address}`
     )
   }
 
-  log(`tbtcSaddleVault: ${TBTCSaddleVault.address}`)
-  log(`tbtcSaddlePoolSwap: ${TBTCSaddlePoolSwap.address}`)
-  log(`tbtcSaddleLPRewards: ${TBTCSaddleLPRewards.address}`)
+  log(`tmewcSaddleVault: ${TMEWCSaddleVault.address}`)
+  log(`tmewcSaddlePoolSwap: ${TMEWCSaddlePoolSwap.address}`)
+  log(`tmewcSaddleLPRewards: ${TMEWCSaddleLPRewards.address}`)
 
   await deploy("SaddleStrategy", {
     from: deployer,
     args: [
-      TBTCSaddleVault.address,
-      TBTCSaddlePoolSwap.address,
-      TBTCSaddleLPRewards.address,
+      TMEWCSaddleVault.address,
+      TMEWCSaddlePoolSwap.address,
+      TMEWCSaddleLPRewards.address,
     ],
     log: true,
     gasLimit: parseInt(process.env.GAS_LIMIT) || undefined,

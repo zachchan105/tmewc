@@ -3,26 +3,26 @@ import { expect } from "chai"
 
 import type { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers"
 
-import type { BaseTBTC, BaseTBTCUpgraded } from "../typechain"
+import type { BaseTMEWC, BaseTMEWCUpgraded } from "../typechain"
 
-describe("BaseTBTC - Upgrade", async () => {
+describe("BaseTMEWC - Upgrade", async () => {
   let governance: SignerWithAddress
-  let baseTBTC: BaseTBTC
+  let baseTMEWC: BaseTMEWC
 
   before(async () => {
     await deployments.fixture()
     ;({ governance } = await helpers.signers.getNamedSigners())
 
-    baseTBTC = (await helpers.contracts.getContract("BaseTBTC")) as BaseTBTC
+    baseTMEWC = (await helpers.contracts.getContract("BaseTMEWC")) as BaseTMEWC
   })
 
   describe("when a new contract is valid", () => {
-    let baseTBTCUpgraded: BaseTBTCUpgraded
+    let baseTMEWCUpgraded: BaseTMEWCUpgraded
 
     before(async () => {
       const [upgradedContract] = await helpers.upgrades.upgradeProxy(
-        "BaseTBTC",
-        "BaseTBTCUpgraded",
+        "BaseTMEWC",
+        "BaseTMEWCUpgraded",
         {
           proxyOpts: {
             call: {
@@ -35,30 +35,30 @@ describe("BaseTBTC - Upgrade", async () => {
           },
         }
       )
-      baseTBTCUpgraded = upgradedContract as BaseTBTCUpgraded
+      baseTMEWCUpgraded = upgradedContract as BaseTMEWCUpgraded
     })
 
     it("new instance should have the same address as the old one", async () => {
-      expect(baseTBTCUpgraded.address).equal(baseTBTC.address)
+      expect(baseTMEWCUpgraded.address).equal(baseTMEWC.address)
     })
 
     it("should initialize new variable", async () => {
-      expect(await baseTBTCUpgraded.newVar()).to.be.equal(
+      expect(await baseTMEWCUpgraded.newVar()).to.be.equal(
         "Hello darkness my old friend"
       )
     })
 
     it("should not update already set name", async () => {
-      expect(await baseTBTCUpgraded.name()).to.be.equal("Base tBTC v2")
+      expect(await baseTMEWCUpgraded.name()).to.be.equal("Base tMEWC")
     })
 
     it("should not update already set symbol", async () => {
-      expect(await baseTBTCUpgraded.symbol()).to.be.equal("tBTC")
+      expect(await baseTMEWCUpgraded.symbol()).to.be.equal("tMEWC")
     })
 
     it("should revert when V1's initializer is called", async () => {
       await expect(
-        baseTBTCUpgraded.initialize("BaseTBTCv2", "BaseTBTCv2")
+        baseTMEWCUpgraded.initialize("BaseTMEWC", "BaseTMEWC")
       ).to.be.revertedWith("Initializable: contract is already initialized")
     })
   })

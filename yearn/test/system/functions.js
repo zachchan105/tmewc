@@ -2,43 +2,43 @@ const { impersonateAccount } = require("../helpers/contract-test-helpers.js")
 
 // Allocates Synthetix staking rewards to provide Curve pool's gauge additional
 // rewards.
-async function allocateSynthetixRewards(tbtc, rewardsAllocation) {
-  const tbtcCurvePoolGaugeRewardDistributor = await impersonateAccount(
-    tbtc.curvePoolGaugeRewardDistributorAddress,
+async function allocateSynthetixRewards(tmewc, rewardsAllocation) {
+  const tmewcCurvePoolGaugeRewardDistributor = await impersonateAccount(
+    tmewc.curvePoolGaugeRewardDistributorAddress,
     await ethers.getSigner(0)
   )
 
   const synthetixCurveRewardsOwner = await impersonateAccount(
-    tbtc.synthetixCurveRewardsOwnerAddress,
+    tmewc.synthetixCurveRewardsOwnerAddress,
     await ethers.getSigner(0)
   )
 
-  // Get a handle to the tBTC v2 Curve pool gauge additional reward token.
-  const tbtcCurvePoolGaugeReward = await ethers.getContractAt(
+  // Get a handle to the tMEWC Curve pool gauge additional reward token.
+  const tmewcCurvePoolGaugeReward = await ethers.getContractAt(
     "IERC20",
-    tbtc.curvePoolGaugeRewardAddress
+    tmewc.curvePoolGaugeRewardAddress
   )
 
   // Get a handle to the Synthetix Curve rewards contract used by the
-  // tBTC v2 Curve pool gauge.
+  // tMEWC Curve pool gauge.
   const synthetixCurveRewards = await ethers.getContractAt(
     "ICurveRewards",
-    tbtc.synthetixCurveRewardsAddress
+    tmewc.synthetixCurveRewardsAddress
   )
 
   // Set a new reward distributor. It's just a holder of the reward tokens.
   await synthetixCurveRewards
     .connect(synthetixCurveRewardsOwner)
-    .setRewardDistribution(tbtcCurvePoolGaugeRewardDistributor.address)
+    .setRewardDistribution(tmewcCurvePoolGaugeRewardDistributor.address)
 
   // Allow distributor's tokens to be taken by the Curve rewards contract.
-  await tbtcCurvePoolGaugeReward
-    .connect(tbtcCurvePoolGaugeRewardDistributor)
+  await tmewcCurvePoolGaugeReward
+    .connect(tmewcCurvePoolGaugeRewardDistributor)
     .approve(synthetixCurveRewards.address, rewardsAllocation)
 
   // Deposit reward tokens.
   await synthetixCurveRewards
-    .connect(tbtcCurvePoolGaugeRewardDistributor)
+    .connect(tmewcCurvePoolGaugeRewardDistributor)
     .notifyRewardAmount(rewardsAllocation)
 }
 

@@ -1,6 +1,6 @@
 # Class: RedemptionsService
 
-Service exposing features related to tBTC v2 redemptions.
+Service exposing features related to tMEWC redemptions.
 
 ## Table of contents
 
@@ -11,7 +11,7 @@ Service exposing features related to tBTC v2 redemptions.
 ### Properties
 
 - [bitcoinClient](RedemptionsService.md#bitcoinclient)
-- [tbtcContracts](RedemptionsService.md#tbtccontracts)
+- [tmewcContracts](RedemptionsService.md#tmewccontracts)
 
 ### Methods
 
@@ -24,13 +24,13 @@ Service exposing features related to tBTC v2 redemptions.
 
 ### constructor
 
-• **new RedemptionsService**(`tbtcContracts`, `bitcoinClient`): [`RedemptionsService`](RedemptionsService.md)
+• **new RedemptionsService**(`tmewcContracts`, `bitcoinClient`): [`RedemptionsService`](RedemptionsService.md)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `tbtcContracts` | [`TBTCContracts`](../README.md#tbtccontracts) |
+| `tmewcContracts` | [`TMEWCContracts`](../README.md#tmewccontracts) |
 | `bitcoinClient` | [`BitcoinClient`](../interfaces/BitcoinClient.md) |
 
 #### Returns
@@ -39,7 +39,7 @@ Service exposing features related to tBTC v2 redemptions.
 
 #### Defined in
 
-[src/services/redemptions/redemptions-service.ts:30](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/redemptions/redemptions-service.ts#L30)
+[src/services/redemptions/redemptions-service.ts:30](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/redemptions/redemptions-service.ts#L30)
 
 ## Properties
 
@@ -47,23 +47,23 @@ Service exposing features related to tBTC v2 redemptions.
 
 • `Private` `Readonly` **bitcoinClient**: [`BitcoinClient`](../interfaces/BitcoinClient.md)
 
-Bitcoin client handle.
+Meowcoin client handle.
 
 #### Defined in
 
-[src/services/redemptions/redemptions-service.ts:28](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/redemptions/redemptions-service.ts#L28)
+[src/services/redemptions/redemptions-service.ts:28](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/redemptions/redemptions-service.ts#L28)
 
 ___
 
-### tbtcContracts
+### tmewcContracts
 
-• `Private` `Readonly` **tbtcContracts**: [`TBTCContracts`](../README.md#tbtccontracts)
+• `Private` `Readonly` **tmewcContracts**: [`TMEWCContracts`](../README.md#tmewccontracts)
 
-Handle to tBTC contracts.
+Handle to tMEWC contracts.
 
 #### Defined in
 
-[src/services/redemptions/redemptions-service.ts:24](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/redemptions/redemptions-service.ts#L24)
+[src/services/redemptions/redemptions-service.ts:24](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/redemptions/redemptions-service.ts#L24)
 
 ## Methods
 
@@ -80,7 +80,7 @@ wallet does not have a main UTXO registered in the Bridge at the moment.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `walletPublicKeyHash` | [`Hex`](Hex.md) | Public key hash of the wallet. |
-| `bitcoinNetwork` | [`BitcoinNetwork`](../enums/BitcoinNetwork-1.md) | Bitcoin network. |
+| `bitcoinNetwork` | [`BitcoinNetwork`](../enums/BitcoinNetwork-1.md) | Meowcoin network. |
 
 #### Returns
 
@@ -90,7 +90,7 @@ Promise holding the wallet main UTXO or undefined value.
 
 #### Defined in
 
-[src/services/redemptions/redemptions-service.ts:225](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/redemptions/redemptions-service.ts#L225)
+[src/services/redemptions/redemptions-service.ts:225](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/redemptions/redemptions-service.ts#L225)
 
 ___
 
@@ -98,7 +98,7 @@ ___
 
 ▸ **findWalletForRedemption**(`redeemerOutputScript`, `amount`): `Promise`\<\{ `mainUtxo`: [`BitcoinUtxo`](../README.md#bitcoinutxo) ; `walletPublicKey`: [`Hex`](Hex.md)  }\>
 
-Finds the oldest live wallet that has enough BTC to handle a redemption
+Finds the oldest live wallet that has enough MEWC to handle a redemption
 request.
 
 #### Parameters
@@ -116,7 +116,7 @@ Promise with the wallet details needed to request a redemption.
 
 #### Defined in
 
-[src/services/redemptions/redemptions-service.ts:106](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/redemptions/redemptions-service.ts#L106)
+[src/services/redemptions/redemptions-service.ts:106](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/redemptions/redemptions-service.ts#L106)
 
 ___
 
@@ -130,8 +130,8 @@ Gets data of a registered redemption request from the Bridge contract.
 
 | Name | Type | Default value | Description |
 | :------ | :------ | :------ | :------ |
-| `bitcoinRedeemerAddress` | `string` | `undefined` | Bitcoin redeemer address used to request the redemption. |
-| `walletPublicKey` | [`Hex`](Hex.md) | `undefined` | Bitcoin public key of the wallet handling the redemption. Must be in the compressed form (33 bytes long with 02 or 03 prefix). |
+| `bitcoinRedeemerAddress` | `string` | `undefined` | Meowcoin redeemer address used to request the redemption. |
+| `walletPublicKey` | [`Hex`](Hex.md) | `undefined` | Meowcoin public key of the wallet handling the redemption. Must be in the compressed form (33 bytes long with 02 or 03 prefix). |
 | `type` | ``"pending"`` \| ``"timedOut"`` | `"pending"` | Type of redemption requests the function will look for. Can be either `pending` or `timedOut`. By default, `pending` is used. |
 
 #### Returns
@@ -147,7 +147,7 @@ Throws an error if no redemption request exists for the given
 
 #### Defined in
 
-[src/services/redemptions/redemptions-service.ts:337](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/redemptions/redemptions-service.ts#L337)
+[src/services/redemptions/redemptions-service.ts:337](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/redemptions/redemptions-service.ts#L337)
 
 ___
 
@@ -155,14 +155,14 @@ ___
 
 ▸ **requestRedemption**(`bitcoinRedeemerAddress`, `amount`): `Promise`\<\{ `targetChainTxHash`: [`Hex`](Hex.md) ; `walletPublicKey`: [`Hex`](Hex.md)  }\>
 
-Requests a redemption of TBTC v2 token into BTC.
+Requests a redemption of TMEWC token into MEWC.
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `bitcoinRedeemerAddress` | `string` | Bitcoin address redeemed BTC should be sent to. Only P2PKH, P2WPKH, P2SH, and P2WSH address types are supported. |
-| `amount` | `BigNumber` | The amount to be redeemed with the precision of the tBTC on-chain token contract. |
+| `bitcoinRedeemerAddress` | `string` | Meowcoin address redeemed MEWC should be sent to. Only P2PKH, P2WPKH, P2SH, and P2WSH address types are supported. |
+| `amount` | `BigNumber` | The amount to be redeemed with the precision of the tMEWC on-chain token contract. |
 
 #### Returns
 
@@ -171,9 +171,9 @@ Requests a redemption of TBTC v2 token into BTC.
 Object containing:
          - Target chain hash of the request redemption transaction
            (for example, Ethereum transaction hash)
-         - Bitcoin public key of the wallet asked to handle the redemption.
+         - Meowcoin public key of the wallet asked to handle the redemption.
            Presented in the compressed form (33 bytes long with 02 or 03 prefix).
 
 #### Defined in
 
-[src/services/redemptions/redemptions-service.ts:48](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/redemptions/redemptions-service.ts#L48)
+[src/services/redemptions/redemptions-service.ts:48](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/redemptions/redemptions-service.ts#L48)

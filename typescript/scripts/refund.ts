@@ -20,7 +20,7 @@ program
   )
   .requiredOption(
     "-a, --deposit-amount <amount-to-refund>",
-    "amount of BTC to refund"
+    "amount of MEWC to refund"
   )
   .requiredOption(
     "-t, --deposit-transaction-id <transaction-id>",
@@ -32,11 +32,11 @@ program
   )
   .requiredOption(
     "-k, --private-key <private-key>",
-    "private key of the BTC wallet"
+    "private key of the MEWC wallet"
   )
   .requiredOption(
     "-f, --transaction-fee <transaction-fee>",
-    "recovery address of the BTC wallet"
+    "recovery address of the MEWC wallet"
   )
   .requiredOption("-o, --host <host>", "network name")
   .requiredOption("-p, --port <port>", "network name")
@@ -66,7 +66,7 @@ const deposit: DepositReceipt = {
   blindingFactor: Hex.from(depositJson.blindingFactor),
   refundLocktime: Hex.from(depositJson.refundLocktime),
 }
-const recoveryAddress = depositJson.btcRecoveryAddress
+const recoveryAddress = depositJson.mewcRecoveryAddress
 
 console.log("======= refund provided data ========")
 console.log("deposit JSON: ", depositJson)

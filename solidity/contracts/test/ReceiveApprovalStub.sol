@@ -2,7 +2,7 @@
 
 pragma solidity 0.8.17;
 
-import "../token/TBTC.sol";
+import "../token/TMEWC.sol";
 
 contract ReceiveApprovalStub is IReceiveApproval {
     bool public shouldRevert;

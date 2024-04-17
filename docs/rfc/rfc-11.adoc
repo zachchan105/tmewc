@@ -1,6 +1,6 @@
 :toc: macro
 
-= RFC 11: Solana tBTC
+= RFC 11: Solana tMEWC
 
 :icons: font
 :numbered:
@@ -8,32 +8,32 @@ toc::[]
 
 == Background
 
-There is a clear massive demand funnel present in Solana ecosystem for tBTC.
-This RFC aims at providing a bespoke user experience for minting tBTC on Solana.
+There is a clear massive demand funnel present in Solana ecosystem for tMEWC.
+This RFC aims at providing a bespoke user experience for minting tMEWC on Solana.
 
 === Current functionality
 
-Even today it is possible to bridge tBTC to Solana with Wormhole. The whole user
+Even today it is possible to bridge tMEWC to Solana with Wormhole. The whole user
 experience is far from perfect, though. 
 
-First, the user has to deposit their BTC using Threshold Dashboard on Ethereum.
-This requires executing one Ethereum transaction. Next, once tBTC is minted on
+First, the user has to deposit their MEWC using Threshold Dashboard on Ethereum.
+This requires executing one Ethereum transaction. Next, once tMEWC is minted on
 Ethereum, the user has to go to the Wormhole Token Bridge portal and bridge
-their Ethereum tBTC to Solana. This requires several transactions - one
+their Ethereum tMEWC to Solana. This requires several transactions - one
 transaction on Ethereum and several transactions on Solana. 
 
 There is a significant cognitive effort on the user's side. Users are required
-to use two applications and execute transactions on three networks: Bitcoin,
+to use two applications and execute transactions on three networks: Meowcoin,
 Ethereum, and Solana between them. Moreover, there is a period of time between
-the time BTC was deposited and the time tBTC is minted on Ethereum that requires
-the user to wait idly before they can bridge their Ethereum tBTC to Solana.
+the time MEWC was deposited and the time tMEWC is minted on Ethereum that requires
+the user to wait idly before they can bridge their Ethereum tMEWC to Solana.
 
 == Proposal
 
 === Goal
 
-Users should mint tBTC on Solana in the Threshold Dashboard with two
-transactions: one transaction on BTC and one transaction on Solana.
+Users should mint tMEWC on Solana in the Threshold Dashboard with two
+transactions: one transaction on MEWC and one transaction on Solana.
 
 The redemption process should require just one Solana transaction from the user
 executed in the Threshold Dashboard.
@@ -42,7 +42,7 @@ executed in the Threshold Dashboard.
 
 The implementation is based on the Wormhole token bridge and does not require
 the off-chain client to work with Solana. Ethereum `Bank` contract remains
-the center of the gravity of tBTC bridge and tBTC token is still minted
+the center of the gravity of tMEWC bridge and tMEWC token is still minted
 "centrally" on Ethereum.
 
 There are two main design challenges. The first challenge is how to represent
@@ -50,21 +50,21 @@ There are two main design challenges. The first challenge is how to represent
 design of the Bridge is oriented around 20-byte Ethereum addresses. Bridge
 expects a 20-byte depositor address in the reveal function and passes 20-byte
 depositor addresses to the Bank when providing the sweep proof. The second
-challenge is optimistic minting. Only `TBTCVault` can mint tBTC and the
-optimistic minting has to happen in `TBTCVault`. Having another vault be
+challenge is optimistic minting. Only `TMEWCVault` can mint tMEWC and the
+optimistic minting has to happen in `TMEWCVault`. Having another vault be
 responsible for Solana minting and bridging would mean we have to tightly couple
 vaults together, complicate optimistic minting code, or not allow for optimistic
 minting on Solana at all.
 
 The proposed design is oriented around a depositor contract that will reveal
 deposits to the bridge, map Solana addresses with revealed deposits, receive
-tBTC (optimistically minted or not), and perform bridging to Solana.
+tMEWC (optimistically minted or not), and perform bridging to Solana.
 
 ==== P2SH deposit script
 
 The P2SH deposit script has to be enhanced to include optional extra data. The
 extra data will be used by depositors who are smart contracts. In the context of
-this proposal, we will use the extra data to associate the Bitcoin deposit with
+this proposal, we will use the extra data to associate the Meowcoin deposit with
 an address on a foreign (non-Ethereum) chain.
 
 ```
@@ -108,7 +108,7 @@ stored in different slots we only need to make sure the new field comes after
 the existing ones to address upgradeability concerns.
 
 ```
-/// @notice Represents tBTC deposit request data.
+/// @notice Represents tMEWC deposit request data.
 struct DepositRequest {
     // (...)
 
@@ -130,10 +130,10 @@ responsibility to make the use of them.
 ==== Solana gateway
 
 `SolanaGateway` contract will be deployed on Solana and should be placed in
-`tbtc-v2/cross-chain/solana` project. The contract will communicate with
+`tmewc/cross-chain/solana` project. The contract will communicate with
 Ethereum L1 using link:https://docs.wormhole.com/wormhole/explore-wormhole/vaa[Wormhole VAAs (Verified Action Approvals)]
-to reveal Bitcoin deposits. The contract will use Wormhole Token Bridge to
-request Bitcoin redemption on Ethereum.
+to reveal Meowcoin deposits. The contract will use Wormhole Token Bridge to
+request Meowcoin redemption on Ethereum.
 
 For the implementation, we should consider using the
 link:https://solang.readthedocs.io/en/latest/index.html[Solang compiler]. 
@@ -142,25 +142,25 @@ The contract needs to be upgradeable.
 
 ==== Solana depositor
 
-`SolanaDepositor` contract will act as tBTC depositor on Ethereum and should
-be placed in `tbtc-v2/solidity` project. The contract will receive Wormhole VAAs
-from Solana and reveal Bitcoin deposits to the tBTC `Bridge` contract. The
+`SolanaDepositor` contract will act as tMEWC depositor on Ethereum and should
+be placed in `tmewc/solidity` project. The contract will receive Wormhole VAAs
+from Solana and reveal Meowcoin deposits to the tMEWC `Bridge` contract. The
 contract will map the revealed deposit to the Solana address. It will also
-bridge the received tBTC once the deposit is swept or tBTC is optimistically
+bridge the received tMEWC once the deposit is swept or tMEWC is optimistically
 minted.
 
-This contract needs to have a reference to the `TBTCVault` to inspect the
+This contract needs to have a reference to the `TMEWCVault` to inspect the
 `optimisticMintingRequests` mapping and to the `Bridge` to inspect the
-`deposits` mapping to confirm the state when it is notified tBTC has been minted
+`deposits` mapping to confirm the state when it is notified tMEWC has been minted
 for the given deposit. 
 
 The contract needs to be upgradeable.
 
 ==== Solana redeemer
 
-`SolanaRedeemer` contract will act as tBTC redeemer on Ethereum and should be
-placed in `tbtc-v2/solidity` project. The contract will receive tBTC from Solana
-via Wormhole Token Bridge and request redemption in the tBTC `Bridge` contract. 
+`SolanaRedeemer` contract will act as tMEWC redeemer on Ethereum and should be
+placed in `tmewc/solidity` project. The contract will receive tMEWC from Solana
+via Wormhole Token Bridge and request redemption in the tMEWC `Bridge` contract. 
 
 The contract needs to be upgradeable.
 
@@ -171,20 +171,20 @@ relayer's responsibility will be:
 
 - Deliver Wormhole VAA to `SolanaDepositor` contract once the deposit was
   revealed on Solana.
-- Request bridging tBTC from Ethereum to Solana once the tBTC for the deposit
-  has been optimistically minted or the deposit was swept on Bitcoin and the
+- Request bridging tMEWC from Ethereum to Solana once the tMEWC for the deposit
+  has been optimistically minted or the deposit was swept on Meowcoin and the
   SPV sweep proof was submitted to Ethereum.
-- Redeem bridged tBTC on Solana from the Wormhole Token Bridge contract to the
-  depositor address once the tBTC minted on Ethereum has been successfully
+- Redeem bridged tMEWC on Solana from the Wormhole Token Bridge contract to the
+  depositor address once the tMEWC minted on Ethereum has been successfully
   bridged to Solana.
-- Redeem bridged tBTC on Ethereum from the Wormhole Token Bridge contract to the
+- Redeem bridged tMEWC on Ethereum from the Wormhole Token Bridge contract to the
   `SolanaRedeemer` contract once the redemption was requested on Solana and
-  tBTC was bridged back via the Wormhole Token Bridge.
+  tMEWC was bridged back via the Wormhole Token Bridge.
 
 ==== Optimistic minting changes
 
 Currently, the optimistic minting fee is evaluated at the moment of finalizing
-the mint. The `SolanaDepositor` needs to know how much tBTC should be bridged to
+the mint. The `SolanaDepositor` needs to know how much tMEWC should be bridged to
 Solana to the given depositor address. To evaluate the amount, the
 `SolanaDepositor` contract needs to know if the deposit was optimistically
 minted and what was the fee during the mint. The `OptimisticMintingRequest`
@@ -195,16 +195,16 @@ requesting or finalizing the mint.
 
 From the user's perspective:
 
-1. The user generates a Bitcoin deposit address in the Threshold Dashboard.
-2. The user makes a Bitcoin deposit.
+1. The user generates a Meowcoin deposit address in the Threshold Dashboard.
+2. The user makes a Meowcoin deposit.
 3. The user reveals their deposit with transaction on Solana in the Threshold
    Dashboard.
-4. After some time, the user receives their tBTC under the Solana address.
+4. After some time, the user receives their tMEWC under the Solana address.
 
 With smart contract interactions:
 
-1. The user generates a Bitcoin deposit address in the Threshold Dashboard.
-2. The user makes a Bitcoin deposit.
+1. The user generates a Meowcoin deposit address in the Threshold Dashboard.
+2. The user makes a Meowcoin deposit.
 3. The user reveals their deposit with transaction on Solana in the Threshold
    Dashboard.
 4. `SolanaGateway` contract sends Wormhole VAA from Solana to Ethereum informing
@@ -214,35 +214,35 @@ With smart contract interactions:
 6. `SolanaDepositor` contract evaluates `depositID = keccak256(fundingTxHash | fundingOutputIndex)` 
    and associates it with Solana depositor address.
 7. `SolanaDepositor` contract reveals the deposit to the `Bridge`
-8. tBTC is optimistically minted to `SolanaDepositor` contract address.
+8. tMEWC is optimistically minted to `SolanaDepositor` contract address.
 9. Relayer bot notifies `SolanaDepositor` contract the deposit was
-   optimistically minted. `SolanaDepositor` inspects `TBTCVault.optimisticMintingRequests`
-   to confirm the amount and requests bridging tBTC from its own balance to the
+   optimistically minted. `SolanaDepositor` inspects `TMEWCVault.optimisticMintingRequests`
+   to confirm the amount and requests bridging tMEWC from its own balance to the
    Solana depositor address associated with the given deposit using Wormhole
    Token Bridge. The same happens when the deposit was not optimistically minted
    but swept.
-10. Relayer bot redeems the tBTC bridged to Solana from the Wormhole Token Bridge
+10. Relayer bot redeems the tMEWC bridged to Solana from the Wormhole Token Bridge
     contract to the depositor's Solana address.
-11. The user reveals their tBTC under the Solana address.
+11. The user reveals their tMEWC under the Solana address.
 
 ==== Redemption flow
 
 From the user's perspective:
 
-1. The user requests redemption on Solana sending their tBTC to a smart contract.
-2. After some time, the user receives their BTC to the address they provided.
+1. The user requests redemption on Solana sending their tMEWC to a smart contract.
+2. After some time, the user receives their MEWC to the address they provided.
 
 With smart contract interactions:
 
-1. The user requests redemption on Solana sending their tBTC to a smart contract.
-2. `SolanaGateway` takes the tBTC from the user and bridges tBTC back to
+1. The user requests redemption on Solana sending their tMEWC to a smart contract.
+2. `SolanaGateway` takes the tMEWC from the user and bridges tMEWC back to
    Ethereum using Wormhole Token Bridge and `transferTokensWithPayload` passing
-   the BTC redemption address as a payload.
-3. The relayer bot redeems tBTC on Ethereum from the Wormhole Token Bridge
+   the MEWC redemption address as a payload.
+3. The relayer bot redeems tMEWC on Ethereum from the Wormhole Token Bridge
    contract to the `SolanaRedeemer` contract.
-4. `SolanaRedeemer` contract uses the received tBTC to request redemption in the
-   tBTC `Bridge` contract using the BTC address obtained from the payload.
-5. After some time, the user receives their BTC to the address they provided.
+4. `SolanaRedeemer` contract uses the received tMEWC to request redemption in the
+   tMEWC `Bridge` contract using the MEWC address obtained from the payload.
+5. After some time, the user receives their MEWC to the address they provided.
 
 === Future work
 

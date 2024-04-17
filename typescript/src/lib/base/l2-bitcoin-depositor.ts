@@ -17,7 +17,7 @@ import {
   packRevealDepositParameters,
 } from "../ethereum"
 import { Hex } from "../utils"
-import { BitcoinRawTxVectors } from "../bitcoin"
+import { BitcoinRawTxVectors } from "../meowcoin"
 
 // TODO: Uncomment once Base native minting is available on Base mainnet.
 // import BaseL2BitcoinDepositorDeployment from "./artifacts/base/BaseL2BitcoinDepositor.json"

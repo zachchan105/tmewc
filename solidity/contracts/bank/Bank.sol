@@ -20,11 +20,11 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "./IReceiveBalanceApproval.sol";
 import "../vault/IVault.sol";
 
-/// @title Bitcoin Bank
-/// @notice Bank is a central component tracking Bitcoin balances. Balances can
+/// @title Meowcoin Bank
+/// @notice Bank is a central component tracking Meowcoin balances. Balances can
 ///         be transferred between balance owners, and balance owners can
 ///         approve their balances to be spent by others. Balances in the Bank
-///         are updated for depositors who deposited their Bitcoin into the
+///         are updated for depositors who deposited their Meowcoin into the
 ///         Bridge and only the Bridge can increase balances.
 /// @dev Bank is a governable contract and the Governance can upgrade the Bridge
 ///      address.
@@ -361,7 +361,7 @@ contract Bank is Ownable {
         emit BalanceDecreased(msg.sender, amount);
     }
 
-    /// @notice Returns hash of EIP712 Domain struct with `TBTC Bank` as
+    /// @notice Returns hash of EIP712 Domain struct with `TMEWC Bank` as
     ///         a signing domain and Bank contract as a verifying contract.
     ///         Used to construct an EIP2612 signature provided to the `permit`
     ///         function.
@@ -430,7 +430,7 @@ contract Bank is Ownable {
                     keccak256(
                         "EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"
                     ),
-                    keccak256(bytes("TBTC Bank")),
+                    keccak256(bytes("TMEWC Bank")),
                     keccak256(bytes("1")),
                     block.chainid,
                     address(this)

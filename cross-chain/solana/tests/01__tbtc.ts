@@ -2,8 +2,8 @@ import * as anchor from "@coral-xyz/anchor";
 import { Program } from "@coral-xyz/anchor";
 import * as spl from "@solana/spl-token";
 import { assert, expect } from "chai";
-import { Tbtc } from "../target/types/tbtc";
-import * as tbtc from "./helpers/tbtc";
+import { Tmewc } from "../target/types/tmewc";
+import * as tmewc from "./helpers/tmewc";
 import {
   expectIxFail,
   expectIxSuccess,
@@ -13,11 +13,11 @@ import {
   transferLamports,
 } from "./helpers/utils";
 
-describe("tbtc", () => {
+describe("tmewc", () => {
   // Configure the client to use the local cluster.
   anchor.setProvider(anchor.AnchorProvider.env());
 
-  const program = anchor.workspace.Tbtc as Program<Tbtc>;
+  const program = anchor.workspace.Tmewc as Program<Tmewc>;
 
   const authority = (
     (program.provider as anchor.AnchorProvider).wallet as anchor.Wallet
@@ -40,9 +40,9 @@ describe("tbtc", () => {
   });
 
   it("initialize", async () => {
-    const ix = await tbtc.initializeIx({ authority: authority.publicKey });
+    const ix = await tmewc.initializeIx({ authority: authority.publicKey });
     await expectIxSuccess([ix], [authority]);
-    await tbtc.checkConfig({
+    await tmewc.checkConfig({
       authority: authority.publicKey,
       numMinters: 0,
       numGuardians: 0,
@@ -54,7 +54,7 @@ describe("tbtc", () => {
 
   describe("authority changes", () => {
     it("cannot cancel authority if no pending", async () => {
-      const failedCancelIx = await tbtc.cancelAuthorityChangeIx({
+      const failedCancelIx = await tmewc.cancelAuthorityChangeIx({
         authority: authority.publicKey,
       });
       await expectIxFail(
@@ -65,7 +65,7 @@ describe("tbtc", () => {
     });
 
     it("cannot take authority if no pending", async () => {
-      const failedTakeIx = await tbtc.takeAuthorityIx({
+      const failedTakeIx = await tmewc.takeAuthorityIx({
         pendingAuthority: newAuthority.publicKey,
       });
       await expectIxFail(
@@ -76,12 +76,12 @@ describe("tbtc", () => {
     });
 
     it("change authority to new authority", async () => {
-      const changeIx = await tbtc.changeAuthorityIx({
+      const changeIx = await tmewc.changeAuthorityIx({
         authority: authority.publicKey,
         newAuthority: newAuthority.publicKey,
       });
       await expectIxSuccess([changeIx], [authority]);
-      await tbtc.checkConfig({
+      await tmewc.checkConfig({
         authority: authority.publicKey,
         numMinters: 0,
         numGuardians: 0,
@@ -95,11 +95,11 @@ describe("tbtc", () => {
       // Bug in validator? Need to wait a bit for new blockhash.
       await sleep(10000);
 
-      const takeIx = await tbtc.takeAuthorityIx({
+      const takeIx = await tmewc.takeAuthorityIx({
         pendingAuthority: newAuthority.publicKey,
       });
       await expectIxSuccess([takeIx], [newAuthority]);
-      await tbtc.checkConfig({
+      await tmewc.checkConfig({
         authority: newAuthority.publicKey,
         numMinters: 0,
         numGuardians: 0,
@@ -110,12 +110,12 @@ describe("tbtc", () => {
     });
 
     it("change pending authority back to original authority", async () => {
-      const changeBackIx = await tbtc.changeAuthorityIx({
+      const changeBackIx = await tmewc.changeAuthorityIx({
         authority: newAuthority.publicKey,
         newAuthority: authority.publicKey,
       });
       await expectIxSuccess([changeBackIx], [newAuthority]);
-      await tbtc.checkConfig({
+      await tmewc.checkConfig({
         authority: newAuthority.publicKey,
         numMinters: 0,
         numGuardians: 0,
@@ -126,7 +126,7 @@ describe("tbtc", () => {
     });
 
     it("cannot take as signers that are not pending authority", async () => {
-      const failedImposterTakeIx = await tbtc.takeAuthorityIx({
+      const failedImposterTakeIx = await tmewc.takeAuthorityIx({
         pendingAuthority: imposter.publicKey,
       });
       await expectIxFail(
@@ -135,7 +135,7 @@ describe("tbtc", () => {
         "IsNotPendingAuthority"
       );
 
-      const failedNewAuthorityTakeIx = await tbtc.takeAuthorityIx({
+      const failedNewAuthorityTakeIx = await tmewc.takeAuthorityIx({
         pendingAuthority: newAuthority.publicKey,
       });
       await expectIxFail(
@@ -146,7 +146,7 @@ describe("tbtc", () => {
     });
 
     it("cannot cancel as someone else", async () => {
-      const anotherFailedCancelIx = await tbtc.cancelAuthorityChangeIx({
+      const anotherFailedCancelIx = await tmewc.cancelAuthorityChangeIx({
         authority: authority.publicKey,
       });
       await expectIxFail(
@@ -157,11 +157,11 @@ describe("tbtc", () => {
     });
 
     it("finally take as authority", async () => {
-      const anotherTakeIx = await tbtc.takeAuthorityIx({
+      const anotherTakeIx = await tmewc.takeAuthorityIx({
         pendingAuthority: authority.publicKey,
       });
       await expectIxSuccess([anotherTakeIx], [authority]);
-      await tbtc.checkConfig({
+      await tmewc.checkConfig({
         authority: authority.publicKey,
         numMinters: 0,
         numGuardians: 0,
@@ -174,7 +174,7 @@ describe("tbtc", () => {
 
   describe("minting", () => {
     it("cannot add minter without authority", async () => {
-      const cannotAddMinterIx = await tbtc.addMinterIx({
+      const cannotAddMinterIx = await tmewc.addMinterIx({
         authority: imposter.publicKey,
         minter: minter.publicKey,
       });
@@ -182,17 +182,17 @@ describe("tbtc", () => {
     });
 
     it("add minter", async () => {
-      const mustBeNull = await tbtc
+      const mustBeNull = await tmewc
         .checkMinterInfo(minter.publicKey)
         .catch((_) => null);
       assert(mustBeNull === null, "minter info found");
 
-      const addMinterIx = await tbtc.addMinterIx({
+      const addMinterIx = await tmewc.addMinterIx({
         authority: authority.publicKey,
         minter: minter.publicKey,
       });
       await expectIxSuccess([addMinterIx], [authority]);
-      await tbtc.checkConfig({
+      await tmewc.checkConfig({
         authority: authority.publicKey,
         numMinters: 1,
         numGuardians: 0,
@@ -200,7 +200,7 @@ describe("tbtc", () => {
         paused: false,
         pendingAuthority: null,
       });
-      await tbtc.checkMinterInfo(minter.publicKey);
+      await tmewc.checkMinterInfo(minter.publicKey);
     });
 
     it("mint", async () => {
@@ -208,13 +208,13 @@ describe("tbtc", () => {
 
       const recipientToken = await getOrCreateAta(
         authority,
-        tbtc.getMintPDA(),
+        tmewc.getMintPDA(),
         recipient.publicKey
       );
       const recipientBefore = await getTokenBalance(recipientToken);
       expect(recipientBefore).to.equal(BigInt(0));
 
-      const mintIx = await tbtc.mintIx(
+      const mintIx = await tmewc.mintIx(
         {
           minter: minter.publicKey,
           recipientToken,
@@ -222,7 +222,7 @@ describe("tbtc", () => {
         new anchor.BN(amount.toString())
       );
       await expectIxSuccess([mintIx], [txPayer, minter]);
-      await tbtc.checkConfig({
+      await tmewc.checkConfig({
         authority: authority.publicKey,
         numMinters: 1,
         numGuardians: 0,
@@ -237,11 +237,11 @@ describe("tbtc", () => {
 
     it("cannot mint without minter", async () => {
       const recipientToken = spl.getAssociatedTokenAddressSync(
-        tbtc.getMintPDA(),
+        tmewc.getMintPDA(),
         recipient.publicKey
       );
 
-      const cannotMintIx = await tbtc.mintIx(
+      const cannotMintIx = await tmewc.mintIx(
         {
           minter: imposter.publicKey,
           recipientToken,
@@ -255,9 +255,9 @@ describe("tbtc", () => {
       );
 
       // Now try with actual minter's info account.
-      const minterInfo = tbtc.getMinterInfoPDA(minter.publicKey);
+      const minterInfo = tmewc.getMinterInfoPDA(minter.publicKey);
 
-      const cannotMintAgainIx = await tbtc.mintIx(
+      const cannotMintAgainIx = await tmewc.mintIx(
         {
           minterInfo,
           minter: imposter.publicKey,
@@ -273,17 +273,17 @@ describe("tbtc", () => {
     });
 
     it("add another minter", async () => {
-      const mustBeNull = await tbtc
+      const mustBeNull = await tmewc
         .checkMinterInfo(anotherMinter.publicKey)
         .catch((_) => null);
       assert(mustBeNull === null, "minter info found");
 
-      const addMinterIx = await tbtc.addMinterIx({
+      const addMinterIx = await tmewc.addMinterIx({
         authority: authority.publicKey,
         minter: anotherMinter.publicKey,
       });
       await expectIxSuccess([addMinterIx], [authority]);
-      await tbtc.checkConfig({
+      await tmewc.checkConfig({
         authority: authority.publicKey,
         numMinters: 2,
         numGuardians: 0,
@@ -291,12 +291,12 @@ describe("tbtc", () => {
         paused: false,
         pendingAuthority: null,
       });
-      await tbtc.checkMinterInfo(anotherMinter.publicKey);
+      await tmewc.checkMinterInfo(anotherMinter.publicKey);
     });
 
     it("cannot remove minter with wrong key", async () => {
-      const minterInfo = tbtc.getMinterInfoPDA(minter.publicKey);
-      const cannotRemoveIx = await tbtc.removeMinterIx({
+      const minterInfo = tmewc.getMinterInfoPDA(minter.publicKey);
+      const cannotRemoveIx = await tmewc.removeMinterIx({
         authority: authority.publicKey,
         minterInfo,
         minter: anotherMinter.publicKey,
@@ -308,13 +308,13 @@ describe("tbtc", () => {
       const amount = BigInt(500);
 
       const recipientToken = await spl.getAssociatedTokenAddressSync(
-        tbtc.getMintPDA(),
+        tmewc.getMintPDA(),
         recipient.publicKey
       );
       const recipientBefore = await getTokenBalance(recipientToken);
       expect(recipientBefore).to.equal(BigInt(1000));
 
-      const mintIx = await tbtc.mintIx(
+      const mintIx = await tmewc.mintIx(
         {
           minter: anotherMinter.publicKey,
           recipientToken,
@@ -322,7 +322,7 @@ describe("tbtc", () => {
         new anchor.BN(amount.toString())
       );
       await expectIxSuccess([mintIx], [txPayer, anotherMinter]);
-      await tbtc.checkConfig({
+      await tmewc.checkConfig({
         authority: authority.publicKey,
         numMinters: 2,
         numGuardians: 0,
@@ -336,7 +336,7 @@ describe("tbtc", () => {
     });
 
     it("cannot remove minter without authority", async () => {
-      const cannotRemoveIx = await tbtc.removeMinterIx({
+      const cannotRemoveIx = await tmewc.removeMinterIx({
         authority: imposter.publicKey,
         minter: anotherMinter.publicKey,
       });
@@ -344,12 +344,12 @@ describe("tbtc", () => {
     });
 
     it("remove minter", async () => {
-      const removeIx = await tbtc.removeMinterIx({
+      const removeIx = await tmewc.removeMinterIx({
         authority: authority.publicKey,
         minter: anotherMinter.publicKey,
       });
       await expectIxSuccess([removeIx], [authority]);
-      await tbtc.checkConfig({
+      await tmewc.checkConfig({
         authority: authority.publicKey,
         numMinters: 1,
         numGuardians: 0,
@@ -357,14 +357,14 @@ describe("tbtc", () => {
         paused: false,
         pendingAuthority: null,
       });
-      const mustBeNull = await tbtc
+      const mustBeNull = await tmewc
         .checkMinterInfo(anotherMinter.publicKey)
         .catch((_) => null);
       assert(mustBeNull === null, "minter info found");
     });
 
     it("cannot remove same minter again", async () => {
-      const cannotRemoveIx = await tbtc.removeMinterIx({
+      const cannotRemoveIx = await tmewc.removeMinterIx({
         authority: authority.publicKey,
         minter: anotherMinter.publicKey,
       });
@@ -376,12 +376,12 @@ describe("tbtc", () => {
     });
 
     it("remove last minter", async () => {
-      const removeIx = await tbtc.removeMinterIx({
+      const removeIx = await tmewc.removeMinterIx({
         authority: authority.publicKey,
         minter: minter.publicKey,
       });
       await expectIxSuccess([removeIx], [authority]);
-      await tbtc.checkConfig({
+      await tmewc.checkConfig({
         authority: authority.publicKey,
         numMinters: 0,
         numGuardians: 0,
@@ -389,7 +389,7 @@ describe("tbtc", () => {
         paused: false,
         pendingAuthority: null,
       });
-      const mustBeNull = await tbtc
+      const mustBeNull = await tmewc
         .checkMinterInfo(minter.publicKey)
         .catch((_) => null);
       assert(mustBeNull === null, "minter info found");
@@ -398,7 +398,7 @@ describe("tbtc", () => {
 
   describe("guardians", () => {
     it("cannot add guardian without authority", async () => {
-      const cannotAddIx = await tbtc.addGuardianIx({
+      const cannotAddIx = await tmewc.addGuardianIx({
         authority: imposter.publicKey,
         guardian: guardian.publicKey,
       });
@@ -406,17 +406,17 @@ describe("tbtc", () => {
     });
 
     it("add guardian", async () => {
-      const mustBeNull = await tbtc
+      const mustBeNull = await tmewc
         .checkGuardianInfo(guardian.publicKey)
         .catch((_) => null);
       assert(mustBeNull === null, "guardian info found");
 
-      const addIx = await tbtc.addGuardianIx({
+      const addIx = await tmewc.addGuardianIx({
         authority: authority.publicKey,
         guardian: guardian.publicKey,
       });
       await expectIxSuccess([addIx], [authority]);
-      await tbtc.checkConfig({
+      await tmewc.checkConfig({
         authority: authority.publicKey,
         numMinters: 0,
         numGuardians: 1,
@@ -424,11 +424,11 @@ describe("tbtc", () => {
         paused: false,
         pendingAuthority: null,
       });
-      await tbtc.checkGuardianInfo(guardian.publicKey);
+      await tmewc.checkGuardianInfo(guardian.publicKey);
     });
 
     it("cannot pause without guardian", async () => {
-      const cannotPauseIx = await tbtc.pauseIx({
+      const cannotPauseIx = await tmewc.pauseIx({
         guardian: imposter.publicKey,
       });
       await expectIxFail(
@@ -438,9 +438,9 @@ describe("tbtc", () => {
       );
 
       // Now try with actual guardian's info account.
-      const guardianInfo = tbtc.getGuardianInfoPDA(guardian.publicKey);
+      const guardianInfo = tmewc.getGuardianInfoPDA(guardian.publicKey);
 
-      const cannotPauseAgainIx = await tbtc.pauseIx({
+      const cannotPauseAgainIx = await tmewc.pauseIx({
         guardianInfo,
         guardian: imposter.publicKey,
       });
@@ -452,12 +452,12 @@ describe("tbtc", () => {
     });
 
     it("add minter and mint", async () => {
-      const addMinterIx = await tbtc.addMinterIx({
+      const addMinterIx = await tmewc.addMinterIx({
         authority: authority.publicKey,
         minter: minter.publicKey,
       });
       await expectIxSuccess([addMinterIx], [authority]);
-      await tbtc.checkConfig({
+      await tmewc.checkConfig({
         authority: authority.publicKey,
         numMinters: 1,
         numGuardians: 1,
@@ -469,13 +469,13 @@ describe("tbtc", () => {
       const amount = BigInt(100);
 
       const recipientToken = spl.getAssociatedTokenAddressSync(
-        tbtc.getMintPDA(),
+        tmewc.getMintPDA(),
         recipient.publicKey
       );
       const recipientBefore = await getTokenBalance(recipientToken);
       expect(recipientBefore).to.equal(BigInt(1500));
 
-      const mintIx = await tbtc.mintIx(
+      const mintIx = await tmewc.mintIx(
         {
           minter: minter.publicKey,
           recipientToken,
@@ -483,7 +483,7 @@ describe("tbtc", () => {
         new anchor.BN(amount.toString())
       );
       await expectIxSuccess([mintIx], [txPayer, minter]);
-      await tbtc.checkConfig({
+      await tmewc.checkConfig({
         authority: authority.publicKey,
         numMinters: 1,
         numGuardians: 1,
@@ -497,11 +497,11 @@ describe("tbtc", () => {
     });
 
     it("pause", async () => {
-      const pauseIx = await tbtc.pauseIx({
+      const pauseIx = await tmewc.pauseIx({
         guardian: guardian.publicKey,
       });
       await expectIxSuccess([pauseIx], [txPayer, guardian]);
-      await tbtc.checkConfig({
+      await tmewc.checkConfig({
         authority: authority.publicKey,
         numMinters: 1,
         numGuardians: 1,
@@ -513,11 +513,11 @@ describe("tbtc", () => {
 
     it("cannot mint while paused", async () => {
       const recipientToken = spl.getAssociatedTokenAddressSync(
-        tbtc.getMintPDA(),
+        tmewc.getMintPDA(),
         recipient.publicKey
       );
 
-      const mintIx = await tbtc.mintIx(
+      const mintIx = await tmewc.mintIx(
         {
           minter: minter.publicKey,
           recipientToken,
@@ -528,17 +528,17 @@ describe("tbtc", () => {
     });
 
     it("add another guardian", async () => {
-      const mustBeNull = await tbtc
+      const mustBeNull = await tmewc
         .checkGuardianInfo(anotherGuardian.publicKey)
         .catch((_) => null);
       assert(mustBeNull === null, "guardian info found");
 
-      const addIx = await tbtc.addGuardianIx({
+      const addIx = await tmewc.addGuardianIx({
         authority: authority.publicKey,
         guardian: anotherGuardian.publicKey,
       });
       await expectIxSuccess([addIx], [authority]);
-      await tbtc.checkConfig({
+      await tmewc.checkConfig({
         authority: authority.publicKey,
         numMinters: 1,
         numGuardians: 2,
@@ -546,11 +546,11 @@ describe("tbtc", () => {
         paused: true,
         pendingAuthority: null,
       });
-      await tbtc.checkGuardianInfo(anotherGuardian.publicKey);
+      await tmewc.checkGuardianInfo(anotherGuardian.publicKey);
     });
 
     it("cannot pause again", async () => {
-      const cannotPauseIx = await tbtc.pauseIx({
+      const cannotPauseIx = await tmewc.pauseIx({
         guardian: anotherGuardian.publicKey,
       });
       await expectIxFail(
@@ -561,11 +561,11 @@ describe("tbtc", () => {
     });
 
     it("unpause", async () => {
-      const unpauseIx = await tbtc.unpauseIx({
+      const unpauseIx = await tmewc.unpauseIx({
         authority: authority.publicKey,
       });
       await expectIxSuccess([unpauseIx], [authority]);
-      await tbtc.checkConfig({
+      await tmewc.checkConfig({
         authority: authority.publicKey,
         numMinters: 1,
         numGuardians: 2,
@@ -576,7 +576,7 @@ describe("tbtc", () => {
     });
 
     it("cannot unpause again", async () => {
-      const cannotUnpauseIx = await tbtc.unpauseIx({
+      const cannotUnpauseIx = await tmewc.unpauseIx({
         authority: authority.publicKey,
       });
       await expectIxFail(
@@ -590,13 +590,13 @@ describe("tbtc", () => {
       const amount = BigInt(200);
 
       const recipientToken = spl.getAssociatedTokenAddressSync(
-        tbtc.getMintPDA(),
+        tmewc.getMintPDA(),
         recipient.publicKey
       );
       const recipientBefore = await getTokenBalance(recipientToken);
       expect(recipientBefore).to.equal(BigInt(1600));
 
-      const mintIx = await tbtc.mintIx(
+      const mintIx = await tmewc.mintIx(
         {
           minter: minter.publicKey,
           recipientToken,
@@ -604,7 +604,7 @@ describe("tbtc", () => {
         new anchor.BN(amount.toString())
       );
       await expectIxSuccess([mintIx], [txPayer, minter]);
-      await tbtc.checkConfig({
+      await tmewc.checkConfig({
         authority: authority.publicKey,
         numMinters: 1,
         numGuardians: 2,
@@ -618,11 +618,11 @@ describe("tbtc", () => {
     });
 
     it("pause as another guardian", async () => {
-      const pauseIx = await tbtc.pauseIx({
+      const pauseIx = await tmewc.pauseIx({
         guardian: anotherGuardian.publicKey,
       });
       await expectIxSuccess([pauseIx], [txPayer, anotherGuardian]);
-      await tbtc.checkConfig({
+      await tmewc.checkConfig({
         authority: authority.publicKey,
         numMinters: 1,
         numGuardians: 2,
@@ -634,11 +634,11 @@ describe("tbtc", () => {
 
     it("cannot mint again while paused", async () => {
       const recipientToken = spl.getAssociatedTokenAddressSync(
-        tbtc.getMintPDA(),
+        tmewc.getMintPDA(),
         recipient.publicKey
       );
 
-      const mintIx = await tbtc.mintIx(
+      const mintIx = await tmewc.mintIx(
         {
           minter: minter.publicKey,
           recipientToken,
@@ -649,7 +649,7 @@ describe("tbtc", () => {
     });
 
     it("cannot remove guardian without authority", async () => {
-      const cannotRemoveIx = await tbtc.removeGuardianIx({
+      const cannotRemoveIx = await tmewc.removeGuardianIx({
         authority: imposter.publicKey,
         guardian: anotherGuardian.publicKey,
       });
@@ -657,8 +657,8 @@ describe("tbtc", () => {
     });
 
     it("cannot remove guardian with mismatched info", async () => {
-      const guardianInfo = tbtc.getGuardianInfoPDA(anotherGuardian.publicKey);
-      const cannotRemoveIx = await tbtc.removeGuardianIx({
+      const guardianInfo = tmewc.getGuardianInfoPDA(anotherGuardian.publicKey);
+      const cannotRemoveIx = await tmewc.removeGuardianIx({
         authority: authority.publicKey,
         guardianInfo,
         guardian: guardian.publicKey,
@@ -667,12 +667,12 @@ describe("tbtc", () => {
     });
 
     it("remove guardian", async () => {
-      const removeIx = await tbtc.removeGuardianIx({
+      const removeIx = await tmewc.removeGuardianIx({
         authority: authority.publicKey,
         guardian: anotherGuardian.publicKey,
       });
       await expectIxSuccess([removeIx], [authority]);
-      await tbtc.checkConfig({
+      await tmewc.checkConfig({
         authority: authority.publicKey,
         numMinters: 1,
         numGuardians: 1,
@@ -680,18 +680,18 @@ describe("tbtc", () => {
         paused: true,
         pendingAuthority: null,
       });
-      const mustBeNull = await tbtc
+      const mustBeNull = await tmewc
         .checkGuardianInfo(anotherGuardian.publicKey)
         .catch((_) => null);
       assert(mustBeNull === null, "guardian info found");
     });
 
     it("unpause", async () => {
-      const unpauseIx = await tbtc.unpauseIx({
+      const unpauseIx = await tmewc.unpauseIx({
         authority: authority.publicKey,
       });
       await expectIxSuccess([unpauseIx], [authority]);
-      await tbtc.checkConfig({
+      await tmewc.checkConfig({
         authority: authority.publicKey,
         numMinters: 1,
         numGuardians: 1,
@@ -702,7 +702,7 @@ describe("tbtc", () => {
     });
 
     it("cannot pause with removed guardian", async () => {
-      const pauseIx = await tbtc.pauseIx({
+      const pauseIx = await tmewc.pauseIx({
         guardian: anotherGuardian.publicKey,
       });
       await expectIxFail(
@@ -713,11 +713,11 @@ describe("tbtc", () => {
     });
 
     it("pause and remove last guardian", async () => {
-      const pauseIx = await tbtc.pauseIx({
+      const pauseIx = await tmewc.pauseIx({
         guardian: guardian.publicKey,
       });
       await expectIxSuccess([pauseIx], [txPayer, guardian]);
-      await tbtc.checkConfig({
+      await tmewc.checkConfig({
         authority: authority.publicKey,
         numMinters: 1,
         numGuardians: 1,
@@ -726,12 +726,12 @@ describe("tbtc", () => {
         pendingAuthority: null,
       });
 
-      const removeIx = await tbtc.removeGuardianIx({
+      const removeIx = await tmewc.removeGuardianIx({
         authority: authority.publicKey,
         guardian: guardian.publicKey,
       });
       await expectIxSuccess([removeIx], [authority]);
-      await tbtc.checkConfig({
+      await tmewc.checkConfig({
         authority: authority.publicKey,
         numMinters: 1,
         numGuardians: 0,
@@ -739,7 +739,7 @@ describe("tbtc", () => {
         paused: true,
         pendingAuthority: null,
       });
-      const mustBeNull = await tbtc
+      const mustBeNull = await tmewc
         .checkGuardianInfo(guardian.publicKey)
         .catch((_) => null);
       assert(mustBeNull === null, "guardian info found");
@@ -747,11 +747,11 @@ describe("tbtc", () => {
 
     it("cannot mint yet again", async () => {
       const recipientToken = spl.getAssociatedTokenAddressSync(
-        tbtc.getMintPDA(),
+        tmewc.getMintPDA(),
         recipient.publicKey
       );
 
-      const mintIx = await tbtc.mintIx(
+      const mintIx = await tmewc.mintIx(
         {
           minter: minter.publicKey,
           recipientToken,
@@ -762,11 +762,11 @@ describe("tbtc", () => {
     });
 
     it("unpause without any guardians then mint", async () => {
-      const unpauseIx = await tbtc.unpauseIx({
+      const unpauseIx = await tmewc.unpauseIx({
         authority: authority.publicKey,
       });
       await expectIxSuccess([unpauseIx], [authority]);
-      await tbtc.checkConfig({
+      await tmewc.checkConfig({
         authority: authority.publicKey,
         numMinters: 1,
         numGuardians: 0,
@@ -776,14 +776,14 @@ describe("tbtc", () => {
       });
 
       const recipientToken = spl.getAssociatedTokenAddressSync(
-        tbtc.getMintPDA(),
+        tmewc.getMintPDA(),
         recipient.publicKey
       );
 
       const amount = BigInt(200);
 
       const recipientBefore = await getTokenBalance(recipientToken);
-      const mintIx = await tbtc.mintIx(
+      const mintIx = await tmewc.mintIx(
         {
           minter: minter.publicKey,
           recipientToken,
@@ -791,7 +791,7 @@ describe("tbtc", () => {
         new anchor.BN(amount.toString())
       );
       await expectIxSuccess([mintIx], [txPayer, minter]);
-      await tbtc.checkConfig({
+      await tmewc.checkConfig({
         authority: authority.publicKey,
         numMinters: 1,
         numGuardians: 0,
@@ -805,12 +805,12 @@ describe("tbtc", () => {
     });
 
     it("remove minter", async () => {
-      const removeIx = await tbtc.removeMinterIx({
+      const removeIx = await tmewc.removeMinterIx({
         authority: authority.publicKey,
         minter: minter.publicKey,
       });
       await expectIxSuccess([removeIx], [authority]);
-      await tbtc.checkConfig({
+      await tmewc.checkConfig({
         authority: authority.publicKey,
         numMinters: 0,
         numGuardians: 0,

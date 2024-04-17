@@ -15,19 +15,19 @@
 
 pragma solidity 0.8.17;
 
-import {BTCUtils} from "@keep-network/bitcoin-spv-sol/contracts/BTCUtils.sol";
-import {BytesLib} from "@keep-network/bitcoin-spv-sol/contracts/BytesLib.sol";
-import {ValidateSPV} from "@keep-network/bitcoin-spv-sol/contracts/ValidateSPV.sol";
+import {MEWCUtils} from "@keep-network/meowcoin-spv-sol/contracts/MEWCUtils.sol";
+import {BytesLib} from "@keep-network/meowcoin-spv-sol/contracts/BytesLib.sol";
+import {ValidateSPV} from "@keep-network/meowcoin-spv-sol/contracts/ValidateSPV.sol";
 
 import "./BridgeState.sol";
 
-/// @title Bitcoin transaction
-/// @notice Allows to reference Bitcoin raw transaction in Solidity.
-/// @dev See https://developer.bitcoin.org/reference/transactions.html#raw-transaction-format
+/// @title Meowcoin transaction
+/// @notice Allows to reference Meowcoin raw transaction in Solidity.
+/// @dev See https://developer.meowcoin.org/reference/transactions.html#raw-transaction-format
 ///
-///      Raw Bitcoin transaction data:
+///      Raw Meowcoin transaction data:
 ///
-///      | Bytes  |     Name     |        BTC type        |        Description        |
+///      | Bytes  |     Name     |        MEWC type        |        Description        |
 ///      |--------|--------------|------------------------|---------------------------|
 ///      | 4      | version      | int32_t (LE)           | TX version number         |
 ///      | varies | tx_in_count  | compactSize uint (LE)  | Number of TX inputs       |
@@ -39,7 +39,7 @@ import "./BridgeState.sol";
 //
 ///      Non-coinbase transaction input (txIn):
 ///
-///      | Bytes  |       Name       |        BTC type        |                 Description                 |
+///      | Bytes  |       Name       |        MEWC type        |                 Description                 |
 ///      |--------|------------------|------------------------|---------------------------------------------|
 ///      | 36     | previous_output  | outpoint               | The previous outpoint being spent           |
 ///      | varies | script_bytes     | compactSize uint (LE)  | The number of bytes in the signature script |
@@ -49,7 +49,7 @@ import "./BridgeState.sol";
 ///
 ///      The reference to transaction being spent (outpoint):
 ///
-///      | Bytes | Name  |   BTC type    |               Description                |
+///      | Bytes | Name  |   MEWC type    |               Description                |
 ///      |-------|-------|---------------|------------------------------------------|
 ///      |    32 | hash  | char[32]      | Hash of the transaction to spend         |
 ///      |    4  | index | uint32_t (LE) | Index of the specific output from the TX |
@@ -57,7 +57,7 @@ import "./BridgeState.sol";
 ///
 ///      Transaction output (txOut):
 ///
-///      | Bytes  |      Name       |     BTC type          |             Description              |
+///      | Bytes  |      Name       |     MEWC type          |             Description              |
 ///      |--------|-----------------|-----------------------|--------------------------------------|
 ///      | 8      | value           | int64_t (LE)          | Number of satoshis to spend          |
 ///      | 1+     | pk_script_bytes | compactSize uint (LE) | Number of bytes in the pubkey script |
@@ -76,7 +76,7 @@ import "./BridgeState.sol";
 ///
 ///      Coinbase transaction input (txIn):
 ///
-///      | Bytes  |       Name       |        BTC type        |                 Description                 |
+///      | Bytes  |       Name       |        MEWC type        |                 Description                 |
 ///      |--------|------------------|------------------------|---------------------------------------------|
 ///      | 32     | hash             | char[32]               | A 32-byte 0x0  null (no previous_outpoint)  |
 ///      | 4      | index            | uint32_t (LE)          | 0xffffffff (no previous_outpoint)           |
@@ -90,21 +90,21 @@ import "./BridgeState.sol";
 ///           short as possible, otherwise it may be rejected. The data-pushing opcode will be 0x03 and the total
 ///           size four bytes until block 16,777,216 about 300 years from now.
 library BitcoinTx {
-    using BTCUtils for bytes;
-    using BTCUtils for uint256;
+    using MEWCUtils for bytes;
+    using MEWCUtils for uint256;
     using BytesLib for bytes;
     using ValidateSPV for bytes;
     using ValidateSPV for bytes32;
 
-    /// @notice Represents Bitcoin transaction data.
+    /// @notice Represents Meowcoin transaction data.
     struct Info {
-        /// @notice Bitcoin transaction version.
-        /// @dev `version` from raw Bitcoin transaction data.
+        /// @notice Meowcoin transaction version.
+        /// @dev `version` from raw Meowcoin transaction data.
         ///      Encoded as 4-bytes signed integer, little endian.
         bytes4 version;
-        /// @notice All Bitcoin transaction inputs, prepended by the number of
+        /// @notice All Meowcoin transaction inputs, prepended by the number of
         ///         transaction inputs.
-        /// @dev `tx_in_count | tx_in` from raw Bitcoin transaction data.
+        /// @dev `tx_in_count | tx_in` from raw Meowcoin transaction data.
         ///
         ///      The number of transaction inputs encoded as compactSize
         ///      unsigned integer, little-endian.
@@ -112,31 +112,31 @@ library BitcoinTx {
         ///      Note that some popular block explorers reverse the order of
         ///      bytes from `outpoint`'s `hash` and display it as big-endian.
         ///      Solidity code of Bridge expects hashes in little-endian, just
-        ///      like they are represented in a raw Bitcoin transaction.
+        ///      like they are represented in a raw Meowcoin transaction.
         bytes inputVector;
-        /// @notice All Bitcoin transaction outputs prepended by the number of
+        /// @notice All Meowcoin transaction outputs prepended by the number of
         ///         transaction outputs.
-        /// @dev `tx_out_count | tx_out` from raw Bitcoin transaction data.
+        /// @dev `tx_out_count | tx_out` from raw Meowcoin transaction data.
         ///
         ///       The number of transaction outputs encoded as a compactSize
         ///       unsigned integer, little-endian.
         bytes outputVector;
-        /// @notice Bitcoin transaction locktime.
+        /// @notice Meowcoin transaction locktime.
         ///
-        /// @dev `lock_time` from raw Bitcoin transaction data.
+        /// @dev `lock_time` from raw Meowcoin transaction data.
         ///      Encoded as 4-bytes unsigned integer, little endian.
         bytes4 locktime;
         // This struct doesn't contain `__gap` property as the structure is not
         // stored, it is used as a function's calldata argument.
     }
 
-    /// @notice Represents data needed to perform a Bitcoin SPV proof.
+    /// @notice Represents data needed to perform a Meowcoin SPV proof.
     struct Proof {
         /// @notice The merkle proof of transaction inclusion in a block.
         bytes merkleProof;
         /// @notice Transaction index in the block (0-indexed).
         uint256 txIndexInBlock;
-        /// @notice Single byte-string of 80-byte bitcoin headers,
+        /// @notice Single byte-string of 80-byte meowcoin headers,
         ///         lowest height first.
         bytes bitcoinHeaders;
         /// @notice The sha256 preimage of the coinbase tx hash
@@ -151,7 +151,7 @@ library BitcoinTx {
     /// @notice Represents info about an unspent transaction output.
     struct UTXO {
         /// @notice Hash of the transaction the output belongs to.
-        /// @dev Byte order corresponds to the Bitcoin internal byte order.
+        /// @dev Byte order corresponds to the Meowcoin internal byte order.
         bytes32 txHash;
         /// @notice Index of the transaction output (0-indexed).
         uint32 txOutputIndex;
@@ -161,7 +161,7 @@ library BitcoinTx {
         // stored, it is used as a function's calldata argument.
     }
 
-    /// @notice Represents Bitcoin signature in the R/S/V format.
+    /// @notice Represents Meowcoin signature in the R/S/V format.
     struct RSVSignature {
         /// @notice Signature r value.
         bytes32 r;
@@ -173,10 +173,10 @@ library BitcoinTx {
         // stored, it is used as a function's calldata argument.
     }
 
-    /// @notice Validates the SPV proof of the Bitcoin transaction.
+    /// @notice Validates the SPV proof of the Meowcoin transaction.
     ///         Reverts in case the validation or proof verification fail.
-    /// @param txInfo Bitcoin transaction data.
-    /// @param proof Bitcoin proof data.
+    /// @param txInfo Meowcoin transaction data.
+    /// @param proof Meowcoin proof data.
     /// @return txHash Proven 32-byte transaction hash.
     function validateProof(
         BridgeState.Storage storage self,
@@ -224,10 +224,10 @@ library BitcoinTx {
         return txHash;
     }
 
-    /// @notice Evaluates the given Bitcoin proof difficulty against the actual
-    ///         Bitcoin chain difficulty provided by the relay oracle.
+    /// @notice Evaluates the given Meowcoin proof difficulty against the actual
+    ///         Meowcoin chain difficulty provided by the relay oracle.
     ///         Reverts in case the evaluation fails.
-    /// @param bitcoinHeaders Bitcoin headers chain being part of the SPV
+    /// @param bitcoinHeaders Meowcoin headers chain being part of the SPV
     ///        proof. Used to extract the observed proof difficulty.
     function evaluateProofDifficulty(
         BridgeState.Storage storage self,
@@ -333,7 +333,7 @@ library BitcoinTx {
     /// @return The P2PKH script.
     /// @dev The P2PKH script has the following byte format:
     ///      <0x1976a914> <20-byte PKH> <0x88ac>. According to
-    ///      https://en.bitcoin.it/wiki/Script#Opcodes this translates to:
+    ///      https://en.meowcoin.it/wiki/Script#Opcodes this translates to:
     ///      - 0x19: Byte length of the entire script
     ///      - 0x76: OP_DUP
     ///      - 0xa9: OP_HASH160
@@ -341,7 +341,7 @@ library BitcoinTx {
     ///      - 0x88: OP_EQUALVERIFY
     ///      - 0xac: OP_CHECKSIG
     ///      which matches the P2PKH structure as per:
-    ///      https://en.bitcoin.it/wiki/Transaction#Pay-to-PubkeyHash
+    ///      https://en.meowcoin.it/wiki/Transaction#Pay-to-PubkeyHash
     function makeP2PKHScript(bytes20 pubKeyHash)
         internal
         pure
@@ -357,12 +357,12 @@ library BitcoinTx {
     /// @return The P2WPKH script.
     /// @dev The P2WPKH script has the following format:
     ///      <0x160014> <20-byte PKH>. According to
-    ///      https://en.bitcoin.it/wiki/Script#Opcodes this translates to:
+    ///      https://en.meowcoin.it/wiki/Script#Opcodes this translates to:
     ///      - 0x16: Byte length of the entire script
     ///      - 0x00: OP_0
     ///      - 0x14: Byte length of the public key hash
     ///      which matches the P2WPKH structure as per:
-    ///      https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki#P2WPKH
+    ///      https://github.com/meowcoin/bips/blob/master/bip-0141.mediawiki#P2WPKH
     function makeP2WPKHScript(bytes20 pubKeyHash)
         internal
         pure

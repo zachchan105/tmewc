@@ -1,35 +1,35 @@
-= TBTC v2
+= TMEWC
 
-https://github.com/keep-network/tbtc-v2/actions/workflows/contracts.yml[image:https://img.shields.io/github/actions/workflow/status/keep-network/tbtc-v2/contracts.yml?branch=main&event=push&label=TBTC%20contracts%20build[TBTC contracts build status]]
+https://github.com/keep-network/tmewc/actions/workflows/contracts.yml[image:https://img.shields.io/github/actions/workflow/status/keep-network/tmewc/contracts.yml?branch=main&event=push&label=TMEWC%20contracts%20build[TMEWC contracts build status]]
 
 == Abstract
 
-For many Bitcoin holders, one question remains: how can I move my assets across
-blockchains to make them more useful while maintaining Bitcoin's core values?
+For many Meowcoin holders, one question remains: how can I move my assets across
+blockchains to make them more useful while maintaining Meowcoin's core values?
 
-Existing solutions that bridge Bitcoin to Ethereum require users to send their
-Bitcoin to an intermediary in exchange for an Ethereum token that represents the
+Existing solutions that bridge Meowcoin to Ethereum require users to send their
+Meowcoin to an intermediary in exchange for an Ethereum token that represents the
 original asset. This centralized model requires you to trust a third party and
-is prone to censorship, threatening Bitcoin's promise of secure, permissionless
+is prone to censorship, threatening Meowcoin's promise of secure, permissionless
 decentralization.
 
-Threshold aims to solve this problem with TBTC v2.
+Threshold aims to solve this problem with TMEWC.
 
-The second generation of TBTC is a truly decentralized bridge between Bitcoin
-and Ethereum. It provides Bitcoin holders permissionless access to DeFi and the
+The second generation of TMEWC is a truly decentralized bridge between Meowcoin
+and Ethereum. It provides Meowcoin holders permissionless access to DeFi and the
 expanding web3 universe.
 
-TBTC v2 replaces centralized intermediaries with a randomly selected group of
+TMEWC replaces centralized intermediaries with a randomly selected group of
 node operators on the Threshold Network. This group of independent operators
-works together to secure your deposited Bitcoin through threshold cryptography.
-That means TBTC v2 requires a majority threshold agreement before operators
-perform any action with your Bitcoin. By rotating the selection of operators,
-TBTC v2 protects against any malicious individual or group of operators seizing
-control. Unlike other solutions on the market, users on TBTC v2 are reliant on
-math, not hardware or people. Additionally, TBTC v2 is open and accessible to
+works together to secure your deposited Meowcoin through threshold cryptography.
+That means TMEWC requires a majority threshold agreement before operators
+perform any action with your Meowcoin. By rotating the selection of operators,
+TMEWC protects against any malicious individual or group of operators seizing
+control. Unlike other solutions on the market, users on TMEWC are reliant on
+math, not hardware or people. Additionally, TMEWC is open and accessible to
 anyone.
   
-TBTC v2 allows anyone to use Bitcoin in the expanding DeFi and Web3 universe
+TMEWC allows anyone to use Meowcoin in the expanding DeFi and Web3 universe
 without a third-party intermediary. 
 
 == Overview
@@ -37,20 +37,20 @@ without a third-party intermediary.
 === Deposit
 
 Stakers periodically create 51-of-100 threshold-ECDSA-backed wallets to hold
-frozen Bitcoin assets to maintain account balances. Depositors send Bitcoin to
+frozen Meowcoin assets to maintain account balances. Depositors send Meowcoin to
 the most-recently-created wallet by using pay-to-script-hash (P2SH) or
 pay-to-witness-script-hash (P2WSH) which contains hashed information about the
 depositor’s Ethereum address. The depositor <<depositing,reveals>> their P2(W)SH
 deposit to the Ethereum chain. The Bridge listens for these sorts of messages and
-when it gets one, it checks the Bitcoin network to make sure the funds line up.
+when it gets one, it checks the Meowcoin network to make sure the funds line up.
 If everything checks out, the wallet <<sweeping,sweeps>> funds and updates
 the Ethereum-side account balances.
 
 === Redemption
 
-A user with an account balance <<redeeming,supplies>> a Bitcoin address. The
+A user with an account balance <<redeeming,supplies>> a Meowcoin address. The
 system decreases their account balance and releases the equivalent amount of
-Bitcoin to the user from the redeeming Bitcoin wallet. The maximum redemption
+Meowcoin to the user from the redeeming Meowcoin wallet. The maximum redemption
 size is capped by the size of the largest wallet, and any redemption bigger than
 that will need to be split into multiple redemptions.
 
@@ -59,23 +59,23 @@ that will need to be split into multiple redemptions.
 === Bridge, Bank, Vault Separation
 
 The system is decomposed into three separate pieces to separate concerns. The
-<<bridge,Bridge>> is concerned with being a decentralized Bitcoin custody, and
-providing a way to let the <<bank,Bank>> know whenever Bitcoin has successfully
-crossed from Bitcoin to another chain or visa versa.
+<<bridge,Bridge>> is concerned with being a decentralized Meowcoin custody, and
+providing a way to let the <<bank,Bank>> know whenever Meowcoin has successfully
+crossed from Meowcoin to another chain or visa versa.
 
-The <<bank,Bank>> is concerned with keeping track of Bitcoin account balances on
+The <<bank,Bank>> is concerned with keeping track of Meowcoin account balances on
 Ethereum. It tracks when folks send those balances to each other, and when
 folks lock up their balances in <<vault,Vaults>>.
 
 Vaults are authorized smart contracts that can custody a balance and then do
-_anything_. For example, TBTC (the token) is implemented as our flagship Vault.
-You let it custody your Bank balance and it gives you TBTC tokens. You give it
-back TBTC tokens and it gives you back your Bank balance.
+_anything_. For example, TMEWC (the token) is implemented as our flagship Vault.
+You let it custody your Bank balance and it gives you TMEWC tokens. You give it
+back TMEWC tokens and it gives you back your Bank balance.
 
 [bridge]
 ==== Bridge
 
-The Bridge is our interface to the Bitcoin blockchain and the off-chain
+The Bridge is our interface to the Meowcoin blockchain and the off-chain
 clients. It is the Bridge's responsibility to listen to <<depositing,deposit
 reveals>>, <<sweeping,sweep>> them, prove it did it, and then report any relevant
 information to the <<bank,Bank>>.
@@ -84,13 +84,13 @@ When it comes time to redeem, it is the Bridge's responsibility to listen to
 <<redeeming,redemption requests>>, disperse the funds, prove it did it, and then
 report any relevant information to the <<bank,Bank>>.
 
-Finally, everything about Bitcoin <<wallet-lifecycle,wallets>> falls in the
+Finally, everything about Meowcoin <<wallet-lifecycle,wallets>> falls in the
 purview of the Bridge.
 
 [bank]
 ==== Bank
 
-The Bank provides Bitcoin balance accounting for Ethereum addresses with two mappings:
+The Bank provides Meowcoin balance accounting for Ethereum addresses with two mappings:
 
 ```
 mapping(address => uint256) public balanceOf;
@@ -98,7 +98,7 @@ mapping(address => mapping(address => uint256)) public allowance;
 ```
 
 Notably, the Bank does not issue an ERC-20 token, it just does accounting. The
-`balanceOf` mapping keeps track of an Ethereum address's Bitcoin balance (in
+`balanceOf` mapping keeps track of an Ethereum address's Meowcoin balance (in
 satoshis). Meanwhile, the `allowance` mapping keeps track of how many satoshis
 a _spender_ may transfer on an Ethereum address's behalf. Each Ethereum address
 may have many spenders, each with different allowances.
@@ -111,29 +111,29 @@ funds, but allowances are more general.
 
 A Vault is an authorized Contract that interfaces with the <<bank,Bank>>. These
 are flexible, and allow us (and third parties) to write logic on top of the
-Bank architecture to implement financial systems built from Bitcoin balances.
+Bank architecture to implement financial systems built from Meowcoin balances.
 
-For example, TBTC is implemented as a Vault. A user with a Bank balance gives
-the `TBTCVault` an `allowance`, and then it uses that allowance to transfer
+For example, TMEWC is implemented as a Vault. A user with a Bank balance gives
+the `TMEWCVault` an `allowance`, and then it uses that allowance to transfer
 itself Bank Balance to hold on behalf of the user, in exchange for minting the
-user the equivalent amount of TBTC tokens. Later, anyone with TBTC tokens can
-send them back to the `TBTCVault` and the vault will grant them Bank balance.
+user the equivalent amount of TMEWC tokens. Later, anyone with TMEWC tokens can
+send them back to the `TMEWCVault` and the vault will grant them Bank balance.
 
 === Upgradeability
 
-`Bank` is a central, non-upgradeable contract keeping track of Bitcoin balances. 
+`Bank` is a central, non-upgradeable contract keeping track of Meowcoin balances. 
 
 `Bridge` is deployed behind a `TransparentUpgradeableProxy` and can be upgraded
 by a `ProxyAdmin`, eventually Threshold DAO.
 
-`TBTCVault` upgrade happens in two steps with a 24-hour governance delay. The
-owner of `TBTCVault` can initiate and finalize an upgrade to another vault.
-The new vault receives ownership of TBTC token as well as the entire `TBTCVault`
+`TMEWCVault` upgrade happens in two steps with a 24-hour governance delay. The
+owner of `TMEWCVault` can initiate and finalize an upgrade to another vault.
+The new vault receives ownership of TMEWC token as well as the entire `TMEWCVault`
 balance in the Bank.
 
 === Operators vs Group Members
 
-tBTCv2 works by combining on-chain smart contracts with off-chain operators.
+tMEWC works by combining on-chain smart contracts with off-chain operators.
 Those operators must _stake_ T tokens into the contracts, which exposes
 themselves to punishment for misbehavior, and in exchange are delegated work by
 the smart contracts.
@@ -212,7 +212,7 @@ Wallets can close in a few ways:
 redemption: `Bridge.notifyRedemptionTimeout`
 * Someone notifies the chain that a non-active wallet is too old:
 `Bridge.notifyWalletCloseable`
-* Someone notifies the chain that a non-active wallet has too few BTC
+* Someone notifies the chain that a non-active wallet has too few MEWC
 remaining: `Bridge.notifyWalletCloseable`
 
 Each of the above routes into `Wallets.moveFunds`. If the wallet has no main
@@ -253,7 +253,7 @@ range no more likely to be picked than ones near the ends. We pick a number of
 wallets equal to `min(liveWalletsCount, ceil(walletBtcBalance /
 walletMaxBtcTransfer))`, where `walletMaxBtcTransfer` is governable.
 
-In `submitMovingFundsProof`, we prove that the Bitcoin transaction happened and
+In `submitMovingFundsProof`, we prove that the Meowcoin transaction happened and
 has an appropriate number of confirmations, and then mark the source wallet's
 UTXO as spent via `OutboundTx.processWalletOutboundTxInput`. We pass the
 transaction's outputs into `MovingFunds.processMovingFundsTxOutputs`, sum up
@@ -264,14 +264,14 @@ If the hashes match, we begin closing the wallet via `beginWalletClosing`.
 After `walletClosingPeriod` has elapsed, anyone can call
 `Bridge.notifyWalletClosingPeriodElapsed` to close the wallet.
 
-=== Transferring Bitcoin
+=== Transferring Meowcoin
 
 [depositing]
 ==== Depositing
 
 When the system has an active wallet (denoted by
 `Bridge.activeWalletPubKeyHash()`), it is ready for deposits. A user can pay to
-a P2(W)SH address with the following Bitcoin script:
+a P2(W)SH address with the following Meowcoin script:
 
 ```
 <depositor> DROP
@@ -290,7 +290,7 @@ Since each depositor will have their ethereum address (the `depositor` field),
 and a different `blindingFactor` per deposit, each script will be unique and
 each script hash will be unique. The `<depositor> DROP <blindingFactor> DROP`
 header is a way to make the script commit to a particular eth address owner at
-Bitcoin deposit time, and it's what allows us to link the chains. `DUP HASH160
+Meowcoin deposit time, and it's what allows us to link the chains. `DUP HASH160
 <walletPubKeyHash> EQUALVERIFY CHECKSIG` is a standard P2PKH, so we slightly
 modify that to check to see if the signature matches rather than failing. If it
 doesn't match, we want to check a _different_ pkh: `refundPubkeyHash`. This is
@@ -300,15 +300,15 @@ broken or if something goes wrong, then after `refundLocktime` (30 days), they
 can send their funds back to `refundPubkeyHash` themselves. This would only
 work if the wallet hadn't <<sweeping,touched>> those funds yet.
 
-Once a Bitcoin user sends such a deposit, because their P2(W)SH address is
-unique to them, _only they_ know that they deposited into TBTCv2 until they
-reveal that they did so. To the rest of the Bitcoin world, this looks like a
+Once a Meowcoin user sends such a deposit, because their P2(W)SH address is
+unique to them, _only they_ know that they deposited into TMEWC until they
+reveal that they did so. To the rest of the Meowcoin world, this looks like a
 nondescript payment to a meaningless P2SH address. They make this reveal (which
 can be done immediately; no need to wait for confirmations) by calling
 `Bridge.revealDeposit`.
 
 `Bridge.revealDeposit` takes in the funding transaction, and then the necessary
-information to reconstruct the Bitcoin script: `depositor`, `blindingFactor`,
+information to reconstruct the Meowcoin script: `depositor`, `blindingFactor`,
 `walletPubKeyHash` and `refundPubkeyHash`. Then it reconstructs the script,
 hashes it, verifies that the hashes match, and then stores the deposit as
 waiting to be <<sweeping,swept>> associated to the provided `depositor`.
@@ -322,14 +322,14 @@ valid deposit UTXOs as well as the wallet's UTXO (`Wallet.mainUtxoHash`) as
 inputs and then creates a single UTXO output. This accomplishes two main
 purposes:
 
-* It amortizes fees (SPV proof fee and Bitcoin tx fee, etc) across all of the deposits.
+* It amortizes fees (SPV proof fee and Meowcoin tx fee, etc) across all of the deposits.
 * It disables the refund mechanism from the original script.
 
 The first is a cost vs time tradeoff. SPV proofs are expensive, so by dividing
 the cost across all of the deposits in the period, we see massive gas savings.
 This is the same model as individuals driving their own car to work vs waiting
 on the train. The second is a security measure. We need to disable the refund,
-otherwise users could get a Bank balance and then refund their Bitcoin and have
+otherwise users could get a Bank balance and then refund their Meowcoin and have
 both.
 
 The entry point is `Bridge.submitDepositSweepProof` which performs the SPV
@@ -365,7 +365,7 @@ redemption, and the wallet begins to move its funds via
 `Wallets.notifyWalletTimedOutRedemption`.
 
 To avoid this, the group members must fulfill the redemption by signing a
-transaction off-chain (potentially in a batch), submitting it to the Bitcoin
+transaction off-chain (potentially in a batch), submitting it to the Meowcoin
 chain, and then proving that they did so via `Bridge.submitRedemptionProof`. We
 perform an SPV proof to ensure the transaction occurred, it is well-formed, and
 then we decrease all of the redeemer's Bank balances and increase the treasury's
@@ -375,30 +375,30 @@ Bank balance with its cut.
 
 ==== Minting
 
-Up until this point, no TBTC has been created. We have dealt strictly with Bank
+Up until this point, no TMEWC has been created. We have dealt strictly with Bank
 balances. Anyone with a Bank balance can transfer that Bank balance to the
-TBTCVault to mint the equivalent amount of TBTC via `TBTCVault.mint`.
+TMEWCVault to mint the equivalent amount of TMEWC via `TMEWCVault.mint`.
 
 A <<depositing,depositor>> can specify in their reveal call
 (`Bridge.revealDeposit`) a `vault`. If they do, rather than getting a balance
 and having to come back later to submit additional transactions, the system
 automatically commits any funds to the requested vault, and propagates any
-results. In the case of the `TBTCVault`, this means that one can specify during
+results. In the case of the `TMEWCVault`, this means that one can specify during
 their deposit reveal that they wish for their balance to be put toward the
-`TBTCVault`, and as soon as everything goes through they will automatically be
-minted TBTC tokens.
+`TMEWCVault`, and as soon as everything goes through they will automatically be
+minted TMEWC tokens.
 
 During <<sweeping,sweeping>>, we look for `vault` information in the call data,
 and if we find it, we make a call to `Bank.increaseBalanceAndCall` rather than
 `Bank.increaseBalances` which routes to `vault.receiveBalanceIncrease`, which
-in turn calls `TBTC._mint`, in TBTC's case.
+in turn calls `TMEWC._mint`, in TMEWC's case.
 
 ==== Unminting
 
-Anyone with TBTC tokens can unmint them in exchange for Bank balance by calling
-`TBTCVault.unmint`. Alternatively, if the user is attempting to exit the system
+Anyone with TMEWC tokens can unmint them in exchange for Bank balance by calling
+`TMEWCVault.unmint`. Alternatively, if the user is attempting to exit the system
 entirely, they can save a transaction and gas by calling
-`TBTCVault.unmintAndRedeem` which routes into authorizing the Bridge to
+`TMEWCVault.unmintAndRedeem` which routes into authorizing the Bridge to
 <<redeeming,redeem>> via `bank.approveBalanceAndCall`.
 
 === Maintainers
@@ -550,12 +550,12 @@ This diagram maps out how the `CLOSING` state transitions to the `CLOSED` state.
 |walletCreationMaxBtcBalance 
 |The minimum amount of satoshis an active wallet needs to have before we allow for the creation of a new active wallet regardless of age. 
 |Yes 
-|`100e8 satoshis = 100 BTC`
+|`100e8 satoshis = 100 MEWC`
 
 |walletCreationMinBtcBalance 
 |The minimum amount of satoshis an active wallet needs to hold before we allow for the creation of a new active wallet. 
 |Yes 
-|`1e8 satoshis = 1 BTC`
+|`1e8 satoshis = 1 MEWC`
 
 |walletCreationPeriod      
 |The length of time a wallet needs to exist for before a new one can be created 
@@ -582,12 +582,12 @@ This diagram maps out how the `CLOSING` state transitions to the `CLOSED` state.
 |movedFundsSweepTxMaxTotalFee 
 |The max amount of satoshis that the target wallet is allowed to pay miners to process a moved funds sweep transaction. 
 |Yes 
-|`100_000 satoshis = 0.001 BTC`
+|`100_000 satoshis = 0.001 MEWC`
 
 |movingFundsDustThreshold 
 |The minimum amount of satoshis held by a closing wallet that needs to be moved to a different wallet before closing. 
 |Yes 
-|`200_000 satoshis = 0.002 BTC`
+|`200_000 satoshis = 0.002 MEWC`
 
 |movingFundsTimeout 
 |The amount of time group members have to move their wallet's funds to another live wallet(s). 
@@ -612,7 +612,7 @@ This diagram maps out how the `CLOSING` state transitions to the `CLOSED` state.
 |movingFundsTxMaxTotalFee 
 |The max amount of satoshis that the wallet is allowed to pay miners for a moving funds transaction. 
 |Yes 
-|`100_000 satoshis = 0.001 BTC`
+|`100_000 satoshis = 0.001 MEWC`
 
 |walletClosingPeriod 
 |The amount of time the wallet remains in the `Closing` state before it can be closed. 
@@ -622,7 +622,7 @@ This diagram maps out how the `CLOSING` state transitions to the `CLOSED` state.
 |walletClosureMinBtcBalance 
 |The minimum amount of satoshis at which a non-active wallet is eligible to begin closing, regardless of the wallet's age.
 |Yes 
-|`5e7 satoshis = 0.5 BTC`
+|`5e7 satoshis = 0.5 MEWC`
 
 |walletMaxAge 
 |The age at which a non-active wallet is eligible to begin closing. 
@@ -632,14 +632,14 @@ This diagram maps out how the `CLOSING` state transitions to the `CLOSED` state.
 |walletMaxBtcTransfer 
 |The amount of satoshis held by the closing wallet at which it should try to split the moved funds to multiple target wallets. 
 |Yes 
-|`10e8 satoshis = 10 BTC`
+|`10e8 satoshis = 10 MEWC`
 
 4+s|Depositing
 
 |depositDustThreshold
 |The minimum amount of satoshis in a valid deposit.
 |Yes
-|`1_000_000 satoshis = 0.01 BTC`
+|`1_000_000 satoshis = 0.01 MEWC`
 
 4+s|Sweeping
 
@@ -651,14 +651,14 @@ This diagram maps out how the `CLOSING` state transitions to the `CLOSED` state.
 |depositTxMaxFee 
 |The max amount of satoshis per deposit that the wallet is allowed to pay to miners for processing the sweep transaction. 
 |Yes 
-|`100_000 satoshis = 0.001 BTC`
+|`100_000 satoshis = 0.001 MEWC`
 
 4+s|Redeeming
 
 |redemptionDustThreshold 
 |The minimum amount of satoshis in a valid redemption. 
 |Yes 
-|`1_000_000 satoshis = 0.01 BTC`
+|`1_000_000 satoshis = 0.01 MEWC`
 
 |redemptionTimeout 
 |The amount of time a wallet has to fulfill a redemption request. 
@@ -683,7 +683,7 @@ This diagram maps out how the `CLOSING` state transitions to the `CLOSED` state.
 |redemptionTxMaxFee 
 |The max amount of satoshis per redemption that the wallet is allowed to pay miners for processing the redemption transaction. 
 |Yes 
-|`100_000 satoshis = 0.001 BTC`
+|`100_000 satoshis = 0.001 MEWC`
 
 4+s|Fraud 
 

@@ -1,6 +1,6 @@
 # Class: DepositsService
 
-Service exposing features related to tBTC v2 deposits.
+Service exposing features related to tMEWC deposits.
 
 ## Table of contents
 
@@ -14,7 +14,7 @@ Service exposing features related to tBTC v2 deposits.
 - [#defaultDepositor](DepositsService.md##defaultdepositor)
 - [bitcoinClient](DepositsService.md#bitcoinclient)
 - [depositRefundLocktimeDuration](DepositsService.md#depositrefundlocktimeduration)
-- [tbtcContracts](DepositsService.md#tbtccontracts)
+- [tmewcContracts](DepositsService.md#tmewccontracts)
 
 ### Methods
 
@@ -28,13 +28,13 @@ Service exposing features related to tBTC v2 deposits.
 
 ### constructor
 
-• **new DepositsService**(`tbtcContracts`, `bitcoinClient`, `crossChainContracts`): [`DepositsService`](DepositsService.md)
+• **new DepositsService**(`tmewcContracts`, `bitcoinClient`, `crossChainContracts`): [`DepositsService`](DepositsService.md)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `tbtcContracts` | [`TBTCContracts`](../README.md#tbtccontracts) |
+| `tmewcContracts` | [`TMEWCContracts`](../README.md#tmewccontracts) |
 | `bitcoinClient` | [`BitcoinClient`](../interfaces/BitcoinClient.md) |
 | `crossChainContracts` | (`_`: ``"Base"``) => `undefined` \| [`CrossChainContracts`](../README.md#crosschaincontracts) |
 
@@ -44,7 +44,7 @@ Service exposing features related to tBTC v2 deposits.
 
 #### Defined in
 
-[src/services/deposits/deposits-service.ts:51](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/deposits/deposits-service.ts#L51)
+[src/services/deposits/deposits-service.ts:51](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/deposits/deposits-service.ts#L51)
 
 ## Properties
 
@@ -73,7 +73,7 @@ Cross-chain contracts for the given L2 chain or
 
 #### Defined in
 
-[src/services/deposits/deposits-service.ts:49](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/deposits/deposits-service.ts#L49)
+[src/services/deposits/deposits-service.ts:49](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/deposits/deposits-service.ts#L49)
 
 ___
 
@@ -86,7 +86,7 @@ initiated by this service.
 
 #### Defined in
 
-[src/services/deposits/deposits-service.ts:42](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/deposits/deposits-service.ts#L42)
+[src/services/deposits/deposits-service.ts:42](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/deposits/deposits-service.ts#L42)
 
 ___
 
@@ -94,11 +94,11 @@ ___
 
 • `Private` `Readonly` **bitcoinClient**: [`BitcoinClient`](../interfaces/BitcoinClient.md)
 
-Bitcoin client handle.
+Meowcoin client handle.
 
 #### Defined in
 
-[src/services/deposits/deposits-service.ts:37](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/deposits/deposits-service.ts#L37)
+[src/services/deposits/deposits-service.ts:37](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/deposits/deposits-service.ts#L37)
 
 ___
 
@@ -111,19 +111,19 @@ This is 9 month in seconds assuming 1 month = 30 days
 
 #### Defined in
 
-[src/services/deposits/deposits-service.ts:29](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/deposits/deposits-service.ts#L29)
+[src/services/deposits/deposits-service.ts:29](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/deposits/deposits-service.ts#L29)
 
 ___
 
-### tbtcContracts
+### tmewcContracts
 
-• `Private` `Readonly` **tbtcContracts**: [`TBTCContracts`](../README.md#tbtccontracts)
+• `Private` `Readonly` **tmewcContracts**: [`TMEWCContracts`](../README.md#tmewccontracts)
 
-Handle to tBTC contracts.
+Handle to tMEWC contracts.
 
 #### Defined in
 
-[src/services/deposits/deposits-service.ts:33](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/deposits/deposits-service.ts#L33)
+[src/services/deposits/deposits-service.ts:33](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/deposits/deposits-service.ts#L33)
 
 ## Methods
 
@@ -145,7 +145,7 @@ Handle to tBTC contracts.
 
 #### Defined in
 
-[src/services/deposits/deposits-service.ts:183](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/deposits/deposits-service.ts#L183)
+[src/services/deposits/deposits-service.ts:183](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/deposits/deposits-service.ts#L183)
 
 ___
 
@@ -153,8 +153,8 @@ ___
 
 ▸ **initiateCrossChainDeposit**(`bitcoinRecoveryAddress`, `l2ChainName`): `Promise`\<[`Deposit`](Deposit.md)\>
 
-Initiates the tBTC v2 cross-chain deposit process. A cross-chain deposit
-is a deposit that targets an L2 chain other than the L1 chain the tBTC
+Initiates the tMEWC cross-chain deposit process. A cross-chain deposit
+is a deposit that targets an L2 chain other than the L1 chain the tMEWC
 system is deployed on. Such a deposit is initiated using a transaction
 on the L2 chain. To make it happen, the given L2 cross-chain contracts
 must be initialized along with a L2 signer first.
@@ -168,7 +168,7 @@ must be initialized along with a L2 signer first.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `bitcoinRecoveryAddress` | `string` | P2PKH or P2WPKH Bitcoin address that can be used for emergency recovery of the deposited funds. |
+| `bitcoinRecoveryAddress` | `string` | P2PKH or P2WPKH Meowcoin address that can be used for emergency recovery of the deposited funds. |
 | `l2ChainName` | ``"Base"`` | Name of the L2 chain the deposit is targeting. |
 
 #### Returns
@@ -181,7 +181,7 @@ Handle to the initiated deposit process.
 
 Throws an error if one of the following occurs:
         - There are no active wallet in the Bridge contract
-        - The Bitcoin recovery address is not a valid P2(W)PKH
+        - The Meowcoin recovery address is not a valid P2(W)PKH
         - The cross-chain contracts for the given L2 chain are not
           initialized
         - The L2 deposit owner cannot be resolved. This typically
@@ -199,7 +199,7 @@ This is actually a call to initiateDepositWithProxy with a built-in
 
 #### Defined in
 
-[src/services/deposits/deposits-service.ts:163](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/deposits/deposits-service.ts#L163)
+[src/services/deposits/deposits-service.ts:163](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/deposits/deposits-service.ts#L163)
 
 ___
 
@@ -207,13 +207,13 @@ ___
 
 ▸ **initiateDeposit**(`bitcoinRecoveryAddress`, `extraData?`): `Promise`\<[`Deposit`](Deposit.md)\>
 
-Initiates the tBTC v2 deposit process.
+Initiates the tMEWC deposit process.
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `bitcoinRecoveryAddress` | `string` | P2PKH or P2WPKH Bitcoin address that can be used for emergency recovery of the deposited funds. |
+| `bitcoinRecoveryAddress` | `string` | P2PKH or P2WPKH Meowcoin address that can be used for emergency recovery of the deposited funds. |
 | `extraData?` | [`Hex`](Hex.md) | Optional 32-byte extra data to be included in the deposit script. Cannot be equal to 32 zero bytes. |
 
 #### Returns
@@ -227,13 +227,13 @@ Handle to the initiated deposit process.
 Throws an error if one of the following occurs:
         - The default depositor is not set
         - There are no active wallet in the Bridge contract
-        - The Bitcoin recovery address is not a valid P2(W)PKH
+        - The Meowcoin recovery address is not a valid P2(W)PKH
         - The optional extra data is set but is not 32-byte or equals
           to 32 zero bytes.
 
 #### Defined in
 
-[src/services/deposits/deposits-service.ts:76](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/deposits/deposits-service.ts#L76)
+[src/services/deposits/deposits-service.ts:76](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/deposits/deposits-service.ts#L76)
 
 ___
 
@@ -241,17 +241,17 @@ ___
 
 ▸ **initiateDepositWithProxy**(`bitcoinRecoveryAddress`, `depositorProxy`, `extraData?`): `Promise`\<[`Deposit`](Deposit.md)\>
 
-Initiates the tBTC v2 deposit process using a depositor proxy.
+Initiates the tMEWC deposit process using a depositor proxy.
 The depositor proxy initiates minting on behalf of the user (i.e. original
-depositor) and receives minted TBTC. This allows the proxy to provide
-additional services to the user, such as routing the minted TBTC tokens
+depositor) and receives minted TMEWC. This allows the proxy to provide
+additional services to the user, such as routing the minted TMEWC tokens
 to another protocols, in an automated way.
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `bitcoinRecoveryAddress` | `string` | P2PKH or P2WPKH Bitcoin address that can be used for emergency recovery of the deposited funds. |
+| `bitcoinRecoveryAddress` | `string` | P2PKH or P2WPKH Meowcoin address that can be used for emergency recovery of the deposited funds. |
 | `depositorProxy` | [`DepositorProxy`](../interfaces/DepositorProxy.md) | Depositor proxy used to initiate the deposit. |
 | `extraData?` | [`Hex`](Hex.md) | Optional 32-byte extra data to be included in the deposit script. Cannot be equal to 32 zero bytes. |
 
@@ -269,13 +269,13 @@ DepositorProxy
 
 Throws an error if one of the following occurs:
         - There are no active wallet in the Bridge contract
-        - The Bitcoin recovery address is not a valid P2(W)PKH
+        - The Meowcoin recovery address is not a valid P2(W)PKH
         - The optional extra data is set but is not 32-byte or equals
           to 32 zero bytes.
 
 #### Defined in
 
-[src/services/deposits/deposits-service.ts:115](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/deposits/deposits-service.ts#L115)
+[src/services/deposits/deposits-service.ts:115](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/deposits/deposits-service.ts#L115)
 
 ___
 
@@ -304,4 +304,4 @@ Typically, there is no need to use this method when DepositsService
 
 #### Defined in
 
-[src/services/deposits/deposits-service.ts:261](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/services/deposits/deposits-service.ts#L261)
+[src/services/deposits/deposits-service.ts:261](https://github.com/keep-network/tmewc/blob/main/typescript/src/services/deposits/deposits-service.ts#L261)

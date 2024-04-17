@@ -5,7 +5,7 @@ const {
   impersonateAccount,
 } = require("../helpers/contract-test-helpers.js")
 const { BigNumber } = ethers
-const { yearn, tbtc, forkBlockNumber } = require("./constants.js")
+const { yearn, tmewc, forkBlockNumber } = require("./constants.js")
 const { deployYearnVault } = require("./functions.js")
 const { saddleStrategyFixture } = require("./fixtures.js")
 
@@ -19,7 +19,7 @@ describeFn("System -- saddle strategy migrate", () => {
   let rewardDistribution
   let keepToken
   let saddleLPRewards
-  let tbtcSaddlePoolLPToken
+  let tmewcSaddlePoolLPToken
   let vault
   let oldStrategy
   let newStrategy
@@ -31,24 +31,24 @@ describeFn("System -- saddle strategy migrate", () => {
     vaultGovernance = await ethers.getSigner(0)
 
     vaultDepositor = await impersonateAccount(
-      tbtc.saddlePoolLPTokenHolderAddress,
+      tmewc.saddlePoolLPTokenHolderAddress,
       vaultGovernance
     )
 
     saddleLPRewardsGovernance = await impersonateAccount(
-      tbtc.saddleLPRewardsOwner,
+      tmewc.saddleLPRewardsOwner,
       vaultGovernance
     )
 
     rewardDistribution = await impersonateAccount(
-      tbtc.keepTokenHolderAddress,
+      tmewc.keepTokenHolderAddress,
       vaultGovernance
     )
 
-    // Get tBTC v2 Saddle LP Rewards handle
+    // Get tMEWC Saddle LP Rewards handle
     saddleLPRewards = await ethers.getContractAt(
       "ILPRewards",
-      tbtc.saddleLPRewards
+      tmewc.saddleLPRewards
     )
 
     // Set `gated` to false to allow non-externally-owned accounts to perform
@@ -61,7 +61,7 @@ describeFn("System -- saddle strategy migrate", () => {
       .setRewardDistribution(rewardDistribution.address)
 
     // Get KEEP token handle.
-    keepToken = await ethers.getContractAt("IERC20", tbtc.keepTokenAddress)
+    keepToken = await ethers.getContractAt("IERC20", tmewc.keepTokenAddress)
 
     // Deposit 100 KEEP tokens as reward
     const amountReward = to1e18(100)
@@ -72,18 +72,18 @@ describeFn("System -- saddle strategy migrate", () => {
       .connect(rewardDistribution)
       .notifyRewardAmount(amountReward)
 
-    // Get tBTC v2 Saddle pool LP token handle.
-    tbtcSaddlePoolLPToken = await ethers.getContractAt(
+    // Get tMEWC Saddle pool LP token handle.
+    tmewcSaddlePoolLPToken = await ethers.getContractAt(
       "IERC20",
-      tbtc.saddlePoolLPTokenAddress
+      tmewc.saddlePoolLPTokenAddress
     )
 
-    // Deploy a new experimental vault accepting tBTC v2 Saddle pool LP tokens.
+    // Deploy a new experimental vault accepting tMEWC Saddle pool LP tokens.
     vault = await deployYearnVault(
       yearn,
       saddleStrategyFixture.vaultName,
       saddleStrategyFixture.vaultSymbol,
-      tbtcSaddlePoolLPToken,
+      tmewcSaddlePoolLPToken,
       vaultGovernance,
       saddleStrategyFixture.vaultDepositLimit
     )
@@ -92,15 +92,15 @@ describeFn("System -- saddle strategy migrate", () => {
     const SaddleStrategy = await ethers.getContractFactory("SaddleStrategy")
     oldStrategy = await SaddleStrategy.deploy(
       vault.address,
-      tbtc.saddlePoolSwapAddress,
-      tbtc.saddleLPRewards
+      tmewc.saddlePoolSwapAddress,
+      tmewc.saddleLPRewards
     )
     await oldStrategy.deployed()
 
     newStrategy = await SaddleStrategy.deploy(
       vault.address,
-      tbtc.saddlePoolSwapAddress,
-      tbtc.saddleLPRewards
+      tmewc.saddlePoolSwapAddress,
+      tmewc.saddleLPRewards
     )
     await newStrategy.deployed()
 
@@ -114,7 +114,7 @@ describeFn("System -- saddle strategy migrate", () => {
     )
 
     // deposit to the vault
-    await tbtcSaddlePoolLPToken
+    await tmewcSaddlePoolLPToken
       .connect(vaultDepositor)
       .approve(vault.address, saddleStrategyFixture.vaultDepositAmount)
     await vault
@@ -135,7 +135,7 @@ describeFn("System -- saddle strategy migrate", () => {
     it("should return zero LP tokens and rewards for the new strategy", async () => {
       expect(await keepToken.balanceOf(newStrategy.address)).to.be.equal(0)
       expect(
-        await tbtcSaddlePoolLPToken.balanceOf(newStrategy.address)
+        await tmewcSaddlePoolLPToken.balanceOf(newStrategy.address)
       ).to.be.equal(0)
     })
 
@@ -157,10 +157,10 @@ describeFn("System -- saddle strategy migrate", () => {
 
     it("should move LP tokens to the new strategy", async () => {
       expect(
-        await tbtcSaddlePoolLPToken.balanceOf(oldStrategy.address)
+        await tmewcSaddlePoolLPToken.balanceOf(oldStrategy.address)
       ).to.be.equal(0)
       expect(
-        await tbtcSaddlePoolLPToken.balanceOf(newStrategy.address)
+        await tmewcSaddlePoolLPToken.balanceOf(newStrategy.address)
       ).to.be.equal(saddleStrategyFixture.vaultDepositAmount)
     })
 
@@ -184,11 +184,11 @@ describeFn("System -- saddle strategy migrate", () => {
     let amountWithdrawn
 
     before(async () => {
-      const initialBalance = await tbtcSaddlePoolLPToken.balanceOf(
+      const initialBalance = await tmewcSaddlePoolLPToken.balanceOf(
         vaultDepositor.address
       )
       await vault.connect(vaultDepositor).withdraw() // withdraw all shares
-      const currentBalance = await tbtcSaddlePoolLPToken.balanceOf(
+      const currentBalance = await tmewcSaddlePoolLPToken.balanceOf(
         vaultDepositor.address
       )
       amountWithdrawn = currentBalance.sub(initialBalance)

@@ -1,5 +1,5 @@
 {
-  "name": "@keep-network/tbtc-v2-yearn",
+  "name": "@keep-network/tmewc-yearn",
   "license": "MIT",
   "scripts": {
     "build": "hardhat compile",

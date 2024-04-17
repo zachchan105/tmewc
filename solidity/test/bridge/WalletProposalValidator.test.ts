@@ -2353,7 +2353,7 @@ describe("WalletProposalValidator", () => {
               bridge.wallets.whenCalledWith(walletPubKeyHash).returns({
                 ecdsaWalletID: HashZero,
                 // Use zero hash so that the wallet's main UTXO is considered
-                // not set. This will be interpreted as the wallet having BTC
+                // not set. This will be interpreted as the wallet having MEWC
                 // balance of zero.
                 mainUtxoHash: HashZero,
                 pendingRedemptionsValue: 0,
@@ -2383,7 +2383,7 @@ describe("WalletProposalValidator", () => {
                   NO_MAIN_UTXO
                 )
               ).to.be.revertedWith(
-                "Source wallet BTC balance is below the moving funds dust threshold"
+                "Source wallet MEWC balance is below the moving funds dust threshold"
               )
             })
           })
@@ -2434,7 +2434,7 @@ describe("WalletProposalValidator", () => {
 
           context("when the passed main UTXO is correct", () => {
             context(
-              "when source wallet BTC balance is below dust threshold",
+              "when source wallet MEWC balance is below dust threshold",
               () => {
                 before(async () => {
                   await createSnapshot()
@@ -2475,14 +2475,14 @@ describe("WalletProposalValidator", () => {
                       }
                     )
                   ).to.be.revertedWith(
-                    "Source wallet BTC balance is below the moving funds dust threshold"
+                    "Source wallet MEWC balance is below the moving funds dust threshold"
                   )
                 })
               }
             )
 
             context(
-              "when source wallet BTC balance is equal to or greater that dust threshold",
+              "when source wallet MEWC balance is equal to or greater that dust threshold",
               () => {
                 before(async () => {
                   await createSnapshot()

@@ -2,7 +2,7 @@ import { BitcoinRawTx, BitcoinTxHash, BitcoinUtxo } from "../../src"
 import { BigNumber } from "ethers"
 
 /**
- * An example address taken from the BTC testnet and having a non-zero balance.
+ * An example address taken from the MEWC testnet and having a non-zero balance.
  * This address and its transaction data can be used to make deposits during tests.
  */
 export const testnetAddress = "tb1q0tpdjdu2r3r7tzwlhqy4e2276g2q6fexsz4j0m"
@@ -23,7 +23,7 @@ export const testnetTransactionHash = BitcoinTxHash.from(
 /**
  * Transaction corresponding to testnetTransactionHash and originating
  * from testnetAddress. It can be decoded, for example, with:
- * https://live.blockcypher.com/btc-testnet/decodetx
+ * https://live.blockcypher.com/mewc-testnet/decodetx
  */
 export const testnetTransaction: BitcoinRawTx = {
   transactionHex:

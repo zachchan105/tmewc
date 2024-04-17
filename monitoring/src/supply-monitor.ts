@@ -1,7 +1,7 @@
 import { SystemEventType } from "./system-event"
 
 import type { BigNumber } from "ethers"
-import type { TBTCToken } from "@keep-network/tbtc-v2.ts/dist/src/chain"
+import type { TMEWCToken } from "@keep-network/tmewc.ts/dist/src/chain"
 import type { Monitor as SystemEventMonitor, SystemEvent } from "./system-event"
 
 // The block span the supply change is checked for. It is 12 hours expressed
@@ -17,7 +17,7 @@ const HighTotalSupplyChange = (
   referenceBlock: number,
   currentBlock: number
 ): SystemEvent => ({
-  title: "High TBTC token total supply change",
+  title: "High TMEWC token total supply change",
   type: SystemEventType.Critical,
   data: {
     change: `${difference.gte(0) ? "+" : "-"}${change.toString()}%`,
@@ -39,12 +39,12 @@ export interface SupplyMonitorPersistence {
 }
 
 export class SupplyMonitor implements SystemEventMonitor {
-  private tbtcToken: TBTCToken
+  private tmewcToken: TMEWCToken
 
   private persistence: SupplyMonitorPersistence
 
-  constructor(tbtcToken: TBTCToken, persistence: SupplyMonitorPersistence) {
-    this.tbtcToken = tbtcToken
+  constructor(tmewcToken: TMEWCToken, persistence: SupplyMonitorPersistence) {
+    this.tmewcToken = tmewcToken
     this.persistence = persistence
   }
 
@@ -86,8 +86,8 @@ export class SupplyMonitor implements SystemEventMonitor {
       threshold = totalSupplyChangeThreshold / 2
     }
 
-    const referenceSupply = await this.tbtcToken.totalSupply(referenceBlock)
-    const currentSupply = await this.tbtcToken.totalSupply(currentBlock)
+    const referenceSupply = await this.tmewcToken.totalSupply(referenceBlock)
+    const currentSupply = await this.tmewcToken.totalSupply(currentBlock)
 
     const difference = currentSupply.sub(referenceSupply)
     // There is a precision loss here, but it is acceptable as long as the

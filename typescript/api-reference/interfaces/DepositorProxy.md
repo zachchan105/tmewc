@@ -2,10 +2,10 @@
 
 Interface representing a depositor proxy contract. A depositor proxy
 is used to reveal deposits to the Bridge, on behalf of the user
-(i.e. original depositor). It receives minted TBTC tokens and can provide
-additional services to the user, such as routing the minted TBTC tokens to
+(i.e. original depositor). It receives minted TMEWC tokens and can provide
+additional services to the user, such as routing the minted TMEWC tokens to
 another protocols, in an automated way. Depositor proxy is responsible for
-attributing the deposit and minted TBTC tokens to the user (e.g. using the
+attributing the deposit and minted TMEWC tokens to the user (e.g. using the
 optional 32-byte extra data field of the deposit script).
 
 ## Implemented by
@@ -34,7 +34,7 @@ Gets the chain-specific identifier of this contract.
 
 #### Defined in
 
-[src/lib/contracts/depositor-proxy.ts:19](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/depositor-proxy.ts#L19)
+[src/lib/contracts/depositor-proxy.ts:19](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/depositor-proxy.ts#L19)
 
 ___
 
@@ -61,4 +61,4 @@ Transaction hash of the reveal deposit transaction.
 
 #### Defined in
 
-[src/lib/contracts/depositor-proxy.ts:31](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/depositor-proxy.ts#L31)
+[src/lib/contracts/depositor-proxy.ts:31](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/depositor-proxy.ts#L31)

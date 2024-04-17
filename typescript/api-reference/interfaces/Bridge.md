@@ -44,7 +44,7 @@ GetEventsFunction
 
 #### Defined in
 
-[src/lib/contracts/bridge.ts:26](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/bridge.ts#L26)
+[src/lib/contracts/bridge.ts:26](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/bridge.ts#L26)
 
 ___
 
@@ -60,7 +60,7 @@ GetEventsFunction
 
 #### Defined in
 
-[src/lib/contracts/bridge.ts:155](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/bridge.ts#L155)
+[src/lib/contracts/bridge.ts:155](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/bridge.ts#L155)
 
 ___
 
@@ -76,7 +76,7 @@ GetEventsFunction
 
 #### Defined in
 
-[src/lib/contracts/bridge.ts:181](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/bridge.ts#L181)
+[src/lib/contracts/bridge.ts:181](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/bridge.ts#L181)
 
 ## Methods
 
@@ -96,7 +96,7 @@ Compressed (33 bytes long with 02 or 03 prefix) active wallet's
 
 #### Defined in
 
-[src/lib/contracts/bridge.ts:149](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/bridge.ts#L149)
+[src/lib/contracts/bridge.ts:149](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/bridge.ts#L149)
 
 ___
 
@@ -120,7 +120,7 @@ The hash of the UTXO.
 
 #### Defined in
 
-[src/lib/contracts/bridge.ts:175](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/bridge.ts#L175)
+[src/lib/contracts/bridge.ts:175](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/bridge.ts#L175)
 
 ___
 
@@ -145,7 +145,7 @@ Revealed deposit data.
 
 #### Defined in
 
-[src/lib/contracts/bridge.ts:68](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/bridge.ts#L68)
+[src/lib/contracts/bridge.ts:68](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/bridge.ts#L68)
 
 ___
 
@@ -161,7 +161,7 @@ Gets the chain-specific identifier of this contract.
 
 #### Defined in
 
-[src/lib/contracts/bridge.ts:20](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/bridge.ts#L20)
+[src/lib/contracts/bridge.ts:20](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/bridge.ts#L20)
 
 ___
 
@@ -175,7 +175,7 @@ Gets a pending redemption from the on-chain contract.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `walletPublicKey` | [`Hex`](../classes/Hex.md) | Bitcoin public key of the wallet the request is targeted to. Must be in the compressed form (33 bytes long with 02 or 03 prefix). |
+| `walletPublicKey` | [`Hex`](../classes/Hex.md) | Meowcoin public key of the wallet the request is targeted to. Must be in the compressed form (33 bytes long with 02 or 03 prefix). |
 | `redeemerOutputScript` | [`Hex`](../classes/Hex.md) | The redeemer output script the redeemed funds are supposed to be locked on. Must not be prepended with length. |
 
 #### Returns
@@ -186,7 +186,7 @@ Promise with the pending redemption.
 
 #### Defined in
 
-[src/lib/contracts/bridge.ts:124](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/bridge.ts#L124)
+[src/lib/contracts/bridge.ts:124](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/bridge.ts#L124)
 
 ___
 
@@ -200,7 +200,7 @@ Requests a redemption from the on-chain contract.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `walletPublicKey` | [`Hex`](../classes/Hex.md) | The Bitcoin public key of the wallet. Must be in the compressed form (33 bytes long with 02 or 03 prefix). |
+| `walletPublicKey` | [`Hex`](../classes/Hex.md) | The Meowcoin public key of the wallet. Must be in the compressed form (33 bytes long with 02 or 03 prefix). |
 | `mainUtxo` | [`BitcoinUtxo`](../README.md#bitcoinutxo) | The main UTXO of the wallet. Must match the main UTXO held by the on-chain contract. |
 | `redeemerOutputScript` | [`Hex`](../classes/Hex.md) | The output script that the redeemed funds will be locked to. Must not be prepended with length. |
 | `amount` | `BigNumber` | The amount to be redeemed in satoshis. |
@@ -213,7 +213,7 @@ Transaction hash of the request redemption transaction.
 
 #### Defined in
 
-[src/lib/contracts/bridge.ts:84](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/bridge.ts#L84)
+[src/lib/contracts/bridge.ts:84](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/bridge.ts#L84)
 
 ___
 
@@ -240,7 +240,7 @@ Transaction hash of the reveal deposit transaction.
 
 #### Defined in
 
-[src/lib/contracts/bridge.ts:54](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/bridge.ts#L54)
+[src/lib/contracts/bridge.ts:54](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/bridge.ts#L54)
 
 ___
 
@@ -267,7 +267,7 @@ Transaction hash of the submit deposit sweep proof transaction.
 
 #### Defined in
 
-[src/lib/contracts/bridge.ts:37](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/bridge.ts#L37)
+[src/lib/contracts/bridge.ts:37](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/bridge.ts#L37)
 
 ___
 
@@ -284,7 +284,7 @@ Submits a redemption transaction proof to the on-chain contract.
 | `redemptionTx` | [`BitcoinRawTxVectors`](BitcoinRawTxVectors.md) | Redemption transaction data |
 | `redemptionProof` | [`BitcoinSpvProof`](BitcoinSpvProof.md) | Redemption proof data |
 | `mainUtxo` | [`BitcoinUtxo`](../README.md#bitcoinutxo) | Data of the wallet's main UTXO |
-| `walletPublicKey` | [`Hex`](../classes/Hex.md) | Bitcoin public key of the wallet. Must be in the compressed form (33 bytes long with 02 or 03 prefix). |
+| `walletPublicKey` | [`Hex`](../classes/Hex.md) | Meowcoin public key of the wallet. Must be in the compressed form (33 bytes long with 02 or 03 prefix). |
 
 #### Returns
 
@@ -294,7 +294,7 @@ Transaction hash of the submit redemption proof transaction.
 
 #### Defined in
 
-[src/lib/contracts/bridge.ts:100](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/bridge.ts#L100)
+[src/lib/contracts/bridge.ts:100](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/bridge.ts#L100)
 
 ___
 
@@ -308,7 +308,7 @@ Gets a timed-out redemption from the on-chain contract.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `walletPublicKey` | [`Hex`](../classes/Hex.md) | Bitcoin public key of the wallet the request is targeted to. Must be in the compressed form (33 bytes long with 02 or 03 prefix). |
+| `walletPublicKey` | [`Hex`](../classes/Hex.md) | Meowcoin public key of the wallet the request is targeted to. Must be in the compressed form (33 bytes long with 02 or 03 prefix). |
 | `redeemerOutputScript` | [`Hex`](../classes/Hex.md) | The redeemer output script the redeemed funds are supposed to be locked on. Must not be prepended with length. |
 
 #### Returns
@@ -319,7 +319,7 @@ Promise with the pending redemption.
 
 #### Defined in
 
-[src/lib/contracts/bridge.ts:138](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/bridge.ts#L138)
+[src/lib/contracts/bridge.ts:138](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/bridge.ts#L138)
 
 ___
 
@@ -342,7 +342,7 @@ This number signifies how many confirmations a transaction has to
 
 #### Defined in
 
-[src/lib/contracts/bridge.ts:113](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/bridge.ts#L113)
+[src/lib/contracts/bridge.ts:113](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/bridge.ts#L113)
 
 ___
 
@@ -358,7 +358,7 @@ Returns the attached WalletRegistry instance.
 
 #### Defined in
 
-[src/lib/contracts/bridge.ts:160](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/bridge.ts#L160)
+[src/lib/contracts/bridge.ts:160](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/bridge.ts#L160)
 
 ___
 
@@ -372,7 +372,7 @@ Gets details about a registered wallet.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `walletPublicKeyHash` | [`Hex`](../classes/Hex.md) | The 20-byte wallet public key hash (computed using Bitcoin HASH160 over the compressed ECDSA public key). |
+| `walletPublicKeyHash` | [`Hex`](../classes/Hex.md) | The 20-byte wallet public key hash (computed using Meowcoin HASH160 over the compressed ECDSA public key). |
 
 #### Returns
 
@@ -382,4 +382,4 @@ Promise with the wallet details.
 
 #### Defined in
 
-[src/lib/contracts/bridge.ts:168](https://github.com/keep-network/tbtc-v2/blob/main/typescript/src/lib/contracts/bridge.ts#L168)
+[src/lib/contracts/bridge.ts:168](https://github.com/keep-network/tmewc/blob/main/typescript/src/lib/contracts/bridge.ts#L168)

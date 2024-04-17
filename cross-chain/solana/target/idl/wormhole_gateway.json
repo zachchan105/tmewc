@@ -16,22 +16,22 @@
           "isSigner": false
         },
         {
-          "name": "tbtcMint",
+          "name": "tmewcMint",
           "isMut": false,
           "isSigner": false,
           "docs": [
-            "TBTC Program's mint PDA address bump is saved in this program's config. Ordinarily, we would",
-            "not have to deserialize this account. But we do in this case to make sure the TBTC program",
+            "TMEWC Program's mint PDA address bump is saved in this program's config. Ordinarily, we would",
+            "not have to deserialize this account. But we do in this case to make sure the TMEWC program",
             "has been initialized before this program."
           ]
         },
         {
-          "name": "wrappedTbtcMint",
+          "name": "wrappedTmewcMint",
           "isMut": false,
           "isSigner": false
         },
         {
-          "name": "wrappedTbtcToken",
+          "name": "wrappedTmewcToken",
           "isMut": true,
           "isSigner": false
         },
@@ -169,7 +169,7 @@
       ]
     },
     {
-      "name": "receiveTbtc",
+      "name": "receiveTmewc",
       "accounts": [
         {
           "name": "payer",
@@ -197,7 +197,7 @@
           ]
         },
         {
-          "name": "wrappedTbtcToken",
+          "name": "wrappedTmewcToken",
           "isMut": true,
           "isSigner": false,
           "docs": [
@@ -205,7 +205,7 @@
           ]
         },
         {
-          "name": "wrappedTbtcMint",
+          "name": "wrappedTmewcMint",
           "isMut": true,
           "isSigner": false,
           "docs": [
@@ -214,7 +214,7 @@
           ]
         },
         {
-          "name": "tbtcMint",
+          "name": "tmewcMint",
           "isMut": true,
           "isSigner": false
         },
@@ -223,7 +223,7 @@
           "isMut": true,
           "isSigner": false,
           "docs": [
-            "Token account for minted tBTC.",
+            "Token account for minted tMEWC.",
             "",
             "NOTE: Because the recipient is encoded in the transfer message payload, we can check the",
             "authority from the deserialized VAA. But we should still check whether the authority is the",
@@ -246,16 +246,16 @@
             "The gateway will create an associated token account for the recipient if it doesn't exist.",
             "",
             "NOTE: When the minting limit increases, the recipient can use this token account to mint",
-            "tBTC using the deposit_wormhole_tbtc instruction."
+            "tMEWC using the deposit_wormhole_tmewc instruction."
           ]
         },
         {
-          "name": "tbtcConfig",
+          "name": "tmewcConfig",
           "isMut": false,
           "isSigner": false
         },
         {
-          "name": "tbtcMinterInfo",
+          "name": "tmewcMinterInfo",
           "isMut": false,
           "isSigner": false
         },
@@ -285,7 +285,7 @@
           "isSigner": false
         },
         {
-          "name": "tbtcProgram",
+          "name": "tmewcProgram",
           "isMut": false,
           "isSigner": false
         },
@@ -328,7 +328,7 @@
       ]
     },
     {
-      "name": "sendTbtcGateway",
+      "name": "sendTmewcGateway",
       "accounts": [
         {
           "name": "custodian",
@@ -341,7 +341,7 @@
           "isSigner": false
         },
         {
-          "name": "wrappedTbtcToken",
+          "name": "wrappedTmewcToken",
           "isMut": true,
           "isSigner": false,
           "docs": [
@@ -349,12 +349,12 @@
           ]
         },
         {
-          "name": "wrappedTbtcMint",
+          "name": "wrappedTmewcMint",
           "isMut": true,
           "isSigner": false
         },
         {
-          "name": "tbtcMint",
+          "name": "tmewcMint",
           "isMut": true,
           "isSigner": false
         },
@@ -451,13 +451,13 @@
         {
           "name": "args",
           "type": {
-            "defined": "SendTbtcGatewayArgs"
+            "defined": "SendTmewcGatewayArgs"
           }
         }
       ]
     },
     {
-      "name": "sendTbtcWrapped",
+      "name": "sendTmewcWrapped",
       "accounts": [
         {
           "name": "custodian",
@@ -465,7 +465,7 @@
           "isSigner": false
         },
         {
-          "name": "wrappedTbtcToken",
+          "name": "wrappedTmewcToken",
           "isMut": true,
           "isSigner": false,
           "docs": [
@@ -473,12 +473,12 @@
           ]
         },
         {
-          "name": "wrappedTbtcMint",
+          "name": "wrappedTmewcMint",
           "isMut": true,
           "isSigner": false
         },
         {
-          "name": "tbtcMint",
+          "name": "tmewcMint",
           "isMut": true,
           "isSigner": false
         },
@@ -567,33 +567,33 @@
         {
           "name": "args",
           "type": {
-            "defined": "SendTbtcWrappedArgs"
+            "defined": "SendTmewcWrappedArgs"
           }
         }
       ]
     },
     {
-      "name": "depositWormholeTbtc",
+      "name": "depositWormholeTmewc",
       "accounts": [
         {
           "name": "custodian",
           "isMut": true,
           "isSigner": false,
           "docs": [
-            "NOTE: This account also acts as a minter for the TBTC program."
+            "NOTE: This account also acts as a minter for the TMEWC program."
           ]
         },
         {
-          "name": "wrappedTbtcToken",
+          "name": "wrappedTmewcToken",
           "isMut": true,
           "isSigner": false,
           "docs": [
-            "This token account is owned by this program, whose mint is the wrapped TBTC mint. This PDA",
+            "This token account is owned by this program, whose mint is the wrapped TMEWC mint. This PDA",
             "address is stored in the custodian account."
           ]
         },
         {
-          "name": "wrappedTbtcMint",
+          "name": "wrappedTmewcMint",
           "isMut": false,
           "isSigner": false,
           "docs": [
@@ -602,11 +602,11 @@
           ]
         },
         {
-          "name": "tbtcMint",
+          "name": "tmewcMint",
           "isMut": true,
           "isSigner": false,
           "docs": [
-            "This mint is owned by the TBTC program. This PDA address is stored in the custodian account."
+            "This mint is owned by the TMEWC program. This PDA address is stored in the custodian account."
           ]
         },
         {
@@ -624,17 +624,17 @@
           "isMut": false,
           "isSigner": true,
           "docs": [
-            "This program requires that the owner of the TBTC token account sign for TBTC being minted",
+            "This program requires that the owner of the TMEWC token account sign for TMEWC being minted",
             "into his account."
           ]
         },
         {
-          "name": "tbtcConfig",
+          "name": "tmewcConfig",
           "isMut": false,
           "isSigner": false
         },
         {
-          "name": "tbtcMinterInfo",
+          "name": "tmewcMinterInfo",
           "isMut": false,
           "isSigner": false
         },
@@ -644,7 +644,7 @@
           "isSigner": false
         },
         {
-          "name": "tbtcProgram",
+          "name": "tmewcProgram",
           "isMut": false,
           "isSigner": false
         }
@@ -678,15 +678,15 @@
             }
           },
           {
-            "name": "tbtcMint",
+            "name": "tmewcMint",
             "type": "publicKey"
           },
           {
-            "name": "wrappedTbtcMint",
+            "name": "wrappedTmewcMint",
             "type": "publicKey"
           },
           {
-            "name": "wrappedTbtcToken",
+            "name": "wrappedTmewcToken",
             "type": "publicKey"
           },
           {
@@ -753,7 +753,7 @@
       }
     },
     {
-      "name": "SendTbtcGatewayArgs",
+      "name": "SendTmewcGatewayArgs",
       "type": {
         "kind": "struct",
         "fields": [
@@ -782,7 +782,7 @@
       }
     },
     {
-      "name": "SendTbtcWrappedArgs",
+      "name": "SendTmewcWrappedArgs",
       "type": {
         "kind": "struct",
         "fields": [
@@ -817,7 +817,7 @@
   ],
   "events": [
     {
-      "name": "WormholeTbtcReceived",
+      "name": "WormholeTmewcReceived",
       "fields": [
         {
           "name": "receiver",
@@ -832,7 +832,7 @@
       ]
     },
     {
-      "name": "WormholeTbtcSent",
+      "name": "WormholeTmewcSent",
       "fields": [
         {
           "name": "amount",
@@ -877,7 +877,7 @@
       ]
     },
     {
-      "name": "WormholeTbtcDeposited",
+      "name": "WormholeTmewcDeposited",
       "fields": [
         {
           "name": "depositor",
@@ -950,8 +950,8 @@
     },
     {
       "code": 6064,
-      "name": "NotEnoughWrappedTbtc",
-      "msg": "Not enough wormhole tBTC in the gateway to bridge"
+      "name": "NotEnoughWrappedTmewc",
+      "msg": "Not enough wormhole tMEWC in the gateway to bridge"
     },
     {
       "code": 6080,
@@ -965,13 +965,13 @@
     },
     {
       "code": 6128,
-      "name": "InvalidEthereumTbtc",
-      "msg": "Token chain and address do not match Ethereum's tBTC"
+      "name": "InvalidEthereumTmewc",
+      "msg": "Token chain and address do not match Ethereum's tMEWC"
     },
     {
       "code": 6144,
-      "name": "NoTbtcTransferred",
-      "msg": "No tBTC transferred"
+      "name": "NoTmewcTransferred",
+      "msg": "No tMEWC transferred"
     },
     {
       "code": 6160,
@@ -981,7 +981,7 @@
     {
       "code": 6176,
       "name": "MintedAmountUnderflow",
-      "msg": "Not enough minted by the gateway to satisfy sending tBTC"
+      "msg": "Not enough minted by the gateway to satisfy sending tMEWC"
     },
     {
       "code": 6178,

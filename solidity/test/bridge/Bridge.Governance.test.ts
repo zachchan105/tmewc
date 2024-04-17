@@ -3065,7 +3065,7 @@ describe("Bridge - Governance", () => {
         await restoreSnapshot()
       })
 
-      it("should not update the wallet creation min btc balance", async () => {
+      it("should not update the wallet creation min mewc balance", async () => {
         const { walletCreationMinBtcBalance } = await bridge.walletParameters()
         expect(walletCreationMinBtcBalance).to.be.equal(
           constants.walletCreationMinBtcBalance
@@ -3149,7 +3149,7 @@ describe("Bridge - Governance", () => {
           await restoreSnapshot()
         })
 
-        it("should update the wallet creation min btc balance", async () => {
+        it("should update the wallet creation min mewc balance", async () => {
           const { walletCreationMinBtcBalance } =
             await bridge.walletParameters()
           expect(walletCreationMinBtcBalance).to.be.equal(7331)
@@ -3190,7 +3190,7 @@ describe("Bridge - Governance", () => {
         await restoreSnapshot()
       })
 
-      it("should not update the wallet creation max btc balance", async () => {
+      it("should not update the wallet creation max mewc balance", async () => {
         const { walletCreationMaxBtcBalance } = await bridge.walletParameters()
         expect(walletCreationMaxBtcBalance).to.be.equal(
           constants.walletCreationMaxBtcBalance
@@ -3278,7 +3278,7 @@ describe("Bridge - Governance", () => {
           await restoreSnapshot()
         })
 
-        it("should update the wallet creation max btc balance", async () => {
+        it("should update the wallet creation max mewc balance", async () => {
           const { walletCreationMaxBtcBalance } =
             await bridge.walletParameters()
           expect(walletCreationMaxBtcBalance).to.be.equal(
@@ -3321,7 +3321,7 @@ describe("Bridge - Governance", () => {
         await restoreSnapshot()
       })
 
-      it("should not update the wallet closure min btc balance", async () => {
+      it("should not update the wallet closure min mewc balance", async () => {
         const { walletClosureMinBtcBalance } = await bridge.walletParameters()
         expect(walletClosureMinBtcBalance).to.be.equal(
           constants.walletClosureMinBtcBalance
@@ -3405,7 +3405,7 @@ describe("Bridge - Governance", () => {
           await restoreSnapshot()
         })
 
-        it("should update the wallet closure min btc balance", async () => {
+        it("should update the wallet closure min mewc balance", async () => {
           const { walletClosureMinBtcBalance } = await bridge.walletParameters()
           expect(walletClosureMinBtcBalance).to.be.equal(7331)
         })
@@ -3557,7 +3557,7 @@ describe("Bridge - Governance", () => {
         await restoreSnapshot()
       })
 
-      it("should not update the wallet max btc transfer", async () => {
+      it("should not update the wallet max mewc transfer", async () => {
         const { walletMaxBtcTransfer } = await bridge.walletParameters()
         expect(walletMaxBtcTransfer).to.be.equal(constants.walletMaxBtcTransfer)
       })
@@ -3639,7 +3639,7 @@ describe("Bridge - Governance", () => {
           await restoreSnapshot()
         })
 
-        it("should update the wallet max btc transfer", async () => {
+        it("should update the wallet max mewc transfer", async () => {
           const { walletMaxBtcTransfer } = await bridge.walletParameters()
           expect(walletMaxBtcTransfer).to.be.equal(7331)
         })

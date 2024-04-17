@@ -12,8 +12,8 @@ import {
   Bridge,
   BridgeStub,
   BridgeGovernance,
-  TBTCVault,
-  TBTC,
+  TMEWCVault,
+  TMEWC,
   IRelay,
 } from "../../typechain"
 import { DepositSweepTestData, SingleP2SHDeposit } from "../data/deposit-sweep"
@@ -22,11 +22,11 @@ const { createSnapshot, restoreSnapshot } = helpers.snapshot
 const { increaseTime, lastBlockTime } = helpers.time
 const { impersonateAccount } = helpers.account
 
-describe("TBTCVault - OptimisticMinting", () => {
+describe("TMEWCVault - OptimisticMinting", () => {
   let bridge: Bridge & BridgeStub
   let bridgeGovernance: BridgeGovernance
-  let tbtcVault: TBTCVault
-  let tbtc: TBTC
+  let tmewcVault: TMEWCVault
+  let tmewc: TMEWC
   let relay: FakeContract<IRelay>
 
   let deployer: SignerWithAddress
@@ -48,7 +48,7 @@ describe("TBTCVault - OptimisticMinting", () => {
   let mainUtxo
   let chainDifficulty: number
 
-  // used by tbtcVault.requestOptimisticMint(fundingTxHash, fundingOutputIndex)
+  // used by tmewcVault.requestOptimisticMint(fundingTxHash, fundingOutputIndex)
   let fundingTxHash: string
   let fundingOutputIndex: number
 
@@ -68,13 +68,13 @@ describe("TBTCVault - OptimisticMinting", () => {
       relay,
       bridge,
       bridgeGovernance,
-      tbtcVault,
-      tbtc,
+      tmewcVault,
+      tmewc,
     } = await waffle.loadFixture(bridgeFixture))
 
-    // TBTC token ownership transfer is not performed in deployment scripts.
-    // Check TransferTBTCOwnership deployment step for more information.
-    await tbtc.connect(deployer).transferOwnership(tbtcVault.address)
+    // TMEWC token ownership transfer is not performed in deployment scripts.
+    // Check TransferTMEWCOwnership deployment step for more information.
+    await tmewc.connect(deployer).transferOwnership(tmewcVault.address)
 
     // Set up test data needed to reveal a deposit via
     // bridge.connect(depositor).revealDeposit(fundingTx, depositRevealInfo)
@@ -90,9 +90,9 @@ describe("TBTCVault - OptimisticMinting", () => {
     )
     fundingTx = bitcoinTestData.deposits[0].fundingTx
     depositRevealInfo = bitcoinTestData.deposits[0].reveal
-    depositRevealInfo.vault = tbtcVault.address
+    depositRevealInfo.vault = tmewcVault.address
 
-    // Set the deposit dust threshold to 0.0001 BTC, i.e. 100x smaller than
+    // Set the deposit dust threshold to 0.0001 MEWC, i.e. 100x smaller than
     // the initial value in the Bridge in order to save test Bitcoins.
     // Scaling down deposit TX max fee as well.
     await bridge.setDepositDustThreshold(10000)
@@ -109,7 +109,7 @@ describe("TBTCVault - OptimisticMinting", () => {
     mainUtxo = bitcoinTestData.mainUtxo
 
     // Set up test data needed to request optimistic minting via
-    // tbtcVault.requestOptimisticMint(fundingTxHash, fundingOutputIndex)
+    // tmewcVault.requestOptimisticMint(fundingTxHash, fundingOutputIndex)
     fundingTxHash = fundingTx.hash
     fundingOutputIndex = depositRevealInfo.fundingOutputIndex
 
@@ -141,7 +141,7 @@ describe("TBTCVault - OptimisticMinting", () => {
     context("when called not by a minter", () => {
       it("should revert", async () => {
         await expect(
-          tbtcVault
+          tmewcVault
             .connect(thirdParty)
             .requestOptimisticMint(fundingTxHash, fundingOutputIndex)
         ).to.be.revertedWith("Caller is not a minter")
@@ -151,7 +151,7 @@ describe("TBTCVault - OptimisticMinting", () => {
     context("when called by a minter", () => {
       before(async () => {
         await createSnapshot()
-        await tbtcVault.connect(governance).addMinter(minter.address)
+        await tmewcVault.connect(governance).addMinter(minter.address)
       })
 
       after(async () => {
@@ -161,7 +161,7 @@ describe("TBTCVault - OptimisticMinting", () => {
       context("when optimistic minting is paused", () => {
         before(async () => {
           await createSnapshot()
-          await tbtcVault.connect(governance).pauseOptimisticMinting()
+          await tmewcVault.connect(governance).pauseOptimisticMinting()
         })
 
         after(async () => {
@@ -170,7 +170,7 @@ describe("TBTCVault - OptimisticMinting", () => {
 
         it("should revert", async () => {
           await expect(
-            tbtcVault
+            tmewcVault
               .connect(minter)
               .requestOptimisticMint(fundingTxHash, fundingOutputIndex)
           ).to.be.revertedWith("Optimistic minting paused")
@@ -184,7 +184,7 @@ describe("TBTCVault - OptimisticMinting", () => {
           await bridge
             .connect(depositor)
             .revealDeposit(fundingTx, depositRevealInfo)
-          await tbtcVault
+          await tmewcVault
             .connect(minter)
             .requestOptimisticMint(fundingTxHash, fundingOutputIndex)
         })
@@ -195,7 +195,7 @@ describe("TBTCVault - OptimisticMinting", () => {
 
         it("should revert", async () => {
           await expect(
-            tbtcVault
+            tmewcVault
               .connect(minter)
               .requestOptimisticMint(fundingTxHash, fundingOutputIndex)
           ).to.be.revertedWith(
@@ -207,7 +207,7 @@ describe("TBTCVault - OptimisticMinting", () => {
       context("when the deposit has not been revealed", () => {
         it("should revert", async () => {
           await expect(
-            tbtcVault.connect(minter).requestOptimisticMint(fundingTxHash, 10)
+            tmewcVault.connect(minter).requestOptimisticMint(fundingTxHash, 10)
           ).to.be.revertedWith("The deposit has not been revealed")
         })
       })
@@ -230,7 +230,7 @@ describe("TBTCVault - OptimisticMinting", () => {
                 sweepTx,
                 sweepProof,
                 mainUtxo,
-                tbtcVault.address
+                tmewcVault.address
               )
           })
 
@@ -242,7 +242,7 @@ describe("TBTCVault - OptimisticMinting", () => {
 
           it("should revert", async () => {
             await expect(
-              tbtcVault
+              tmewcVault
                 .connect(minter)
                 .requestOptimisticMint(fundingTxHash, fundingOutputIndex)
             ).to.be.revertedWith("The deposit is already swept")
@@ -275,7 +275,7 @@ describe("TBTCVault - OptimisticMinting", () => {
 
           it("should revert", async () => {
             await expect(
-              tbtcVault
+              tmewcVault
                 .connect(minter)
                 .requestOptimisticMint(fundingTxHash, fundingOutputIndex)
             ).to.be.revertedWith("Unexpected vault address")
@@ -291,7 +291,7 @@ describe("TBTCVault - OptimisticMinting", () => {
             await bridge
               .connect(depositor)
               .revealDeposit(fundingTx, depositRevealInfo)
-            tx = await tbtcVault
+            tx = await tmewcVault
               .connect(minter)
               .requestOptimisticMint(fundingTxHash, fundingOutputIndex)
           })
@@ -301,7 +301,7 @@ describe("TBTCVault - OptimisticMinting", () => {
           })
 
           it("should request optimistic minting", async () => {
-            const request = await tbtcVault.optimisticMintingRequests(
+            const request = await tmewcVault.optimisticMintingRequests(
               depositKey
             )
             expect(request.requestedAt).to.be.equal(await lastBlockTime())
@@ -310,7 +310,7 @@ describe("TBTCVault - OptimisticMinting", () => {
 
           it("should emit an event", async () => {
             await expect(tx)
-              .to.emit(tbtcVault, "OptimisticMintingRequested")
+              .to.emit(tmewcVault, "OptimisticMintingRequested")
               .withArgs(
                 minter.address,
                 depositKey,
@@ -329,7 +329,7 @@ describe("TBTCVault - OptimisticMinting", () => {
     context("when called not by a minter", () => {
       it("should revert", async () => {
         await expect(
-          tbtcVault
+          tmewcVault
             .connect(thirdParty)
             .finalizeOptimisticMint(fundingTxHash, fundingOutputIndex)
         ).to.be.revertedWith("Caller is not a minter")
@@ -339,7 +339,7 @@ describe("TBTCVault - OptimisticMinting", () => {
     context("when called by a minter", () => {
       before(async () => {
         await createSnapshot()
-        await tbtcVault.connect(governance).addMinter(minter.address)
+        await tmewcVault.connect(governance).addMinter(minter.address)
       })
 
       after(async () => {
@@ -349,7 +349,7 @@ describe("TBTCVault - OptimisticMinting", () => {
       context("when optimistic minting is paused", () => {
         before(async () => {
           await createSnapshot()
-          await tbtcVault.connect(governance).pauseOptimisticMinting()
+          await tmewcVault.connect(governance).pauseOptimisticMinting()
         })
 
         after(async () => {
@@ -358,7 +358,7 @@ describe("TBTCVault - OptimisticMinting", () => {
 
         it("should revert", async () => {
           await expect(
-            tbtcVault
+            tmewcVault
               .connect(minter)
               .finalizeOptimisticMint(fundingTxHash, fundingOutputIndex)
           ).to.be.revertedWith("Optimistic minting paused")
@@ -368,7 +368,7 @@ describe("TBTCVault - OptimisticMinting", () => {
       context("when minting has not been requested", () => {
         it("should revert", async () => {
           await expect(
-            tbtcVault
+            tmewcVault
               .connect(minter)
               .finalizeOptimisticMint(fundingTxHash, fundingOutputIndex)
           ).to.be.revertedWith(
@@ -385,10 +385,10 @@ describe("TBTCVault - OptimisticMinting", () => {
             .connect(depositor)
             .revealDeposit(fundingTx, depositRevealInfo)
 
-          await tbtcVault
+          await tmewcVault
             .connect(minter)
             .requestOptimisticMint(fundingTxHash, fundingOutputIndex)
-          await increaseTime((await tbtcVault.optimisticMintingDelay()) - 1)
+          await increaseTime((await tmewcVault.optimisticMintingDelay()) - 1)
         })
 
         after(async () => {
@@ -397,7 +397,7 @@ describe("TBTCVault - OptimisticMinting", () => {
 
         it("should revert", async () => {
           await expect(
-            tbtcVault
+            tmewcVault
               .connect(minter)
               .finalizeOptimisticMint(fundingTxHash, fundingOutputIndex)
           ).to.be.revertedWith("Optimistic minting delay has not passed yet")
@@ -412,11 +412,11 @@ describe("TBTCVault - OptimisticMinting", () => {
             .connect(depositor)
             .revealDeposit(fundingTx, depositRevealInfo)
 
-          await tbtcVault
+          await tmewcVault
             .connect(minter)
             .requestOptimisticMint(fundingTxHash, fundingOutputIndex)
-          await increaseTime(await tbtcVault.optimisticMintingDelay())
-          await tbtcVault
+          await increaseTime(await tmewcVault.optimisticMintingDelay())
+          await tmewcVault
             .connect(minter)
             .finalizeOptimisticMint(fundingTxHash, fundingOutputIndex)
         })
@@ -427,7 +427,7 @@ describe("TBTCVault - OptimisticMinting", () => {
 
         it("should revert", async () => {
           await expect(
-            tbtcVault
+            tmewcVault
               .connect(minter)
               .finalizeOptimisticMint(fundingTxHash, fundingOutputIndex)
           ).to.be.revertedWith(
@@ -444,10 +444,10 @@ describe("TBTCVault - OptimisticMinting", () => {
             .connect(depositor)
             .revealDeposit(fundingTx, depositRevealInfo)
 
-          await tbtcVault
+          await tmewcVault
             .connect(minter)
             .requestOptimisticMint(fundingTxHash, fundingOutputIndex)
-          await increaseTime(await tbtcVault.optimisticMintingDelay())
+          await increaseTime(await tmewcVault.optimisticMintingDelay())
 
           // Setting mocks to make the sweeping SPV proof validation pass.
           relay.getPrevEpochDifficulty.returns(chainDifficulty)
@@ -458,7 +458,7 @@ describe("TBTCVault - OptimisticMinting", () => {
               sweepTx,
               sweepProof,
               mainUtxo,
-              tbtcVault.address
+              tmewcVault.address
             )
         })
 
@@ -470,7 +470,7 @@ describe("TBTCVault - OptimisticMinting", () => {
 
         it("should revert", async () => {
           await expect(
-            tbtcVault
+            tmewcVault
               .connect(minter)
               .finalizeOptimisticMint(fundingTxHash, fundingOutputIndex)
           ).to.be.revertedWith("The deposit is already swept")
@@ -488,11 +488,11 @@ describe("TBTCVault - OptimisticMinting", () => {
               .connect(depositor)
               .revealDeposit(fundingTx, depositRevealInfo)
 
-            await tbtcVault
+            await tmewcVault
               .connect(minter)
               .requestOptimisticMint(fundingTxHash, fundingOutputIndex)
-            await increaseTime(await tbtcVault.optimisticMintingDelay())
-            tx = await tbtcVault
+            await increaseTime(await tmewcVault.optimisticMintingDelay())
+            tx = await tmewcVault
               .connect(minter)
               .finalizeOptimisticMint(fundingTxHash, fundingOutputIndex)
           })
@@ -501,7 +501,7 @@ describe("TBTCVault - OptimisticMinting", () => {
             await restoreSnapshot()
           })
 
-          // Output value is 20000 sat (0.0002 BTC).
+          // Output value is 20000 sat (0.0002 MEWC).
           // Bridge deposit treasury fee is 0.05% (1/2000).
           // Optimistic minting fee is 0.2% (1/500).
           //
@@ -512,24 +512,24 @@ describe("TBTCVault - OptimisticMinting", () => {
           // Bridge deposit treasury fee is allocated during the sweep.
           //
           // This all gives:
-          //   0.0002 BTC deposited
-          //   0.0000001 BTC as bridge deposit treasury fee
-          //   0.0000003998 as TBTC optimistic minting fee
-          //   0.0001995002 TBTC minted to the depositor
+          //   0.0002 MEWC deposited
+          //   0.0000001 MEWC as bridge deposit treasury fee
+          //   0.0000003998 as TMEWC optimistic minting fee
+          //   0.0001995002 TMEWC minted to the depositor
           //
           //   0.0001995002 + 0.0000003998 + 0.0000001 = 0.0002
 
           it("should send optimistic mint fee to treasury", async () => {
             expect(
-              expect(await tbtc.balanceOf(await bridge.treasury())).to.be.equal(
+              expect(await tmewc.balanceOf(await bridge.treasury())).to.be.equal(
                 399800000000
               )
             )
           })
 
-          it("should mint TBTC to depositor", async () => {
+          it("should mint TMEWC to depositor", async () => {
             // (20000 - 10) * 1e10 - 399800000000 = 199500200000000 [1e18]
-            expect(await tbtc.balanceOf(depositor.address)).to.be.equal(
+            expect(await tmewc.balanceOf(depositor.address)).to.be.equal(
               199500200000000
             )
           })
@@ -537,12 +537,12 @@ describe("TBTCVault - OptimisticMinting", () => {
           it("should incur optimistic mint debt", async () => {
             // (20000 - 10) * 1e10 = 199900000000000 [1e18]
             expect(
-              await tbtcVault.optimisticMintingDebt(depositor.address)
+              await tmewcVault.optimisticMintingDebt(depositor.address)
             ).to.be.equal(199900000000000)
           })
 
           it("should mark the request as finalized", async () => {
-            const request = await tbtcVault.optimisticMintingRequests(
+            const request = await tmewcVault.optimisticMintingRequests(
               depositKey
             )
             expect(request.requestedAt).to.not.be.equal(0)
@@ -551,7 +551,7 @@ describe("TBTCVault - OptimisticMinting", () => {
 
           it("should emit an event", async () => {
             await expect(tx)
-              .to.emit(tbtcVault, "OptimisticMintingFinalized")
+              .to.emit(tmewcVault, "OptimisticMintingFinalized")
               .withArgs(
                 minter.address,
                 depositKey,
@@ -567,11 +567,11 @@ describe("TBTCVault - OptimisticMinting", () => {
           before(async () => {
             await createSnapshot()
 
-            await tbtcVault
+            await tmewcVault
               .connect(governance)
               .beginOptimisticMintingFeeUpdate(0)
             await increaseTime(86400) // 24h
-            await tbtcVault
+            await tmewcVault
               .connect(governance)
               .finalizeOptimisticMintingFeeUpdate()
 
@@ -579,11 +579,11 @@ describe("TBTCVault - OptimisticMinting", () => {
               .connect(depositor)
               .revealDeposit(fundingTx, depositRevealInfo)
 
-            await tbtcVault
+            await tmewcVault
               .connect(minter)
               .requestOptimisticMint(fundingTxHash, fundingOutputIndex)
-            await increaseTime(await tbtcVault.optimisticMintingDelay())
-            tx = await tbtcVault
+            await increaseTime(await tmewcVault.optimisticMintingDelay())
+            tx = await tmewcVault
               .connect(minter)
               .finalizeOptimisticMint(fundingTxHash, fundingOutputIndex)
           })
@@ -592,7 +592,7 @@ describe("TBTCVault - OptimisticMinting", () => {
             await restoreSnapshot()
           })
 
-          // Output value is 20000 sat (0.0002 BTC).
+          // Output value is 20000 sat (0.0002 MEWC).
           // Bridge deposit treasury fee is 0.05% (1/2000).
           // Optimistic minting fee is 0.
           //
@@ -602,35 +602,35 @@ describe("TBTCVault - OptimisticMinting", () => {
           // Bridge deposit treasury fee is allocated during the sweep.
           //
           // This all gives:
-          //   0.0002 BTC deposited
-          //   0.0000001 BTC as bridge deposit treasury fee
-          //   0 as TBTC optimistic minting fee
-          //   0.0001999 TBTC minted to the depositor
+          //   0.0002 MEWC deposited
+          //   0.0000001 MEWC as bridge deposit treasury fee
+          //   0 as TMEWC optimistic minting fee
+          //   0.0001999 TMEWC minted to the depositor
           //
           //   0.0000001 + 0.0001999 = 0.0002
 
           it("should send no optimistic mint fee to treasury", async () => {
             expect(
-              expect(await tbtc.balanceOf(await bridge.treasury())).to.be.equal(
+              expect(await tmewc.balanceOf(await bridge.treasury())).to.be.equal(
                 0
               )
             )
           })
 
-          it("should mint TBTC to depositor", async () => {
-            expect(await tbtc.balanceOf(depositor.address)).to.be.equal(
+          it("should mint TMEWC to depositor", async () => {
+            expect(await tmewc.balanceOf(depositor.address)).to.be.equal(
               199900000000000
             )
           })
 
           it("should incur optimistic mint debt", async () => {
             expect(
-              await tbtcVault.optimisticMintingDebt(depositor.address)
+              await tmewcVault.optimisticMintingDebt(depositor.address)
             ).to.be.equal(199900000000000)
           })
 
           it("should mark the request as finalized", async () => {
-            const request = await tbtcVault.optimisticMintingRequests(
+            const request = await tmewcVault.optimisticMintingRequests(
               depositKey
             )
             expect(request.requestedAt).to.not.be.equal(0)
@@ -639,7 +639,7 @@ describe("TBTCVault - OptimisticMinting", () => {
 
           it("should emit an event", async () => {
             await expect(tx)
-              .to.emit(tbtcVault, "OptimisticMintingFinalized")
+              .to.emit(tmewcVault, "OptimisticMintingFinalized")
               .withArgs(
                 minter.address,
                 depositKey,
@@ -667,12 +667,12 @@ describe("TBTCVault - OptimisticMinting", () => {
               .connect(depositor)
               .revealDeposit(fundingTx, depositRevealInfo)
 
-            await tbtcVault
+            await tmewcVault
               .connect(minter)
               .requestOptimisticMint(fundingTxHash, fundingOutputIndex)
-            await increaseTime(await tbtcVault.optimisticMintingDelay())
+            await increaseTime(await tmewcVault.optimisticMintingDelay())
 
-            tx = await tbtcVault
+            tx = await tmewcVault
               .connect(minter)
               .finalizeOptimisticMint(fundingTxHash, fundingOutputIndex)
           })
@@ -681,7 +681,7 @@ describe("TBTCVault - OptimisticMinting", () => {
             await restoreSnapshot()
           })
 
-          // Output value is 20000 sat (0.0002 BTC).
+          // Output value is 20000 sat (0.0002 MEWC).
           // Bridge deposit treasury fee is 0.
           // Optimistic minting fee is 0.2% (1/500).
           //
@@ -689,24 +689,24 @@ describe("TBTCVault - OptimisticMinting", () => {
           // Amount to mint: (20000 * 1e10) - 400000000000 = 199600000000000 [1e18]
           //
           // This all gives:
-          //   0.0002 BTC deposited
+          //   0.0002 MEWC deposited
           //   0 as bridge deposit treasury fee
-          //   0.0000004 TBTC as optimistic minting fee
-          //   0.0001996 TBTC minted to the depositor
+          //   0.0000004 TMEWC as optimistic minting fee
+          //   0.0001996 TMEWC minted to the depositor
           //
           //   0.0000004 + 0.0001996 = 0.0002
 
           it("should send optimistic mint fee to treasury", async () => {
             expect(
-              expect(await tbtc.balanceOf(await bridge.treasury())).to.be.equal(
+              expect(await tmewc.balanceOf(await bridge.treasury())).to.be.equal(
                 400000000000
               )
             )
           })
 
-          it("should mint TBTC to depositor", async () => {
+          it("should mint TMEWC to depositor", async () => {
             // 20000 * 1e10 - 400000000000 = 199600000000000 [1e18]
-            expect(await tbtc.balanceOf(depositor.address)).to.be.equal(
+            expect(await tmewc.balanceOf(depositor.address)).to.be.equal(
               199600000000000
             )
           })
@@ -714,12 +714,12 @@ describe("TBTCVault - OptimisticMinting", () => {
           it("should incur optimistic mint debt", async () => {
             // 20000 * 1e10 = 200000000000000 [1e18]
             expect(
-              await tbtcVault.optimisticMintingDebt(depositor.address)
+              await tmewcVault.optimisticMintingDebt(depositor.address)
             ).to.be.equal(200000000000000)
           })
 
           it("should mark the request as finalized", async () => {
-            const request = await tbtcVault.optimisticMintingRequests(
+            const request = await tmewcVault.optimisticMintingRequests(
               depositKey
             )
             expect(request.requestedAt).to.not.be.equal(0)
@@ -728,7 +728,7 @@ describe("TBTCVault - OptimisticMinting", () => {
 
           it("should emit an event", async () => {
             await expect(tx)
-              .to.emit(tbtcVault, "OptimisticMintingFinalized")
+              .to.emit(tmewcVault, "OptimisticMintingFinalized")
               .withArgs(
                 minter.address,
                 depositKey,
@@ -747,11 +747,11 @@ describe("TBTCVault - OptimisticMinting", () => {
             await bridgeGovernance
               .connect(governance)
               .beginDepositTreasuryFeeDivisorUpdate(0)
-            await tbtcVault
+            await tmewcVault
               .connect(governance)
               .beginOptimisticMintingFeeUpdate(0)
             await increaseTime(constants.governanceDelay)
-            await tbtcVault
+            await tmewcVault
               .connect(governance)
               .finalizeOptimisticMintingFeeUpdate()
             await bridgeGovernance
@@ -762,11 +762,11 @@ describe("TBTCVault - OptimisticMinting", () => {
               .connect(depositor)
               .revealDeposit(fundingTx, depositRevealInfo)
 
-            await tbtcVault
+            await tmewcVault
               .connect(minter)
               .requestOptimisticMint(fundingTxHash, fundingOutputIndex)
-            await increaseTime(await tbtcVault.optimisticMintingDelay())
-            tx = await tbtcVault
+            await increaseTime(await tmewcVault.optimisticMintingDelay())
+            tx = await tmewcVault
               .connect(minter)
               .finalizeOptimisticMint(fundingTxHash, fundingOutputIndex)
           })
@@ -779,21 +779,21 @@ describe("TBTCVault - OptimisticMinting", () => {
           // Bridge deposit treasury fee is 0.
           // Optimistic minting fee is 0.
 
-          it("should mint TBTC to depositor", async () => {
+          it("should mint TMEWC to depositor", async () => {
             // 20000 * 1e10 = 200000000000000 [1e18]
-            expect(await tbtc.balanceOf(depositor.address)).to.be.equal(
+            expect(await tmewc.balanceOf(depositor.address)).to.be.equal(
               200000000000000
             )
           })
 
           it("should incur optimistic mint debt", async () => {
             expect(
-              await tbtcVault.optimisticMintingDebt(depositor.address)
+              await tmewcVault.optimisticMintingDebt(depositor.address)
             ).to.be.equal(200000000000000)
           })
 
           it("should mark the request as finalized", async () => {
-            const request = await tbtcVault.optimisticMintingRequests(
+            const request = await tmewcVault.optimisticMintingRequests(
               depositKey
             )
             expect(request.requestedAt).to.not.be.equal(0)
@@ -802,7 +802,7 @@ describe("TBTCVault - OptimisticMinting", () => {
 
           it("should emit an event", async () => {
             await expect(tx)
-              .to.emit(tbtcVault, "OptimisticMintingFinalized")
+              .to.emit(tmewcVault, "OptimisticMintingFinalized")
               .withArgs(
                 minter.address,
                 depositKey,
@@ -819,7 +819,7 @@ describe("TBTCVault - OptimisticMinting", () => {
     context("when called not by a guardian", () => {
       it("should revert", async () => {
         await expect(
-          tbtcVault
+          tmewcVault
             .connect(thirdParty)
             .cancelOptimisticMint(fundingTxHash, fundingOutputIndex)
         ).to.be.revertedWith("Caller is not a guardian")
@@ -829,8 +829,8 @@ describe("TBTCVault - OptimisticMinting", () => {
     context("when called by a guardian", () => {
       before(async () => {
         await createSnapshot()
-        await tbtcVault.connect(governance).addMinter(minter.address)
-        await tbtcVault.connect(governance).addGuardian(guardian.address)
+        await tmewcVault.connect(governance).addMinter(minter.address)
+        await tmewcVault.connect(governance).addGuardian(guardian.address)
 
         await bridge
           .connect(depositor)
@@ -844,7 +844,7 @@ describe("TBTCVault - OptimisticMinting", () => {
       context("when minting has not been requested", () => {
         it("should revert", async () => {
           await expect(
-            tbtcVault.connect(guardian).cancelOptimisticMint(fundingTxHash, 99)
+            tmewcVault.connect(guardian).cancelOptimisticMint(fundingTxHash, 99)
           ).to.be.revertedWith(
             "Optimistic minting not requested for the deposit"
           )
@@ -855,11 +855,11 @@ describe("TBTCVault - OptimisticMinting", () => {
         before(async () => {
           await createSnapshot()
 
-          await tbtcVault
+          await tmewcVault
             .connect(minter)
             .requestOptimisticMint(fundingTxHash, fundingOutputIndex)
-          await increaseTime(await tbtcVault.optimisticMintingDelay())
-          await tbtcVault
+          await increaseTime(await tmewcVault.optimisticMintingDelay())
+          await tmewcVault
             .connect(minter)
             .finalizeOptimisticMint(fundingTxHash, fundingOutputIndex)
         })
@@ -870,7 +870,7 @@ describe("TBTCVault - OptimisticMinting", () => {
 
         it("should revert", async () => {
           await expect(
-            tbtcVault
+            tmewcVault
               .connect(guardian)
               .cancelOptimisticMint(fundingTxHash, fundingOutputIndex)
           ).to.be.revertedWith(
@@ -885,11 +885,11 @@ describe("TBTCVault - OptimisticMinting", () => {
         before(async () => {
           await createSnapshot()
 
-          await tbtcVault
+          await tmewcVault
             .connect(minter)
             .requestOptimisticMint(fundingTxHash, fundingOutputIndex)
 
-          tx = await tbtcVault
+          tx = await tmewcVault
             .connect(guardian)
             .cancelOptimisticMint(fundingTxHash, fundingOutputIndex)
         })
@@ -899,13 +899,13 @@ describe("TBTCVault - OptimisticMinting", () => {
         })
 
         it("should cancel optimistic minting", async () => {
-          const request = await tbtcVault.optimisticMintingRequests(depositKey)
+          const request = await tmewcVault.optimisticMintingRequests(depositKey)
           expect(request.requestedAt).to.be.equal(0)
           expect(request.finalizedAt).to.be.equal(0)
 
-          await increaseTime(await tbtcVault.optimisticMintingDelay())
+          await increaseTime(await tmewcVault.optimisticMintingDelay())
           await expect(
-            tbtcVault
+            tmewcVault
               .connect(minter)
               .finalizeOptimisticMint(fundingTxHash, fundingOutputIndex)
           ).to.be.revertedWith(
@@ -915,7 +915,7 @@ describe("TBTCVault - OptimisticMinting", () => {
 
         it("should emit an event", async () => {
           await expect(tx)
-            .to.emit(tbtcVault, "OptimisticMintingCancelled")
+            .to.emit(tmewcVault, "OptimisticMintingCancelled")
             .withArgs(guardian.address, depositKey)
         })
       })
@@ -926,7 +926,7 @@ describe("TBTCVault - OptimisticMinting", () => {
     context("when called not by the governance", () => {
       it("should revert", async () => {
         await expect(
-          tbtcVault.connect(minter).addMinter(minter.address)
+          tmewcVault.connect(minter).addMinter(minter.address)
         ).to.be.revertedWith("Ownable: caller is not the owner")
       })
     })
@@ -938,7 +938,7 @@ describe("TBTCVault - OptimisticMinting", () => {
         before(async () => {
           await createSnapshot()
 
-          tx = await tbtcVault.connect(governance).addMinter(minter.address)
+          tx = await tmewcVault.connect(governance).addMinter(minter.address)
         })
 
         after(async () => {
@@ -947,12 +947,12 @@ describe("TBTCVault - OptimisticMinting", () => {
 
         it("should add address as a minter", async () => {
           // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-          expect(await tbtcVault.isMinter(minter.address)).to.be.true
+          expect(await tmewcVault.isMinter(minter.address)).to.be.true
         })
 
         it("should emit an event", async () => {
           await expect(tx)
-            .to.emit(tbtcVault, "MinterAdded")
+            .to.emit(tmewcVault, "MinterAdded")
             .withArgs(minter.address)
         })
       })
@@ -961,7 +961,7 @@ describe("TBTCVault - OptimisticMinting", () => {
         before(async () => {
           await createSnapshot()
 
-          await tbtcVault.connect(governance).addMinter(minter.address)
+          await tmewcVault.connect(governance).addMinter(minter.address)
         })
 
         after(async () => {
@@ -970,7 +970,7 @@ describe("TBTCVault - OptimisticMinting", () => {
 
         it("should revert", async () => {
           await expect(
-            tbtcVault.connect(governance).addMinter(minter.address)
+            tmewcVault.connect(governance).addMinter(minter.address)
           ).to.be.revertedWith("This address is already a minter")
         })
       })
@@ -985,9 +985,9 @@ describe("TBTCVault - OptimisticMinting", () => {
         before(async () => {
           await createSnapshot()
 
-          await tbtcVault.connect(governance).addMinter(minters[0])
-          await tbtcVault.connect(governance).addMinter(minters[1])
-          await tbtcVault.connect(governance).addMinter(minters[2])
+          await tmewcVault.connect(governance).addMinter(minters[0])
+          await tmewcVault.connect(governance).addMinter(minters[1])
+          await tmewcVault.connect(governance).addMinter(minters[2])
         })
 
         after(async () => {
@@ -995,7 +995,7 @@ describe("TBTCVault - OptimisticMinting", () => {
         })
 
         it("should add them into the list", async () => {
-          expect(await tbtcVault.getMinters()).to.deep.equal(minters)
+          expect(await tmewcVault.getMinters()).to.deep.equal(minters)
         })
       })
     })
@@ -1005,7 +1005,7 @@ describe("TBTCVault - OptimisticMinting", () => {
     context("when called not by the governance or a guardian", () => {
       it("should revert", async () => {
         await expect(
-          tbtcVault.connect(thirdParty).removeMinter(minter.address)
+          tmewcVault.connect(thirdParty).removeMinter(minter.address)
         ).to.be.revertedWith("Caller is not the owner or guardian")
       })
     })
@@ -1017,8 +1017,8 @@ describe("TBTCVault - OptimisticMinting", () => {
         before(async () => {
           await createSnapshot()
 
-          await tbtcVault.connect(governance).addMinter(minter.address)
-          tx = await tbtcVault.connect(governance).removeMinter(minter.address)
+          await tmewcVault.connect(governance).addMinter(minter.address)
+          tx = await tmewcVault.connect(governance).removeMinter(minter.address)
         })
 
         after(async () => {
@@ -1027,12 +1027,12 @@ describe("TBTCVault - OptimisticMinting", () => {
 
         it("should take minter role from the address", async () => {
           // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-          expect(await tbtcVault.isMinter(minter.address)).to.be.false
+          expect(await tmewcVault.isMinter(minter.address)).to.be.false
         })
 
         it("should emit an event", async () => {
           await expect(tx)
-            .to.emit(tbtcVault, "MinterRemoved")
+            .to.emit(tmewcVault, "MinterRemoved")
             .withArgs(minter.address)
         })
       })
@@ -1040,7 +1040,7 @@ describe("TBTCVault - OptimisticMinting", () => {
       context("when address is not a minter", () => {
         it("should revert", async () => {
           await expect(
-            tbtcVault.connect(governance).removeMinter(thirdParty.address)
+            tmewcVault.connect(governance).removeMinter(thirdParty.address)
           ).to.be.revertedWith("This address is not a minter")
         })
       })
@@ -1051,7 +1051,7 @@ describe("TBTCVault - OptimisticMinting", () => {
         before(async () => {
           await createSnapshot()
 
-          await tbtcVault.connect(governance).addGuardian(guardian.address)
+          await tmewcVault.connect(governance).addGuardian(guardian.address)
         })
 
         after(async () => {
@@ -1060,7 +1060,7 @@ describe("TBTCVault - OptimisticMinting", () => {
 
         it("should revert", async () => {
           await expect(
-            tbtcVault.connect(guardian).removeMinter(thirdParty.address)
+            tmewcVault.connect(guardian).removeMinter(thirdParty.address)
           ).to.be.revertedWith("This address is not a minter")
         })
       })
@@ -1071,9 +1071,9 @@ describe("TBTCVault - OptimisticMinting", () => {
         before(async () => {
           await createSnapshot()
 
-          await tbtcVault.connect(governance).addMinter(minter.address)
-          await tbtcVault.connect(governance).addGuardian(guardian.address)
-          tx = await tbtcVault.connect(guardian).removeMinter(minter.address)
+          await tmewcVault.connect(governance).addMinter(minter.address)
+          await tmewcVault.connect(governance).addGuardian(guardian.address)
+          tx = await tmewcVault.connect(guardian).removeMinter(minter.address)
         })
 
         after(async () => {
@@ -1082,12 +1082,12 @@ describe("TBTCVault - OptimisticMinting", () => {
 
         it("should take minter role from the address", async () => {
           // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-          expect(await tbtcVault.isMinter(minter.address)).to.be.false
+          expect(await tmewcVault.isMinter(minter.address)).to.be.false
         })
 
         it("should emit an event", async () => {
           await expect(tx)
-            .to.emit(tbtcVault, "MinterRemoved")
+            .to.emit(tmewcVault, "MinterRemoved")
             .withArgs(minter.address)
         })
       })
@@ -1103,10 +1103,10 @@ describe("TBTCVault - OptimisticMinting", () => {
         before(async () => {
           await createSnapshot()
 
-          await tbtcVault.connect(governance).addMinter(minters[0])
-          await tbtcVault.connect(governance).addMinter(minters[1])
-          await tbtcVault.connect(governance).addMinter(minters[2])
-          await tbtcVault.connect(governance).addMinter(minters[3])
+          await tmewcVault.connect(governance).addMinter(minters[0])
+          await tmewcVault.connect(governance).addMinter(minters[1])
+          await tmewcVault.connect(governance).addMinter(minters[2])
+          await tmewcVault.connect(governance).addMinter(minters[3])
         })
 
         after(async () => {
@@ -1116,7 +1116,7 @@ describe("TBTCVault - OptimisticMinting", () => {
         context("when deleting the first minter", () => {
           before(async () => {
             await createSnapshot()
-            await tbtcVault.connect(governance).removeMinter(minters[0])
+            await tmewcVault.connect(governance).removeMinter(minters[0])
           })
 
           after(async () => {
@@ -1124,7 +1124,7 @@ describe("TBTCVault - OptimisticMinting", () => {
           })
 
           it("should update the minters list", async () => {
-            expect(await tbtcVault.getMinters()).to.deep.equal([
+            expect(await tmewcVault.getMinters()).to.deep.equal([
               "0xF844A3a4dA34fDDf51A0Ec7A0a89d1ed5A105e40",
               "0x575E6d8802e7b6A7E8F940640804385D8Bbe2ce0",
               "0x66ac131D339704902aECCaBDf55e15daAE8B238f",
@@ -1135,7 +1135,7 @@ describe("TBTCVault - OptimisticMinting", () => {
         context("when deleting the last minter", () => {
           before(async () => {
             await createSnapshot()
-            await tbtcVault.connect(governance).removeMinter(minters[3])
+            await tmewcVault.connect(governance).removeMinter(minters[3])
           })
 
           after(async () => {
@@ -1143,7 +1143,7 @@ describe("TBTCVault - OptimisticMinting", () => {
           })
 
           it("should update the minters list", async () => {
-            expect(await tbtcVault.getMinters()).to.deep.equal([
+            expect(await tmewcVault.getMinters()).to.deep.equal([
               "0x54DeA8194aaF652Cd296B162A2809dd95529f775",
               "0x575E6d8802e7b6A7E8F940640804385D8Bbe2ce0",
               "0x66ac131D339704902aECCaBDf55e15daAE8B238f",
@@ -1154,7 +1154,7 @@ describe("TBTCVault - OptimisticMinting", () => {
         context("when deleting minter from the middle of the list", () => {
           before(async () => {
             await createSnapshot()
-            await tbtcVault.connect(governance).removeMinter(minters[1])
+            await tmewcVault.connect(governance).removeMinter(minters[1])
           })
 
           after(async () => {
@@ -1162,7 +1162,7 @@ describe("TBTCVault - OptimisticMinting", () => {
           })
 
           it("should update the minters list", async () => {
-            expect(await tbtcVault.getMinters()).to.deep.equal([
+            expect(await tmewcVault.getMinters()).to.deep.equal([
               "0x54DeA8194aaF652Cd296B162A2809dd95529f775",
               "0xF844A3a4dA34fDDf51A0Ec7A0a89d1ed5A105e40",
               "0x66ac131D339704902aECCaBDf55e15daAE8B238f",
@@ -1177,7 +1177,7 @@ describe("TBTCVault - OptimisticMinting", () => {
     context("when called not by the governance", () => {
       it("should revert", async () => {
         await expect(
-          tbtcVault.connect(guardian).addGuardian(guardian.address)
+          tmewcVault.connect(guardian).addGuardian(guardian.address)
         ).to.be.revertedWith("Ownable: caller is not the owner")
       })
     })
@@ -1189,7 +1189,7 @@ describe("TBTCVault - OptimisticMinting", () => {
         before(async () => {
           await createSnapshot()
 
-          tx = await tbtcVault.connect(governance).addGuardian(guardian.address)
+          tx = await tmewcVault.connect(governance).addGuardian(guardian.address)
         })
 
         after(async () => {
@@ -1198,12 +1198,12 @@ describe("TBTCVault - OptimisticMinting", () => {
 
         it("should add address as a guardian", async () => {
           // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-          expect(await tbtcVault.isGuardian(guardian.address)).to.be.true
+          expect(await tmewcVault.isGuardian(guardian.address)).to.be.true
         })
 
         it("should emit an event", async () => {
           await expect(tx)
-            .to.emit(tbtcVault, "GuardianAdded")
+            .to.emit(tmewcVault, "GuardianAdded")
             .withArgs(guardian.address)
         })
       })
@@ -1212,7 +1212,7 @@ describe("TBTCVault - OptimisticMinting", () => {
         before(async () => {
           await createSnapshot()
 
-          await tbtcVault.connect(governance).addGuardian(guardian.address)
+          await tmewcVault.connect(governance).addGuardian(guardian.address)
         })
 
         after(async () => {
@@ -1221,7 +1221,7 @@ describe("TBTCVault - OptimisticMinting", () => {
 
         it("should revert", async () => {
           await expect(
-            tbtcVault.connect(governance).addGuardian(guardian.address)
+            tmewcVault.connect(governance).addGuardian(guardian.address)
           ).to.be.revertedWith("This address is already a guardian")
         })
       })
@@ -1232,7 +1232,7 @@ describe("TBTCVault - OptimisticMinting", () => {
     context("when called not by the governance", () => {
       it("should revert", async () => {
         await expect(
-          tbtcVault.connect(thirdParty).removeGuardian(guardian.address)
+          tmewcVault.connect(thirdParty).removeGuardian(guardian.address)
         ).to.be.revertedWith("Ownable: caller is not the owner")
       })
     })
@@ -1244,8 +1244,8 @@ describe("TBTCVault - OptimisticMinting", () => {
         before(async () => {
           await createSnapshot()
 
-          await tbtcVault.connect(governance).addGuardian(guardian.address)
-          tx = await tbtcVault
+          await tmewcVault.connect(governance).addGuardian(guardian.address)
+          tx = await tmewcVault
             .connect(governance)
             .removeGuardian(guardian.address)
         })
@@ -1256,12 +1256,12 @@ describe("TBTCVault - OptimisticMinting", () => {
 
         it("should take guardian role from the address", async () => {
           // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-          expect(await tbtcVault.isGuardian(guardian.address)).to.be.false
+          expect(await tmewcVault.isGuardian(guardian.address)).to.be.false
         })
 
         it("should emit an event", async () => {
           await expect(tx)
-            .to.emit(tbtcVault, "GuardianRemoved")
+            .to.emit(tmewcVault, "GuardianRemoved")
             .withArgs(guardian.address)
         })
       })
@@ -1269,7 +1269,7 @@ describe("TBTCVault - OptimisticMinting", () => {
       context("when address is not a guardian", () => {
         it("should revert", async () => {
           await expect(
-            tbtcVault.connect(governance).removeGuardian(guardian.address)
+            tmewcVault.connect(governance).removeGuardian(guardian.address)
           ).to.be.revertedWith("This address is not a guardian")
         })
       })
@@ -1280,7 +1280,7 @@ describe("TBTCVault - OptimisticMinting", () => {
     context("when called not by the governance", () => {
       it("should revert", async () => {
         await expect(
-          tbtcVault.connect(thirdParty).pauseOptimisticMinting()
+          tmewcVault.connect(thirdParty).pauseOptimisticMinting()
         ).to.be.revertedWith("Ownable: caller is not the owner")
       })
     })
@@ -1289,7 +1289,7 @@ describe("TBTCVault - OptimisticMinting", () => {
       context("when optimistic minting is already paused", () => {
         before(async () => {
           await createSnapshot()
-          await tbtcVault.connect(governance).pauseOptimisticMinting()
+          await tmewcVault.connect(governance).pauseOptimisticMinting()
         })
 
         after(async () => {
@@ -1298,7 +1298,7 @@ describe("TBTCVault - OptimisticMinting", () => {
 
         it("should revert", async () => {
           await expect(
-            tbtcVault.connect(governance).pauseOptimisticMinting()
+            tmewcVault.connect(governance).pauseOptimisticMinting()
           ).to.be.revertedWith("Optimistic minting already paused")
         })
       })
@@ -1308,7 +1308,7 @@ describe("TBTCVault - OptimisticMinting", () => {
 
         before(async () => {
           await createSnapshot()
-          tx = await tbtcVault.connect(governance).pauseOptimisticMinting()
+          tx = await tmewcVault.connect(governance).pauseOptimisticMinting()
         })
 
         after(async () => {
@@ -1317,11 +1317,11 @@ describe("TBTCVault - OptimisticMinting", () => {
 
         it("should pause optimistic minting", async () => {
           // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-          expect(await tbtcVault.isOptimisticMintingPaused()).to.be.true
+          expect(await tmewcVault.isOptimisticMintingPaused()).to.be.true
         })
 
         it("should emit an event", async () => {
-          await expect(tx).to.emit(tbtcVault, "OptimisticMintingPaused")
+          await expect(tx).to.emit(tmewcVault, "OptimisticMintingPaused")
         })
       })
     })
@@ -1331,7 +1331,7 @@ describe("TBTCVault - OptimisticMinting", () => {
     context("when called not by the governance", () => {
       it("should revert", async () => {
         await expect(
-          tbtcVault.connect(thirdParty).unpauseOptimisticMinting()
+          tmewcVault.connect(thirdParty).unpauseOptimisticMinting()
         ).to.be.revertedWith("Ownable: caller is not the owner")
       })
     })
@@ -1340,7 +1340,7 @@ describe("TBTCVault - OptimisticMinting", () => {
       context("when optimistic minting is not paused", () => {
         it("should revert", async () => {
           await expect(
-            tbtcVault.connect(governance).unpauseOptimisticMinting()
+            tmewcVault.connect(governance).unpauseOptimisticMinting()
           ).to.be.revertedWith("Optimistic minting is not paused")
         })
       })
@@ -1350,8 +1350,8 @@ describe("TBTCVault - OptimisticMinting", () => {
 
         before(async () => {
           await createSnapshot()
-          await tbtcVault.connect(governance).pauseOptimisticMinting()
-          tx = await tbtcVault.connect(governance).unpauseOptimisticMinting()
+          await tmewcVault.connect(governance).pauseOptimisticMinting()
+          tx = await tmewcVault.connect(governance).unpauseOptimisticMinting()
         })
 
         after(async () => {
@@ -1360,11 +1360,11 @@ describe("TBTCVault - OptimisticMinting", () => {
 
         it("should unpause optimistic minting", async () => {
           // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-          expect(await tbtcVault.isOptimisticMintingPaused()).to.be.false
+          expect(await tmewcVault.isOptimisticMintingPaused()).to.be.false
         })
 
         it("should emit an event", async () => {
-          await expect(tx).to.emit(tbtcVault, "OptimisticMintingUnpaused")
+          await expect(tx).to.emit(tmewcVault, "OptimisticMintingUnpaused")
         })
       })
     })
@@ -1374,7 +1374,7 @@ describe("TBTCVault - OptimisticMinting", () => {
     context("when called not by the governance", () => {
       it("should revert", async () => {
         await expect(
-          tbtcVault.connect(thirdParty).beginOptimisticMintingFeeUpdate(10)
+          tmewcVault.connect(thirdParty).beginOptimisticMintingFeeUpdate(10)
         ).to.be.revertedWith("Ownable: caller is not the owner")
       })
     })
@@ -1385,7 +1385,7 @@ describe("TBTCVault - OptimisticMinting", () => {
       before(async () => {
         await createSnapshot()
 
-        tx = await tbtcVault
+        tx = await tmewcVault
           .connect(governance)
           .beginOptimisticMintingFeeUpdate(10)
       })
@@ -1395,18 +1395,18 @@ describe("TBTCVault - OptimisticMinting", () => {
       })
 
       it("should not update the optimistic minting fee", async () => {
-        expect(await tbtcVault.optimisticMintingFeeDivisor()).to.equal(500)
+        expect(await tmewcVault.optimisticMintingFeeDivisor()).to.equal(500)
       })
 
       it("should start the governance delay timer", async () => {
         expect(
-          await tbtcVault.optimisticMintingFeeUpdateInitiatedTimestamp()
+          await tmewcVault.optimisticMintingFeeUpdateInitiatedTimestamp()
         ).to.equal(await lastBlockTime())
       })
 
       it("should emit an event", async () => {
         await expect(tx)
-          .to.emit(tbtcVault, "OptimisticMintingFeeUpdateStarted")
+          .to.emit(tmewcVault, "OptimisticMintingFeeUpdateStarted")
           .withArgs(10)
       })
     })
@@ -1416,7 +1416,7 @@ describe("TBTCVault - OptimisticMinting", () => {
     context("when called not by the governance", () => {
       it("should revert", async () => {
         await expect(
-          tbtcVault.connect(thirdParty).finalizeOptimisticMintingFeeUpdate()
+          tmewcVault.connect(thirdParty).finalizeOptimisticMintingFeeUpdate()
         ).to.be.revertedWith("Ownable: caller is not the owner")
       })
     })
@@ -1424,7 +1424,7 @@ describe("TBTCVault - OptimisticMinting", () => {
     context("when the update process is not initiated", () => {
       it("should revert", async () => {
         await expect(
-          tbtcVault.connect(governance).finalizeOptimisticMintingFeeUpdate()
+          tmewcVault.connect(governance).finalizeOptimisticMintingFeeUpdate()
         ).to.be.revertedWith("Change not initiated")
       })
     })
@@ -1433,7 +1433,7 @@ describe("TBTCVault - OptimisticMinting", () => {
       before(async () => {
         await createSnapshot()
 
-        await tbtcVault.connect(governance).beginOptimisticMintingFeeUpdate(10)
+        await tmewcVault.connect(governance).beginOptimisticMintingFeeUpdate(10)
 
         await increaseTime(86400 - 60) // 24h - 1m
       })
@@ -1444,7 +1444,7 @@ describe("TBTCVault - OptimisticMinting", () => {
 
       it("should revert", async () => {
         await expect(
-          tbtcVault.connect(governance).finalizeOptimisticMintingFeeUpdate()
+          tmewcVault.connect(governance).finalizeOptimisticMintingFeeUpdate()
         ).to.be.revertedWith("Governance delay has not elapsed")
       })
     })
@@ -1457,11 +1457,11 @@ describe("TBTCVault - OptimisticMinting", () => {
         before(async () => {
           await createSnapshot()
 
-          await tbtcVault
+          await tmewcVault
             .connect(governance)
             .beginOptimisticMintingFeeUpdate(15)
           await increaseTime(86400) // 24h
-          tx = await tbtcVault
+          tx = await tmewcVault
             .connect(governance)
             .finalizeOptimisticMintingFeeUpdate()
         })
@@ -1471,18 +1471,18 @@ describe("TBTCVault - OptimisticMinting", () => {
         })
 
         it("should update the optimistic minting fee", async () => {
-          expect(await tbtcVault.optimisticMintingFeeDivisor()).to.equal(15)
+          expect(await tmewcVault.optimisticMintingFeeDivisor()).to.equal(15)
         })
 
         it("should emit an event", async () => {
           await expect(tx)
-            .to.emit(tbtcVault, "OptimisticMintingFeeUpdated")
+            .to.emit(tmewcVault, "OptimisticMintingFeeUpdated")
             .withArgs(15)
         })
 
         it("should reset the governance delay timer", async () => {
           expect(
-            await tbtcVault.optimisticMintingFeeUpdateInitiatedTimestamp()
+            await tmewcVault.optimisticMintingFeeUpdateInitiatedTimestamp()
           ).to.equal(0)
         })
       }
@@ -1493,7 +1493,7 @@ describe("TBTCVault - OptimisticMinting", () => {
     context("when called not by the governance", () => {
       it("should revert", async () => {
         await expect(
-          tbtcVault.connect(thirdParty).beginOptimisticMintingDelayUpdate(60)
+          tmewcVault.connect(thirdParty).beginOptimisticMintingDelayUpdate(60)
         ).to.be.revertedWith("Ownable: caller is not the owner")
       })
     })
@@ -1504,7 +1504,7 @@ describe("TBTCVault - OptimisticMinting", () => {
       before(async () => {
         await createSnapshot()
 
-        tx = await tbtcVault
+        tx = await tmewcVault
           .connect(governance)
           .beginOptimisticMintingDelayUpdate(60)
       })
@@ -1514,18 +1514,18 @@ describe("TBTCVault - OptimisticMinting", () => {
       })
 
       it("should not update the optimistic minting delay", async () => {
-        expect(await tbtcVault.optimisticMintingDelay()).to.equal(10800) // 3h
+        expect(await tmewcVault.optimisticMintingDelay()).to.equal(10800) // 3h
       })
 
       it("should start the governance delay timer", async () => {
         expect(
-          await tbtcVault.optimisticMintingDelayUpdateInitiatedTimestamp()
+          await tmewcVault.optimisticMintingDelayUpdateInitiatedTimestamp()
         ).to.equal(await lastBlockTime())
       })
 
       it("should emit an event", async () => {
         await expect(tx)
-          .to.emit(tbtcVault, "OptimisticMintingDelayUpdateStarted")
+          .to.emit(tmewcVault, "OptimisticMintingDelayUpdateStarted")
           .withArgs(60)
       })
     })
@@ -1535,7 +1535,7 @@ describe("TBTCVault - OptimisticMinting", () => {
     context("when called not by the governance", () => {
       it("should revert", async () => {
         await expect(
-          tbtcVault.connect(thirdParty).finalizeOptimisticMintingDelayUpdate()
+          tmewcVault.connect(thirdParty).finalizeOptimisticMintingDelayUpdate()
         ).to.be.revertedWith("Ownable: caller is not the owner")
       })
     })
@@ -1543,7 +1543,7 @@ describe("TBTCVault - OptimisticMinting", () => {
     context("when the update process is not initiated", () => {
       it("should revert", async () => {
         await expect(
-          tbtcVault.connect(governance).finalizeOptimisticMintingDelayUpdate()
+          tmewcVault.connect(governance).finalizeOptimisticMintingDelayUpdate()
         ).to.be.revertedWith("Change not initiated")
       })
     })
@@ -1552,7 +1552,7 @@ describe("TBTCVault - OptimisticMinting", () => {
       before(async () => {
         await createSnapshot()
 
-        await tbtcVault
+        await tmewcVault
           .connect(governance)
           .beginOptimisticMintingDelayUpdate(60)
 
@@ -1565,7 +1565,7 @@ describe("TBTCVault - OptimisticMinting", () => {
 
       it("should revert", async () => {
         await expect(
-          tbtcVault.connect(governance).finalizeOptimisticMintingDelayUpdate()
+          tmewcVault.connect(governance).finalizeOptimisticMintingDelayUpdate()
         ).to.be.revertedWith("Governance delay has not elapsed")
       })
     })
@@ -1578,11 +1578,11 @@ describe("TBTCVault - OptimisticMinting", () => {
         before(async () => {
           await createSnapshot()
 
-          await tbtcVault
+          await tmewcVault
             .connect(governance)
             .beginOptimisticMintingDelayUpdate(60)
           await increaseTime(86400) // 24h
-          tx = await tbtcVault
+          tx = await tmewcVault
             .connect(governance)
             .finalizeOptimisticMintingDelayUpdate()
         })
@@ -1592,18 +1592,18 @@ describe("TBTCVault - OptimisticMinting", () => {
         })
 
         it("should update the optimistic minting delay", async () => {
-          expect(await tbtcVault.optimisticMintingDelay()).to.equal(60)
+          expect(await tmewcVault.optimisticMintingDelay()).to.equal(60)
         })
 
         it("should emit an event", async () => {
           await expect(tx)
-            .to.emit(tbtcVault, "OptimisticMintingDelayUpdated")
+            .to.emit(tmewcVault, "OptimisticMintingDelayUpdated")
             .withArgs(60)
         })
 
         it("should reset the governance delay timer", async () => {
           expect(
-            await tbtcVault.optimisticMintingDelayUpdateInitiatedTimestamp()
+            await tmewcVault.optimisticMintingDelayUpdateInitiatedTimestamp()
           ).to.equal(0)
         })
       }
@@ -1624,7 +1624,7 @@ describe("TBTCVault - OptimisticMinting", () => {
 
     it("should calculate the key as expected", async () => {
       expect(
-        await tbtcVault.calculateDepositKey(fundingTxHash, fundingOutputIndex)
+        await tmewcVault.calculateDepositKey(fundingTxHash, fundingOutputIndex)
       ).to.equal(depositKey)
     })
 
@@ -1643,18 +1643,18 @@ describe("TBTCVault - OptimisticMinting", () => {
 
         before(async () => {
           await createSnapshot()
-          await tbtcVault.connect(governance).addMinter(minter.address)
+          await tmewcVault.connect(governance).addMinter(minter.address)
 
           await bridge
             .connect(depositor)
             .revealDeposit(fundingTx, depositRevealInfo)
-          await tbtcVault
+          await tmewcVault
             .connect(minter)
             .requestOptimisticMint(fundingTxHash, fundingOutputIndex)
 
-          await increaseTime(await tbtcVault.optimisticMintingDelay())
+          await increaseTime(await tmewcVault.optimisticMintingDelay())
 
-          await tbtcVault
+          await tmewcVault
             .connect(minter)
             .finalizeOptimisticMint(fundingTxHash, fundingOutputIndex)
 
@@ -1667,7 +1667,7 @@ describe("TBTCVault - OptimisticMinting", () => {
               sweepTx,
               sweepProof,
               mainUtxo,
-              tbtcVault.address
+              tmewcVault.address
             )
         })
 
@@ -1689,24 +1689,24 @@ describe("TBTCVault - OptimisticMinting", () => {
           // amount: (20000 - 10) * 1e10 = 199900000000000 [1e18].
           //
           // The sum of sweep tx inputs is 20000 [sat]. The output value of
-          // the sweep transaction is 18500 [sat] so the Bitcoin transaction fee
+          // the sweep transaction is 18500 [sat] so the Meowcoin transaction fee
           // is 1500 [sat]. There is only one deposit so it incurs the entire
-          // Bitcoin transaction fee. Bridge deposit treasury fee is 10 [sat].
+          // Meowcoin transaction fee. Bridge deposit treasury fee is 10 [sat].
           // That means 18500 - 10 = 18490 [sat] is used to repay the optimistic
           // minting debt: 199900000000000 - (18490 * 1e10) = 15000000000000 [1e18].
           //
-          // The remaining debt is the Bitcoin transaction fee.
-          // Bitcoin transaction fee is unknown at the moment of optimistic
-          // minting, we can not deduct it when optimistically minting TBTC so
+          // The remaining debt is the Meowcoin transaction fee.
+          // Meowcoin transaction fee is unknown at the moment of optimistic
+          // minting, we can not deduct it when optimistically minting TMEWC so
           // the optimistic minting debt stay equal to the transaction fee.
           expect(
-            await tbtcVault.optimisticMintingDebt(depositor.address)
+            await tmewcVault.optimisticMintingDebt(depositor.address)
           ).to.equal(15000000000000)
         })
 
         it("should emit an event", async () => {
           await expect(tx)
-            .to.emit(tbtcVault, "OptimisticMintingDebtRepaid")
+            .to.emit(tmewcVault, "OptimisticMintingDebtRepaid")
             .withArgs(depositor.address, 15000000000000)
         })
       }
@@ -1716,8 +1716,8 @@ describe("TBTCVault - OptimisticMinting", () => {
       interface Fixture {
         mockBank: FakeContract<Bank>
         mockBridge: FakeContract<Bridge>
-        tbtc: TBTC
-        tbtcVault: TBTCVault
+        tmewc: TMEWC
+        tmewcVault: TMEWCVault
       }
 
       // Calls are mocked, so we can use just simple string addresses.
@@ -1735,21 +1735,21 @@ describe("TBTCVault - OptimisticMinting", () => {
 
         mockBridge.treasury.returns(treasuryAddress)
 
-        const TBTCFactory = await ethers.getContractFactory("TBTC")
+        const TMEWCFactory = await ethers.getContractFactory("TMEWC")
         // eslint-disable-next-line @typescript-eslint/no-shadow
-        const tbtc = await TBTCFactory.connect(deployer).deploy()
+        const tmewc = await TMEWCFactory.connect(deployer).deploy()
 
-        const TBTCVaultFactory = await ethers.getContractFactory("TBTCVault")
+        const TMEWCVaultFactory = await ethers.getContractFactory("TMEWCVault")
         // eslint-disable-next-line @typescript-eslint/no-shadow
-        const tbtcVault = await TBTCVaultFactory.connect(deployer).deploy(
+        const tmewcVault = await TMEWCVaultFactory.connect(deployer).deploy(
           mockBank.address,
-          tbtc.address,
+          tmewc.address,
           mockBridge.address
         )
 
         await mockBank.connect(deployer).updateBridge(mockBridge.address)
-        await tbtc.connect(deployer).transferOwnership(tbtcVault.address)
-        await tbtcVault.connect(deployer).addMinter(minter.address)
+        await tmewc.connect(deployer).transferOwnership(tmewcVault.address)
+        await tmewcVault.connect(deployer).addMinter(minter.address)
 
         // Fund the `mockBank` account so it's possible to mock sending requests
         // from it.
@@ -1761,8 +1761,8 @@ describe("TBTCVault - OptimisticMinting", () => {
         return {
           mockBank,
           mockBridge,
-          tbtc,
-          tbtcVault,
+          tmewc,
+          tmewcVault,
         }
       }
 
@@ -1774,11 +1774,11 @@ describe("TBTCVault - OptimisticMinting", () => {
           await createSnapshot()
           f = await prepareFixture()
 
-          const firstDepositID = await tbtcVault.calculateDepositKey(
+          const firstDepositID = await tmewcVault.calculateDepositKey(
             fundingTxHash,
             1
           )
-          const secondDepositID = await tbtcVault.calculateDepositKey(
+          const secondDepositID = await tmewcVault.calculateDepositKey(
             fundingTxHash,
             2
           )
@@ -1786,7 +1786,7 @@ describe("TBTCVault - OptimisticMinting", () => {
             depositor: depositorAddress,
             amount: 1000,
             revealedAt: await lastBlockTime(),
-            vault: f.tbtcVault.address,
+            vault: f.tmewcVault.address,
             treasuryFee: 10,
             sweptAt: 0,
             extraData: ethers.constants.HashZero,
@@ -1795,27 +1795,27 @@ describe("TBTCVault - OptimisticMinting", () => {
             depositor: depositorAddress,
             amount: 2000,
             revealedAt: await lastBlockTime(),
-            vault: f.tbtcVault.address,
+            vault: f.tmewcVault.address,
             treasuryFee: 15,
             sweptAt: 0,
             extraData: ethers.constants.HashZero,
           })
 
-          await f.tbtcVault
+          await f.tmewcVault
             .connect(minter)
             .requestOptimisticMint(fundingTxHash, 1)
-          await f.tbtcVault
+          await f.tmewcVault
             .connect(minter)
             .requestOptimisticMint(fundingTxHash, 2)
-          await increaseTime(await tbtcVault.optimisticMintingDelay())
-          await f.tbtcVault
+          await increaseTime(await tmewcVault.optimisticMintingDelay())
+          await f.tmewcVault
             .connect(minter)
             .finalizeOptimisticMint(fundingTxHash, 1)
-          await f.tbtcVault
+          await f.tmewcVault
             .connect(minter)
             .finalizeOptimisticMint(fundingTxHash, 2)
 
-          tx = await f.tbtcVault
+          tx = await f.tmewcVault
             .connect(f.mockBank.wallet)
             .receiveBalanceIncrease(
               [depositorAddress, depositorAddress],
@@ -1843,7 +1843,7 @@ describe("TBTCVault - OptimisticMinting", () => {
           //
           // Then, the deposits were swept.
           //
-          // We assume a Bitcoin miner fee of 5 [sat] per deposit.
+          // We assume a Meowcoin miner fee of 5 [sat] per deposit.
           //
           // With miner fee and deposit treasury fee deducted, the amounts from
           // the deposits were:
@@ -1852,15 +1852,15 @@ describe("TBTCVault - OptimisticMinting", () => {
           //
           // The debt is reduced to 29750000000000 - (985 + 1980) * 1e10 = 100000000000 [1e18].
           expect(
-            await f.tbtcVault.optimisticMintingDebt(depositorAddress)
+            await f.tmewcVault.optimisticMintingDebt(depositorAddress)
           ).to.equal(100000000000)
         })
 
-        it("should mint the right amount of TBTC to depositor", async () => {
+        it("should mint the right amount of TMEWC to depositor", async () => {
           // Amount to mint for deposit 1: (1000 - 10) * 1e10 - 19800000000 = 9880200000000 [1e18]
           // Amount to mint for deposit 2: (2000 - 15) * 1e10 - 39700000000 = 19810300000000 [1e18]
           // Total amount to mint: 9880200000000 + 19810300000000 = 29690500000000 [1e18]
-          expect(await f.tbtc.balanceOf(depositorAddress)).to.equal(
+          expect(await f.tmewc.balanceOf(depositorAddress)).to.equal(
             29690500000000
           )
         })
@@ -1868,12 +1868,12 @@ describe("TBTCVault - OptimisticMinting", () => {
         it("should emit an event", async () => {
           // First repay coming from deposit 1: 29750000000000 - 985 * 1e10 = 19900000000000 [1e18]
           await expect(tx)
-            .to.emit(f.tbtcVault, "OptimisticMintingDebtRepaid")
+            .to.emit(f.tmewcVault, "OptimisticMintingDebtRepaid")
             .withArgs(depositorAddress, 19900000000000)
 
           // Second repay coming from deposit 2: 19900000000000 - 1980 * 1e10 = 100000000000 [1e18]
           await expect(tx)
-            .to.emit(f.tbtcVault, "OptimisticMintingDebtRepaid")
+            .to.emit(f.tmewcVault, "OptimisticMintingDebtRepaid")
             .withArgs(depositorAddress, 100000000000)
         })
       })
@@ -1886,7 +1886,7 @@ describe("TBTCVault - OptimisticMinting", () => {
           await createSnapshot()
           f = await prepareFixture()
 
-          const firstDepositID = await tbtcVault.calculateDepositKey(
+          const firstDepositID = await tmewcVault.calculateDepositKey(
             fundingTxHash,
             1
           )
@@ -1894,21 +1894,21 @@ describe("TBTCVault - OptimisticMinting", () => {
             depositor: depositorAddress,
             amount: 1000,
             revealedAt: await lastBlockTime(),
-            vault: f.tbtcVault.address,
+            vault: f.tmewcVault.address,
             treasuryFee: 10,
             sweptAt: 0,
             extraData: ethers.constants.HashZero,
           })
 
-          await f.tbtcVault
+          await f.tmewcVault
             .connect(minter)
             .requestOptimisticMint(fundingTxHash, 1)
-          await increaseTime(await tbtcVault.optimisticMintingDelay())
-          await f.tbtcVault
+          await increaseTime(await tmewcVault.optimisticMintingDelay())
+          await f.tmewcVault
             .connect(minter)
             .finalizeOptimisticMint(fundingTxHash, 1)
 
-          tx = await f.tbtcVault
+          tx = await f.tmewcVault
             .connect(f.mockBank.wallet)
             .receiveBalanceIncrease(
               [depositorAddress, depositorAddress],
@@ -1936,7 +1936,7 @@ describe("TBTCVault - OptimisticMinting", () => {
           //
           // Then, the deposits were swept.
           //
-          // We assume a Bitcoin miner fee of 5 [sat] per deposit.
+          // We assume a Meowcoin miner fee of 5 [sat] per deposit.
           //
           // With miner fee and deposit treasury fee deducted, the amounts from
           // the deposits were:
@@ -1947,11 +1947,11 @@ describe("TBTCVault - OptimisticMinting", () => {
           // 9900000000000 - 985 * 1e10 = 50000000000 [1e18].
           // When the second deposit is swept, the debt is reduced to 0.
           expect(
-            await f.tbtcVault.optimisticMintingDebt(depositorAddress)
+            await f.tmewcVault.optimisticMintingDebt(depositorAddress)
           ).to.equal(0)
         })
 
-        it("should mint the right amount of TBTC", async () => {
+        it("should mint the right amount of TMEWC", async () => {
           // When the second deposit was being swept, the debt was 50000000000 [1e18].
           //
           // During the optimistic minting, (1000 - 10) * 1e10 - 19800000000 =
@@ -1964,18 +1964,18 @@ describe("TBTCVault - OptimisticMinting", () => {
           // was minted for the depositor.
           //
           // 9880200000000 + 19750000000000 = 29630200000000 [1e18] is minted in total.
-          expect(await f.tbtc.balanceOf(depositorAddress)).to.equal(
+          expect(await f.tmewc.balanceOf(depositorAddress)).to.equal(
             29630200000000
           )
         })
 
         it("should emit an event", async () => {
           await expect(tx)
-            .to.emit(f.tbtcVault, "OptimisticMintingDebtRepaid")
+            .to.emit(f.tmewcVault, "OptimisticMintingDebtRepaid")
             .withArgs(depositorAddress, 50000000000)
 
           await expect(tx)
-            .to.emit(f.tbtcVault, "OptimisticMintingDebtRepaid")
+            .to.emit(f.tmewcVault, "OptimisticMintingDebtRepaid")
             .withArgs(depositorAddress, 0)
         })
       })

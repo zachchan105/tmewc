@@ -8,9 +8,9 @@ import {
   L1CrossChainContracts,
   L2Chain,
   L2CrossChainContracts,
-  TBTCContracts,
+  TMEWCContracts,
 } from "../lib/contracts"
-import { BitcoinClient, BitcoinNetwork } from "../lib/bitcoin"
+import { BitcoinClient, BitcoinNetwork } from "../lib/meowcoin"
 import {
   ethereumAddressFromSigner,
   EthereumSigner,
@@ -21,28 +21,28 @@ import { ElectrumClient } from "../lib/electrum"
 import { loadBaseCrossChainContracts } from "../lib/base"
 
 /**
- * Entrypoint component of the tBTC v2 SDK.
+ * Entrypoint component of the tMEWC SDK.
  */
-export class TBTC {
+export class TMEWC {
   /**
-   * Service supporting the tBTC v2 deposit flow.
+   * Service supporting the tMEWC deposit flow.
    */
   public readonly deposits: DepositsService
   /**
-   * Service supporting authorized operations of tBTC v2 system maintainers
+   * Service supporting authorized operations of tMEWC system maintainers
    * and operators.
    */
   public readonly maintenance: MaintenanceService
   /**
-   * Service supporting the tBTC v2 redemption flow.
+   * Service supporting the tMEWC redemption flow.
    */
   public readonly redemptions: RedemptionsService
   /**
-   * Handle to tBTC contracts for low-level access.
+   * Handle to tMEWC contracts for low-level access.
    */
-  public readonly tbtcContracts: TBTCContracts
+  public readonly tmewcContracts: TMEWCContracts
   /**
-   * Bitcoin client handle for low-level access.
+   * Meowcoin client handle for low-level access.
    */
   public readonly bitcoinClient: BitcoinClient
   /**
@@ -57,34 +57,34 @@ export class TBTC {
   readonly #crossChainContracts: Map<L2Chain, CrossChainContracts>
 
   private constructor(
-    tbtcContracts: TBTCContracts,
+    tmewcContracts: TMEWCContracts,
     bitcoinClient: BitcoinClient,
     crossChainContractsLoader?: CrossChainContractsLoader
   ) {
     this.deposits = new DepositsService(
-      tbtcContracts,
+      tmewcContracts,
       bitcoinClient,
       (l2ChainName) => this.crossChainContracts(l2ChainName)
     )
-    this.maintenance = new MaintenanceService(tbtcContracts, bitcoinClient)
-    this.redemptions = new RedemptionsService(tbtcContracts, bitcoinClient)
-    this.tbtcContracts = tbtcContracts
+    this.maintenance = new MaintenanceService(tmewcContracts, bitcoinClient)
+    this.redemptions = new RedemptionsService(tmewcContracts, bitcoinClient)
+    this.tmewcContracts = tmewcContracts
     this.bitcoinClient = bitcoinClient
     this.#crossChainContractsLoader = crossChainContractsLoader
     this.#crossChainContracts = new Map<L2Chain, CrossChainContracts>()
   }
 
   /**
-   * Initializes the tBTC v2 SDK entrypoint for Ethereum and Bitcoin mainnets.
+   * Initializes the tMEWC SDK entrypoint for Ethereum and Meowcoin mainnets.
    * The initialized instance uses default Electrum servers to interact
-   * with Bitcoin mainnet
+   * with Meowcoin mainnet
    * @param signer Ethereum signer.
-   * @returns Initialized tBTC v2 SDK entrypoint.
+   * @returns Initialized tMEWC SDK entrypoint.
    * @throws Throws an error if the signer's Ethereum network is other than
    *         Ethereum mainnet.
    */
-  static async initializeMainnet(signer: EthereumSigner): Promise<TBTC> {
-    return TBTC.initializeEthereum(
+  static async initializeMainnet(signer: EthereumSigner): Promise<TMEWC> {
+    return TMEWC.initializeEthereum(
       signer,
       Chains.Ethereum.Mainnet,
       BitcoinNetwork.Mainnet
@@ -92,16 +92,16 @@ export class TBTC {
   }
 
   /**
-   * Initializes the tBTC v2 SDK entrypoint for Ethereum Sepolia and Bitcoin testnet.
+   * Initializes the tMEWC SDK entrypoint for Ethereum Sepolia and Meowcoin testnet.
    * The initialized instance uses default Electrum servers to interact
-   * with Bitcoin testnet
+   * with Meowcoin testnet
    * @param signer Ethereum signer.
-   * @returns Initialized tBTC v2 SDK entrypoint.
+   * @returns Initialized tMEWC SDK entrypoint.
    * @throws Throws an error if the signer's Ethereum network is other than
    *         Ethereum mainnet.
    */
-  static async initializeSepolia(signer: EthereumSigner): Promise<TBTC> {
-    return TBTC.initializeEthereum(
+  static async initializeSepolia(signer: EthereumSigner): Promise<TMEWC> {
+    return TMEWC.initializeEthereum(
       signer,
       Chains.Ethereum.Sepolia,
       BitcoinNetwork.Testnet
@@ -109,14 +109,14 @@ export class TBTC {
   }
 
   /**
-   * Initializes the tBTC v2 SDK entrypoint for the given Ethereum network and Bitcoin network.
+   * Initializes the tMEWC SDK entrypoint for the given Ethereum network and Meowcoin network.
    * The initialized instance uses default Electrum servers to interact
-   * with Bitcoin network.
+   * with Meowcoin network.
    * @param signer Ethereum signer.
    * @param ethereumChainId Ethereum chain ID.
-   * @param bitcoinNetwork Bitcoin network.
+   * @param bitcoinNetwork Meowcoin network.
    * @param crossChainSupport Whether to enable cross-chain support. False by default.
-   * @returns Initialized tBTC v2 SDK entrypoint.
+   * @returns Initialized tMEWC SDK entrypoint.
    * @throws Throws an error if the underlying signer's Ethereum network is
    *         other than the given Ethereum network.
    */
@@ -125,9 +125,9 @@ export class TBTC {
     ethereumChainId: Chains.Ethereum,
     bitcoinNetwork: BitcoinNetwork,
     crossChainSupport = false
-  ): Promise<TBTC> {
+  ): Promise<TMEWC> {
     const signerAddress = await ethereumAddressFromSigner(signer)
-    const tbtcContracts = await loadEthereumCoreContracts(
+    const tmewcContracts = await loadEthereumCoreContracts(
       signer,
       ethereumChainId
     )
@@ -143,35 +143,35 @@ export class TBTC {
 
     const bitcoinClient = ElectrumClient.fromDefaultConfig(bitcoinNetwork)
 
-    const tbtc = new TBTC(
-      tbtcContracts,
+    const tmewc = new TMEWC(
+      tmewcContracts,
       bitcoinClient,
       crossChainContractsLoader
     )
 
     // If signer address can be resolved, set it as default depositor.
     if (signerAddress !== undefined) {
-      tbtc.deposits.setDefaultDepositor(signerAddress)
+      tmewc.deposits.setDefaultDepositor(signerAddress)
     }
 
-    return tbtc
+    return tmewc
   }
 
   /**
-   * Initializes the tBTC v2 SDK entrypoint with custom tBTC contracts and
-   * Bitcoin client.
-   * @param tbtcContracts Custom tBTC contracts handle.
-   * @param bitcoinClient Custom Bitcoin client implementation.
-   * @returns Initialized tBTC v2 SDK entrypoint.
+   * Initializes the tMEWC SDK entrypoint with custom tMEWC contracts and
+   * Meowcoin client.
+   * @param tmewcContracts Custom tMEWC contracts handle.
+   * @param bitcoinClient Custom Meowcoin client implementation.
+   * @returns Initialized tMEWC SDK entrypoint.
    * @dev This function is especially useful for local development as it gives
-   *      flexibility to combine different implementations of tBTC v2 contracts
-   *      with different Bitcoin networks.
+   *      flexibility to combine different implementations of tMEWC contracts
+   *      with different Meowcoin networks.
    */
   static async initializeCustom(
-    tbtcContracts: TBTCContracts,
+    tmewcContracts: TMEWCContracts,
     bitcoinClient: BitcoinClient
-  ): Promise<TBTC> {
-    return new TBTC(tbtcContracts, bitcoinClient)
+  ): Promise<TMEWC> {
+    return new TMEWC(tmewcContracts, bitcoinClient)
   }
 
   /**
@@ -188,7 +188,7 @@ export class TBTC {
    * @param l2Signer Signer to use with the L2 chain contracts.
    * @returns Void promise.
    * @throws Throws an error if:
-   *         - Cross-chain contracts loader is not available for this TBTC SDK instance,
+   *         - Cross-chain contracts loader is not available for this TMEWC SDK instance,
    *         - Chain mapping between the L1 and the given L2 chain is not defined.
    * @dev In case this function needs to support non-EVM L2 chains that can't
    *      use EthereumSigner as a signer type, the l2Signer parameter should

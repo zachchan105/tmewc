@@ -23,11 +23,11 @@ import "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721Upgradeable.sol"
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 
-/// @title L2TBTC
-/// @notice Canonical L2/sidechain token implementation. tBTC token is minted on
+/// @title L2TMEWC
+/// @notice Canonical L2/sidechain token implementation. tMEWC token is minted on
 ///         L1 and locked there to be moved to L2/sidechain. By deploying
 ///         a canonical token on each L2/sidechain, we can ensure the supply of
-///         tBTC remains sacrosanct, while enabling quick, interoperable
+///         tMEWC remains sacrosanct, while enabling quick, interoperable
 ///         cross-chain bridges and localizing ecosystem risk.
 ///
 ///         This contract is flexible enough to:
@@ -46,8 +46,8 @@ import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 ///         the user's behalf by calling the permit function, paying gas fees,
 ///         and possibly performing other actions in the same transaction.
 ///         The governance can recover ERC20 and ERC721 tokens sent mistakenly
-///         to L2TBTC token contract.
-contract L2TBTC is
+///         to L2TMEWC token contract.
+contract L2TMEWC is
     ERC20Upgradeable,
     ERC20BurnableUpgradeable,
     ERC20PermitUpgradeable,

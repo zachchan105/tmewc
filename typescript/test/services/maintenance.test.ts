@@ -1,6 +1,6 @@
 import { BigNumber, BigNumberish } from "ethers"
-import { MockTBTCContracts } from "../utils/mock-tbtc-contracts"
-import { MockBitcoinClient } from "../utils/mock-bitcoin-client"
+import { MockTMEWCContracts } from "../utils/mock-tmewc-contracts"
+import { MockBitcoinClient } from "../utils/mock-meowcoin-client"
 import {
   BitcoinHashUtils,
   BitcoinNetwork,
@@ -48,11 +48,11 @@ describe("Maintenance", () => {
       const fee = BigNumber.from(1600)
 
       describe("submitTransaction", () => {
-        let tbtcContracts: MockTBTCContracts
+        let tmewcContracts: MockTMEWCContracts
         let bitcoinClient: MockBitcoinClient
 
         beforeEach(async () => {
-          tbtcContracts = new MockTBTCContracts()
+          tmewcContracts = new MockTMEWCContracts()
           bitcoinClient = new MockBitcoinClient()
         })
 
@@ -65,7 +65,7 @@ describe("Maintenance", () => {
 
               beforeEach(async () => {
                 // Map transaction hashes for UTXOs to transactions in hexadecimal and
-                // set the mapping in the mock Bitcoin client
+                // set the mapping in the mock Meowcoin client
                 const rawTransactions = new Map<string, BitcoinRawTx>()
                 for (const deposit of depositSweepWithNoMainUtxoAndWitnessOutput.deposits) {
                   rawTransactions.set(deposit.utxo.transactionHash.toString(), {
@@ -91,7 +91,7 @@ describe("Maintenance", () => {
                   depositSweepWithNoMainUtxoAndWitnessOutput.witness
 
                 const walletTx = new WalletTx(
-                  tbtcContracts,
+                  tmewcContracts,
                   bitcoinClient,
                   witness
                 )
@@ -143,7 +143,7 @@ describe("Maintenance", () => {
 
                 beforeEach(async () => {
                   // Map transaction hashes for UTXOs to transactions in hexadecimal and
-                  // set the mapping in the mock Bitcoin client
+                  // set the mapping in the mock Meowcoin client
                   const rawTransactions = new Map<string, BitcoinRawTx>()
                   for (const deposit of depositSweepWithWitnessMainUtxoAndWitnessOutput.deposits) {
                     rawTransactions.set(
@@ -183,7 +183,7 @@ describe("Maintenance", () => {
                     depositSweepWithWitnessMainUtxoAndWitnessOutput.mainUtxo
 
                   const walletTx = new WalletTx(
-                    tbtcContracts,
+                    tmewcContracts,
                     bitcoinClient,
                     witness
                   )
@@ -235,7 +235,7 @@ describe("Maintenance", () => {
 
                 beforeEach(async () => {
                   // Map transaction hashes for UTXOs to transactions in hexadecimal and
-                  // set the mapping in the mock Bitcoin client
+                  // set the mapping in the mock Meowcoin client
                   const rawTransactions = new Map<string, BitcoinRawTx>()
                   for (const deposit of depositSweepWithNonWitnessMainUtxoAndWitnessOutput.deposits) {
                     rawTransactions.set(
@@ -276,7 +276,7 @@ describe("Maintenance", () => {
                     depositSweepWithNonWitnessMainUtxoAndWitnessOutput.mainUtxo
 
                   const walletTx = new WalletTx(
-                    tbtcContracts,
+                    tmewcContracts,
                     bitcoinClient,
                     witness
                   )
@@ -331,7 +331,7 @@ describe("Maintenance", () => {
 
           beforeEach(async () => {
             // Map transaction hashes for UTXOs to transactions in hexadecimal and
-            // set the mapping in the mock Bitcoin client
+            // set the mapping in the mock Meowcoin client
             const rawTransactions = new Map<string, BitcoinRawTx>()
             for (const deposit of depositSweepWithNoMainUtxoAndNonWitnessOutput.deposits) {
               rawTransactions.set(deposit.utxo.transactionHash.toString(), {
@@ -356,7 +356,7 @@ describe("Maintenance", () => {
             const witness =
               depositSweepWithNoMainUtxoAndNonWitnessOutput.witness
 
-            const walletTx = new WalletTx(tbtcContracts, bitcoinClient, witness)
+            const walletTx = new WalletTx(tmewcContracts, bitcoinClient, witness)
 
             ;({ transactionHash, newMainUtxo } =
               await walletTx.depositSweep.submitTransaction(
@@ -397,11 +397,11 @@ describe("Maintenance", () => {
       })
 
       describe("assembleTransaction", () => {
-        let tbtcContracts: MockTBTCContracts
+        let tmewcContracts: MockTMEWCContracts
         let bitcoinClient: MockBitcoinClient
 
         beforeEach(async () => {
-          tbtcContracts = new MockTBTCContracts()
+          tmewcContracts = new MockTMEWCContracts()
           bitcoinClient = new MockBitcoinClient()
         })
 
@@ -430,7 +430,7 @@ describe("Maintenance", () => {
               const witness = depositSweepWithNoMainUtxoAndWitnessOutput.witness
 
               const walletTx = new WalletTx(
-                tbtcContracts,
+                tmewcContracts,
                 bitcoinClient,
                 witness
               )
@@ -501,7 +501,7 @@ describe("Maintenance", () => {
                 const sweepOutput = txJSON.outputs[0]
 
                 // Should be OP_0 <public-key-hash>. Public key corresponds to the
-                // wallet BTC address.
+                // wallet MEWC address.
                 expect(sweepOutput.script).to.be.equal(
                   "00148db50eb52063ea9d98b3eac91489a90f738986f6"
                 )
@@ -563,7 +563,7 @@ describe("Maintenance", () => {
                   depositSweepWithWitnessMainUtxoAndWitnessOutput.witness
 
                 const walletTx = new WalletTx(
-                  tbtcContracts,
+                  tmewcContracts,
                   bitcoinClient,
                   witness
                 )
@@ -648,7 +648,7 @@ describe("Maintenance", () => {
 
                   const sweepOutput = txJSON.outputs[0]
                   // Should be OP_0 <public-key-hash>. Public key corresponds to the
-                  // wallet BTC address.
+                  // wallet MEWC address.
                   expect(sweepOutput.script).to.be.equal(
                     "00148db50eb52063ea9d98b3eac91489a90f738986f6"
                   )
@@ -709,7 +709,7 @@ describe("Maintenance", () => {
                   depositSweepWithNonWitnessMainUtxoAndWitnessOutput.witness
 
                 const walletTx = new WalletTx(
-                  tbtcContracts,
+                  tmewcContracts,
                   bitcoinClient,
                   witness
                 )
@@ -781,7 +781,7 @@ describe("Maintenance", () => {
 
                   const sweepOutput = txJSON.outputs[0]
                   // Should be OP_0 <public-key-hash>. Public key corresponds to the
-                  // wallet BTC address.
+                  // wallet MEWC address.
                   expect(sweepOutput.script).to.be.equal(
                     "00148db50eb52063ea9d98b3eac91489a90f738986f6"
                   )
@@ -839,7 +839,7 @@ describe("Maintenance", () => {
 
           const witness = depositSweepWithNoMainUtxoAndNonWitnessOutput.witness
 
-          const walletTx = new WalletTx(tbtcContracts, bitcoinClient, witness)
+          const walletTx = new WalletTx(tmewcContracts, bitcoinClient, witness)
 
           beforeEach(async () => {
             ;({
@@ -929,7 +929,7 @@ describe("Maintenance", () => {
 
         context("when there are no UTXOs", () => {
           it("should revert", async () => {
-            const walletTx = new WalletTx(tbtcContracts, bitcoinClient)
+            const walletTx = new WalletTx(tmewcContracts, bitcoinClient)
 
             await expect(
               walletTx.depositSweep.assembleTransaction(
@@ -964,7 +964,7 @@ describe("Maintenance", () => {
 
             it("should revert", async () => {
               const walletTx = new WalletTx(
-                tbtcContracts,
+                tmewcContracts,
                 bitcoinClient,
                 witness
               )
@@ -1008,7 +1008,7 @@ describe("Maintenance", () => {
           }
 
           it("should revert", async () => {
-            const walletTx = new WalletTx(tbtcContracts, bitcoinClient)
+            const walletTx = new WalletTx(tmewcContracts, bitcoinClient)
 
             await expect(
               walletTx.depositSweep.assembleTransaction(
@@ -1034,7 +1034,7 @@ describe("Maintenance", () => {
               "cRJvyxtoggjAm9A94cB86hZ7Y62z2ei5VNJHLksFi2xdnz1GJ6xt"
 
             it("should revert", async () => {
-              const walletTx = new WalletTx(tbtcContracts, bitcoinClient)
+              const walletTx = new WalletTx(tmewcContracts, bitcoinClient)
 
               await expect(
                 walletTx.depositSweep.assembleTransaction(
@@ -1069,7 +1069,7 @@ describe("Maintenance", () => {
             depositSweepWithNoMainUtxoAndWitnessOutput.deposits[0].data
 
           it("should revert", async () => {
-            const walletTx = new WalletTx(tbtcContracts, bitcoinClient)
+            const walletTx = new WalletTx(tmewcContracts, bitcoinClient)
 
             await expect(
               walletTx.depositSweep.assembleTransaction(
@@ -1087,11 +1087,11 @@ describe("Maintenance", () => {
 
     describe("Redemption", () => {
       describe("submitTransaction", () => {
-        let tbtcContracts: MockTBTCContracts
+        let tmewcContracts: MockTMEWCContracts
         let bitcoinClient: MockBitcoinClient
 
         beforeEach(async () => {
-          tbtcContracts = new MockTBTCContracts()
+          tmewcContracts = new MockTMEWCContracts()
           bitcoinClient = new MockBitcoinClient()
         })
 
@@ -1116,7 +1116,7 @@ describe("Maintenance", () => {
                             await runRedemptionScenario(
                               walletPrivateKey,
                               bitcoinClient,
-                              tbtcContracts,
+                              tmewcContracts,
                               data
                             ))
                         })
@@ -1163,7 +1163,7 @@ describe("Maintenance", () => {
                             await runRedemptionScenario(
                               walletPrivateKey,
                               bitcoinClient,
-                              tbtcContracts,
+                              tmewcContracts,
                               data
                             ))
                         })
@@ -1210,7 +1210,7 @@ describe("Maintenance", () => {
                             await runRedemptionScenario(
                               walletPrivateKey,
                               bitcoinClient,
-                              tbtcContracts,
+                              tmewcContracts,
                               data
                             ))
                         })
@@ -1257,7 +1257,7 @@ describe("Maintenance", () => {
                             await runRedemptionScenario(
                               walletPrivateKey,
                               bitcoinClient,
-                              tbtcContracts,
+                              tmewcContracts,
                               data
                             ))
                         })
@@ -1303,7 +1303,7 @@ describe("Maintenance", () => {
                         await runRedemptionScenario(
                           walletPrivateKey,
                           bitcoinClient,
-                          tbtcContracts,
+                          tmewcContracts,
                           data
                         ))
                     })
@@ -1349,7 +1349,7 @@ describe("Maintenance", () => {
                       await runRedemptionScenario(
                         walletPrivateKey,
                         bitcoinClient,
-                        tbtcContracts,
+                        tmewcContracts,
                         data
                       ))
                   })
@@ -1394,7 +1394,7 @@ describe("Maintenance", () => {
                     await runRedemptionScenario(
                       walletPrivateKey,
                       bitcoinClient,
-                      tbtcContracts,
+                      tmewcContracts,
                       data
                     ))
                 })
@@ -1447,7 +1447,7 @@ describe("Maintenance", () => {
                 pendingRedemptions.delete(
                   data.pendingRedemptions[2].redemptionKey
                 )
-                tbtcContracts.bridge.setPendingRedemptions(pendingRedemptions)
+                tmewcContracts.bridge.setPendingRedemptions(pendingRedemptions)
               })
 
               it("should revert", async () => {
@@ -1457,7 +1457,7 @@ describe("Maintenance", () => {
                 )
 
                 const walletTx = new WalletTx(
-                  tbtcContracts,
+                  tmewcContracts,
                   bitcoinClient,
                   data.witness
                 )
@@ -1488,7 +1488,7 @@ describe("Maintenance", () => {
 
           it("should revert", async () => {
             const walletTx = new WalletTx(
-              tbtcContracts,
+              tmewcContracts,
               bitcoinClient,
               data.witness
             )
@@ -1505,11 +1505,11 @@ describe("Maintenance", () => {
       })
 
       describe("assembleTransaction", () => {
-        let tbtcContracts: MockTBTCContracts
+        let tmewcContracts: MockTMEWCContracts
         let bitcoinClient: MockBitcoinClient
 
         beforeEach(async () => {
-          tbtcContracts = new MockTBTCContracts()
+          tmewcContracts = new MockTMEWCContracts()
           bitcoinClient = new MockBitcoinClient()
         })
 
@@ -1533,7 +1533,7 @@ describe("Maintenance", () => {
                       )
 
                       const walletTx = new WalletTx(
-                        tbtcContracts,
+                        tmewcContracts,
                         bitcoinClient,
                         data.witness
                       )
@@ -1654,7 +1654,7 @@ describe("Maintenance", () => {
                       )
 
                       const walletTx = new WalletTx(
-                        tbtcContracts,
+                        tmewcContracts,
                         bitcoinClient,
                         data.witness
                       )
@@ -1774,7 +1774,7 @@ describe("Maintenance", () => {
                       )
 
                       const walletTx = new WalletTx(
-                        tbtcContracts,
+                        tmewcContracts,
                         bitcoinClient,
                         data.witness
                       )
@@ -1894,7 +1894,7 @@ describe("Maintenance", () => {
                       )
 
                       const walletTx = new WalletTx(
-                        tbtcContracts,
+                        tmewcContracts,
                         bitcoinClient,
                         data.witness
                       )
@@ -2013,7 +2013,7 @@ describe("Maintenance", () => {
                   )
 
                   const walletTx = new WalletTx(
-                    tbtcContracts,
+                    tmewcContracts,
                     bitcoinClient,
                     data.witness
                   )
@@ -2179,7 +2179,7 @@ describe("Maintenance", () => {
                 )
 
                 const walletTx = new WalletTx(
-                  tbtcContracts,
+                  tmewcContracts,
                   bitcoinClient,
                   data.witness
                 )
@@ -2294,7 +2294,7 @@ describe("Maintenance", () => {
               )
 
               const walletTx = new WalletTx(
-                tbtcContracts,
+                tmewcContracts,
                 bitcoinClient,
                 data.witness
               )
@@ -2394,7 +2394,7 @@ describe("Maintenance", () => {
 
           it("should revert", async () => {
             const walletTx = new WalletTx(
-              tbtcContracts,
+              tmewcContracts,
               bitcoinClient,
               data.witness
             )
@@ -2416,15 +2416,15 @@ describe("Maintenance", () => {
   describe("Spv", () => {
     describe("submitDepositSweepProof", () => {
       let bitcoinClient: MockBitcoinClient
-      let tbtcContracts: MockTBTCContracts
+      let tmewcContracts: MockTMEWCContracts
       let maintenanceService: MaintenanceService
 
       beforeEach(async () => {
         bitcoinClient = new MockBitcoinClient()
-        tbtcContracts = new MockTBTCContracts()
+        tmewcContracts = new MockTMEWCContracts()
 
         maintenanceService = new MaintenanceService(
-          tbtcContracts,
+          tmewcContracts,
           bitcoinClient
         )
 
@@ -2498,7 +2498,7 @@ describe("Maintenance", () => {
       })
 
       it("should submit deposit sweep proof with correct arguments", () => {
-        const bridgeLog = tbtcContracts.bridge.depositSweepProofLog
+        const bridgeLog = tmewcContracts.bridge.depositSweepProofLog
         expect(bridgeLog.length).to.equal(1)
         expect(bridgeLog[0].mainUtxo).to.equal(NO_MAIN_UTXO)
         expect(bridgeLog[0].sweepTx).to.deep.equal(
@@ -2532,15 +2532,15 @@ describe("Maintenance", () => {
       }
 
       let bitcoinClient: MockBitcoinClient
-      let tbtcContracts: MockTBTCContracts
+      let tmewcContracts: MockTMEWCContracts
       let maintenanceService: MaintenanceService
 
       beforeEach(async () => {
         bitcoinClient = new MockBitcoinClient()
-        tbtcContracts = new MockTBTCContracts()
+        tmewcContracts = new MockTMEWCContracts()
 
         maintenanceService = new MaintenanceService(
-          tbtcContracts,
+          tmewcContracts,
           bitcoinClient
         )
 
@@ -2616,7 +2616,7 @@ describe("Maintenance", () => {
       })
 
       it("should submit redemption proof with correct arguments", () => {
-        const bridgeLog = tbtcContracts.bridge.redemptionProofLog
+        const bridgeLog = tmewcContracts.bridge.redemptionProofLog
         expect(bridgeLog.length).to.equal(1)
         expect(bridgeLog[0].mainUtxo).to.equal(mainUtxo)
         expect(bridgeLog[0].walletPublicKey).to.deep.equal(

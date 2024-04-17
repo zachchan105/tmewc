@@ -8,14 +8,14 @@ toc::[]
 
 == Background
 
-tBTC requires a threshold signature scheme recognised by BTC.
+tMEWC requires a threshold signature scheme recognised by MEWC.
 Until 2021 ECDSA was the only available option,
 but with the introduction of Taproot we now have the option of using Schnorr signatures instead.
 Schnorr signatures enable significantly easier attributability of misbehaviour during signing.
 
 === Current functionality
 
-The protocol currently used in tBTC (GG18) does not provide attributability
+The protocol currently used in tMEWC (GG18) does not provide attributability
 when signing fails due to one or more members misbehaving.
 Because of this, the only solution is to retry the signing
 until a set of signers with no misbehaving participants is stumbled upon.
@@ -39,11 +39,11 @@ while providing the attributability missing from the current tECDSA implementati
 
 === Requirements
 
-The Taproot upgrade for Bitcoin enabled Schnorr signature support in 2021.
+The Taproot upgrade for Meowcoin enabled Schnorr signature support in 2021.
 BIP-340 defines these Schnorr signatures,
 and our implementation must conform to it.
 
-Schnorr signatures are incompatible with existing Bitcoin scripts,
+Schnorr signatures are incompatible with existing Meowcoin scripts,
 requiring the use of taproot scripts instead.
 
 This would introduce one user-facing change:
@@ -52,8 +52,8 @@ rather than legacy address types.
 
 === BIP-340
 
-link:https://github.com/bitcoin/bips/blob/master/bip-0340.mediawiki[BIP-340] defines Schnorr signatures for the curve secp256k1,
-already widely used in Bitcoin.
+link:https://github.com/meowcoin/bips/blob/master/bip-0340.mediawiki[BIP-340] defines Schnorr signatures for the curve secp256k1,
+already widely used in Meowcoin.
 A signature for message m and public key point P
 is defined as the (point, scalar) pair `(R, s)`
 where `s * G = R + hash(R || P || m) * P`.
@@ -96,8 +96,8 @@ The hash function uses the tag `BIP0340/challenge`.
 
 === BIP-341 & BIP-342
 
-link:https://github.com/bitcoin/bips/blob/master/bip-0341.mediawiki[BIP-341]
-and link:https://github.com/bitcoin/bips/blob/master/bip-0342.mediawiki[BIP-342]
+link:https://github.com/meowcoin/bips/blob/master/bip-0341.mediawiki[BIP-341]
+and link:https://github.com/meowcoin/bips/blob/master/bip-0342.mediawiki[BIP-342]
 define the Taproot outputs and scripting, respectively.
 
 ----
@@ -106,12 +106,12 @@ and a 32-byte witness program.
 ----
 
 The witness program `q` represents a BIP-340 public key,
-and the output is constructed like a link:https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki#p2wsh[P2WSH] output
+and the output is constructed like a link:https://github.com/meowcoin/bips/blob/master/bip-0141.mediawiki#p2wsh[P2WSH] output
 except the version byte is `0x01` instead of `0x00`.
 
 Taproot outputs can be spent with either a signature for the key `q`,
 or a script `s` and an associated control block `c`
-matching link:https://github.com/bitcoin/bips/blob/master/bip-0341.mediawiki#script-validation-rules[the following rules]:
+matching link:https://github.com/meowcoin/bips/blob/master/bip-0341.mediawiki#script-validation-rules[the following rules]:
 
 ----
 * Let `q` be the 32-byte array containing the witness program
@@ -243,17 +243,17 @@ can simply have `tG` added to it for the purpose of verification.
 
 This makes adaptation of FROST to produce signatures for Taproot output keys simple.
 
-BIP-341 link:https://github.com/bitcoin/bips/blob/master/bip-0341.mediawiki#common-signature-message[also defines]
+BIP-341 link:https://github.com/meowcoin/bips/blob/master/bip-0341.mediawiki#common-signature-message[also defines]
 how the message to be signed is computed.
 This determines the `msg` but has no direct bearing on FROST.
 
 ===== BIP-342
 
-link:https://github.com/bitcoin/bips/blob/master/bip-0342.mediawiki#signature-validation[BIP-342]
+link:https://github.com/meowcoin/bips/blob/master/bip-0342.mediawiki#signature-validation[BIP-342]
 defines signature verification rules
 that only apply when using a script path spend.
 
-These rules affect the refund path of tBTC deposits
+These rules affect the refund path of tMEWC deposits
 but aren't directly relevant for FROST
 which simply produces signatures for the BIP-341 Taproot output key.
 
@@ -317,14 +317,14 @@ the signers can choose (n - t + 1) Alices from among themselves,
 ensuring that if at least t signers are honest
 at least one Alice must also be honest and the protocol must succeed.
 
-=== Compatibility with tBTC
+=== Compatibility with tMEWC
 
 The only way to use BIP-340 Schnorr signatures is with Taproot,
 which breaks compatibility with existing addresses and scripts.
 Only bech32m P2TR addresses using Schnorr signatures are accepted in Taproot outputs,
 but Taproot outputs can be spent into legacy addresses.
 
-Most importantly, this means that the refund address provided when depositing BTC
+Most importantly, this means that the refund address provided when depositing MEWC
 must be a bech32m P2TR address, as it would be used from a Taproot script.
 
 Redemptions can still be paid to legacy addresses;
@@ -378,7 +378,7 @@ Corresponding opcodes (73 bytes total):
 - 0xac: OP_CHECKSIG
 ....
 
-link:https://github.com/bitcoin/bips/blob/master/bip-0341.mediawiki#constructing-and-spending-taproot-outputs[When spending a Taproot output with the key path],
+link:https://github.com/meowcoin/bips/blob/master/bip-0341.mediawiki#constructing-and-spending-taproot-outputs[When spending a Taproot output with the key path],
 wallet's public key is tweaked with a hash of the script.
 This creates an effective commitment to the matching script
 while saving on transaction fees due to the smaller witness of a key path spend.
@@ -408,9 +408,9 @@ function makeP2TRScript(bytes32 q)
 Wallets need to be identified by their 32-byte plaintext BIP-340 pubkeys,
 rather than 20-byte pubkey hashes as they currently are.
 
-===== BTCUtils
+===== MEWCUtils
 
-`BTCUtils.extractHash()` is incompatible with P2TR.
+`MEWCUtils.extractHash()` is incompatible with P2TR.
 Due to the simplification of only needing to consider the P2TR case,
 we can implement a unified `extractP2TRKey()` function instead:
 
@@ -436,7 +436,7 @@ and the refund pubkey must be an unhashed Schnorr pubkey.
 
 The funding output's script is produced by taking the wallet's public key `p`
 and applying a tweak corresponding to the correct refund script `s`.
-The tweak is defined in link:https://github.com/bitcoin/bips/blob/master/bip-0341.mediawiki#script-validation-rules[BIP-341],
+The tweak is defined in link:https://github.com/meowcoin/bips/blob/master/bip-0341.mediawiki#script-validation-rules[BIP-341],
 and the presence of only one script path allows it to be slightly simplified:
 
 ....
@@ -490,9 +490,9 @@ struct DepositRevealInfo {
     bytes20 refundPubKey;
     // The refund locktime (4-byte LE). Interpreted according to locktime
     // parsing rules described in:
-    // https://developer.bitcoin.org/devguide/transactions.html#locktime-and-sequence-number
+    // https://developer.meowcoin.org/devguide/transactions.html#locktime-and-sequence-number
     // and used with OP_CHECKLOCKTIMEVERIFY opcode as described in:
-    // https://github.com/bitcoin/bips/blob/master/bip-0065.mediawiki
+    // https://github.com/meowcoin/bips/blob/master/bip-0065.mediawiki
     bytes4 refundLocktime;
     // Address of the Bank vault to which the deposit is routed to.
     // Optional, can be 0x0. The vault must be trusted by the Bridge.
@@ -568,7 +568,7 @@ function revealDeposit(
         "Output does not match expected script"
     );
 
-    // Resulting TX hash is in native Bitcoin little-endian format.
+    // Resulting TX hash is in native Meowcoin little-endian format.
     bytes32 fundingTxHash = abi
         .encodePacked(
             fundingTx.version,
@@ -622,7 +622,7 @@ function revealDeposit(
 Taproot uses plaintext Schnorr pubkeys,
 not pubkey hashes.
 
-In link:https://github.com/keep-network/tbtc-v2/blob/main/solidity/contracts/bridge/DepositSweep.sol#L349[DepositSweep.processDepositSweepTxOutput()]
+In link:https://github.com/keep-network/tmewc/blob/main/solidity/contracts/bridge/DepositSweep.sol#L349[DepositSweep.processDepositSweepTxOutput()]
 tweak as follows:
 
 ....
@@ -651,13 +651,13 @@ Propagate changes as required.
 ===== Redemption
 
 We can use the output of `makeP2TRScript()` directly on the wallet's public key.
-link:https://github.com/bitcoin/bips/blob/master/bip-0341.mediawiki#cite_note-23[BIP-341 recommends a taproot commitment]
+link:https://github.com/meowcoin/bips/blob/master/bip-0341.mediawiki#cite_note-23[BIP-341 recommends a taproot commitment]
 even if there is no script path,
 but the public key being used here is not an aggregate of keys,
 but rather a threshold protocol public key,
 so the consideration of attacks against key aggregation don't apply.
 
-Tweak link:https://github.com/keep-network/tbtc-v2/blob/main/solidity/contracts/bridge/Redemption.sol#L824[Redemption.processRedemptionTxOutputs()]:
+Tweak link:https://github.com/keep-network/tmewc/blob/main/solidity/contracts/bridge/Redemption.sol#L824[Redemption.processRedemptionTxOutputs()]:
 
 ....
 if (
@@ -723,18 +723,18 @@ and will only be receiving messages from that run's coordinator.
 The member must not reuse nonces between different calls to produce a signature share,
 and must erase used nonces immediately.
 
-== tBTC-ROAST
+== tMEWC-ROAST
 
 The proposed adaptation of ROAST to produce BIP-340 compliant signatures
-for the purpose of tBTC will be called tBTC-ROAST in this RFC.
+for the purpose of tMEWC will be called tMEWC-ROAST in this RFC.
 
-tBTC-ROAST has n = 100 participants in a signing group,
+tMEWC-ROAST has n = 100 participants in a signing group,
 of whom t = 51 are required to cooperate to produce a signature.
 The indices i of the members are in the range [1, 100]
 
 === DKG
 
-The (51, 100) secret key for a tBTC-ROAST signing group (aka wallet)
+The (51, 100) secret key for a tMEWC-ROAST signing group (aka wallet)
 is produced using GJKR.
 
 In the execution of the GJKR DKG protocol,
@@ -1166,19 +1166,19 @@ The below details have been replicated from the FROST paper for convenience:
 
 == Resources
 
-link:https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki[BIP-141: Segregated Witness (Consensus layer)]
+link:https://github.com/meowcoin/bips/blob/master/bip-0141.mediawiki[BIP-141: Segregated Witness (Consensus layer)]
 
-link:https://github.com/bitcoin/bips/blob/master/bip-0143.mediawiki[BIP-143: Transaction Signature Verification for Version 0 Witness Program]
+link:https://github.com/meowcoin/bips/blob/master/bip-0143.mediawiki[BIP-143: Transaction Signature Verification for Version 0 Witness Program]
 
-link:https://github.com/bitcoin/bips/blob/master/bip-0340.mediawiki[BIP-340: Schnorr Signatures for secp256k1]
+link:https://github.com/meowcoin/bips/blob/master/bip-0340.mediawiki[BIP-340: Schnorr Signatures for secp256k1]
 
-link:https://github.com/bitcoin/bips/blob/master/bip-0341.mediawiki[BIP-341: Taproot: SegWit version 1 spending rules]
+link:https://github.com/meowcoin/bips/blob/master/bip-0341.mediawiki[BIP-341: Taproot: SegWit version 1 spending rules]
 
-link:https://github.com/bitcoin/bips/blob/master/bip-0342.mediawiki[BIP-342: Validation of Taproot Scripts]
+link:https://github.com/meowcoin/bips/blob/master/bip-0342.mediawiki[BIP-342: Validation of Taproot Scripts]
 
 === Taproot
 
-link:https://bitcoinops.org/en/schorr-taproot-workshop/[Bitcoin Optech Schnorr Taproot workshop]
+link:https://bitcoinops.org/en/schorr-taproot-workshop/[Meowcoin Optech Schnorr Taproot workshop]
 
 === FROST
 

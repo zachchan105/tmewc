@@ -68,7 +68,7 @@ export interface MovingFundsTestData {
   }
 
   /**
-   * Chain difficulty which was in force at the moment of Bitcoin transaction
+   * Chain difficulty which was in force at the moment of Meowcoin transaction
    * execution. It is used to mock the difficulty provided by `Relay` contract
    * with a correct value thus making proof validation possible.
    */
@@ -114,7 +114,7 @@ export const SingleTargetWallet: MovingFundsTestData = {
     txOutputValue: 1473114,
   },
 
-  // https://live.blockcypher.com/btc-testnet/tx/d078c00d7e78509062fccdecaf85580efe6e2826d8db77341fbc1097ca2955e5
+  // https://live.blockcypher.com/mewc-testnet/tx/d078c00d7e78509062fccdecaf85580efe6e2826d8db77341fbc1097ca2955e5
   movingFundsTx: {
     hash: "0xe55529ca9710bc1f3477dbd826286efe0e5885afeccdfc629050787e0dc078d0",
     version: "0x01000000",
@@ -222,7 +222,7 @@ export const MultipleTargetWalletsAndIndivisibleAmount: MovingFundsTestData = {
     txOutputValue: 1795453,
   },
 
-  // https://live.blockcypher.com/btc-testnet/tx/e6218018ed1874e73b78e16a8cf4f5016cbc666a3f9179557a84083e3e66ff7c
+  // https://live.blockcypher.com/mewc-testnet/tx/e6218018ed1874e73b78e16a8cf4f5016cbc666a3f9179557a84083e3e66ff7c
   movingFundsTx: {
     hash: "0x7cff663e3e08847a5579913f6a66bc6c01f5f48c6ae1783be77418ed188021e6",
     version: "0x01000000",
@@ -339,7 +339,7 @@ export const MultipleTargetWalletsAndDivisibleAmount: MovingFundsTestData = {
     txOutputValue: 1180947,
   },
 
-  // https://live.blockcypher.com/btc-testnet/tx/16e97fcafef86aef46b056ebbf0be50b454d826ffaf0a4c528a16e1b61937ae8
+  // https://live.blockcypher.com/mewc-testnet/tx/16e97fcafef86aef46b056ebbf0be50b454d826ffaf0a4c528a16e1b61937ae8
   movingFundsTx: {
     hash: "0xe87a93611b6ea128c5a4f0fa6f824d450be50bbfeb56b046ef6af8feca7fe916",
     version: "0x01000000",
@@ -432,7 +432,7 @@ export const MultipleTargetWalletsButAmountDistributedUnevenly: MovingFundsTestD
       txOutputValue: 1279418,
     },
 
-    // https://live.blockcypher.com/btc-testnet/tx/5b362273b9471f62c35b2ef6940c3c13bd2b773626ab5de63efe4e895d56f98c
+    // https://live.blockcypher.com/mewc-testnet/tx/5b362273b9471f62c35b2ef6940c3c13bd2b773626ab5de63efe4e895d56f98c
     movingFundsTx: {
       hash: "0x8cf9565d894efe3ee65dab2636772bbd133c0c94f62e5bc3621f47b97322365b",
       version: "0x01000000",
@@ -516,7 +516,7 @@ export const SingleTargetWalletButP2SH: MovingFundsTestData = {
     txOutputValue: 1177424,
   },
 
-  // https://live.blockcypher.com/btc-testnet/tx/70d4182e795ebb0ddd8339ed9c0213d6e48f7cb6c956ced03c49f554a93a5669
+  // https://live.blockcypher.com/mewc-testnet/tx/70d4182e795ebb0ddd8339ed9c0213d6e48f7cb6c956ced03c49f554a93a5669
   movingFundsTx: {
     hash: "0x69563aa954f5493cd0ce56c9b67c8fe4d613029ced3983dd0dbb5e792e18d470",
     version: "0x01000000",
@@ -592,7 +592,7 @@ export const SingleProvablyUnspendable: MovingFundsTestData = {
     txOutputValue: 1914700,
   },
 
-  // https://live.blockcypher.com/btc-testnet/tx/58a7d94d019aa658d00dfa2b5d5bb6b5d627b71afefff2bda5db501a75981fd3
+  // https://live.blockcypher.com/mewc-testnet/tx/58a7d94d019aa658d00dfa2b5d5bb6b5d627b71afefff2bda5db501a75981fd3
   movingFundsTx: {
     hash: "0xd31f98751a50dba5bdf2fffe1ab727d6b5b65b5d2bfa0dd058a69a014dd9a758",
     version: "0x01000000",
@@ -675,7 +675,7 @@ export const MultipleInputs: MovingFundsTestData = {
     txOutputValue: 718510,
   },
 
-  // https://live.blockcypher.com/btc-testnet/tx/605edd75ae0b4fa7cfc7aae8f1399119e9d7ecc212e6253156b60d60f4925d44
+  // https://live.blockcypher.com/mewc-testnet/tx/605edd75ae0b4fa7cfc7aae8f1399119e9d7ecc212e6253156b60d60f4925d44
   movingFundsTx: {
     hash: "0x445d92f4600db6563125e612c2ecd7e9199139f1e8aac7cfa74f0bae75dd5e60",
     version: "0x01000000",
@@ -789,7 +789,7 @@ export interface MovedFundsSweepTestData {
   }
 
   /**
-   * Chain difficulty which was in force at the moment of Bitcoin transaction
+   * Chain difficulty which was in force at the moment of Meowcoin transaction
    * execution. It is used to mock the difficulty provided by `Relay` contract
    * with a correct value thus making proof validation possible.
    */
@@ -823,7 +823,7 @@ export const MovedFundsSweepWithoutMainUtxo: MovedFundsSweepTestData = {
 
   mainUtxo: NO_MAIN_UTXO,
 
-  // https://live.blockcypher.com/btc-testnet/tx/3c5e414be0a36e7cd8a6b3a554b4bd9bebe3eee4eddd0dd2a182652e5772b1ad
+  // https://live.blockcypher.com/mewc-testnet/tx/3c5e414be0a36e7cd8a6b3a554b4bd9bebe3eee4eddd0dd2a182652e5772b1ad
   sweepTx: {
     hash: "0xadb172572e6582a1d20dddede4eee3eb9bbdb454a5b3a6d87c6ea3e04b415e3c",
     version: "0x01000000",
@@ -909,7 +909,7 @@ export const MovedFundsSweepWithMainUtxo: MovedFundsSweepTestData = {
     txOutputValue: 873510,
   },
 
-  // https://live.blockcypher.com/btc-testnet/tx/f97ed3704f59bf5ed828d90f04598ea6c1c65a7957befa1f1c175a142c17fff9
+  // https://live.blockcypher.com/mewc-testnet/tx/f97ed3704f59bf5ed828d90f04598ea6c1c65a7957befa1f1c175a142c17fff9
   sweepTx: {
     hash: "0xf9ff172c145a171c1ffabe57795ac6c1a68e59040fd928d85ebf594f70d37ef9",
     version: "0x01000000",
@@ -997,7 +997,7 @@ export const MovedFundsSweepP2SHOutput: MovedFundsSweepTestData = {
 
   mainUtxo: NO_MAIN_UTXO,
 
-  // https://live.blockcypher.com/btc-testnet/tx/588a0e5e68ec8d3cf80d1190e51a68a431737a33c3a09f16303945dd49e369cd
+  // https://live.blockcypher.com/mewc-testnet/tx/588a0e5e68ec8d3cf80d1190e51a68a431737a33c3a09f16303945dd49e369cd
   sweepTx: {
     hash: "0xcd69e349dd453930169fa0c3337a7331a4681ae590110df83c8dec685e0e8a58",
     version: "0x01000000",
@@ -1082,7 +1082,7 @@ export const MovedFundsSweepProvablyUnspendableOutput: MovedFundsSweepTestData =
 
     mainUtxo: NO_MAIN_UTXO,
 
-    // https://live.blockcypher.com/btc-testnet/tx/58a7d94d019aa658d00dfa2b5d5bb6b5d627b71afefff2bda5db501a75981fd3
+    // https://live.blockcypher.com/mewc-testnet/tx/58a7d94d019aa658d00dfa2b5d5bb6b5d627b71afefff2bda5db501a75981fd3
     sweepTx: {
       hash: "0xd31f98751a50dba5bdf2fffe1ab727d6b5b65b5d2bfa0dd058a69a014dd9a758",
       version: "0x01000000",
@@ -1162,7 +1162,7 @@ export const MovedFundsSweepMultipleOutputs: MovedFundsSweepTestData = {
 
   mainUtxo: NO_MAIN_UTXO,
 
-  // https://live.blockcypher.com/btc-testnet/tx/e6218018ed1874e73b78e16a8cf4f5016cbc666a3f9179557a84083e3e66ff7c
+  // https://live.blockcypher.com/mewc-testnet/tx/e6218018ed1874e73b78e16a8cf4f5016cbc666a3f9179557a84083e3e66ff7c
   sweepTx: {
     hash: "0x7cff663e3e08847a5579913f6a66bc6c01f5f48c6ae1783be77418ed188021e6",
     version: "0x01000000",
